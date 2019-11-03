@@ -936,18 +936,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="6368.8659"
-     inkscape:cy="1854.7014"
+     inkscape:zoom="1.979899"
+     inkscape:cx="6869.2147"
+     inkscape:cy="2022.0312"
      inkscape:document-units="px"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer4"
      showgrid="false"
      units="px"
-     inkscape:window-width="949"
-     inkscape:window-height="696"
-     inkscape:window-x="368"
-     inkscape:window-y="1121"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
      showguides="false" />
   <metadata
      id="metadata5">
@@ -5222,23 +5222,18 @@
        y="-1372.738"
        id="text3732-2-9-5-2-9-7"><tspan
          sodipodi:role="line"
-         id="tspan3730-9-2-4-3-6-9"
          x="6626.0991"
          y="-1372.738"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'">Cole a seguir a lista de alunos.</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
+         id="tspan4744">Cole a seguir a lista de alunos no formato:</tspan><tspan
          sodipodi:role="line"
          x="6626.0991"
          y="-1354.2705"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
-         id="tspan4744">Siga o formato:</tspan><tspan
-         sodipodi:role="line"
-         x="6626.0991"
-         y="-1335.803"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
          id="tspan3159">matricula - nome - email</tspan><tspan
          sodipodi:role="line"
          x="6626.0991"
-         y="-1317.3354"
+         y="-1335.803"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono'"
          id="tspan3157" /></text>
     <g
@@ -10339,7 +10334,7 @@
          x="6726.1206"
          y="-1086.0233"
          style="font-size:10.66666698px;line-height:0px;fill:#008000"
-         id="tspan10940-8">carometro e lista de alunos em pdf</tspan></text>
+         id="tspan10940-8">carometro e lista de alunos em csv</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:0.5;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#008000;fill-opacity:1;stroke:none"
