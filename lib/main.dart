@@ -8,6 +8,7 @@ import 'package:piprof/paginas/login/versao.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_aberta_list_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_aberta_responder_page.dart';
+import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_page.dart';
 // import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
 import 'package:piprof/paginas/turma/turma_ativa_list_page.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final authBloc = Bootstrap.instance.authBloc;
     Recursos.initialize(Theme.of(context).platform);
-  // Intl.defaultLocale = 'pt_br';
+    // Intl.defaultLocale = 'pt_br';
 
     return MaterialApp(
       title: 'PI - Prof',
@@ -71,8 +72,12 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return TurmaAlunoPage(settings.arguments);
         },
-        
-                // "/turma/inativa": (context) => TurmaInativaListPage(authBloc),
+        "/turma/aluno/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return TurmaAlunoListPage(settings.arguments);
+        },
+
+        // "/turma/inativa": (context) => TurmaInativaListPage(authBloc),
 
         // //avaliacao
         // "/avaliacao/list": (context) {

@@ -22,7 +22,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
-        bloc.eventSink(GetTurmaAlunoListEvent(widget.turmaID));
+        bloc.eventSink(UpdateTurmaAtivaListEvent());
 
   }
 
@@ -71,13 +71,7 @@ Inst.: ${turma.instituicao}
 Comp.: ${turma.componente}
 Turma: ${turma.nome}
 Alunos: ${turma.alunoList?.length ?? 0}'''),
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              "/turma/crud",
-                              arguments: turma.id,
-                            );
-                          },
+                          
                         ),
                       ),
                       Wrap(
@@ -123,7 +117,13 @@ Alunos: ${turma.alunoList?.length ?? 0}'''),
                           IconButton(
                             tooltip: 'Editar turma',
                             icon: Icon(Icons.edit),
-                            onPressed: () {},
+                            onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              "/turma/crud",
+                              arguments: turma.id,
+                            );
+                          },
                           ),
                         ],
                       )

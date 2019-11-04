@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_bloc.dart';
 
 class TurmaAlunoListPage extends StatefulWidget {
-  final AuthBloc authBloc;
+  final String turmaID;
 
-  const TurmaAlunoListPage(this.authBloc);
+  const TurmaAlunoListPage(this.turmaID);
   @override
   _TurmaAlunoListPageState createState() => _TurmaAlunoListPageState();
 }
 
 class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
-    TurmaAlunoListBloc bloc;
+  TurmaAlunoListBloc bloc;
   @override
   void initState() {
     super.initState();
     bloc = TurmaAlunoListBloc(
       Bootstrap.instance.firestore,
     );
-    
+    bloc.eventSink(GetTurmaAlunoListEvent(widget.turmaID));
   }
 
   @override
@@ -27,13 +26,14 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
     super.dispose();
     bloc.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lista de alunos'),
-      ),
-      body: StreamBuilder<TurmaAlunoListBlocState>(
+        appBar: AppBar(
+          title: Text('Lista de alunos'),
+        ),
+        body: StreamBuilder<TurmaAlunoListBlocState>(
             stream: bloc.stateStream,
             builder: (BuildContext context, AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
@@ -46,38 +46,56 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                 List<Widget> listaWidget = List<Widget>();
 
                 for (var aluno in snapshot.data.turmaAlunoList) {
-                  listaWidget.add(Column(
-                    children: <Widget>[
-                      Card(
-                        child: ListTile(
-                          // trailing: Text('${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
-                          title: Text('''
-Nome: ${aluno.nome}
-'''),
-                          // onTap: () {
-                          //   Navigator.pushNamed(
-                          //     context,
-                          //     "/turma/crud",
-                          //     arguments: turma.id,
-                          //   );
-                          // },
-                        ),
-                      ),
-                      Wrap(
+                  listaWidget.add(Card(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          IconButton(
-                              tooltip: 'Agenda de encontros da turma',
-                              icon: Icon(Icons.calendar_today),
-                              onPressed: () {}),
-                          IconButton(
-                            tooltip: 'Gerenciar avaliações',
-                            icon: Icon(Icons.assignment),
-                            onPressed: () {},
+                          Expanded(
+                            flex: 2,
+                            child: _ImagemUnica(url: aluno.foto.url),
                           ),
-                          
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              padding: EdgeInsets.only(left: 6),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("Crachá: ${aluno.cracha}"),
+                                  Text("Nome: ${aluno.nome}"),
+                                  Text("Celular: ${aluno.celular}"),
+                                  Text("matricula: ${aluno.matricula}"),
+                                  Text("email: ${aluno.email}"),
+                                  Text("id: ${aluno.id}"),
+                                  Wrap(
+                                    children: <Widget>[
+                                      IconButton(
+                                        tooltip: 'Apagar aluno permanentemente',
+                                        icon: Icon(Icons.delete_forever),
+                                        onPressed: () {},
+                                      ),
+                                      IconButton(
+                                          tooltip: 'Desativar aluno',
+                                          icon: aluno.ativo ? Icon(Icons.lock_open) : Icon(Icons.lock_outline,color: Colors.red,),
+                                          onPressed: () {
+                                            bloc.eventSink(DesativarAlunoEvent(aluno.id));
+                                          }),
+                                      IconButton(
+                                        tooltip: 'Gerar notas deste aluno',
+                                        icon: Icon(Icons.recent_actors),
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ));
                 }
                 listaWidget.add(Container(
@@ -90,7 +108,40 @@ Nome: ${aluno.nome}
               } else {
                 return Text('Existem dados inválidos. Informe o suporte.');
               }
-            })
+            }));
+  }
+}
+
+class _ImagemUnica extends StatelessWidget {
+  final String url;
+
+  const _ImagemUnica({this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget foto;
+    if (url == null) {
+      foto = Center(child: Text('Sem foto.'));
+    } else {
+      foto = Container(
+          child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Image.network(url),
+      ));
+    }
+    return Row(
+      children: <Widget>[
+        Spacer(
+          flex: 1,
+        ),
+        Expanded(
+          flex: 6,
+          child: foto,
+        ),
+        Spacer(
+          flex: 1,
+        ),
+      ],
     );
   }
 }

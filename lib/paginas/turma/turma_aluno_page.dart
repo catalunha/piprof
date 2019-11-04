@@ -63,6 +63,13 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
               ListTile(
                 trailing: Icon(Icons.person_pin_circle),
                 title: Text('Alunos e notas'),
+                onTap: (){
+                   Navigator.pushNamed(
+                              context,
+                              "/turma/aluno/list",
+                              arguments: widget.turmaID,
+                            );
+                },
               ),
               ListTile(
                 trailing: Icon(Icons.recent_actors),

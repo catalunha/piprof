@@ -11,6 +11,12 @@ class GetTurmaAlunoListEvent extends TurmaAlunoListBlocEvent {
   GetTurmaAlunoListEvent(this.turmaID);
 }
 
+class DesativarAlunoEvent extends TurmaAlunoListBlocEvent {
+  final String alunoID;
+
+  DesativarAlunoEvent(this.alunoID);
+}
+
 class DeleteAlunoEvent extends TurmaAlunoListBlocEvent {
   final String alunoID;
 
@@ -69,12 +75,12 @@ class TurmaAlunoListBloc {
       final snap = await docRef.get();
       if (snap.exists) {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
-        
+
         _state.turmaAlunoList.clear();
 
         final streamDocsRemetente = _firestore
             .collection(UsuarioModel.collection)
-            .where("ativo", isEqualTo: true)
+            // .where("ativo", isEqualTo: true)
             .where("aluno", isEqualTo: true)
             .where("turma", arrayContains: _state.turma.id)
             .snapshots();
@@ -92,6 +98,17 @@ class TurmaAlunoListBloc {
     if (event is AlunoNotaListEvent) {
       print('Gerando csv com notas deste alunoID: ${event.alunoID}');
     }
+    if (event is DesativarAlunoEvent) {
+      bool statusAtual;
+      for (var aluno in _state.turmaAlunoList) {
+        if (aluno.id == event.alunoID) {
+          statusAtual = aluno.ativo;
+        }
+      }
+      final docRef = _firestore.collection(UsuarioModel.collection).document(event.alunoID);
+      await docRef.setData({'ativo': !statusAtual}, merge: true);
+    }
+    if (event is DeleteAlunoEvent) {}
     if (event is SaveEvent) {}
 
     _validateData();
