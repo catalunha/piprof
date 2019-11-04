@@ -8,7 +8,7 @@ import 'package:piprof/paginas/login/versao.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_aberta_list_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_aberta_responder_page.dart';
-import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
+// import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
 import 'package:piprof/paginas/turma/turma_ativa_list_page.dart';
 import 'package:piprof/paginas/turma/turma_crud_page.dart';
 import 'package:piprof/paginas/upload/uploader_page.dart';
