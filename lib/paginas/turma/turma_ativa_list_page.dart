@@ -22,6 +22,8 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
+        bloc.eventSink(GetTurmaAlunoListEvent(widget.turmaID));
+
   }
 
   @override
@@ -46,8 +48,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
         ),
         body: StreamBuilder<TurmaAtivaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<TurmaAtivaListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<TurmaAtivaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -64,8 +65,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
                     children: <Widget>[
                       Card(
                         child: ListTile(
-                          trailing: Text(
-                              '${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
+                          trailing: Text('${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
                           title: Text('''
 Inst.: ${turma.instituicao}
 Comp.: ${turma.componente}
@@ -87,11 +87,27 @@ Alunos: ${turma.alunoList?.length ?? 0}'''),
                               icon: Icon(Icons.calendar_today),
                               onPressed: () {}),
                           IconButton(
+                            tooltip: 'Gerenciar avaliações',
+                            icon: Icon(Icons.assignment),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            tooltip: 'Gerenciar alunos',
+                            icon: Icon(Icons.people),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                "/turma/aluno",
+                                arguments: turma.id,
+                              );
+                            },
+                          ),
+                          IconButton(
                             tooltip: 'Descer ordem da turma',
                             icon: Icon(Icons.arrow_downward),
                             onPressed: (ordemLocal) < lengthTurma
                                 ? () {
-                                    bloc.eventSink(OrdenarEvent(turma,false));
+                                    bloc.eventSink(OrdenarEvent(turma, false));
                                   }
                                 : null,
                           ),
@@ -100,19 +116,9 @@ Alunos: ${turma.alunoList?.length ?? 0}'''),
                             icon: Icon(Icons.arrow_upward),
                             onPressed: ordemLocal > 1
                                 ? () {
-                                    bloc.eventSink(OrdenarEvent(turma,true));
+                                    bloc.eventSink(OrdenarEvent(turma, true));
                                   }
                                 : null,
-                          ),
-                          IconButton(
-                            tooltip: 'Gerenciar avaliações',
-                            icon: Icon(Icons.assignment),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            tooltip: 'Gerenciar alunos',
-                            icon: Icon(Icons.people),
-                            onPressed: () {},
                           ),
                           IconButton(
                             tooltip: 'Editar turma',
