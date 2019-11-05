@@ -346,10 +346,6 @@
     "#onRead": "",
     "#onUpdate": "",
     "#onDelete": "",
-    "professor": {
-      "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome"
-    },
     "turma": {
       "id": "Turma/turmaID",
       "nome": "Turma/turmaID.nome"

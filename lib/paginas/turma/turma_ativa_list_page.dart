@@ -65,25 +65,26 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            trailing: Text('Qts: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
+                            trailing:
+                                Text('Qts: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
                             title: Text('''
 Instit.: ${turma.instituicao}
 Comp.: ${turma.componente}
 Turma: ${turma.nome}
 Num. Alunos: ${turma.alunoList?.length ?? 0}'''),
-subtitle: Text('${turma?.id}'),
+                            subtitle: Text('${turma?.id}'),
                           ),
                           Wrap(
                             children: <Widget>[
-                              IconButton(
-                                  tooltip: 'Agenda de encontros da turma',
-                                  icon: Icon(Icons.calendar_today),
-                                  onPressed: () {}),
                               IconButton(
                                 tooltip: 'Gerenciar avaliações',
                                 icon: Icon(Icons.assignment),
                                 onPressed: () {},
                               ),
+                              IconButton(
+                                  tooltip: 'Agenda de encontros da turma',
+                                  icon: Icon(Icons.calendar_today),
+                                  onPressed: () {}),
                               IconButton(
                                 tooltip: 'Gerenciar alunos',
                                 icon: Icon(Icons.people),
