@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
-import 'package:piprof/paginas/avaliacao/avaliacao_list_page.dart';
 import 'package:piprof/paginas/desenvolvimento/desenvolvimento_page.dart';
 import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
-import 'package:piprof/paginas/questao/questao_list_page.dart';
-import 'package:piprof/paginas/tarefa/tarefa_aberta_list_page.dart';
-import 'package:piprof/paginas/tarefa/tarefa_aberta_responder_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_page.dart';
-// import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
 import 'package:piprof/paginas/turma/turma_ativa_list_page.dart';
 import 'package:piprof/paginas/turma/turma_crud_page.dart';
+import 'package:piprof/paginas/turma/turma_inativa_list_page.dart';
 import 'package:piprof/paginas/upload/uploader_page.dart';
 import 'package:piprof/paginas/usuario/perfil_page.dart';
 import 'package:piprof/plataforma/recursos.dart';
@@ -77,7 +73,7 @@ class MyApp extends StatelessWidget {
           return TurmaAlunoListPage(settings.arguments);
         },
 
-        // "/turma/inativa": (context) => TurmaInativaListPage(authBloc),
+        "/turma/inativa/list": (context) => TurmaInativaListPage(authBloc),
 
         // //avaliacao
         // "/avaliacao/list": (context) {
