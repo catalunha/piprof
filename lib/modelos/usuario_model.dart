@@ -15,6 +15,7 @@ class UsuarioModel extends FirestoreModel {
   List<dynamic> rota;
   int turmaNumeroAdicionado;
   String tokenFCM;
+  List<dynamic> turmaList;
 
   UsuarioModel({
     String id,
@@ -30,6 +31,7 @@ class UsuarioModel extends FirestoreModel {
     this.grupoNumeroAdicionado,
     this.turmaNumeroAdicionado,
     this.rota,
+    this.turmaList
   }) : super(id);
 
   @override
@@ -49,6 +51,8 @@ class UsuarioModel extends FirestoreModel {
     }
 
     if (map.containsKey('rota')) rota = map['rota'];
+        if (map.containsKey('turmaList')) turmaList = map['turmaList'];
+
     return this;
   }
 
@@ -68,6 +72,8 @@ class UsuarioModel extends FirestoreModel {
     if (this.foto != null) {
       data['foto'] = this.foto.toMap();
     }
+        if (turmaList != null) data['turmaList'] = this.turmaList;
+
 
     if (rota != null) data['rota'] = this.rota;
 

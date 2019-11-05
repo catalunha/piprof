@@ -47,8 +47,8 @@ class TurmaAtivaListBloc {
     eventStream.listen(_mapEventToState);
     _authBloc.perfil.listen((usuarioAuth) {
       eventSink(GetUsuarioAuthEvent(usuarioAuth));
-      eventSink(UpdateTurmaAtivaListEvent());
       if (!_stateController.isClosed) _stateController.add(_state);
+      eventSink(UpdateTurmaAtivaListEvent());
     });
   }
 

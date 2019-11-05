@@ -24,12 +24,12 @@
     "#onCreate": "",
     "#onRead": "",
     "#onUpdate": "",
-    "#onDelete": "Atualizar Turma.aluno",
+    "#onDelete": "Atualizar em todas as collections q tem fk dele",
     "ativo": "true: aparece na listagens. false: !true ",
     "nome": "nome",
     "matricula": "",
     "email": "email",
-    "apelido": "nome",
+    "cracha": "nome",
     "celular": "celular",
     "aluno": "true: usuario é um aluno. false: é um professor.",
     "rotas": [
@@ -40,11 +40,14 @@
       "path": "url da foto na coleção upload",
       "url": "url da foto na coleção upload"
     },
-    "turma": [
+    "turmaList": [
       "Turma/turmaID"
     ],
     "grupoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero."
+  },
+  "UsuarioNovo":{
+    "comment":"após cadastro tem q atualizar a turma respectiva com o ID do usuario."
   },
   "Turma": {
     "comment": "",
@@ -62,10 +65,9 @@
       "id": "Usuario/documentID",
       "nome": ""
     },
-    "aluno": [
+    "alunoList": [
       "alunoID"
     ],
-    "alunoPCadastro": "uma lista de matricula - nome - email separado por linha",
     "questaoNumeroAdicionado": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "questaoNumeroExcluido": "numero. inicia com 0. Quando excluir uma questao de qq avalicao acrescenta este numero."
   },

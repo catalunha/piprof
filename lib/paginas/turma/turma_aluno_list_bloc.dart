@@ -81,14 +81,15 @@ class TurmaAlunoListBloc {
         final streamDocsRemetente = _firestore
             .collection(UsuarioModel.collection)
             // .where("ativo", isEqualTo: true)
+            .where("turmaList", arrayContains: _state.turma.id)
             .where("aluno", isEqualTo: true)
-            .where("turma", arrayContains: _state.turma.id)
             .snapshots();
 
         final snapListRemetente = streamDocsRemetente.map(
             (snapDocs) => snapDocs.documents.map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data)).toList());
 
         snapListRemetente.listen((List<UsuarioModel> usuarioList) {
+          usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
           _state.turmaAlunoList = usuarioList;
           if (!_stateController.isClosed) _stateController.add(_state);
         });
@@ -108,7 +109,16 @@ class TurmaAlunoListBloc {
       final docRef = _firestore.collection(UsuarioModel.collection).document(event.alunoID);
       await docRef.setData({'ativo': !statusAtual}, merge: true);
     }
-    if (event is DeleteAlunoEvent) {}
+    if (event is DeleteAlunoEvent) {
+      bool statusAtual;
+      for (var aluno in _state.turmaAlunoList) {
+        if (aluno.id == event.alunoID) {
+          statusAtual = aluno.ativo;
+        }
+      }
+      final docRef = _firestore.collection(UsuarioModel.collection).document(event.alunoID);
+      await docRef.delete();
+    }
     if (event is SaveEvent) {}
 
     _validateData();

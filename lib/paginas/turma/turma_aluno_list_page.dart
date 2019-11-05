@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_bloc.dart';
+import 'package:piprof/servicos/gerar_csv_service.dart';
 
 class TurmaAlunoListPage extends StatefulWidget {
   final String turmaID;
@@ -48,9 +49,12 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                 for (var aluno in snapshot.data.turmaAlunoList) {
                   listaWidget.add(Card(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 2,
+                      ),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
                             flex: 2,
@@ -58,40 +62,49 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                           ),
                           Expanded(
                             flex: 4,
-                            child: Container(
-                              padding: EdgeInsets.only(left: 6),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("Crachá: ${aluno.cracha}"),
-                                  Text("Nome: ${aluno.nome}"),
-                                  Text("Celular: ${aluno.celular}"),
-                                  Text("matricula: ${aluno.matricula}"),
-                                  Text("email: ${aluno.email}"),
-                                  Text("id: ${aluno.id}"),
-                                  Wrap(
-                                    children: <Widget>[
-                                      IconButton(
-                                        tooltip: 'Apagar aluno permanentemente',
-                                        icon: Icon(Icons.delete_forever),
-                                        onPressed: () {},
-                                      ),
-                                      IconButton(
-                                          tooltip: 'Desativar aluno',
-                                          icon: aluno.ativo ? Icon(Icons.lock_open) : Icon(Icons.lock_outline,color: Colors.red,),
-                                          onPressed: () {
-                                            bloc.eventSink(DesativarAlunoEvent(aluno.id));
-                                          }),
-                                      IconButton(
-                                        tooltip: 'Gerar notas deste aluno',
-                                        icon: Icon(Icons.recent_actors),
-                                        onPressed: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                            // child: Container(
+                            // padding: EdgeInsets.only(left: 6),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Crachá: ${aluno.cracha}"),
+                                Text("matricula: ${aluno.matricula}"),
+                                Text("Nome: ${aluno.nome}"),
+                                Text("Celular: ${aluno.celular}"),
+                                Text("email: ${aluno.email}"),
+                                Text("id: ${aluno.id}"),
+                                Wrap(
+                                  children: <Widget>[
+                                    IconButton(
+                                      tooltip: 'Apagar aluno permanentemente',
+                                      icon: Icon(Icons.delete_forever),
+                                      onPressed: () {
+                                        bloc.eventSink(DeleteAlunoEvent(aluno.id));
+                                      },
+                                    ),
+                                    IconButton(
+                                        tooltip: 'Desativar aluno',
+                                        icon: aluno.ativo
+                                            ? Icon(Icons.lock_open)
+                                            : Icon(
+                                                Icons.lock_outline,
+                                                color: Colors.red,
+                                              ),
+                                        onPressed: () {
+                                          bloc.eventSink(DesativarAlunoEvent(aluno.id));
+                                        }),
+                                    IconButton(
+                                      tooltip: 'Gerar notas deste aluno',
+                                      icon: Icon(Icons.recent_actors),
+                                      onPressed: () {
+                                        GenerateCsvService.generateCsvFromUsuarioAndNote(aluno);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
+                            // ),
                           ),
                         ],
                       ),
@@ -124,18 +137,19 @@ class _ImagemUnica extends StatelessWidget {
       foto = Center(child: Text('Sem foto.'));
     } else {
       foto = Container(
-          child: Padding(
-        padding: const EdgeInsets.all(2.0),
+        // child: Padding(
+        // padding: const EdgeInsets.all(2.0),
         child: Image.network(url),
-      ));
+        // ),
+      );
     }
     return Row(
       children: <Widget>[
-        Spacer(
-          flex: 1,
-        ),
+        // Spacer(
+        //   flex: 1,
+        // ),
         Expanded(
-          flex: 6,
+          flex: 4,
           child: foto,
         ),
         Spacer(

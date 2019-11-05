@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/turma/turma_aluno_bloc.dart';
+import 'package:piprof/servicos/gerar_csv_service.dart';
 
 class TurmaAlunoPage extends StatefulWidget {
   final String turmaID;
@@ -41,7 +42,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
             return FloatingActionButton(
               onPressed: snapshot.data.isDataValid
                   ? () {
-                      bloc.eventSink(SaveEvent());
+                      bloc.eventSink(CadastrarAlunoEvent());
                       Navigator.pop(context);
                     }
                   : null,
@@ -62,26 +63,26 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
             children: <Widget>[
               ListTile(
                 trailing: Icon(Icons.person_pin_circle),
-                title: Text('Alunos e notas'),
-                onTap: (){
-                   Navigator.pushNamed(
-                              context,
-                              "/turma/aluno/list",
-                              arguments: widget.turmaID,
-                            );
+                title: Text('Gerenciar aluno e ver notas'),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    "/turma/aluno/list",
+                    arguments: widget.turmaID,
+                  );
                 },
               ),
               ListTile(
                 trailing: Icon(Icons.recent_actors),
-                title: Text('Lista de alunos em planilha'),
+                title: Text('Lista de alunos'),
                 onTap: () {
-                  bloc.eventSink(NotaListEvent(widget.turmaID));
+                  GenerateCsvService.generateCsvFromUsuarioListDaTurma(snapshot.data.turma);
                 },
               ),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Cole a seguir a lista de alunos para esta turma no formato:\nmatricula ; email ; nome completo\nusando o ponto e a vírgula para separar as informações.',
+                    'Informe a lista de alunos a serem cadastrados. Use o formato:\nmatricula ; email ; nome completo\nusando o ponto e vírgula para separar as informações.',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(padding: EdgeInsets.all(5.0), child: CadastrarAluno(bloc)),
@@ -95,6 +96,17 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
 
 // 123; abc@gmail.com; aaa bbb ccc
 // 456; def@gmail.com; ddd eee fff
+
+//
+// ;
+// 123; abc@gmail.com; aaa bbb ccc
+// ;;;;;;
+// ;;
+// 456; def@gmail.com; ddd eee fff
+// 789; def#gmail.com; ddd eee fff
+// 1;@;aaa
+//
+//
 
 class CadastrarAluno extends StatefulWidget {
   final TurmaAlunoBloc bloc;
@@ -125,7 +137,7 @@ class CadastrarAlunoState extends State<CadastrarAluno> {
           ),
           controller: _textFieldController,
           onChanged: (text) {
-            bloc.eventSink(GetCadastrarAlunoEvent(text));
+            bloc.eventSink(UpdateCadastroAlunoEvent(text));
           },
         );
       },

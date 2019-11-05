@@ -22,8 +22,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
-        bloc.eventSink(UpdateTurmaAtivaListEvent());
-
+    bloc.eventSink(UpdateTurmaAtivaListEvent());
   }
 
   @override
@@ -61,74 +60,76 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
                 int ordemLocal = 1;
 
                 for (var turma in snapshot.data.turmaList) {
-                  listaWidget.add(Column(
-                    children: <Widget>[
-                      Card(
-                        child: ListTile(
-                          trailing: Text('${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
-                          title: Text('''
-Inst.: ${turma.instituicao}
+                  listaWidget.add(
+                    Card(
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            trailing: Text('Qts: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
+                            title: Text('''
+Instit.: ${turma.instituicao}
 Comp.: ${turma.componente}
 Turma: ${turma.nome}
-Alunos: ${turma.alunoList?.length ?? 0}'''),
-                          
-                        ),
-                      ),
-                      Wrap(
-                        children: <Widget>[
-                          IconButton(
-                              tooltip: 'Agenda de encontros da turma',
-                              icon: Icon(Icons.calendar_today),
-                              onPressed: () {}),
-                          IconButton(
-                            tooltip: 'Gerenciar avaliações',
-                            icon: Icon(Icons.assignment),
-                            onPressed: () {},
+Num. Alunos: ${turma.alunoList?.length ?? 0}'''),
+subtitle: Text('${turma?.id}'),
                           ),
-                          IconButton(
-                            tooltip: 'Gerenciar alunos',
-                            icon: Icon(Icons.people),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                "/turma/aluno",
-                                arguments: turma.id,
-                              );
-                            },
-                          ),
-                          IconButton(
-                            tooltip: 'Descer ordem da turma',
-                            icon: Icon(Icons.arrow_downward),
-                            onPressed: (ordemLocal) < lengthTurma
-                                ? () {
-                                    bloc.eventSink(OrdenarEvent(turma, false));
-                                  }
-                                : null,
-                          ),
-                          IconButton(
-                            tooltip: 'Subir ordem da turma',
-                            icon: Icon(Icons.arrow_upward),
-                            onPressed: ordemLocal > 1
-                                ? () {
-                                    bloc.eventSink(OrdenarEvent(turma, true));
-                                  }
-                                : null,
-                          ),
-                          IconButton(
-                            tooltip: 'Editar turma',
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              "/turma/crud",
-                              arguments: turma.id,
-                            );
-                          },
+                          Wrap(
+                            children: <Widget>[
+                              IconButton(
+                                  tooltip: 'Agenda de encontros da turma',
+                                  icon: Icon(Icons.calendar_today),
+                                  onPressed: () {}),
+                              IconButton(
+                                tooltip: 'Gerenciar avaliações',
+                                icon: Icon(Icons.assignment),
+                                onPressed: () {},
+                              ),
+                              IconButton(
+                                tooltip: 'Gerenciar alunos',
+                                icon: Icon(Icons.people),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    "/turma/aluno",
+                                    arguments: turma.id,
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                tooltip: 'Descer ordem da turma',
+                                icon: Icon(Icons.arrow_downward),
+                                onPressed: (ordemLocal) < lengthTurma
+                                    ? () {
+                                        bloc.eventSink(OrdenarEvent(turma, false));
+                                      }
+                                    : null,
+                              ),
+                              IconButton(
+                                tooltip: 'Subir ordem da turma',
+                                icon: Icon(Icons.arrow_upward),
+                                onPressed: ordemLocal > 1
+                                    ? () {
+                                        bloc.eventSink(OrdenarEvent(turma, true));
+                                      }
+                                    : null,
+                              ),
+                              IconButton(
+                                tooltip: 'Editar turma',
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    "/turma/crud",
+                                    arguments: turma.id,
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ],
-                      )
-                    ],
-                  ));
+                      ),
+                    ),
+                  );
                   ordemLocal++;
                 }
                 listaWidget.add(Container(

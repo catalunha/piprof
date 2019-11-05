@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
+import 'package:piprof/componentes/delete_documento.dart';
 import 'package:piprof/paginas/turma/turma_crud_bloc.dart';
 
 class TurmaCRUDPage extends StatefulWidget {
@@ -49,14 +50,12 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
                     }
                   : null,
               child: Icon(Icons.cloud_upload),
-              backgroundColor:
-                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
       body: StreamBuilder<TurmaCRUDBlocState>(
         stream: bloc.stateStream,
-        builder:
-            (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -64,59 +63,64 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
             return Center(child: CircularProgressIndicator());
           }
           // if (snapshot.data.isDataValid) {
-            return ListView(
-              children: <Widget>[
-                SwitchListTile(
-                  title: Text(
-                    'Turma ativa ? ',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  ),
-                  value: snapshot.data?.ativo,
-                  onChanged: (bool value) {
-                    bloc.eventSink(UpdateAtivoEvent(value));
-                  },
-                  // secondary: Icon(Icons.thumbs_up_down),
+          return ListView(
+            children: <Widget>[
+              SwitchListTile(
+                title: Text(
+                  'Turma ativa ? ',
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
-                Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      'Instituição:',
-                      style: TextStyle(fontSize: 15, color: Colors.blue),
-                    )),
-                Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: TurmaInstituicao(bloc)),
-                Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      'Componente:',
-                      style: TextStyle(fontSize: 15, color: Colors.blue),
-                    )),
-                Padding(
-                    padding: EdgeInsets.all(5.0), child: TurmaComponente(bloc)),
-                Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      'Nome:',
-                      style: TextStyle(fontSize: 15, color: Colors.blue),
-                    )),
-                Padding(padding: EdgeInsets.all(5.0), child: TurmaNome(bloc)),
-                Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      'Descrição:',
-                      style: TextStyle(fontSize: 15, color: Colors.blue),
-                    )),
-                Padding(
-                    padding: EdgeInsets.all(5.0), child: TurmaDescricao(bloc)),
-                Divider(),
-                Padding(
+                value: snapshot.data?.ativo,
+                onChanged: (bool value) {
+                  bloc.eventSink(UpdateAtivoEvent(value));
+                },
+                // secondary: Icon(Icons.thumbs_up_down),
+              ),
+              Padding(
                   padding: EdgeInsets.all(5.0),
-                  child: _DeleteDocumentOrField(bloc),
+                  child: Text(
+                    'Instituição:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: TurmaInstituicao(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Componente:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: TurmaComponente(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Nome:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: TurmaNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Descrição:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: TurmaDescricao(bloc)),
+              Divider(),
+              // Padding(
+              //   padding: EdgeInsets.all(5.0),
+              //   child: _DeleteDocumentOrField(bloc),
+              // ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: DeleteDocument(
+                  onDelete: () {
+                    bloc.eventSink(DeleteDocumentEvent());
+                    Navigator.of(context).pop();
+                  },
                 ),
-                Padding(padding: EdgeInsets.only(top: 100)),
-              ],
-            );
+              ),
+              Padding(padding: EdgeInsets.only(top: 100)),
+            ],
+          );
           // } else {
           //   return Text('Existem dados inválidos. Informe o suporte.');
           // }
@@ -143,8 +147,7 @@ class TurmaInstituicaoState extends State<TurmaInstituicao> {
   Widget build(BuildContext context) {
     return StreamBuilder<TurmaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.instituicao;
         }
@@ -181,8 +184,7 @@ class TurmaComponenteState extends State<TurmaComponente> {
   Widget build(BuildContext context) {
     return StreamBuilder<TurmaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.componente;
         }
@@ -219,8 +221,7 @@ class TurmaNomeState extends State<TurmaNome> {
   Widget build(BuildContext context) {
     return StreamBuilder<TurmaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.nome;
         }
@@ -257,8 +258,7 @@ class TurmaDescricaoState extends State<TurmaDescricao> {
   Widget build(BuildContext context) {
     return StreamBuilder<TurmaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.descricao;
         }
@@ -278,48 +278,47 @@ class TurmaDescricaoState extends State<TurmaDescricao> {
   }
 }
 
-class _DeleteDocumentOrField extends StatefulWidget {
-  final TurmaCRUDBloc bloc;
-  _DeleteDocumentOrField(this.bloc);
-  @override
-  _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState(bloc);
-  }
-}
+// class _DeleteDocumentOrField extends StatefulWidget {
+//   final TurmaCRUDBloc bloc;
+//   _DeleteDocumentOrField(this.bloc);
+//   @override
+//   _DeleteDocumentOrFieldState createState() {
+//     return _DeleteDocumentOrFieldState(bloc);
+//   }
+// }
 
-class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
-  final _textFieldController = TextEditingController();
-  final TurmaCRUDBloc bloc;
-  _DeleteDocumentOrFieldState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TurmaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
-        return Row(
-          children: <Widget>[
-            Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
-            Container(
-              child: Flexible(
-                child: TextField(
-                  controller: _textFieldController,
-                ),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                if (_textFieldController.text == 'CONCORDO') {
-                  bloc.eventSink(DeleteDocumentEvent());
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-}
+// class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+//   final _textFieldController = TextEditingController();
+//   final TurmaCRUDBloc bloc;
+//   _DeleteDocumentOrFieldState(this.bloc);
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<TurmaCRUDBlocState>(
+//       stream: bloc.stateStream,
+//       builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+//         return Row(
+//           children: <Widget>[
+//             Divider(),
+//             Text('Para apagar digite CONCORDO e click:  '),
+//             Container(
+//               child: Flexible(
+//                 child: TextField(
+//                   controller: _textFieldController,
+//                 ),
+//               ),
+//             ),
+//             IconButton(
+//               icon: Icon(Icons.delete),
+//               onPressed: () {
+//                 if (_textFieldController.text == 'CONCORDO') {
+//                   bloc.eventSink(DeleteDocumentEvent());
+//                   Navigator.of(context).pop();
+//                 }
+//               },
+//             )
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
