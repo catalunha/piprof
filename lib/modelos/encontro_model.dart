@@ -1,10 +1,8 @@
-import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/base_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
-import 'package:piprof/modelos/usuario_model.dart';
 
-class UploadModel extends FirestoreModel {
-  static final String collection = "Upload";
+class EncontroModel extends FirestoreModel {
+  static final String collection = "Encontro";
   TurmaFk turma;
   dynamic data;
   dynamic modificado;
@@ -12,7 +10,7 @@ class UploadModel extends FirestoreModel {
   String descricao;
   List<dynamic> alunoList;
 
-  UploadModel({
+  EncontroModel({
     String id,
     this.turma,
     this.data,
@@ -23,10 +21,10 @@ class UploadModel extends FirestoreModel {
   }) : super(id);
 
   @override
-  UploadModel fromMap(Map<String, dynamic> map) {
+  EncontroModel fromMap(Map<String, dynamic> map) {
     turma = map.containsKey('turma') && map['turma'] != null ? TurmaFk.fromMap(map['turma']) : null;
     data = map.containsKey('data') && map['data'] != null
-        ? DateTime.fromMillisecondsSinceEpoch(map['modificado'].millisecondsSinceEpoch)
+        ? DateTime.fromMillisecondsSinceEpoch(map['data'].millisecondsSinceEpoch)
         : null;
     modificado = map.containsKey('modificado') && map['modificado'] != null
         ? DateTime.fromMillisecondsSinceEpoch(map['modificado'].millisecondsSinceEpoch)

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
+import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/desenvolvimento/desenvolvimento_page.dart';
+import 'package:piprof/paginas/encontro/encontro_crud_page.dart';
+import 'package:piprof/paginas/encontro/encontro_list_page.dart';
 import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
@@ -41,24 +44,9 @@ class MyApp extends StatelessWidget {
         //desenvolvimento
         "/desenvolvimento": (context) => Desenvolvimento(),
 
-        // //tarefa
-        // "/tarefa/aberta": (context) => TarefaAbertaListPage(authBloc),
-        // "/tarefa/responder": (context) {
-        //   final settings = ModalRoute.of(context).settings;
-        //   return TarefaAbertaResponderPage(settings.arguments);
-        // },
-        // "/tarefa/list": (context) {
-        //   final settings = ModalRoute.of(context).settings;
-        //   return TarefaListPage(authBloc, settings.arguments);
-        // },
-        // // "/tarefa": (context) {
-        // //   final settings = ModalRoute.of(context).settings;
-        // //   return TarefaPage(authBloc, settings.arguments);
-        // // },
+        //tarefa
 
-        // turma aluno
-        // "/turma/list": (context) => TurmaListPage(authBloc),
-        // turma prof
+        //turma
         "/turma/ativa/list": (context) => TurmaAtivaListPage(authBloc),
         "/turma/crud": (context) {
           final settings = ModalRoute.of(context).settings;
@@ -72,21 +60,19 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return TurmaAlunoListPage(settings.arguments);
         },
-
         "/turma/inativa/list": (context) => TurmaInativaListPage(authBloc),
-
-        // //avaliacao
-        // "/avaliacao/list": (context) {
-        //   final settings = ModalRoute.of(context).settings;
-        //   return AvaliacaoListPage(authBloc, settings.arguments);
-        // },
-
-        // //questao
-        // "/questao/list": (context) {
-        //   final settings = ModalRoute.of(context).settings;
-        //   return QuestaoListPage(settings.arguments);
-        // },
-
+        "/turma/encontro/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return EncontroListPage(settings.arguments);
+        },
+        "/turma/encontro/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          final EncontroCRUDPageArguments args = settings.arguments;
+          return EncontroCRUDPage(
+            turmaID: args.turmaID,
+            encontroID: args.encontroID,
+          );
+        },
         //EndDrawer
         //perfil
         "/perfil": (context) => PerfilPage(authBloc),

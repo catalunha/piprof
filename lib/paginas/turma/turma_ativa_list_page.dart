@@ -84,7 +84,13 @@ Num. Alunos: ${turma.alunoList?.length ?? 0}'''),
                               IconButton(
                                   tooltip: 'Agenda de encontros da turma',
                                   icon: Icon(Icons.calendar_today),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/turma/encontro/list",
+                                      arguments: turma.id,
+                                    );
+                                  }),
                               IconButton(
                                 tooltip: 'Gerenciar alunos',
                                 icon: Icon(Icons.people),

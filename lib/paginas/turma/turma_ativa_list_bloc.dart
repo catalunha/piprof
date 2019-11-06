@@ -74,7 +74,7 @@ class TurmaAtivaListBloc {
       final streamDocsRemetente = _firestore
           .collection(TurmaModel.collection)
           .where("ativo", isEqualTo: true)
-          .where("professor.id", isEqualTo: _state.usuarioAuth.id)
+          .where("professor.id", isEqualTo: _state.usuarioAuth?.id)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
