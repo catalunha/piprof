@@ -248,8 +248,8 @@ class Pedese {
   String resposta;
   int nota;
   String gabaritoUploadID;
-  String respostaPath;
   String respostaUploadID;
+  String respostaPath;
 
   Pedese({
     this.nome,

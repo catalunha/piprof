@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_bloc.dart';
+import 'package:piprof/servicos/gerar_csv_service.dart';
 
 class EncontroListPage extends StatefulWidget {
   final String turmaID;
@@ -41,7 +42,9 @@ class _EncontroListPageState extends State<EncontroListPage> {
             Navigator.pushNamed(
               context,
               "/turma/encontro/crud",
-              arguments: EncontroCRUDPageArguments(turmaID: widget.turmaID),
+              arguments: EncontroCRUDPageArguments(
+                turmaID: widget.turmaID,
+              ),
             );
           },
         ),
@@ -57,7 +60,16 @@ class _EncontroListPageState extends State<EncontroListPage> {
               }
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
-
+                listaWidget.add(
+                  ListTile(
+                    title: Text('Lista de encontros em planilha'),
+                    trailing: Icon(Icons.recent_actors),
+                    onTap: () {
+                      GenerateCsvService.generateCsvFromEncontro(
+                          widget.turmaID);
+                    },
+                  ),
+                );
                 for (var encontro in snapshot.data.encontroList) {
                   listaWidget.add(
                     Card(
@@ -65,7 +77,8 @@ class _EncontroListPageState extends State<EncontroListPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text('${encontro.nome}'),
-                            trailing: Text('${DateFormat('dd-MM HH:mm').format(encontro.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro.fim)}'),
+                            trailing: Text(
+                                '${DateFormat('dd-MM HH:mm').format(encontro.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro.fim)}'),
                           ),
                           Center(
                             child: Wrap(
@@ -73,7 +86,13 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                 IconButton(
                                   tooltip: 'Marcar presença de alunos',
                                   icon: Icon(Icons.person_pin_circle),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/turma/encontro/aluno",
+                                      arguments: encontro.id,
+                                    );
+                                  },
                                 ),
                                 IconButton(
                                   tooltip: 'Editar este encontro',

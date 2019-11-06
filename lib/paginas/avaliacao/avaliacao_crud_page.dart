@@ -3,33 +3,37 @@ import 'package:intl/intl.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
-import 'package:piprof/paginas/encontro/encontro_crud_bloc.dart';
+import 'package:piprof/paginas/avaliacao/avaliacao_crud_bloc.dart';
 
-class EncontroCRUDPage extends StatefulWidget {
+class AvaliacaoCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
   final String turmaID;
-  final String encontroID;
+  final String avaliacaoID;
 
-  const EncontroCRUDPage({this.authBloc,this.turmaID, this.encontroID, });
+  const AvaliacaoCRUDPage({
+    this.authBloc,
+    this.turmaID,
+    this.avaliacaoID,
+  });
 
   @override
-  _EncontroCRUDPageState createState() => _EncontroCRUDPageState();
+  _AvaliacaoCRUDPageState createState() => _AvaliacaoCRUDPageState();
 }
 
-class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
-  EncontroCRUDBloc bloc;
+class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
+  AvaliacaoCRUDBloc bloc;
   DateTime _date = new DateTime.now();
   TimeOfDay _hora = new TimeOfDay.now();
 
   @override
   void initState() {
     super.initState();
-    bloc = EncontroCRUDBloc(
+    bloc = AvaliacaoCRUDBloc(
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
     bloc.eventSink(GetTurmaEvent(widget.turmaID));
-    bloc.eventSink(GetEncontroEvent(widget.encontroID));
+    bloc.eventSink(GetAvalicaoEvent(widget.avaliacaoID));
   }
 
   @override
@@ -73,15 +77,13 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
   }
 
   _inicioEncontro(context) {
-    return
-
-        Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-
-        StreamBuilder<EncontroCRUDBlocState>(
+        StreamBuilder<AvaliacaoCRUDBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -111,7 +113,6 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
       // ),
     );
   }
-
 
   Future<Null> _selectDateFim(BuildContext context) async {
     final DateTime selectedDate = await showDatePicker(
@@ -148,15 +149,13 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
   }
 
   _fimEncontro(context) {
-    return
-
-        Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-
-        StreamBuilder<EncontroCRUDBlocState>(
+        StreamBuilder<AvaliacaoCRUDBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -187,15 +186,13 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar encontro'),
+        title: Text('Criar ou Editar avaliação'),
       ),
-      floatingActionButton: StreamBuilder<EncontroCRUDBlocState>(
+      floatingActionButton: StreamBuilder<AvaliacaoCRUDBlocState>(
           stream: bloc.stateStream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) return Container();
@@ -207,21 +204,21 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
                     }
                   : null,
               child: Icon(Icons.cloud_upload),
-              backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              backgroundColor:
+                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
-      body: StreamBuilder<EncontroCRUDBlocState>(
+      body: StreamBuilder<AvaliacaoCRUDBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          return
-
-              ListView(
+          return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
               Padding(
@@ -230,14 +227,17 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
                     'Data e hora do início:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(1.0), child: _inicioEncontro(context)),
-                            Padding(
+              Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: _inicioEncontro(context)),
+              Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Data e hora do fim:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
+              Padding(
+                  padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -248,10 +248,18 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
+                    'Nota:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: EncontroNota(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
                     'Descrição:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: EncontroDescricao(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0), child: EncontroDescricao(bloc)),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -273,7 +281,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
 }
 
 class EncontroNome extends StatefulWidget {
-  final EncontroCRUDBloc bloc;
+  final AvaliacaoCRUDBloc bloc;
   EncontroNome(this.bloc);
   @override
   EncontroNomeState createState() {
@@ -283,13 +291,14 @@ class EncontroNome extends StatefulWidget {
 
 class EncontroNomeState extends State<EncontroNome> {
   final _textFieldController = TextEditingController();
-  final EncontroCRUDBloc bloc;
+  final AvaliacaoCRUDBloc bloc;
   EncontroNomeState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<EncontroCRUDBlocState>(
+    return StreamBuilder<AvaliacaoCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.nome;
         }
@@ -309,8 +318,46 @@ class EncontroNomeState extends State<EncontroNome> {
   }
 }
 
+class EncontroNota extends StatefulWidget {
+  final AvaliacaoCRUDBloc bloc;
+  EncontroNota(this.bloc);
+  @override
+  EncontroNotaState createState() {
+    return EncontroNotaState(bloc);
+  }
+}
+
+class EncontroNotaState extends State<EncontroNota> {
+  final _textFieldController = TextEditingController();
+  final AvaliacaoCRUDBloc bloc;
+  EncontroNotaState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<AvaliacaoCRUDBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
+        if (_textFieldController.text.isEmpty) {
+          _textFieldController.text = snapshot.data?.nota;
+        }
+        return TextField(
+          keyboardType: TextInputType.number,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          controller: _textFieldController,
+          onChanged: (text) {
+            bloc.eventSink(UpdateNotaEvent(text));
+          },
+        );
+      },
+    );
+  }
+}
+
 class EncontroDescricao extends StatefulWidget {
-  final EncontroCRUDBloc bloc;
+  final AvaliacaoCRUDBloc bloc;
   EncontroDescricao(this.bloc);
   @override
   EncontroDescricaoState createState() {
@@ -320,13 +367,14 @@ class EncontroDescricao extends StatefulWidget {
 
 class EncontroDescricaoState extends State<EncontroDescricao> {
   final _textFieldController = TextEditingController();
-  final EncontroCRUDBloc bloc;
+  final AvaliacaoCRUDBloc bloc;
   EncontroDescricaoState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<EncontroCRUDBlocState>(
+    return StreamBuilder<AvaliacaoCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.descricao;
         }

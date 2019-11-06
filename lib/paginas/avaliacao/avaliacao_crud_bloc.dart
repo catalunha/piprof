@@ -1,69 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:piprof/modelos/encontro_model.dart';
+import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EncontroCRUDBlocEvent {}
+class AvaliacaoCRUDBlocEvent {}
 
-class GetUsuarioAuthEvent extends EncontroCRUDBlocEvent {
+class GetUsuarioAuthEvent extends AvaliacaoCRUDBlocEvent {
   final UsuarioModel usuarioAuth;
 
   GetUsuarioAuthEvent(this.usuarioAuth);
 }
 
-class GetEncontroEvent extends EncontroCRUDBlocEvent {
-  final String encontroID;
+class GetAvalicaoEvent extends AvaliacaoCRUDBlocEvent {
+  final String avaliacaoID;
 
-  GetEncontroEvent(this.encontroID);
+  GetAvalicaoEvent(this.avaliacaoID);
 }
 
-class GetTurmaEvent extends EncontroCRUDBlocEvent {
+class GetTurmaEvent extends AvaliacaoCRUDBlocEvent {
   final String turmaID;
 
   GetTurmaEvent(this.turmaID);
 }
 
-class UpdateDataInicioEvent extends EncontroCRUDBlocEvent {
+class UpdateDataInicioEvent extends AvaliacaoCRUDBlocEvent {
   final DateTime data;
   final TimeOfDay hora;
 
   UpdateDataInicioEvent({this.data, this.hora});
 }
 
-class UpdateDataFimEvent extends EncontroCRUDBlocEvent {
+class UpdateDataFimEvent extends AvaliacaoCRUDBlocEvent {
   final DateTime data;
   final TimeOfDay hora;
 
   UpdateDataFimEvent({this.data, this.hora});
 }
 
-class UpdateNomeEvent extends EncontroCRUDBlocEvent {
+class UpdateNomeEvent extends AvaliacaoCRUDBlocEvent {
   final String nome;
   UpdateNomeEvent(this.nome);
 }
 
-class UpdateDescricaoEvent extends EncontroCRUDBlocEvent {
+class UpdateDescricaoEvent extends AvaliacaoCRUDBlocEvent {
   final String descricao;
   UpdateDescricaoEvent(this.descricao);
 }
 
-class SaveEvent extends EncontroCRUDBlocEvent {}
+class UpdateNotaEvent extends AvaliacaoCRUDBlocEvent {
+  final String nota;
+  UpdateNotaEvent(this.nota);
+}
 
-class DeleteDocumentEvent extends EncontroCRUDBlocEvent {}
+class SaveEvent extends AvaliacaoCRUDBlocEvent {}
 
-class EncontroCRUDBlocState {
+class DeleteDocumentEvent extends AvaliacaoCRUDBlocEvent {}
+
+class AvaliacaoCRUDBlocState {
   bool isDataValid = false;
-  String encontroID;
-  UsuarioModel usuarioAuth;
-
-  EncontroModel encontro = EncontroModel();
+  String avaliacaoID;
+  AvaliacaoModel avaliacao = AvaliacaoModel();
   TurmaModel turma = TurmaModel();
+  UsuarioModel usuarioAuth;
 
   // dynamic data;
   String nome;
   String descricao;
+  String nota;
   DateTime inicioEncontro;
   DateTime fimEncontro;
   DateTime dataInicio;
@@ -71,31 +76,32 @@ class EncontroCRUDBlocState {
   DateTime dataFim;
   TimeOfDay horaFim;
   void updateState() {
-    inicioEncontro = encontro.inicio;
-    fimEncontro = encontro.fim;
-    nome = encontro.nome;
-    descricao = encontro.descricao;
+    inicioEncontro = avaliacao.inicio;
+    fimEncontro = avaliacao.fim;
+    nome = avaliacao.nome;
+    descricao = avaliacao.descricao;
+    nota = avaliacao.nota;
   }
 }
 
-class EncontroCRUDBloc {
+class AvaliacaoCRUDBloc {
   /// Firestore
   final fsw.Firestore _firestore;
   final _authBloc;
 
   /// Eventos
-  final _eventController = BehaviorSubject<EncontroCRUDBlocEvent>();
-  Stream<EncontroCRUDBlocEvent> get eventStream => _eventController.stream;
+  final _eventController = BehaviorSubject<AvaliacaoCRUDBlocEvent>();
+  Stream<AvaliacaoCRUDBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   /// Estados
-  final EncontroCRUDBlocState _state = EncontroCRUDBlocState();
-  final _stateController = BehaviorSubject<EncontroCRUDBlocState>();
-  Stream<EncontroCRUDBlocState> get stateStream => _stateController.stream;
+  final AvaliacaoCRUDBlocState _state = AvaliacaoCRUDBlocState();
+  final _stateController = BehaviorSubject<AvaliacaoCRUDBlocState>();
+  Stream<AvaliacaoCRUDBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
-  EncontroCRUDBloc(this._firestore, this._authBloc) {
+  AvaliacaoCRUDBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
     _authBloc.perfil.listen((usuarioAuth) {
       eventSink(GetUsuarioAuthEvent(usuarioAuth));
@@ -121,12 +127,12 @@ class EncontroCRUDBloc {
     if (_state.nome == null) {
       _state.isDataValid = false;
     }
-    if (_state.descricao == null) {
+    if (_state.nota == null) {
       _state.isDataValid = false;
     }
   }
 
-  _mapEventToState(EncontroCRUDBlocEvent event) async {
+  _mapEventToState(AvaliacaoCRUDBlocEvent event) async {
     if (event is GetUsuarioAuthEvent) {
       _state.usuarioAuth = event.usuarioAuth;
     }
@@ -139,14 +145,15 @@ class EncontroCRUDBloc {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
       }
     }
-    if (event is GetEncontroEvent) {
+    if (event is GetAvalicaoEvent) {
       final docRef = _firestore
-          .collection(EncontroModel.collection)
-          .document(event.encontroID);
-      _state.encontroID = event.encontroID;
+          .collection(AvaliacaoModel.collection)
+          .document(event.avaliacaoID);
+      _state.avaliacaoID = event.avaliacaoID;
       final snap = await docRef.get();
       if (snap.exists) {
-        _state.encontro = EncontroModel(id: snap.documentID).fromMap(snap.data);
+        _state.avaliacao =
+            AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
         _state.updateState();
       }
     }
@@ -219,37 +226,44 @@ class EncontroCRUDBloc {
     if (event is UpdateDescricaoEvent) {
       _state.descricao = event.descricao;
     }
+    if (event is UpdateNotaEvent) {
+      _state.nota = event.nota;
+    }
     if (event is SaveEvent) {
       final docRef = _firestore
-          .collection(EncontroModel.collection)
-          .document(_state.encontroID);
+          .collection(AvaliacaoModel.collection)
+          .document(_state.avaliacaoID);
 
-      EncontroModel encontroUpdate = EncontroModel(
+      AvaliacaoModel avaliacaoUpdate = AvaliacaoModel(
         inicio: _state.inicioEncontro,
         fim: _state.fimEncontro,
         nome: _state.nome,
         descricao: _state.descricao,
+        nota: _state.nota,
         modificado: DateTime.now(),
       );
-      if (_state.encontroID == null) {
-        encontroUpdate.professor = UsuarioFk(
+      if (_state.avaliacaoID == null) {
+        avaliacaoUpdate.ativo = true;
+        avaliacaoUpdate.aplicar = false;
+        avaliacaoUpdate.aplicada = false;
+        avaliacaoUpdate.professor = UsuarioFk(
           id: _state.usuarioAuth.id,
           nome: _state.usuarioAuth.nome,
         );
-        encontroUpdate.turma =
+        avaliacaoUpdate.turma =
             TurmaFk(id: _state.turma.id, nome: _state.turma.nome);
       }
-      await docRef.setData(encontroUpdate.toMap(), merge: true);
+      await docRef.setData(avaliacaoUpdate.toMap(), merge: true);
     }
     if (event is DeleteDocumentEvent) {
       _firestore
           .collection(TurmaModel.collection)
-          .document(_state.encontro.id)
+          .document(_state.avaliacao.id)
           .delete();
     }
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em EncontroCRUDBloc  = ${event.runtimeType}');
+    print('event.runtimeType em AvaliacaoCRUDBloc  = ${event.runtimeType}');
   }
 }

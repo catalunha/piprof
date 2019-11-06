@@ -1,8 +1,10 @@
 import 'package:piprof/modelos/base_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
+import 'package:piprof/modelos/usuario_model.dart';
 
 class EncontroModel extends FirestoreModel {
   static final String collection = "Encontro";
+  UsuarioFk professor;
   TurmaFk turma;
   dynamic inicio;
   dynamic fim;
@@ -13,6 +15,7 @@ class EncontroModel extends FirestoreModel {
 
   EncontroModel({
     String id,
+    this.professor,
     this.turma,
     this.inicio,
     this.fim,
@@ -24,6 +27,9 @@ class EncontroModel extends FirestoreModel {
 
   @override
   EncontroModel fromMap(Map<String, dynamic> map) {
+    professor = map.containsKey('professor') && map['professor'] != null
+        ? UsuarioFk.fromMap(map['professor'])
+        : null;
     turma = map.containsKey('turma') && map['turma'] != null
         ? TurmaFk.fromMap(map['turma'])
         : null;
@@ -32,8 +38,7 @@ class EncontroModel extends FirestoreModel {
             map['inicio'].millisecondsSinceEpoch)
         : null;
     fim = map.containsKey('fim') && map['fim'] != null
-        ? DateTime.fromMillisecondsSinceEpoch(
-            map['fim'].millisecondsSinceEpoch)
+        ? DateTime.fromMillisecondsSinceEpoch(map['fim'].millisecondsSinceEpoch)
         : null;
     modificado = map.containsKey('modificado') && map['modificado'] != null
         ? DateTime.fromMillisecondsSinceEpoch(
@@ -47,6 +52,9 @@ class EncontroModel extends FirestoreModel {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.professor != null) {
+      data['professor'] = this.professor.toMap();
+    }
     if (this.turma != null) {
       data['turma'] = this.turma.toMap();
     }

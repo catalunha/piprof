@@ -46,8 +46,8 @@
     "grupoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero."
   },
-  "UsuarioNovo":{
-    "comment":"após cadastro tem q atualizar a turma respectiva com o ID do usuario."
+  "UsuarioNovo": {
+    "comment": "após cadastro tem q atualizar a turma respectiva com o ID do usuario."
   },
   "Turma": {
     "comment": "",
@@ -168,11 +168,17 @@
         "nome": "e",
         "tipo": "arquivo",
         "urlGabarito": "null || informado do google docs"
+      },
+      "uid5": {
+        "ordem": 0,
+        "nome": "f",
+        "tipo": "url",
+        "gabarito": "valor"
       }
     }
   },
   "Avaliacao": {
-    "comment": "",
+    "comment": "tirar professor",
     "#onCreate": "",
     "#onRead": "",
     "#onUpdate": "Se atualizar inicio/fim e Aplicada=true atualizar em todas as questoes e tarefas correspondentes a esta avaliacao. Se atualizar inicio/fim e Aplicada=false atualiza todas questoes desta avaliacao",
@@ -190,8 +196,9 @@
     "descricao": "",
     "inicio": "",
     "fim": "",
-    "nota": 0,
-    "aplicada": true,
+    "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
+    "aplicar": "false: por padrao. quando mudar para true a function começa a aplicar as questoes desta avaliação para cada aluno. qdo terminar muda aplicada para true",
+    "aplicada": "inicia com false. so a function muda esta condição para true ",
     "aplicadaPAluno": [
       "Usuario/usuarioID"
     ]
@@ -221,12 +228,11 @@
       "nome": "Situacao/situacaoID.nome",
       "url": "Situacao/situacaoID"
     },
-    "inicio": "",
-    "fim": "",
-    "tentativa": 3,
-    "tempo": "",
-    "nota": 0
-
+    "inicio": "copia da avaliacao",
+    "fim": "copia da avaliacao",
+    "nota": "numero. valor desta questao",
+    "tentativa": "numero: 3. de 1 a 5",
+    "tempo": "numero: 2. representa quando horas tem para resolver o problema."
   },
   "Tarefa": {
     "comment": "",
@@ -253,23 +259,10 @@
       "id": "Questao/questaoID",
       "numero": 1
     },
-    "aluno": {
-      "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome"
-    },
-    "modificado": "dh em q foi aplicada ou criado a tarefa. se modificar questão ou avaliacao atualiza esta data",
-    "inicio": "dh copia de questao",
-    "iniciou": "dh q o aluno iniciou a tarefa",
-    "enviou": "dh em q o aluno enviou a ultima resposta após abrir tarefa. sempre maior q _inicio",
-    "fim": "dh: copia de questao",
-    "tentativa": "numero: 3. de 1 a 5",
-    "tentou": "numero. vezes em q o aluno enviou respostas. atualizar: _editou",
-    "tempo": "numero. representa as horas em tempo necessario para realizar a prova.",
-    "aberta": "true/false. true: tempo/tentativa ok  aluno pode acessar para resolver. false: tempo/tentativa acabaram aluno nao pode acessar para resolver",
     "situacao": {
       "id": "",
       "nome": "",
-      "erroRelativo":"",
+      "erroRelativo": "",
       "url": "url igual a Situacao/urlPropostaSimulada"
     },
     "simulacao": "Simulacao/simulacaoID",
@@ -292,7 +285,7 @@
         "tipo": "numero",
         "gabarito": "valor",
         "resposta": "valor",
-        "nota": 0
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
       "uid1": {
         "nome": "b",
@@ -300,7 +293,7 @@
         "tipo": "palavra",
         "gabarito": "valor",
         "resposta": "valor",
-        "nota": 0
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
       "uid2": {
         "nome": "c",
@@ -308,7 +301,7 @@
         "tipo": "texto",
         "gabarito": "valor",
         "resposta": "valor",
-        "nota": 0
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
       "uid3": {
         "nome": "d",
@@ -316,7 +309,7 @@
         "tipo": "imagem",
         "gabarito": "url valor",
         "resposta": "url null || valor",
-        "nota": 0,
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
         "gabaritoUploadID": "Upload/uploadID",
         "respostaUploadID": "Upload/uploadID"
       },
@@ -326,7 +319,7 @@
         "tipo": "arquivo",
         "gabarito": "url valor",
         "resposta": "url null || valor",
-        "nota": 0,
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
         "gabaritoUploadID": "Upload/uploadID",
         "respostaUploadID": "Upload/uploadID"
       },
@@ -336,9 +329,24 @@
         "tipo": "url",
         "gabarito": "url valor",
         "resposta": "url null || valor",
-        "nota": 0
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       }
-    }
+    },
+    "aluno": {
+      "id": "Usuario/usuarioID",
+      "nome": "Usuario/usuarioID.nome"
+    },
+    "modificado": "dh em q foi aplicada ou criado a tarefa. se modificar questão ou avaliacao atualiza esta data",
+    "inicio": "dh copia de questao",
+    "iniciou": "dh q o aluno iniciou a tarefa",
+    "enviou": "dh em q o aluno enviou a ultima resposta após abrir tarefa. sempre maior q _inicio",
+    "fim": "dh: copia de questao",
+    "tentativa": "numero: 3. de 1 a 5",
+    "tentou": "numero. vezes em q o aluno enviou respostas. atualizar: _editou",
+    "tempo": "numero. representa as horas em tempo necessario para realizar a prova.",
+    "aberta": "true/false. true: tempo/tentativa ok  aluno pode acessar para resolver. false: tempo/tentativa acabaram aluno nao pode acessar para resolver",
+    "avaliacaoNota":"copia da nota da avaliacao",
+    "questaoNota":"copia da nota da questao"
   },
   "Encontro": {
     "comment": "",
@@ -346,6 +354,10 @@
     "#onRead": "",
     "#onUpdate": "",
     "#onDelete": "",
+    "professor": {
+      "id": "Usuario/usuarioID",
+      "nome": "Usuario/usuarioID.nome"
+    },
     "turma": {
       "id": "Turma/turmaID",
       "nome": "Turma/turmaID.nome"
@@ -354,7 +366,7 @@
     "fim": "",
     "nome": "",
     "descricao": "",
-    "presente": [
+    "alunoList": [
       "Usuario/usuarioID"
     ]
   },

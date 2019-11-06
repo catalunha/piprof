@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
+import 'package:piprof/paginas/avaliacao/avaliacao_crud_page.dart';
+import 'package:piprof/paginas/avaliacao/avaliacao_list_page.dart';
 import 'package:piprof/paginas/desenvolvimento/desenvolvimento_page.dart';
+import 'package:piprof/paginas/encontro/encontro_aluno_list_page.dart';
 import 'package:piprof/paginas/encontro/encontro_crud_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_page.dart';
 import 'package:piprof/paginas/login/home.dart';
@@ -69,8 +72,28 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           final EncontroCRUDPageArguments args = settings.arguments;
           return EncontroCRUDPage(
+            authBloc: authBloc,
             turmaID: args.turmaID,
             encontroID: args.encontroID,
+          );
+        },
+        "/turma/encontro/aluno": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return EncontroAlunoListPage(encontroID: settings.arguments);
+        },
+
+        //avaliacao
+        "/avaliacao/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return AvaliacaoListPage(authBloc,settings.arguments);
+        },
+        "/avaliacao/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          final AvaliacaoCRUDPageArguments args = settings.arguments;
+          return AvaliacaoCRUDPage(
+            authBloc: authBloc,
+            turmaID: args.turmaID,
+            avaliacaoID: args.avaliacaoID,
           );
         },
         //EndDrawer

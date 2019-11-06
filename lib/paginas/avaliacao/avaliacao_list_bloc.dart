@@ -74,10 +74,7 @@ class AvaliacaoListBloc {
 
       final streamDocsRemetente = _firestore
           .collection(AvaliacaoModel.collection)
-          .where("ativo", isEqualTo: true)
-          .where("aplicada", isEqualTo: true)
           .where("turma.id", isEqualTo: _state.turmaID)
-          .where("aplicadaPAluno", arrayContains: _state.usuarioAuth.id)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
@@ -86,6 +83,8 @@ class AvaliacaoListBloc {
           .toList());
 
       snapListRemetente.listen((List<AvaliacaoModel> avaliacaoList) {
+        avaliacaoList.sort((a, b) => a.inicio.compareTo(b.inicio));
+
         _state.avaliacaoList = avaliacaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
