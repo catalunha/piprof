@@ -60,7 +60,7 @@ class EncontroListBloc {
             (snapDocs) => snapDocs.documents.map((doc) => EncontroModel(id: doc.documentID).fromMap(doc.data)).toList());
 
         snapListRemetente.listen((List<EncontroModel> encontroList) {
-          encontroList.sort((a, b) => a.data.compareTo(b.data));
+          encontroList.sort((a, b) => a.inicio.compareTo(b.inicio));
           _state.encontroList = encontroList;
           if (!_stateController.isClosed) _stateController.add(_state);
         });

@@ -350,7 +350,8 @@
       "id": "Turma/turmaID",
       "nome": "Turma/turmaID.nome"
     },
-    "data": "",
+    "inicio": "",
+    "fim": "",
     "nome": "",
     "descricao": "",
     "presente": [

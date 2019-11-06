@@ -18,13 +18,18 @@ class GetTurmaEvent extends EncontroCRUDBlocEvent {
   GetTurmaEvent(this.turmaID);
 }
 
-class UpdateDataEvent extends EncontroCRUDBlocEvent {
+class UpdateDataInicioEvent extends EncontroCRUDBlocEvent {
   final DateTime data;
   final TimeOfDay hora;
 
-  UpdateDataEvent({this.data, this.hora});
+  UpdateDataInicioEvent({this.data, this.hora});
 }
+class UpdateDataFimEvent extends EncontroCRUDBlocEvent {
+  final DateTime data;
+  final TimeOfDay hora;
 
+  UpdateDataFimEvent({this.data, this.hora});
+}
 class UpdateNomeEvent extends EncontroCRUDBlocEvent {
   final String nome;
   UpdateNomeEvent(this.nome);
@@ -48,11 +53,15 @@ class EncontroCRUDBlocState {
   // dynamic data;
   String nome;
   String descricao;
-  DateTime dataEncontro;
-  DateTime data;
-  TimeOfDay hora;
+  DateTime inicioEncontro;
+  DateTime fimEncontro;
+  DateTime dataInicio;
+  TimeOfDay horaInicio;
+    DateTime dataFim;
+  TimeOfDay horaFim;
   void updateState() {
-    dataEncontro = encontro.data;
+    inicioEncontro = encontro.inicio;
+    fimEncontro = encontro.fim;
     nome = encontro.nome;
     descricao = encontro.descricao;
   }
@@ -88,7 +97,9 @@ class EncontroCRUDBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.dataEncontro == null) {
+    if (_state.inicioEncontro == null) {
+      _state.isDataValid = false;
+    }    if (_state.fimEncontro == null) {
       _state.isDataValid = false;
     }
     if (_state.nome == null) {
@@ -117,27 +128,50 @@ class EncontroCRUDBloc {
       }
     }
 
-    if (event is UpdateDataEvent) {
+    if (event is UpdateDataInicioEvent) {
       if (event.data != null) {
-        _state.data = event.data;
+        _state.dataInicio = event.data;
       }
       if (event.hora != null) {
-        _state.hora = event.hora;
+        _state.horaInicio = event.hora;
       }
-      if (_state.dataEncontro == null && event.data != null) {
-        _state.hora = TimeOfDay.now();
+      if (_state.inicioEncontro == null && event.data != null) {
+        _state.horaInicio = TimeOfDay.now();
       }
-      if (_state.dataEncontro == null && event.hora != null) {
-        _state.data = DateTime.now();
+      if (_state.inicioEncontro == null && event.hora != null) {
+        _state.dataInicio = DateTime.now();
       }
       final newDate = DateTime(
-          _state.data != null ? _state.data.year : _state.dataEncontro.year,
-          _state.data != null ? _state.data.month : _state.dataEncontro.month,
-          _state.data != null ? _state.data.day : _state.dataEncontro.day,
-          _state.hora != null ? _state.hora.hour : _state.dataEncontro.hour,
-          _state.hora != null ? _state.hora.minute : _state.dataEncontro.minute);
-      _state.dataEncontro = newDate;
+          _state.dataInicio != null ? _state.dataInicio.year : _state.inicioEncontro.year,
+          _state.dataInicio != null ? _state.dataInicio.month : _state.inicioEncontro.month,
+          _state.dataInicio != null ? _state.dataInicio.day : _state.inicioEncontro.day,
+          _state.horaInicio != null ? _state.horaInicio.hour : _state.inicioEncontro.hour,
+          _state.horaInicio != null ? _state.horaInicio.minute : _state.inicioEncontro.minute);
+      _state.inicioEncontro = newDate;
     }
+
+    if (event is UpdateDataFimEvent) {
+      if (event.data != null) {
+        _state.dataFim = event.data;
+      }
+      if (event.hora != null) {
+        _state.horaFim = event.hora;
+      }
+      if (_state.fimEncontro == null && event.data != null) {
+        _state.horaFim = TimeOfDay.now();
+      }
+      if (_state.fimEncontro == null && event.hora != null) {
+        _state.dataFim = DateTime.now();
+      }
+      final newDate = DateTime(
+          _state.dataFim != null ? _state.dataFim.year : _state.fimEncontro.year,
+          _state.dataFim != null ? _state.dataFim.month : _state.fimEncontro.month,
+          _state.dataFim != null ? _state.dataFim.day : _state.fimEncontro.day,
+          _state.horaFim != null ? _state.horaFim.hour : _state.fimEncontro.hour,
+          _state.horaFim != null ? _state.horaFim.minute : _state.fimEncontro.minute);
+      _state.fimEncontro = newDate;
+    }
+    
     if (event is UpdateNomeEvent) {
       _state.nome = event.nome;
     }
@@ -148,7 +182,8 @@ class EncontroCRUDBloc {
       final docRef = _firestore.collection(EncontroModel.collection).document(_state.encontroID);
 
       EncontroModel encontroUpdate = EncontroModel(
-        data: _state.dataEncontro,
+        inicio: _state.inicioEncontro,
+        fim: _state.fimEncontro,
         nome: _state.nome,
         descricao: _state.descricao,
         modificado: DateTime.now(),

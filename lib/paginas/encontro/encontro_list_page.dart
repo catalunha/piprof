@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_bloc.dart';
@@ -46,7 +47,8 @@ class _EncontroListPageState extends State<EncontroListPage> {
         ),
         body: StreamBuilder<EncontroListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<EncontroListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -61,26 +63,32 @@ class _EncontroListPageState extends State<EncontroListPage> {
                     Card(
                       child: Column(
                         children: <Widget>[
-                          
-                          Wrap(
-                            children: <Widget>[
-                              IconButton(
-                                tooltip: 'Marcar presença de alunos',
-                                icon: Icon(Icons.person_pin_circle),
-                                onPressed: () {},
-                              ),
-                              IconButton(
-                                tooltip: 'Editar este encontro',
-                                icon: Icon(Icons.edit),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-              context,
-              "/turma/encontro/crud",
-              arguments: EncontroCRUDPageArguments(encontroID: encontro.id),
-            );
-                                },
-                              ),
-                            ],
+                          ListTile(
+                            title: Text('${encontro.nome}'),
+                            trailing: Text('${DateFormat('dd-MM HH:mm').format(encontro.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro.fim)}'),
+                          ),
+                          Center(
+                            child: Wrap(
+                              children: <Widget>[
+                                IconButton(
+                                  tooltip: 'Marcar presença de alunos',
+                                  icon: Icon(Icons.person_pin_circle),
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  tooltip: 'Editar este encontro',
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/turma/encontro/crud",
+                                      arguments: EncontroCRUDPageArguments(
+                                          encontroID: encontro.id),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

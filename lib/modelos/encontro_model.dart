@@ -4,7 +4,8 @@ import 'package:piprof/modelos/turma_model.dart';
 class EncontroModel extends FirestoreModel {
   static final String collection = "Encontro";
   TurmaFk turma;
-  dynamic data;
+  dynamic inicio;
+  dynamic fim;
   dynamic modificado;
   String nome;
   String descricao;
@@ -13,7 +14,8 @@ class EncontroModel extends FirestoreModel {
   EncontroModel({
     String id,
     this.turma,
-    this.data,
+    this.inicio,
+    this.fim,
     this.modificado,
     this.nome,
     this.descricao,
@@ -22,12 +24,20 @@ class EncontroModel extends FirestoreModel {
 
   @override
   EncontroModel fromMap(Map<String, dynamic> map) {
-    turma = map.containsKey('turma') && map['turma'] != null ? TurmaFk.fromMap(map['turma']) : null;
-    data = map.containsKey('data') && map['data'] != null
-        ? DateTime.fromMillisecondsSinceEpoch(map['data'].millisecondsSinceEpoch)
+    turma = map.containsKey('turma') && map['turma'] != null
+        ? TurmaFk.fromMap(map['turma'])
+        : null;
+    inicio = map.containsKey('inicio') && map['inicio'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+            map['inicio'].millisecondsSinceEpoch)
+        : null;
+    fim = map.containsKey('fim') && map['fim'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+            map['fim'].millisecondsSinceEpoch)
         : null;
     modificado = map.containsKey('modificado') && map['modificado'] != null
-        ? DateTime.fromMillisecondsSinceEpoch(map['modificado'].millisecondsSinceEpoch)
+        ? DateTime.fromMillisecondsSinceEpoch(
+            map['modificado'].millisecondsSinceEpoch)
         : null;
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('descricao')) descricao = map['descricao'];
@@ -40,7 +50,8 @@ class EncontroModel extends FirestoreModel {
     if (this.turma != null) {
       data['turma'] = this.turma.toMap();
     }
-    if (data != null) data['data'] = this.data;
+    if (inicio != null) data['inicio'] = this.inicio;
+    if (fim != null) data['fim'] = this.fim;
     if (modificado != null) data['modificado'] = this.modificado;
     if (nome != null) data['nome'] = this.nome;
     if (descricao != null) data['descricao'] = this.descricao;

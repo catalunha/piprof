@@ -35,7 +35,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
     bloc.dispose();
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<Null> _selectDateInicio(BuildContext context) async {
     final DateTime selectedDate = await showDatePicker(
       context: context,
       initialDate: _date,
@@ -43,14 +43,14 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
       lastDate: DateTime(2022),
     );
     if (selectedDate != null) {
-      bloc.eventSink(UpdateDataEvent(data: selectedDate));
+      bloc.eventSink(UpdateDataInicioEvent(data: selectedDate));
       setState(() {
         _date = selectedDate;
       });
     }
   }
 
-  Future<Null> _selectHorario(BuildContext context) async {
+  Future<Null> _selectHorarioInicio(BuildContext context) async {
     TimeOfDay selectedTime = await showTimePicker(
       initialTime: _hora,
       context: context,
@@ -63,13 +63,13 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
     );
     if (selectedTime != null) {
       setState(() {
-        bloc.eventSink(UpdateDataEvent(hora: selectedTime));
+        bloc.eventSink(UpdateDataInicioEvent(hora: selectedTime));
         _hora = selectedTime;
       });
     }
   }
 
-  _dataHorarioNoticia(context) {
+  _inicioEncontro(context) {
     return
 
         Row(
@@ -86,8 +86,8 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (snapshot.data.dataEncontro != null) {
-                return Text('${snapshot.data.dataEncontro}');
+              if (snapshot.data.inicioEncontro != null) {
+                return Text('${snapshot.data.inicioEncontro}');
               } else {
                 return Text('?');
               }
@@ -95,19 +95,96 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
         IconButton(
           icon: Icon(Icons.date_range),
           onPressed: () {
-            _selectDate(context);
+            _selectDateInicio(context);
           },
         ),
         IconButton(
           icon: Icon(Icons.access_time),
           onPressed: () {
-            _selectHorario(context);
+            _selectHorarioInicio(context);
           },
         ),
       ],
       // ),
     );
   }
+
+
+  Future<Null> _selectDateFim(BuildContext context) async {
+    final DateTime selectedDate = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2022),
+    );
+    if (selectedDate != null) {
+      bloc.eventSink(UpdateDataFimEvent(data: selectedDate));
+      setState(() {
+        _date = selectedDate;
+      });
+    }
+  }
+
+  Future<Null> _selectHorarioFim(BuildContext context) async {
+    TimeOfDay selectedTime = await showTimePicker(
+      initialTime: _hora,
+      context: context,
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
+    );
+    if (selectedTime != null) {
+      setState(() {
+        bloc.eventSink(UpdateDataFimEvent(hora: selectedTime));
+        _hora = selectedTime;
+      });
+    }
+  }
+
+  _fimEncontro(context) {
+    return
+
+        Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+
+        StreamBuilder<EncontroCRUDBlocState>(
+            stream: bloc.stateStream,
+            builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Existe algo errado! Informe o suporte.");
+              }
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.data.fimEncontro != null) {
+                return Text('${snapshot.data.fimEncontro}');
+              } else {
+                return Text('?');
+              }
+            }),
+        IconButton(
+          icon: Icon(Icons.date_range),
+          onPressed: () {
+            _selectDateFim(context);
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.access_time),
+          onPressed: () {
+            _selectHorarioFim(context);
+          },
+        ),
+      ],
+      // ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -147,10 +224,17 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data:',
+                    'Data e hora do início:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(1.0), child: _dataHorarioNoticia(context)),
+              Padding(padding: EdgeInsets.all(1.0), child: _inicioEncontro(context)),
+                            Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Data e hora do fim:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
