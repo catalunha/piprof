@@ -10,6 +10,7 @@ import 'package:piprof/paginas/encontro/encontro_crud_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_page.dart';
 import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
+import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_page.dart';
 import 'package:piprof/paginas/turma/turma_ativa_list_page.dart';
@@ -47,8 +48,6 @@ class MyApp extends StatelessWidget {
         //desenvolvimento
         "/desenvolvimento": (context) => Desenvolvimento(),
 
-        //tarefa
-
         //turma
         "/turma/ativa/list": (context) => TurmaAtivaListPage(authBloc),
         "/turma/crud": (context) {
@@ -85,7 +84,7 @@ class MyApp extends StatelessWidget {
         //avaliacao
         "/avaliacao/list": (context) {
           final settings = ModalRoute.of(context).settings;
-          return AvaliacaoListPage(authBloc,settings.arguments);
+          return AvaliacaoListPage(settings.arguments);
         },
         "/avaliacao/crud": (context) {
           final settings = ModalRoute.of(context).settings;
@@ -96,6 +95,15 @@ class MyApp extends StatelessWidget {
             avaliacaoID: args.avaliacaoID,
           );
         },
+
+        //questao
+        "/questao/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return QuestaoListPage(settings.arguments);
+        },
+
+
+
         //EndDrawer
         //perfil
         "/perfil": (context) => PerfilPage(authBloc),

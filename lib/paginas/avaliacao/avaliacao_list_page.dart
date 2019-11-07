@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/avaliacao/avaliacao_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 
 class AvaliacaoListPage extends StatefulWidget {
-  final AuthBloc authBloc;
   final String turmaID;
 
-  const AvaliacaoListPage(this.authBloc, this.turmaID);
+  const AvaliacaoListPage(this.turmaID);
 
   @override
   _AvaliacaoListPageState createState() => _AvaliacaoListPageState();
@@ -23,9 +21,8 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
     super.initState();
     bloc = AvaliacaoListBloc(
       Bootstrap.instance.firestore,
-      widget.authBloc,
     );
-    bloc.eventSink(GetTurmaIDEvent(widget.turmaID));
+    bloc.eventSink(UpdateAvaliacaoListEvent(widget.turmaID));
   }
 
   @override
@@ -98,12 +95,11 @@ Nota da avaliação: ${avaliacao.nota}'''),
                                   tooltip: 'Inserir questões',
                                   icon: Icon(Icons.format_list_numbered),
                                   onPressed: () {
-                                    // Navigator.pushNamed(
-                                    //   context,
-                                    //   "/turma/encontro/crud",
-                                    //   arguments: EncontroCRUDPageArguments(
-                                    //       encontroID: encontro.id),
-                                    // );
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/questao/list",
+                                      arguments: avaliacao.id,
+                                    );
                                   },
                                 ),
                                 IconButton(

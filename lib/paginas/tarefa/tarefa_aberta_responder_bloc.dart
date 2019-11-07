@@ -129,14 +129,14 @@ class TarefaAbertaResponderBloc {
           double gabarito = double.parse(pedese.value.gabarito);
           double erroRelativoCalculado =
               (resposta - gabarito).abs() / gabarito.abs() * 100;
-          double erroRelativoPermitido =
-              double.parse(_state.tarefaModel.situacao.erroRelativo);
+          // double erroRelativoPermitido =
+          //     double.parse(_state.tarefaModel.situacao.erroRelativo);
 
-          if (erroRelativoCalculado <= erroRelativoPermitido) {
-            _state.pedese[pedese.key].nota = 1;
-          } else {
-            _state.pedese[pedese.key].nota = null;
-          }
+          // if (erroRelativoCalculado <= erroRelativoPermitido) {
+          //   _state.pedese[pedese.key].nota = 1;
+          // } else {
+          //   _state.pedese[pedese.key].nota = null;
+          // }
         }
         // Criar uploadID de imagem e arquivo
         if ((pedese.value.tipo == 'imagem' || pedese.value.tipo == 'arquivo') &&

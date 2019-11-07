@@ -230,9 +230,10 @@
     },
     "inicio": "copia da avaliacao",
     "fim": "copia da avaliacao",
-    "nota": "numero. valor desta questao",
     "tentativa": "numero: 3. de 1 a 5",
-    "tempo": "numero: 2. representa quando horas tem para resolver o problema."
+    "tempo": "numero: 2. representa quando horas tem para resolver o problema.",
+    "erroRelativo": "numero: 10. valor para calculo do erro relativo.",
+    "nota": "numero. valor desta questao"
   },
   "Tarefa": {
     "comment": "",

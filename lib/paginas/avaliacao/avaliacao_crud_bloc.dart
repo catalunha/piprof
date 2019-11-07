@@ -257,7 +257,7 @@ class AvaliacaoCRUDBloc {
     }
     if (event is DeleteDocumentEvent) {
       _firestore
-          .collection(TurmaModel.collection)
+          .collection(AvaliacaoModel.collection)
           .document(_state.avaliacao.id)
           .delete();
     }

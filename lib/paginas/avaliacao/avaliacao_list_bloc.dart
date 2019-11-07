@@ -5,21 +5,25 @@ import 'package:rxdart/rxdart.dart';
 
 class AvaliacaoListBlocEvent {}
 
-class GetUsuarioAuthEvent extends AvaliacaoListBlocEvent {
-  final UsuarioModel usuarioAuth;
-  GetUsuarioAuthEvent(this.usuarioAuth);
-}
+// class GetUsuarioAuthEvent extends AvaliacaoListBlocEvent {
+//   final UsuarioModel usuarioAuth;
+//   GetUsuarioAuthEvent(this.usuarioAuth);
+// }
 
-class GetTurmaIDEvent extends AvaliacaoListBlocEvent {
+// class GetTurmaIDEvent extends AvaliacaoListBlocEvent {
+//   final String turmaID;
+//   GetTurmaIDEvent(this.turmaID);
+// }
+
+class UpdateAvaliacaoListEvent extends AvaliacaoListBlocEvent {
   final String turmaID;
-  GetTurmaIDEvent(this.turmaID);
-}
 
-class UpdateAvaliacaoListEvent extends AvaliacaoListBlocEvent {}
+  UpdateAvaliacaoListEvent(this.turmaID);
+}
 
 class AvaliacaoListBlocState {
   bool isDataValid = false;
-  UsuarioModel usuarioAuth;
+  // UsuarioModel usuarioAuth;
   String turmaID;
   List<AvaliacaoModel> avaliacaoList = List<AvaliacaoModel>();
 }
@@ -27,7 +31,7 @@ class AvaliacaoListBlocState {
 class AvaliacaoListBloc {
   /// Firestore
   final fsw.Firestore _firestore;
-  final _authBloc;
+  // final _authBloc;
 
   /// Eventos
   final _eventController = BehaviorSubject<AvaliacaoListBlocEvent>();
@@ -41,7 +45,10 @@ class AvaliacaoListBloc {
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
-  AvaliacaoListBloc(this._firestore, this._authBloc) {
+  AvaliacaoListBloc(
+    this._firestore,
+    // this._authBloc,
+  ) {
     eventStream.listen(_mapEventToState);
   }
 
@@ -57,24 +64,14 @@ class AvaliacaoListBloc {
   }
 
   _mapEventToState(AvaliacaoListBlocEvent event) async {
-    if (event is GetUsuarioAuthEvent) {
-      _state.usuarioAuth = event.usuarioAuth;
-    }
-    if (event is GetTurmaIDEvent) {
-      _state.turmaID = event.turmaID;
-      _authBloc.perfil.listen((usuarioAuth) {
-        eventSink(GetUsuarioAuthEvent(usuarioAuth));
-        eventSink(UpdateAvaliacaoListEvent());
-        if (!_stateController.isClosed) _stateController.add(_state);
-      });
-    }
+
 
     if (event is UpdateAvaliacaoListEvent) {
       _state.avaliacaoList.clear();
 
       final streamDocsRemetente = _firestore
           .collection(AvaliacaoModel.collection)
-          .where("turma.id", isEqualTo: _state.turmaID)
+          .where("turma.id", isEqualTo: event.turmaID)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs

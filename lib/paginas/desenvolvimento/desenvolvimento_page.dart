@@ -77,7 +77,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  // await cadastrarTarefa('0Teste1');
+                  // await cadastrarTarefa('0TeTentativa
                   // await cadastrarTarefa('0Teste2');
                 },
               ),
@@ -370,7 +370,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         situacao: SituacaoFk(
           id: '0situacao01',
           nome: 'situacao01',
-          erroRelativo: '10',
           url:
               'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a',
         ),
@@ -474,7 +473,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       situacao: SituacaoFk(
         id: '0situacao01',
         nome: 'situacao01',
-        erroRelativo: '10',
         url:
             'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a',
       ),
