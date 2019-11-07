@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:piprof/modelos/situacao_model.dart';
@@ -9,17 +10,17 @@ import 'package:rxdart/rxdart.dart';
 
 class QuestaoCRUDBlocEvent {}
 
-// class GetUsuarioAuthEvent extends QuestaoCRUDBlocEvent {
-//   final UsuarioModel usuarioAuth;
+class GetUsuarioAuthEvent extends QuestaoCRUDBlocEvent {
+  final UsuarioModel usuarioAuth;
 
-//   GetUsuarioAuthEvent(this.usuarioAuth);
-// }
+  GetUsuarioAuthEvent(this.usuarioAuth);
+}
 
-// class GetTurmaEvent extends QuestaoCRUDBlocEvent {
-//   final String turmaID;
+class GetTurmaEvent extends QuestaoCRUDBlocEvent {
+  final String turmaID;
 
-//   GetTurmaEvent(this.turmaID);
-// }
+  GetTurmaEvent(this.turmaID);
+}
 
 class GetAvalicaoEvent extends QuestaoCRUDBlocEvent {
   final String avaliacaoID;
@@ -126,10 +127,10 @@ class QuestaoCRUDBloc {
   /// Bloc
   QuestaoCRUDBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-    // _authBloc.perfil.listen((usuarioAuth) {
-    //   eventSink(GetUsuarioAuthEvent(usuarioAuth));
-    //   if (!_stateController.isClosed) _stateController.add(_state);
-    // });
+    _authBloc.perfil.listen((usuarioAuth) {
+      eventSink(GetUsuarioAuthEvent(usuarioAuth));
+      if (!_stateController.isClosed) _stateController.add(_state);
+    });
   }
 
   void dispose() async {
@@ -165,18 +166,18 @@ class QuestaoCRUDBloc {
   }
 
   _mapEventToState(QuestaoCRUDBlocEvent event) async {
-    // if (event is GetUsuarioAuthEvent) {
-    //   _state.usuarioAuth = event.usuarioAuth;
-    // }
+    if (event is GetUsuarioAuthEvent) {
+      _state.usuarioAuth = event.usuarioAuth;
+    }
 
-    // if (event is GetTurmaEvent) {
-    //   final docRef =
-    //       _firestore.collection(TurmaModel.collection).document(event.turmaID);
-    //   final snap = await docRef.get();
-    //   if (snap.exists) {
-    //     _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
-    //   }
-    // }
+    if (event is GetTurmaEvent) {
+      final docRef =
+          _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final snap = await docRef.get();
+      if (snap.exists) {
+        _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
+      }
+    }
     if (event is GetAvalicaoEvent) {
       if (event.avaliacaoID != null) {
         final docRef = _firestore
@@ -186,6 +187,7 @@ class QuestaoCRUDBloc {
         if (snap.exists) {
           _state.avaliacao =
               AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+          eventSink(GetTurmaEvent(_state.avaliacao.turma.id));
         }
       }
     }
@@ -300,6 +302,8 @@ class QuestaoCRUDBloc {
         ),
       );
       if (_state.questaoID == null) {
+        questaoUpdate.numero = _state.turma.questaoNumeroAdicionado + 1;
+
         questaoUpdate.ativo = true;
         questaoUpdate.professor = UsuarioFk(
           id: _state.avaliacao.professor.id,
@@ -315,6 +319,14 @@ class QuestaoCRUDBloc {
         );
       }
       await docRef.setData(questaoUpdate.toMap(), merge: true);
+
+      //Atualizar turma com mais uma questao
+      final turmaDocRef = _firestore
+          .collection(TurmaModel.collection)
+          .document(_state.turma.id);
+      await turmaDocRef.setData({
+        'questaoNumeroAdicionado': Bootstrap.instance.fieldValue.increment(1),
+      }, merge: true);
     }
     if (event is DeleteDocumentEvent) {
       if (_state.questaoID != null) {

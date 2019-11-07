@@ -10,6 +10,12 @@ class UpdateQuestaoListEvent extends QuestaoListBlocEvent {
   UpdateQuestaoListEvent(this.avaliacaoID);
 
 }
+class OrdenarEvent extends QuestaoListBlocEvent {
+  final QuestaoModel obj;
+  final bool up;
+
+  OrdenarEvent(this.obj, this.up);
+}
 
 class QuestaoListBlocState {
   bool isDataValid = false;
@@ -65,9 +71,28 @@ class QuestaoListBloc {
           .toList());
 
       snapListRemetente.listen((List<QuestaoModel> questaoList) {
+                        if (questaoList.length > 1) {
+          questaoList
+              .sort((a, b) => a.numero.compareTo(b.numero));
+        }
         _state.questaoList = questaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
+    }
+
+    if (event is OrdenarEvent) {
+      final ordemOrigem = _state.questaoList.indexOf(event.obj);
+      final ordemDestino = event.up ? ordemOrigem - 1 : ordemOrigem + 1;
+      QuestaoModel docOrigem = _state.questaoList[ordemOrigem];
+      QuestaoModel docDestino = _state.questaoList[ordemDestino];
+
+      final collectionRef = _firestore.collection(QuestaoModel.collection);
+
+      final colRefOrigem = collectionRef.document(docOrigem.id);
+      final colRefDestino = collectionRef.document(docDestino.id);
+
+      colRefOrigem.setData({"numero": docDestino.numero}, merge: true);
+      colRefDestino.setData({"numero": docOrigem.numero}, merge: true);
     }
 
     _validateData();

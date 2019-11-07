@@ -62,6 +62,9 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
               }
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
+                int lengthTurma = snapshot.data.questaoList.length;
+
+                int ordemLocal = 1;
 
                 for (var questao in snapshot.data.questaoList) {
                   listaWidget.add(
@@ -69,14 +72,14 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            trailing: Text('${questao.numero}'),
+                            trailing: Text('${ordemLocal}'),
                             title: Text('''
 Turma: ${questao.turma.nome}
 Aval.: ${questao.avaliacao.nome}
 Sit.: ${questao.situacao.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(questao.inicio)} até ${DateFormat('dd-MM HH:mm').format(questao.fim)}
-Tentativa: ${questao.tentativa} | Tempo : ${questao.tempo}h
-Nota da questao: ${questao.nota}
+Tentativas: ${questao.tentativa} | Tempo : ${questao.tempo}h
+Nota da questão: ${questao.nota}
                             '''),
 // Prof.: ${questao.professor.nome}
 //                             subtitle: Text('''
@@ -99,33 +102,34 @@ Nota da questao: ${questao.nota}
                                     );
                                   },
                                 ),
-                                                                IconButton(
+                                IconButton(
+                                  tooltip: 'Descer ordem da turma',
+                                  icon: Icon(Icons.arrow_downward),
+                                  onPressed: (ordemLocal) < lengthTurma
+                                      ? () {
+                                          bloc.eventSink(
+                                              OrdenarEvent(questao, false));
+                                        }
+                                      : null,
+                                ),
+                                IconButton(
+                                  tooltip: 'Subir ordem da turma',
+                                  icon: Icon(Icons.arrow_upward),
+                                  onPressed: ordemLocal > 1
+                                      ? () {
+                                          bloc.eventSink(
+                                              OrdenarEvent(questao, true));
+                                        }
+                                      : null,
+                                ),
+                                IconButton(
                                   tooltip: 'Ver pdf da situação',
                                   icon: Icon(Icons.picture_as_pdf),
                                   onPressed: () {
-                                   launch(questao.situacao.url);
+                                    launch(questao.situacao.url);
                                   },
                                 ),
-                                // IconButton(
-                                //   tooltip: 'Descer ordem da turma',
-                                //   icon: Icon(Icons.arrow_downward),
-                                //   onPressed: (ordemLocal) < lengthTurma
-                                //       ? () {
-                                //           bloc.eventSink(
-                                //               OrdenarEvent(turma, false));
-                                //         }
-                                //       : null,
-                                // ),
-                                // IconButton(
-                                //   tooltip: 'Subir ordem da turma',
-                                //   icon: Icon(Icons.arrow_upward),
-                                //   onPressed: ordemLocal > 1
-                                //       ? () {
-                                //           bloc.eventSink(
-                                //               OrdenarEvent(turma, true));
-                                //         }
-                                //       : null,
-                                // ),
+
                                 // IconButton(
                                 //   tooltip: 'Gerenciar alunos',
                                 //   icon: Icon(Icons.people),
@@ -166,6 +170,7 @@ Nota da questao: ${questao.nota}
                       ),
                     ),
                   );
+                  ordemLocal++;
                 }
                 listaWidget.add(Container(
                   padding: EdgeInsets.only(top: 70),

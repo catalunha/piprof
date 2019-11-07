@@ -35,7 +35,7 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Suas Avaliações nesta turma'),
+          title: Text('Avaliações'),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -71,7 +71,7 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
                             // leading: avaliacao.ativo ? Text('') : Icon(Icons.lock),
                             title: Text('''
 Turma: ${avaliacao.turma.nome}
-Avaliacao: ${avaliacao.nome}
+Avaliação: ${avaliacao.nome}
 Nota da avaliação: ${avaliacao.nota}'''),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(avaliacao.inicio)}\n${DateFormat('dd-MM HH:mm').format(avaliacao.fim)}'),
