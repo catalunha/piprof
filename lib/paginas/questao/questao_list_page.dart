@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/questao/questao_list_bloc.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class QuestaoListPage extends StatefulWidget {
   final String avaliacaoID;
@@ -69,95 +72,104 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                             trailing: Text('${questao.numero}'),
                             title: Text('''
 Turma: ${questao.turma.nome}
-Prof.: ${questao.professor.nome}
 Aval.: ${questao.avaliacao.nome}
 Sit.: ${questao.situacao.nome}
-Inicio: ${questao.inicio}
-fim: ${questao.fim}
-Tentativa | Tempo : ${questao.tentativa} | ${questao.tempo}h
+Aberta: ${DateFormat('dd-MM HH:mm').format(questao.inicio)} até ${DateFormat('dd-MM HH:mm').format(questao.fim)}
+Tentativa: ${questao.tentativa} | Tempo : ${questao.tempo}h
 Nota da questao: ${questao.nota}
                             '''),
-                            subtitle: Text('''
-id: ${questao.id}
-                            '''),
+// Prof.: ${questao.professor.nome}
+//                             subtitle: Text('''
+// id: ${questao.id}
+//                             '''),
                           ),
                           Center(
                             child: Wrap(
-                            children: <Widget>[
-                              IconButton(
-                                tooltip: 'Editar esta questão',
-                                icon: Icon(Icons.edit),
-                                onPressed: () {
- Navigator.pushNamed(
-              context,
-              "/questao/crud",
-              arguments: QuestaoCRUDPageArguments(
-                questaoID: questao.id,
-              ),
-            );
-                                },
-                              ),
-                              // IconButton(
-                              //   tooltip: 'Descer ordem da turma',
-                              //   icon: Icon(Icons.arrow_downward),
-                              //   onPressed: (ordemLocal) < lengthTurma
-                              //       ? () {
-                              //           bloc.eventSink(
-                              //               OrdenarEvent(turma, false));
-                              //         }
-                              //       : null,
-                              // ),
-                              // IconButton(
-                              //   tooltip: 'Subir ordem da turma',
-                              //   icon: Icon(Icons.arrow_upward),
-                              //   onPressed: ordemLocal > 1
-                              //       ? () {
-                              //           bloc.eventSink(
-                              //               OrdenarEvent(turma, true));
-                              //         }
-                              //       : null,
-                              // ),
-                              IconButton(
-                                tooltip: 'Gerenciar alunos',
-                                icon: Icon(Icons.people),
-                                onPressed: () {
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   "/turma/aluno",
-                                  //   arguments: turma.id,
-                                  // );
-                                },
-                              ),
-                              IconButton(
-                                tooltip: 'Agenda de encontros da turma',
-                                icon: Icon(Icons.calendar_today),
-                                onPressed: () {
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   "/turma/encontro/list",
-                                  //   arguments: turma.id,
-                                  // );
-                                },
-                              ),
-                              IconButton(
-                                tooltip: 'Gerenciar avaliações',
-                                icon: Icon(Icons.assignment),
-                                onPressed: () {
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   "/avaliacao/list",
-                                  //   arguments: turma.id,
-                                  // );
-                                },
-                              ),
-                            ],
-                          ),
+                              children: <Widget>[
+                                IconButton(
+                                  tooltip: 'Editar esta questão',
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/questao/crud",
+                                      arguments: QuestaoCRUDPageArguments(
+                                        questaoID: questao.id,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                                                IconButton(
+                                  tooltip: 'Ver pdf da situação',
+                                  icon: Icon(Icons.picture_as_pdf),
+                                  onPressed: () {
+                                   launch(questao.situacao.url);
+                                  },
+                                ),
+                                // IconButton(
+                                //   tooltip: 'Descer ordem da turma',
+                                //   icon: Icon(Icons.arrow_downward),
+                                //   onPressed: (ordemLocal) < lengthTurma
+                                //       ? () {
+                                //           bloc.eventSink(
+                                //               OrdenarEvent(turma, false));
+                                //         }
+                                //       : null,
+                                // ),
+                                // IconButton(
+                                //   tooltip: 'Subir ordem da turma',
+                                //   icon: Icon(Icons.arrow_upward),
+                                //   onPressed: ordemLocal > 1
+                                //       ? () {
+                                //           bloc.eventSink(
+                                //               OrdenarEvent(turma, true));
+                                //         }
+                                //       : null,
+                                // ),
+                                // IconButton(
+                                //   tooltip: 'Gerenciar alunos',
+                                //   icon: Icon(Icons.people),
+                                //   onPressed: () {
+                                //     // Navigator.pushNamed(
+                                //     //   context,
+                                //     //   "/turma/aluno",
+                                //     //   arguments: turma.id,
+                                //     // );
+                                //   },
+                                // ),
+                                // IconButton(
+                                //   tooltip: 'Agenda de encontros da turma',
+                                //   icon: Icon(Icons.calendar_today),
+                                //   onPressed: () {
+                                //     // Navigator.pushNamed(
+                                //     //   context,
+                                //     //   "/turma/encontro/list",
+                                //     //   arguments: turma.id,
+                                //     // );
+                                //   },
+                                // ),
+                                // IconButton(
+                                //   tooltip: 'Gerenciar avaliações',
+                                //   icon: Icon(Icons.assignment),
+                                //   onPressed: () {
+                                //     // Navigator.pushNamed(
+                                //     //   context,
+                                //     //   "/avaliacao/list",
+                                //     //   arguments: turma.id,
+                                //     // );
+                                //   },
+                                // ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
                   );
                 }
+                listaWidget.add(Container(
+                  padding: EdgeInsets.only(top: 70),
+                ));
                 return ListView(
                   children: listaWidget,
                 );

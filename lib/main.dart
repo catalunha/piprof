@@ -10,6 +10,7 @@ import 'package:piprof/paginas/encontro/encontro_crud_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_page.dart';
 import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
+import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
@@ -112,6 +113,8 @@ class MyApp extends StatelessWidget {
           );
         },
 
+        //pasta
+        "/pasta/situacao/list": (context) => PastaSituacaoListPage(authBloc),
 
         //EndDrawer
         //perfil

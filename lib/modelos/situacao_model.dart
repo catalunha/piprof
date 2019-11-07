@@ -10,7 +10,7 @@ class SituacaoModel extends FirestoreModel {
   String descricao;
   UsuarioFk professor;
   PastaFk pasta;
-
+String url;
   SituacaoModel({
     String id,
     this.ativo,
@@ -19,6 +19,7 @@ class SituacaoModel extends FirestoreModel {
     this.descricao,
     this.professor,
     this.pasta,
+    this.url,
   }) : super(id);
 
   @override
@@ -27,6 +28,7 @@ class SituacaoModel extends FirestoreModel {
     if (map.containsKey('numero')) numero = map['numero'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('descricao')) descricao = map['descricao'];
+    if (map.containsKey('url')) url = map['url'];
     professor = map.containsKey('professor') && map['professor'] != null
         ? UsuarioFk.fromMap(map['professor'])
         : null;
@@ -44,6 +46,7 @@ class SituacaoModel extends FirestoreModel {
     if (numero != null) data['numero'] = this.numero;
     if (nome != null) data['nome'] = this.nome;
     if (descricao != null) data['descricao'] = this.descricao;
+    if (url != null) data['url'] = this.url;
     if (this.professor != null) {
       data['professor'] = this.professor.toMap();
     }

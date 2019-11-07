@@ -67,6 +67,12 @@ class UpdateNotaEvent extends QuestaoCRUDBlocEvent {
   UpdateNotaEvent(this.nota);
 }
 
+class SelecionarSituacaoEvent extends QuestaoCRUDBlocEvent {
+  final SituacaoFk situacaoFk;
+
+  SelecionarSituacaoEvent(this.situacaoFk);
+}
+
 class SaveEvent extends QuestaoCRUDBlocEvent {}
 
 class DeleteDocumentEvent extends QuestaoCRUDBlocEvent {}
@@ -78,8 +84,8 @@ class QuestaoCRUDBlocState {
   TurmaModel turma = TurmaModel();
   AvaliacaoModel avaliacao = AvaliacaoModel();
   QuestaoModel questao = QuestaoModel();
-  SituacaoFk situacaoFk = SituacaoFk();
-
+  SituacaoFk situacaoFk;
+  // SituacaoModel situacao;
   // dynamic data;
   String tempo = '2';
   String tentativa = '3';
@@ -97,6 +103,7 @@ class QuestaoCRUDBlocState {
     tempo = questao.tempo.toString();
     tentativa = questao.tentativa.toString();
     nota = questao.nota;
+    situacaoFk = questao.situacao;
   }
 }
 
@@ -150,6 +157,9 @@ class QuestaoCRUDBloc {
       _state.isDataValid = false;
     }
     if (_state.nota == null) {
+      _state.isDataValid = false;
+    }
+    if (_state.situacaoFk == null) {
       _state.isDataValid = false;
     }
   }
@@ -265,6 +275,10 @@ class QuestaoCRUDBloc {
     }
     if (event is UpdateNotaEvent) {
       _state.nota = event.nota;
+    }
+
+    if (event is SelecionarSituacaoEvent) {
+      _state.situacaoFk = event.situacaoFk;
     }
     if (event is SaveEvent) {
       final docRef = _firestore

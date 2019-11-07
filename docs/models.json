@@ -107,10 +107,11 @@
       "id": "Pasta/pastaID",
       "nome": "Pasta/pastaID.nome"
     },
+    "url":"url definida para a situacao com base nos dados a seguir",
     "precisaAlgoritmoSimulacao": "true/false",
     "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo",
+    "situacaoTemAlgoritmo": "true/false",
     "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
-    "algoritmoLiberado": "true/false",
     "urlCodigoFonteAlgoritmo": "detalhes do atendimento e desenvolvimento do codigo",
     "urlPDFSituacaoComAlgoritmo": "pdf com estrutura para usar proposta com simulação",
     "uso": {

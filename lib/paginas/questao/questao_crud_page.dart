@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
+import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_bloc.dart';
-
 
 class QuestaoCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -91,7 +92,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (snapshot.data.inicioAvaliacao!= null) {
+              if (snapshot.data.inicioAvaliacao != null) {
                 return Text('${snapshot.data.inicioAvaliacao}');
               } else {
                 return Text('?');
@@ -190,7 +191,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar avaliação'),
+        title: Text('Criar ou Editar Questão'),
       ),
       floatingActionButton: StreamBuilder<QuestaoCRUDBlocState>(
           stream: bloc.stateStream,
@@ -244,14 +245,16 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                     'Quanto tempo o aluno tem para resolver:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: AvaliacaoTempo(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0), child: AvaliacaoTempo(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Quantas tentativas/erros ele pode usar/ter:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: AvalicaoTentativa(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0), child: AvalicaoTentativa(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -259,15 +262,45 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: AvaliacaoErroRelativo(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: AvaliacaoErroRelativo(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Qual a nota desta questão:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
+              Padding(padding: EdgeInsets.all(5.0), child: AvaliacaoNota(bloc)),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: AvaliacaoNota(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Selectione uma situação ou problema:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: ListTile(
+                  title: snapshot.data.situacaoFk == null
+                      ? Text('Aguardado seleção')
+                      : Text('${snapshot.data.situacaoFk.nome}'),
+                  trailing: Icon(Icons.search),
+                  onTap: () async {
+                    SituacaoFk situacaoFk = await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return PastaSituacaoListPage(widget.authBloc);
+                    }));
+                    if (situacaoFk != null) {
+                      bloc.eventSink(
+                          SelecionarSituacaoEvent(situacaoFk));
+                    }
+                  },
+                  //   Navigator.pushNamed(
+                  //     context,
+                  //     "/pasta/situacao/list",
+                  //   );
+                  // },
+                ),
+              ),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -305,13 +338,13 @@ class AvaliacaoTempoState extends State<AvaliacaoTempo> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuestaoCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.tempo;
         }
         return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal:false),
+          keyboardType: TextInputType.numberWithOptions(decimal: false),
           maxLines: null,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
@@ -343,13 +376,13 @@ class AvalicaoTentativaState extends State<AvalicaoTentativa> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuestaoCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.tentativa;
         }
         return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal:false),
+          keyboardType: TextInputType.numberWithOptions(decimal: false),
           maxLines: null,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
@@ -381,13 +414,13 @@ class AvaliacaoErroRelativoState extends State<AvaliacaoErroRelativo> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuestaoCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.erroRelativo;
         }
         return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal:false),
+          keyboardType: TextInputType.numberWithOptions(decimal: false),
           maxLines: null,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
@@ -401,7 +434,6 @@ class AvaliacaoErroRelativoState extends State<AvaliacaoErroRelativo> {
     );
   }
 }
-
 
 class AvaliacaoNota extends StatefulWidget {
   final QuestaoCRUDBloc bloc;
@@ -420,13 +452,13 @@ class AvaliacaoNotaState extends State<AvaliacaoNota> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuestaoCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.nota;
         }
         return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal:false),
+          keyboardType: TextInputType.numberWithOptions(decimal: false),
           maxLines: null,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
