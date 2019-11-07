@@ -9,17 +9,17 @@ import 'package:rxdart/rxdart.dart';
 
 class QuestaoCRUDBlocEvent {}
 
-class GetUsuarioAuthEvent extends QuestaoCRUDBlocEvent {
-  final UsuarioModel usuarioAuth;
+// class GetUsuarioAuthEvent extends QuestaoCRUDBlocEvent {
+//   final UsuarioModel usuarioAuth;
 
-  GetUsuarioAuthEvent(this.usuarioAuth);
-}
+//   GetUsuarioAuthEvent(this.usuarioAuth);
+// }
 
-class GetTurmaEvent extends QuestaoCRUDBlocEvent {
-  final String turmaID;
+// class GetTurmaEvent extends QuestaoCRUDBlocEvent {
+//   final String turmaID;
 
-  GetTurmaEvent(this.turmaID);
-}
+//   GetTurmaEvent(this.turmaID);
+// }
 
 class GetAvalicaoEvent extends QuestaoCRUDBlocEvent {
   final String avaliacaoID;
@@ -48,17 +48,17 @@ class UpdateDataFimEvent extends QuestaoCRUDBlocEvent {
 }
 
 class UpdateTempoEvent extends QuestaoCRUDBlocEvent {
-  final int tempo;
+  final String tempo;
   UpdateTempoEvent(this.tempo);
 }
 
 class UpdateTentativaEvent extends QuestaoCRUDBlocEvent {
-  final int tentativa;
+  final String tentativa;
   UpdateTentativaEvent(this.tentativa);
 }
 
 class UpdateErroRelativoEvent extends QuestaoCRUDBlocEvent {
-  final int erroRelativo;
+  final String erroRelativo;
   UpdateErroRelativoEvent(this.erroRelativo);
 }
 
@@ -81,10 +81,10 @@ class QuestaoCRUDBlocState {
   SituacaoFk situacaoFk = SituacaoFk();
 
   // dynamic data;
-  int tempo;
-  int tentativa;
-  int erroRelativo;
-  String nota;
+  String tempo = '2';
+  String tentativa = '3';
+  String erroRelativo = '10';
+  String nota = '1';
   DateTime inicioAvaliacao;
   DateTime fimAvaliacao;
   DateTime dataInicio;
@@ -94,8 +94,8 @@ class QuestaoCRUDBlocState {
   void updateState() {
     inicioAvaliacao = questao.inicio;
     fimAvaliacao = questao.fim;
-    tempo = questao.tempo;
-    tentativa = questao.tentativa;
+    tempo = questao.tempo.toString();
+    tentativa = questao.tentativa.toString();
     nota = questao.nota;
   }
 }
@@ -119,10 +119,10 @@ class QuestaoCRUDBloc {
   /// Bloc
   QuestaoCRUDBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-    _authBloc.perfil.listen((usuarioAuth) {
-      eventSink(GetUsuarioAuthEvent(usuarioAuth));
-      if (!_stateController.isClosed) _stateController.add(_state);
-    });
+    // _authBloc.perfil.listen((usuarioAuth) {
+    //   eventSink(GetUsuarioAuthEvent(usuarioAuth));
+    //   if (!_stateController.isClosed) _stateController.add(_state);
+    // });
   }
 
   void dispose() async {
@@ -146,43 +146,50 @@ class QuestaoCRUDBloc {
     if (_state.tentativa == null) {
       _state.isDataValid = false;
     }
+    if (_state.erroRelativo == null) {
+      _state.isDataValid = false;
+    }
     if (_state.nota == null) {
       _state.isDataValid = false;
     }
   }
 
   _mapEventToState(QuestaoCRUDBlocEvent event) async {
-    if (event is GetUsuarioAuthEvent) {
-      _state.usuarioAuth = event.usuarioAuth;
-    }
+    // if (event is GetUsuarioAuthEvent) {
+    //   _state.usuarioAuth = event.usuarioAuth;
+    // }
 
-    if (event is GetTurmaEvent) {
-      final docRef =
-          _firestore.collection(TurmaModel.collection).document(event.turmaID);
-      final snap = await docRef.get();
-      if (snap.exists) {
-        _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
-      }
-    }
+    // if (event is GetTurmaEvent) {
+    //   final docRef =
+    //       _firestore.collection(TurmaModel.collection).document(event.turmaID);
+    //   final snap = await docRef.get();
+    //   if (snap.exists) {
+    //     _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
+    //   }
+    // }
     if (event is GetAvalicaoEvent) {
-      final docRef = _firestore
-          .collection(AvaliacaoModel.collection)
-          .document(event.avaliacaoID);
-      final snap = await docRef.get();
-      if (snap.exists) {
-        _state.avaliacao =
-            AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+      if (event.avaliacaoID != null) {
+        final docRef = _firestore
+            .collection(AvaliacaoModel.collection)
+            .document(event.avaliacaoID);
+        final snap = await docRef.get();
+        if (snap.exists) {
+          _state.avaliacao =
+              AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+        }
       }
     }
     if (event is GetQuestaoEvent) {
-      final docRef = _firestore
-          .collection(QuestaoModel.collection)
-          .document(event.questaoID);
-      _state.questaoID = event.questaoID;
-      final snap = await docRef.get();
-      if (snap.exists) {
-        _state.questao = QuestaoModel(id: snap.documentID).fromMap(snap.data);
-        _state.updateState();
+      if (event.questaoID != null) {
+        final docRef = _firestore
+            .collection(QuestaoModel.collection)
+            .document(event.questaoID);
+        _state.questaoID = event.questaoID;
+        final snap = await docRef.get();
+        if (snap.exists) {
+          _state.questao = QuestaoModel(id: snap.documentID).fromMap(snap.data);
+          _state.updateState();
+        }
       }
     }
     if (event is UpdateDataInicioEvent) {
@@ -267,9 +274,9 @@ class QuestaoCRUDBloc {
       QuestaoModel questaoUpdate = QuestaoModel(
         inicio: _state.inicioAvaliacao,
         fim: _state.fimAvaliacao,
-        tempo: _state.tempo,
-        tentativa: _state.tentativa,
-        erroRelativo: _state.erroRelativo,
+        tempo: int.parse(_state.tempo),
+        tentativa: int.parse(_state.tentativa),
+        erroRelativo: int.parse(_state.erroRelativo),
         nota: _state.nota,
         modificado: DateTime.now(),
         situacao: SituacaoFk(
@@ -281,12 +288,12 @@ class QuestaoCRUDBloc {
       if (_state.questaoID == null) {
         questaoUpdate.ativo = true;
         questaoUpdate.professor = UsuarioFk(
-          id: _state.usuarioAuth.id,
-          nome: _state.usuarioAuth.nome,
+          id: _state.avaliacao.professor.id,
+          nome: _state.avaliacao.professor.nome,
         );
         questaoUpdate.turma = TurmaFk(
-          id: _state.turma.id,
-          nome: _state.turma.nome,
+          id: _state.avaliacao.turma.id,
+          nome: _state.avaliacao.turma.nome,
         );
         questaoUpdate.avaliacao = AvaliacaoFk(
           id: _state.avaliacao.id,

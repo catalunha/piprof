@@ -7,6 +7,7 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/default_scaffold.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
+import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:piprof/modelos/situacao_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
@@ -118,6 +119,34 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 },
               ),
             ),
+            ListTile(
+              title: Text('Inserir pasta'),
+              trailing: IconButton(
+                icon: Icon(Icons.folder),
+                onPressed: () async {
+                  await incluirPasta(
+                    pastaID: '0Pasta01',
+                    nome: 'pasta01',
+                    professorID: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1',
+                  );
+                  await incluirPasta(
+                    pastaID: '0Pasta02',
+                    nome: 'pasta02',
+                    professorID: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1',
+                  );
+                },
+              ),
+            ),
+            ListTile(
+              title: Text('Inserir Situacao'),
+              trailing: IconButton(
+                icon: Icon(Icons.folder),
+                onPressed: () async {
+                  await incluirSituacao01();
+                  await incluirSituacao02();
+                },
+              ),
+            ),
             // ListTile(
             //   title: Text('Testar cronometro => $hasTimerStopped'),
             //   trailing: IconButton(
@@ -147,7 +176,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future atualizarRotaTodos() async {
-    var collRef = await _firestore.collection(UsuarioModel.collection).getDocuments();
+    var collRef =
+        await _firestore.collection(UsuarioModel.collection).getDocuments();
 
     for (var documentSnapshot in collRef.documents) {
       if (documentSnapshot.data.containsKey('routes')) {
@@ -176,7 +206,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           "/versao",
         ]);
 
-        await documentSnapshot.reference.setData({"routes": routes}, merge: true);
+        await documentSnapshot.reference
+            .setData({"routes": routes}, merge: true);
       } else {
         // print('Sem routes ${documentSnapshot.documentID}');
       }
@@ -184,7 +215,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future atualizarRotaIndividual(String userId) async {
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     var snap = await docRef.get();
     List<dynamic> routes = List<dynamic>();
     routes.addAll(snap.data['routes']);
@@ -215,34 +247,37 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
 
   Future cadastrarAlunoCatalunha() async {
     String userId = 'PMAxu4zKfmaOlYAmF3lgFGmCR1w2';
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
-      id: userId,
-      aluno: true,
-      ativo: true,
-      celular: '123',
-      cracha: 'Marcio',
-      email: 'catalunha.mj@gmail.com',
-      foto: UploadFk(uploadID: 'NFnVSDPpbOwQejMu1jXh'),
-      matricula: '20019123',
-      nome: 'Marcio J Catalunha',
-      rota: [
-        '/',
-        '/perfil',
-        '/upload',
-        '/versao',
-        '/desenvolvimento',
-        '/turma/list',
-      ],
-      turmaList: ['0Turma01']
-    );
+        id: userId,
+        aluno: true,
+        ativo: true,
+        celular: '123',
+        cracha: 'Marcio',
+        email: 'catalunha.mj@gmail.com',
+        foto: UploadFk(uploadID: 'NFnVSDPpbOwQejMu1jXh'),
+        matricula: '20019123',
+        nome: 'Marcio J Catalunha',
+        rota: [
+          '/',
+          '/perfil',
+          '/upload',
+          '/versao',
+          '/desenvolvimento',
+          '/turma/list',
+        ],
+        turmaList: [
+          '0Turma01'
+        ]);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
   Future cadastrarAlunoLucas() async {
     String userId = 'alunoLucas';
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -261,41 +296,42 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/versao',
         '/turma/list',
       ],
-
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
   Future cadastrarAlunoDaniel() async {
     String userId = 'alunoDaniel';
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
-      id: userId,
-      aluno: true,
-      ativo: true,
-      celular: '123',
-      cracha: 'Daniel',
-      email: 'daniel@gmail.com',
-      foto: UploadFk(uploadID: 'uploadDaniel'),
-      matricula: '20110924',
-      nome: 'Daniel L Catalunha',
-      rota: [
-        '/',
-        '/perfil',
-        '/upload',
-        '/versao',
-        '/turma/list',
-      ],
-                  turmaList: ['0Turma01']
-
-    );
+        id: userId,
+        aluno: true,
+        ativo: true,
+        celular: '123',
+        cracha: 'Daniel',
+        email: 'daniel@gmail.com',
+        foto: UploadFk(uploadID: 'uploadDaniel'),
+        matricula: '20110924',
+        nome: 'Daniel L Catalunha',
+        rota: [
+          '/',
+          '/perfil',
+          '/upload',
+          '/versao',
+          '/turma/list',
+        ],
+        turmaList: [
+          '0Turma01'
+        ]);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
   Future cadastrarProfCatalunha() async {
     String userId = 'hZyF8tQoXDWPNgUQSof5K3TnS7h1';
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -315,14 +351,16 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/turma/ativa/list',
       ],
       turmaNumeroAdicionado: 0,
-      grupoNumeroAdicionado: 0,
+      pastaNumeroAdicionado: 0,
+      situacaoNumeroAdicionado: 0,
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
   Future cadastrarProfRicelly() async {
     String userId = 'profRicelly';
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -342,13 +380,15 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/turma/ativa/list',
       ],
       turmaNumeroAdicionado: 0,
-      grupoNumeroAdicionado: 0,
+      pastaNumeroAdicionado: 0,
+      situacaoNumeroAdicionado: 0,
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
   Future cadastrarTarefa(String tarefaId) async {
-    final docRef = _firestore.collection(TarefaModel.collection).document(tarefaId);
+    final docRef =
+        _firestore.collection(TarefaModel.collection).document(tarefaId);
     docRef.delete();
     TarefaModel tarefaModel = TarefaModel(
         id: tarefaId,
@@ -387,12 +427,17 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           )
         },
         pedese: {
-          'pedese01': Pedese(nome: 'a', ordem: 0, tipo: 'numero', gabarito: '20'),
-          'pedese02': Pedese(nome: 'b', ordem: 1, tipo: 'palavra', gabarito: 'sim'),
-          'pedese03': Pedese(nome: 'c', ordem: 2, tipo: 'texto', gabarito: 'sim'),
+          'pedese01':
+              Pedese(nome: 'a', ordem: 0, tipo: 'numero', gabarito: '20'),
+          'pedese02':
+              Pedese(nome: 'b', ordem: 1, tipo: 'palavra', gabarito: 'sim'),
+          'pedese03':
+              Pedese(nome: 'c', ordem: 2, tipo: 'texto', gabarito: 'sim'),
           'pedese04': Pedese(nome: 'd', ordem: 3, tipo: 'url', gabarito: 'sim'),
-          'pedese05': Pedese(nome: 'e', ordem: 4, tipo: 'arquivo', gabarito: 'sim'),
-          'pedese06': Pedese(nome: 'f', ordem: 5, tipo: 'imagem', gabarito: 'sim'),
+          'pedese05':
+              Pedese(nome: 'e', ordem: 4, tipo: 'arquivo', gabarito: 'sim'),
+          'pedese06':
+              Pedese(nome: 'f', ordem: 5, tipo: 'imagem', gabarito: 'sim'),
         });
 
     // print('=>>>>>>>> ${tarefaModel.aberta}');
@@ -403,7 +448,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   Future cadastrarTurma01() async {
     String turmaId = '0Turma01';
 
-    final docRef = _firestore.collection(TurmaModel.collection).document(turmaId);
+    final docRef =
+        _firestore.collection(TurmaModel.collection).document(turmaId);
     await docRef.delete();
     TurmaModel turmaModel = TurmaModel(
         id: turmaId,
@@ -413,17 +459,20 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         componente: 'CN',
         nome: 'cn2020.1',
         descricao: 'turma legal',
-        professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
+        professor: UsuarioFk(
+            id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
         alunoList: ['PMAxu4zKfmaOlYAmF3lgFGmCR1w2'],
         questaoNumeroAdicionado: 0,
         questaoNumeroExcluido: 0);
 
     await docRef.setData(turmaModel.toMap(), merge: true);
   }
+
   Future cadastrarTurma02() async {
     String turmaId = '0Turma02';
 
-    final docRef = _firestore.collection(TurmaModel.collection).document(turmaId);
+    final docRef =
+        _firestore.collection(TurmaModel.collection).document(turmaId);
     await docRef.delete();
     TurmaModel turmaModel = TurmaModel(
         id: turmaId,
@@ -433,15 +482,18 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         componente: 'CN',
         nome: 'cn2020.1',
         descricao: 'turma legal',
-        professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
-        alunoList: ['alunoLucas','alunoDaniel'],
+        professor: UsuarioFk(
+            id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
+        alunoList: ['alunoLucas', 'alunoDaniel'],
         questaoNumeroAdicionado: 0,
         questaoNumeroExcluido: 0);
 
     await docRef.setData(turmaModel.toMap(), merge: true);
   }
+
   Future cadastrarAvaliacao(String avaliacaoId) async {
-    final docRef = _firestore.collection(AvaliacaoModel.collection).document(avaliacaoId);
+    final docRef =
+        _firestore.collection(AvaliacaoModel.collection).document(avaliacaoId);
     docRef.delete();
     AvaliacaoModel avaliacaoModel = AvaliacaoModel(
       id: avaliacaoId,
@@ -461,7 +513,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future cadastrarQuestao(String questaoId) async {
-    final docRef = _firestore.collection(QuestaoModel.collection).document(questaoId);
+    final docRef =
+        _firestore.collection(QuestaoModel.collection).document(questaoId);
     docRef.delete();
     QuestaoModel questaoModel = QuestaoModel(
       id: questaoId,
@@ -491,7 +544,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       id: 'PMAxu4zKfmaOlYAmF3lgFGmCR1w2',
       foto: UploadFk(uploadID: 'NFnVSDPpbOwQejMu1jXh', url: null),
     );
-    final docRef = _firestore.collection(UsuarioModel.collection).document('PMAxu4zKfmaOlYAmF3lgFGmCR1w2');
+    final docRef = _firestore
+        .collection(UsuarioModel.collection)
+        .document('PMAxu4zKfmaOlYAmF3lgFGmCR1w2');
     await docRef.setData(usuarioModel.toMap(), merge: true);
 
     // final docRef = await _firestore
@@ -502,5 +557,45 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     //   print('Doc encontrados: ${item.documentID}');
     // }
     // print('--- testarFirebaseCmds');
+  }
+
+  Future incluirPasta({String pastaID, String nome, String professorID}) async {
+    final docRef =
+        _firestore.collection(PastaModel.collection).document(pastaID);
+    docRef.delete();
+    PastaModel pastaModel = PastaModel(
+      id: pastaID,
+      ativo: true,
+      numero: 2,
+      nome: 'Pasta?',
+      professor: UsuarioFk(id: professorID, nome: 'prof01'),
+    );
+    await docRef.setData(pastaModel.toMap(), merge: true);
+  }
+
+  Future incluirSituacao01() async {
+    final docRef =
+        _firestore.collection(SituacaoModel.collection).document();
+    SituacaoModel situacaoModel = SituacaoModel(
+      ativo: true,
+      numero: 1,
+      nome: 'Sit01',
+      professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'prof01'),
+      pasta: PastaFk(id: '0Pasta01', nome: 'pasta01'),
+    );
+    await docRef.setData(situacaoModel.toMap(), merge: true);
+  }
+
+  Future incluirSituacao02() async {
+    final docRef =
+        _firestore.collection(SituacaoModel.collection).document();
+    SituacaoModel situacaoModel = SituacaoModel(
+      ativo: true,
+      numero: 2,
+      nome: 'Sit02',
+      professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'prof01'),
+      pasta: PastaFk(id: '0Pasta01', nome: 'pasta01'),
+    );
+    await docRef.setData(situacaoModel.toMap(), merge: true);
   }
 }

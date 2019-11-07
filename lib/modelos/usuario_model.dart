@@ -9,11 +9,12 @@ class UsuarioModel extends FirestoreModel {
   String cracha;
   String email;
   UploadFk foto;
-  int grupoNumeroAdicionado;
   String matricula;
   String nome;
   List<dynamic> rota;
   int turmaNumeroAdicionado;
+  int pastaNumeroAdicionado;
+  int situacaoNumeroAdicionado;
   String tokenFCM;
   List<dynamic> turmaList;
 
@@ -28,8 +29,9 @@ class UsuarioModel extends FirestoreModel {
     this.ativo,
     this.aluno,
     this.foto,
-    this.grupoNumeroAdicionado,
     this.turmaNumeroAdicionado,
+    this.pastaNumeroAdicionado,
+    this.situacaoNumeroAdicionado,
     this.rota,
     this.turmaList
   }) : super(id);
@@ -44,7 +46,8 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
     if (map.containsKey('aluno')) aluno = map['aluno'];
-    if (map.containsKey('grupoNumeroAdicionado')) grupoNumeroAdicionado = map['grupoNumeroAdicionado'];
+    if (map.containsKey('pastaNumeroAdicionado')) pastaNumeroAdicionado = map['pastaNumeroAdicionado'];
+    if (map.containsKey('situacaoNumeroAdicionado')) situacaoNumeroAdicionado = map['situacaoNumeroAdicionado'];
     if (map.containsKey('turmaNumeroAdicionado')) turmaNumeroAdicionado = map['turmaNumeroAdicionado'];
     if (map.containsKey('foto')) {
       foto = map['foto'] != null ? new UploadFk.fromMap(map['foto']) : null;
@@ -67,7 +70,8 @@ class UsuarioModel extends FirestoreModel {
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
     if (aluno != null) data['aluno'] = this.aluno;
-    if (grupoNumeroAdicionado != null) data['grupoNumeroAdicionado'] = this.grupoNumeroAdicionado;
+    if (pastaNumeroAdicionado != null) data['pastaNumeroAdicionado'] = this.pastaNumeroAdicionado;
+    if (situacaoNumeroAdicionado != null) data['situacaoNumeroAdicionado'] = this.situacaoNumeroAdicionado;
     if (turmaNumeroAdicionado != null) data['turmaNumeroAdicionado'] = this.turmaNumeroAdicionado;
     if (this.foto != null) {
       data['foto'] = this.foto.toMap();

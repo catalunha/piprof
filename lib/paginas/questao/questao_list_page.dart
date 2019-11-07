@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
+import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/questao/questao_list_bloc.dart';
 
 class QuestaoListPage extends StatefulWidget {
@@ -32,18 +33,18 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Suas Questões nesta avaliação'),
+          title: Text('Questões'),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            // Navigator.pushNamed(
-            //   context,
-            //   "/avaliacao/crud",
-            //   arguments: AvaliacaoCRUDPageArguments(
-            //     turmaID: widget.turmaID,
-            //   ),
-            // );
+            Navigator.pushNamed(
+              context,
+              "/questao/crud",
+              arguments: QuestaoCRUDPageArguments(
+                avaliacaoID: widget.avaliacaoID,
+              ),
+            );
           },
         ),
         body: StreamBuilder<QuestaoListBlocState>(
@@ -87,11 +88,13 @@ id: ${questao.id}
                                 tooltip: 'Editar esta questão',
                                 icon: Icon(Icons.edit),
                                 onPressed: () {
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   "/turma/crud",
-                                  //   arguments: turma.id,
-                                  // );
+ Navigator.pushNamed(
+              context,
+              "/questao/crud",
+              arguments: QuestaoCRUDPageArguments(
+                questaoID: questao.id,
+              ),
+            );
                                 },
                               ),
                               // IconButton(

@@ -11,3 +11,9 @@ class AvaliacaoCRUDPageArguments {
 
   AvaliacaoCRUDPageArguments({this.turmaID, this.avaliacaoID});
 }
+class QuestaoCRUDPageArguments {
+  final String avaliacaoID;
+  final String questaoID;
+
+  QuestaoCRUDPageArguments({this.avaliacaoID, this.questaoID});
+}

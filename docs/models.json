@@ -30,8 +30,9 @@
     "matricula": "",
     "email": "email",
     "cracha": "nome",
+    "time":"string. representando pasta ou equipe q o aluno pode escrever uma palavra pra se cadastrar num time",
     "celular": "celular",
-    "aluno": "true: usuario é um aluno. false: é um professor.",
+    "professor": "true: usuario é um prof e tem acesso ao piprof. false: é um aluno pode acessar apenas ao pialuno.",
     "rotas": [
       "/rota/"
     ],
@@ -40,11 +41,13 @@
       "path": "url da foto na coleção upload",
       "url": "url da foto na coleção upload"
     },
-    "turmaList": [
+    "matriculadoNTurma": [
       "Turma/turmaID"
     ],
-    "grupoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
-    "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero."
+    "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero.",
+    "pastaNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
+    "situacaoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
+
   },
   "UsuarioNovo": {
     "comment": "após cadastro tem q atualizar a turma respectiva com o ID do usuario."
@@ -71,12 +74,12 @@
     "questaoNumeroAdicionado": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "questaoNumeroExcluido": "numero. inicia com 0. Quando excluir uma questao de qq avalicao acrescenta este numero."
   },
-  "Grupo": {
-    "comment": "Os situacaos de um professor estao agrupados neste grupo",
+  "Pasta": {
+    "comment": "Os situacões de um professor estao agrupados neste pasta",
     "#onCreate": "",
     "#onRead": "",
     "#onUpdate": "",
-    "#onDelete": "So deleta grupo sem situacoes. ",
+    "#onDelete": "So deleta pasta sem situacoes. ",
     "ativo": "true: aparece na listagens disponiveis. false: !true ",
     "numero": 0,
     "nome": "",
@@ -84,12 +87,11 @@
     "professor": {
       "id": "Usuario/usuarioID",
       "nome": ""
-    },
-    "situacaoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
+    }
   },
   "Situacao": {
     "comment": "",
-    "#onCreate": "numero=Grupo.situacaoNumeroAdicionado+1. Grupo.situacaoNumeroAdicionado++",
+    "#onCreate": "numero=Pasta.situacaoNumeroAdicionado+1. Pasta.situacaoNumeroAdicionado++",
     "#onRead": "Se ativo=false desativar todas as tarefas ja criadas. nao aparece na listagem de situacoes para serem alocadas a questao. Se ativo=true reativa as tarefas que foram ativadas.",
     "#onUpdate": "",
     "#onDelete": "Apagar as tarefas das turmas ativas que contem esta situação.",
@@ -101,14 +103,14 @@
       "id": "Usuario/usuarioID",
       "nome": "Usuario/usuarioID.nome"
     },
-    "grupo": {
-      "id": "Grupo/grupoID",
-      "nome": "Grupo/grupoID.nome"
+    "pasta": {
+      "id": "Pasta/pastaID",
+      "nome": "Pasta/pastaID.nome"
     },
-    "erroRelativo": "numero. de 1% a 10%. |x_real - x_aproximado|/|x_real|*100<erroRelativo",
     "precisaAlgoritmoSimulacao": "true/false",
     "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo",
     "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
+    "algoritmoLiberado": "true/false",
     "urlCodigoFonteAlgoritmo": "detalhes do atendimento e desenvolvimento do codigo",
     "urlPDFSituacaoComAlgoritmo": "pdf com estrutura para usar proposta com simulação",
     "uso": {

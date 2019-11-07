@@ -10,6 +10,7 @@ import 'package:piprof/paginas/encontro/encontro_crud_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_page.dart';
 import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
+import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_page.dart';
@@ -101,7 +102,15 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return QuestaoListPage(settings.arguments);
         },
-
+        "/questao/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          final QuestaoCRUDPageArguments args = settings.arguments;
+          return QuestaoCRUDPage(
+            authBloc: authBloc,
+            avaliacaoID: args.avaliacaoID,
+            questaoID: args.questaoID,
+          );
+        },
 
 
         //EndDrawer

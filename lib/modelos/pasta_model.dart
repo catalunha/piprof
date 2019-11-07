@@ -1,37 +1,32 @@
 import 'package:piprof/modelos/base_model.dart';
-import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 
-class SituacaoModel extends FirestoreModel {
-  static final String collection = "Situacao";
+class PastaModel extends FirestoreModel {
+  static final String collection = "Pasta";
   bool ativo;
   int numero;
   String nome;
   String descricao;
   UsuarioFk professor;
-  PastaFk pasta;
 
-  SituacaoModel({
+  PastaModel({
     String id,
     this.ativo,
     this.numero,
+
     this.nome,
     this.descricao,
     this.professor,
-    this.pasta,
   }) : super(id);
 
   @override
-  SituacaoModel fromMap(Map<String, dynamic> map) {
+  PastaModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('ativo')) ativo = map['ativo'];
     if (map.containsKey('numero')) numero = map['numero'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('descricao')) descricao = map['descricao'];
     professor = map.containsKey('professor') && map['professor'] != null
         ? UsuarioFk.fromMap(map['professor'])
-        : null;
-    pasta = map.containsKey('pasta') && map['pasta'] != null
-        ? PastaFk.fromMap(map['pasta'])
         : null;
     return this;
   }
@@ -47,31 +42,25 @@ class SituacaoModel extends FirestoreModel {
     if (this.professor != null) {
       data['professor'] = this.professor.toMap();
     }
-    if (this.pasta != null) {
-      data['pasta'] = this.pasta.toMap();
-    }
     return data;
   }
 }
 
-class SituacaoFk {
+class PastaFk {
   String id;
   String nome;
-  String url;
 
-  SituacaoFk({this.id, this.nome, this.url});
+  PastaFk({this.id, this.nome});
 
-  SituacaoFk.fromMap(Map<dynamic, dynamic> map) {
+  PastaFk.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('nome')) nome = map['nome'];
-    if (map.containsKey('url')) url = map['url'];
   }
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (id != null) data['id'] = this.id;
     if (nome != null) data['nome'] = this.nome;
-    if (url != null) data['url'] = this.url;
     return data;
   }
 }
