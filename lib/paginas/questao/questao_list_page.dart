@@ -135,11 +135,11 @@ id: ${questao.id}'''),
                                     tooltip: 'Alunos nesta questão',
                                     icon: Icon(Icons.perm_contact_calendar),
                                     onPressed: () {
-                                      // Navigator.pushNamed(
-                                      //   context,
-                                      //   "/turma/aluno",
-                                      //   arguments: turma.id,
-                                      // );
+                                      Navigator.pushNamed(
+                                        context,
+                                        "/tarefa/list",
+                                        arguments: questao.id,
+                                      );
                                     },
                                   ),
                                 // IconButton(

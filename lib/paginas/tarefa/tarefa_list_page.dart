@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_bloc.dart';
+import 'package:piprof/servicos/gerar_csv_service.dart';
 import 'package:queries/collections.dart';
 
 class TarefaListPage extends StatefulWidget {
-  final AuthBloc authBloc;
-  final String avaliacao;
+  final String tarefaID;
 
-  const TarefaListPage(this.authBloc, this.avaliacao);
-
+  const TarefaListPage(this.tarefaID);
   @override
   _TarefaListPageState createState() => _TarefaListPageState();
 }
@@ -23,9 +21,8 @@ class _TarefaListPageState extends State<TarefaListPage> {
     super.initState();
     bloc = TarefaListBloc(
       Bootstrap.instance.firestore,
-      widget.authBloc,
     );
-    bloc.eventSink(GetAvaliacaoIDEvent(widget.avaliacao));
+    bloc.eventSink(GetTarefaListPorQuestaoEvent(widget.tarefaID));
   }
 
   @override
@@ -38,12 +35,11 @@ class _TarefaListPageState extends State<TarefaListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Suas Tarefas nesta avaliação'),
+          title: Text('Tarefas da questão'),
         ),
         body: StreamBuilder<TarefaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<TarefaListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<TarefaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -51,18 +47,15 @@ class _TarefaListPageState extends State<TarefaListPage> {
                 return Center(child: CircularProgressIndicator());
               }
               if (snapshot.data.isDataValid) {
-
                 List<Widget> listaWidget = List<Widget>();
                 String notas = '';
                 Map<String, Pedese> pedeseMap = Map<String, Pedese>();
 
                 for (var tarefa in snapshot.data.tarefaList) {
-                  // print('tarefa.id: ${tarefa.id}');
                   pedeseMap.clear();
                   var dicPedese = Dictionary.fromMap(tarefa.pedese);
-                  var pedeseOrderBy = dicPedese
-                      .orderBy((kv) => kv.value.ordem)
-                      .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                  var pedeseOrderBy =
+                      dicPedese.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
                   pedeseMap = pedeseOrderBy.toMap();
                   notas = '';
                   for (var pedese in pedeseMap.entries) {
@@ -70,40 +63,116 @@ class _TarefaListPageState extends State<TarefaListPage> {
                   }
                   listaWidget.add(
                     Card(
-                      child: ListTile(
-                        // trailing: Text('${tarefa.questao.numero}'),
-                        trailing: Text('${tarefa.questao.numero}'),
-                        // selected: tarefa.iniciou != null,
-                        title: Text('''
-Turma: ${tarefa.turma.nome}
-Prof.: ${tarefa.professor.nome}
-Aval.: ${tarefa.avaliacao.nome}
-Ques.: ${tarefa.situacao.nome}
-Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}
-Iniciou: ${tarefa.iniciou==null ? "" :DateFormat('dd-MM HH:mm').format(tarefa.iniciou)}
-Enviou: ${tarefa.enviou==null ? "" :DateFormat('dd-MM HH:mm').format(tarefa.enviou)}
-Tentativas: ${tarefa.tentou ?? 0} / ${tarefa.tentativa}
-Tempo:  ${tarefa.tempo}h
-Notas: $notas
-                        '''),
-//                         subtitle: Text('''
-// Inicio: ${tarefa.inicio}
-// fim: ${tarefa.fim}
-// id: ${tarefa.id}
-// Aberta: ${tarefa.aberta}
-//                         '''),
-
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 2,
+                          horizontal: 2,
+                        ),
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: _ImagemUnica(url: tarefa.aluno.foto),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              // child: Container(
+                              // padding: EdgeInsets.only(left: 6),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("id: ${tarefa.id}"),
+                                  Text("Turma: ${tarefa.turma.nome}"),
+                                  Text("Avaliação: ${tarefa.avaliacao.nome}"),
+                                  Text("Questão: ${tarefa.questao.numero}"),
+                                  Text("Aluno: ${tarefa.aluno.nome}"),
+                                  Text(
+                                      "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
+                                  Text(
+                                      "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
+                                  Text(
+                                      "Tempo: ${tarefa.tempo} | Tentativas: ${tarefa.tentativa} | Tentou: ${tarefa.tentou}"),
+                                  Text("Notas: $notas"),
+                                  Wrap(
+                                    children: <Widget>[
+                                      IconButton(
+                                        tooltip: 'Relatorio detalhado desta tarefa',
+                                        icon: Icon(Icons.recent_actors),
+                                        onPressed: () {},
+                                      ),
+                                      IconButton(
+                                        tooltip: 'Editar tarefa para este aluno',
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            "/tarefa/crud",
+                                            arguments: tarefa.id,
+                                          );
+                                        },
+                                      ),
+                                      IconButton(
+                                        tooltip: 'Corrigir tarefa',
+                                        icon: Icon(Icons.playlist_add_check),
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
                 }
+                listaWidget.add(Container(
+                  padding: EdgeInsets.only(top: 70),
+                ));
+
                 return ListView(
                   children: listaWidget,
                 );
-
               } else {
                 return Text('Existem dados inválidos. Informe o suporte.');
               }
             }));
+  }
+}
+
+class _ImagemUnica extends StatelessWidget {
+  final String url;
+
+  const _ImagemUnica({this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget foto;
+    if (url == null) {
+      foto = Center(child: Text('Sem foto.'));
+    } else {
+      foto = Container(
+        // child: Padding(
+        // padding: const EdgeInsets.all(2.0),
+        child: Image.network(url),
+        // ),
+      );
+    }
+    return Row(
+      children: <Widget>[
+        // Spacer(
+        //   flex: 1,
+        // ),
+        Expanded(
+          flex: 4,
+          child: foto,
+        ),
+        Spacer(
+          flex: 1,
+        ),
+      ],
+    );
   }
 }

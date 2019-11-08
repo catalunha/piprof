@@ -350,8 +350,9 @@
     "tentou": "numero. vezes em q o aluno enviou respostas. atualizar: _editou",
     "tempo": "numero. representa as horas em tempo necessario para realizar a prova.",
     "aberta": "true/false. true: tempo/tentativa ok  aluno pode acessar para resolver. false: tempo/tentativa acabaram aluno nao pode acessar para resolver",
-    "avaliacaoNota":"copia da nota da avaliacao",
-    "questaoNota":"copia da nota da questao"
+    "erroRelativo":"numero. copia da nota da avaliacao",
+    "avaliacaoNota":"numero. copia da nota da avaliacao",
+    "questaoNota":"numero. copia da nota da questao"
   },
   "Encontro": {
     "comment": "",

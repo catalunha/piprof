@@ -91,7 +91,7 @@ class UsuarioFk {
   String nome;
   String foto;
 
-  UsuarioFk({this.id, this.nome});
+  UsuarioFk({this.id, this.nome,this.foto});
 
   UsuarioFk.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];

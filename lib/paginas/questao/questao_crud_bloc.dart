@@ -106,7 +106,8 @@ class QuestaoCRUDBlocState {
     nota = questao.nota;
     situacaoFk = questao.situacao;
   }
-  void updateStateComAvaliacao(){
+
+  void updateStateComAvaliacao() {
     inicioAvaliacao = avaliacao.inicio;
     fimAvaliacao = avaliacao.fim;
   }
@@ -152,16 +153,16 @@ class QuestaoCRUDBloc {
     if (_state.fimAvaliacao == null) {
       _state.isDataValid = false;
     }
-    if (_state.tempo == null) {
+    if (_state.tempo == null || _state.tempo.isEmpty) {
       _state.isDataValid = false;
     }
-    if (_state.tentativa == null) {
+    if (_state.tentativa == null || _state.tentativa.isEmpty) {
       _state.isDataValid = false;
     }
-    if (_state.erroRelativo == null) {
+    if (_state.erroRelativo == null || _state.erroRelativo.isEmpty) {
       _state.isDataValid = false;
     }
-    if (_state.nota == null) {
+    if (_state.nota == null || _state.nota.isEmpty) {
       _state.isDataValid = false;
     }
     if (_state.situacaoFk == null) {
@@ -175,8 +176,7 @@ class QuestaoCRUDBloc {
     }
 
     if (event is GetTurmaEvent) {
-      final docRef =
-          _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final docRef = _firestore.collection(TurmaModel.collection).document(event.turmaID);
       final snap = await docRef.get();
       if (snap.exists) {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
@@ -184,14 +184,11 @@ class QuestaoCRUDBloc {
     }
     if (event is GetAvalicaoEvent) {
       if (event.avaliacaoID != null) {
-        final docRef = _firestore
-            .collection(AvaliacaoModel.collection)
-            .document(event.avaliacaoID);
+        final docRef = _firestore.collection(AvaliacaoModel.collection).document(event.avaliacaoID);
         final snap = await docRef.get();
         if (snap.exists) {
-          _state.avaliacao =
-              AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
-                        _state.updateStateComAvaliacao();
+          _state.avaliacao = AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+          _state.updateStateComAvaliacao();
 
           eventSink(GetTurmaEvent(_state.avaliacao.turma.id));
         }
@@ -199,9 +196,7 @@ class QuestaoCRUDBloc {
     }
     if (event is GetQuestaoEvent) {
       if (event.questaoID != null) {
-        final docRef = _firestore
-            .collection(QuestaoModel.collection)
-            .document(event.questaoID);
+        final docRef = _firestore.collection(QuestaoModel.collection).document(event.questaoID);
         _state.questaoID = event.questaoID;
         final snap = await docRef.get();
         if (snap.exists) {
@@ -224,21 +219,11 @@ class QuestaoCRUDBloc {
         _state.dataInicio = DateTime.now();
       }
       final newDate = DateTime(
-          _state.dataInicio != null
-              ? _state.dataInicio.year
-              : _state.inicioAvaliacao.year,
-          _state.dataInicio != null
-              ? _state.dataInicio.month
-              : _state.inicioAvaliacao.month,
-          _state.dataInicio != null
-              ? _state.dataInicio.day
-              : _state.inicioAvaliacao.day,
-          _state.horaInicio != null
-              ? _state.horaInicio.hour
-              : _state.inicioAvaliacao.hour,
-          _state.horaInicio != null
-              ? _state.horaInicio.minute
-              : _state.inicioAvaliacao.minute);
+          _state.dataInicio != null ? _state.dataInicio.year : _state.inicioAvaliacao.year,
+          _state.dataInicio != null ? _state.dataInicio.month : _state.inicioAvaliacao.month,
+          _state.dataInicio != null ? _state.dataInicio.day : _state.inicioAvaliacao.day,
+          _state.horaInicio != null ? _state.horaInicio.hour : _state.inicioAvaliacao.hour,
+          _state.horaInicio != null ? _state.horaInicio.minute : _state.inicioAvaliacao.minute);
       _state.inicioAvaliacao = newDate;
     }
 
@@ -256,19 +241,11 @@ class QuestaoCRUDBloc {
         _state.dataFim = DateTime.now();
       }
       final newDate = DateTime(
-          _state.dataFim != null
-              ? _state.dataFim.year
-              : _state.fimAvaliacao.year,
-          _state.dataFim != null
-              ? _state.dataFim.month
-              : _state.fimAvaliacao.month,
+          _state.dataFim != null ? _state.dataFim.year : _state.fimAvaliacao.year,
+          _state.dataFim != null ? _state.dataFim.month : _state.fimAvaliacao.month,
           _state.dataFim != null ? _state.dataFim.day : _state.fimAvaliacao.day,
-          _state.horaFim != null
-              ? _state.horaFim.hour
-              : _state.fimAvaliacao.hour,
-          _state.horaFim != null
-              ? _state.horaFim.minute
-              : _state.fimAvaliacao.minute);
+          _state.horaFim != null ? _state.horaFim.hour : _state.fimAvaliacao.hour,
+          _state.horaFim != null ? _state.horaFim.minute : _state.fimAvaliacao.minute);
       _state.fimAvaliacao = newDate;
     }
 
@@ -289,9 +266,7 @@ class QuestaoCRUDBloc {
       _state.situacaoFk = event.situacaoFk;
     }
     if (event is SaveEvent) {
-      final docRef = _firestore
-          .collection(QuestaoModel.collection)
-          .document(_state.questaoID);
+      final docRef = _firestore.collection(QuestaoModel.collection).document(_state.questaoID);
 
       QuestaoModel questaoUpdate = QuestaoModel(
         inicio: _state.inicioAvaliacao,
@@ -327,19 +302,14 @@ class QuestaoCRUDBloc {
       await docRef.setData(questaoUpdate.toMap(), merge: true);
 
       //Atualizar turma com mais uma questao
-      final turmaDocRef = _firestore
-          .collection(TurmaModel.collection)
-          .document(_state.turma.id);
+      final turmaDocRef = _firestore.collection(TurmaModel.collection).document(_state.turma.id);
       await turmaDocRef.setData({
         'questaoNumeroAdicionado': Bootstrap.instance.fieldValue.increment(1),
       }, merge: true);
     }
     if (event is DeleteDocumentEvent) {
       if (_state.questaoID != null) {
-        _firestore
-            .collection(QuestaoModel.collection)
-            .document(_state.questao.id)
-            .delete();
+        _firestore.collection(QuestaoModel.collection).document(_state.questao.id).delete();
       }
     }
 

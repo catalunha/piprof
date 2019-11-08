@@ -14,6 +14,8 @@ import 'package:piprof/paginas/login/versao.dart';
 import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
+import 'package:piprof/paginas/tarefa/tarefa_crud_page.dart';
+import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_page.dart';
 import 'package:piprof/paginas/turma/turma_aluno_page.dart';
 import 'package:piprof/paginas/turma/turma_ativa_list_page.dart';
@@ -121,6 +123,16 @@ class MyApp extends StatelessWidget {
 
         //pasta
         "/pasta/situacao/list": (context) => PastaSituacaoListPage(authBloc),
+
+        //tarefa
+        "/tarefa/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return TarefaListPage(settings.arguments);
+        },
+        "/tarefa/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return TarefaCRUDPage(settings.arguments);
+        },
 
         //EndDrawer
         //perfil

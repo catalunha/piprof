@@ -1,33 +1,24 @@
-import 'package:piprof/modelos/tarefa_model.dart';
-import 'package:piprof/modelos/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TarefaListBlocEvent {}
 
-class GetUsuarioAuthEvent extends TarefaListBlocEvent {
-  final UsuarioModel usuarioAuth;
-  GetUsuarioAuthEvent(this.usuarioAuth);
-}
+class GetTarefaListPorQuestaoEvent extends TarefaListBlocEvent {
+  final String questaoID;
 
-class GetAvaliacaoIDEvent extends TarefaListBlocEvent {
-  final String avaliacaoID;
-  GetAvaliacaoIDEvent(this.avaliacaoID);
+  GetTarefaListPorQuestaoEvent(this.questaoID);
 }
-
-class UpdateTarefaListEvent extends TarefaListBlocEvent {}
 
 class TarefaListBlocState {
   bool isDataValid = false;
-  UsuarioModel usuarioAuth;
-  String avaliacaoID;
   List<TarefaModel> tarefaList = List<TarefaModel>();
 }
 
 class TarefaListBloc {
   /// Firestore
   final fsw.Firestore _firestore;
-  final _authBloc;
+  // final _authBloc;
 
   /// Eventos
   final _eventController = BehaviorSubject<TarefaListBlocEvent>();
@@ -41,7 +32,7 @@ class TarefaListBloc {
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
-  TarefaListBloc(this._firestore, this._authBloc) {
+  TarefaListBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
 
@@ -57,41 +48,25 @@ class TarefaListBloc {
   }
 
   _mapEventToState(TarefaListBlocEvent event) async {
-    if (event is GetUsuarioAuthEvent) {
-      _state.usuarioAuth = event.usuarioAuth;
+    if (event is GetTarefaListPorQuestaoEvent) {
+        _state.tarefaList.clear();
+
+        final streamDocsRemetente = _firestore
+            .collection(TarefaModel.collection)
+            .where("questao.id", isEqualTo: event.questaoID)
+            .snapshots();
+
+        final snapListRemetente = streamDocsRemetente.map(
+            (snapDocs) => snapDocs.documents.map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data)).toList());
+
+        snapListRemetente.listen((List<TarefaModel> tarefaList) {
+          tarefaList.sort((a, b) => a.aluno.nome.compareTo(b.aluno.nome));
+          _state.tarefaList = tarefaList;
+          if (!_stateController.isClosed) _stateController.add(_state);
+        });
     }
-    if (event is GetAvaliacaoIDEvent) {
-      _state.avaliacaoID = event.avaliacaoID;
-      _authBloc.perfil.listen((usuarioAuth) {
-        eventSink(GetUsuarioAuthEvent(usuarioAuth));
-        eventSink(UpdateTarefaListEvent());
-        if (!_stateController.isClosed) _stateController.add(_state);
-      });
-    }
-
-    if (event is UpdateTarefaListEvent) {
-      _state.tarefaList.clear();
-
-      final streamDocsRemetente = _firestore
-          .collection(TarefaModel.collection)
-          .where("ativo", isEqualTo: true)
-          .where("avaliacao.id", isEqualTo: _state.avaliacaoID)
-          .where("aluno.id", isEqualTo: _state.usuarioAuth.id)
-          .snapshots();
-
-      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
-          .documents
-          .map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data))
-          .toList());
-
-      snapListRemetente.listen((List<TarefaModel> tarefaList) {
-        _state.tarefaList = tarefaList;
-        if (!_stateController.isClosed) _stateController.add(_state);
-      });
-    }
-
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em TarefaListBloc  = ${event.runtimeType}');
+    print('event.runtimeType em TarefaAlunoList  = ${event.runtimeType}');
   }
 }

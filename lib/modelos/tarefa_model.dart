@@ -20,8 +20,11 @@ class TarefaModel extends FirestoreModel {
   dynamic enviou;
   dynamic fim;
   int tentativa;
-  dynamic tentou = 0;
-  dynamic tempo;
+  int tentou;
+  int tempo;
+  int erroRelativo;
+  int avaliacaoNota;
+  int questaoNota;
   bool aberta;
   SituacaoFk situacao;
   String simulacao;
@@ -47,6 +50,9 @@ class TarefaModel extends FirestoreModel {
     this.tentativa,
     this.tentou,
     this.tempo,
+    this.erroRelativo,
+    this.avaliacaoNota,
+    this.questaoNota,
     this.aberta,
     this.situacao,
     this.simulacao,
@@ -95,6 +101,9 @@ class TarefaModel extends FirestoreModel {
     if (map.containsKey('tentativa')) tentativa = map['tentativa'];
     if (map.containsKey('tentou')) tentou = map['tentou'];
     if (map.containsKey('tempo')) tempo = map['tempo'];
+    if (map.containsKey('erroRelativo')) erroRelativo = map['erroRelativo'];
+    if (map.containsKey('avaliacaoNota')) avaliacaoNota = map['avaliacaoNota'];
+    if (map.containsKey('questaoNota')) questaoNota = map['questaoNota'];
 
     if (map.containsKey('aberta')) aberta = map['aberta'];
     situacao = map.containsKey('situacao') && map['situacao'] != null
@@ -146,6 +155,9 @@ class TarefaModel extends FirestoreModel {
     if (tentativa != null) data['tentativa'] = this.tentativa;
     if (tentou != null) data['tentou'] = this.tentou;
     if (tempo != null) data['tempo'] = this.tempo;
+    if (erroRelativo != null) data['erroRelativo'] = this.erroRelativo;
+    if (avaliacaoNota != null) data['avaliacaoNota'] = this.avaliacaoNota;
+    if (questaoNota != null) data['questaoNota'] = this.questaoNota;
     if (aberta != null) data['aberta'] = aberta;
 
     if (this.situacao != null) {
