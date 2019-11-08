@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
+import 'package:piprof/naosuportato/naosuportado.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 import 'package:queries/collections.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TarefaListPage extends StatefulWidget {
   final String tarefaID;
@@ -97,9 +99,27 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   Wrap(
                                     children: <Widget>[
                                       IconButton(
+                                        tooltip: 'Corrigir tarefa',
+                                        icon: Icon(Icons.playlist_add_check),
+                                        onPressed: () {
+                                           Navigator.pushNamed(
+                                            context,
+                                            "/tarefa/corrigir",
+                                            arguments: tarefa.id,
+                                          );
+                                        },
+                                      ),
+                                      IconButton(
                                         tooltip: 'Relatorio detalhado desta tarefa',
                                         icon: Icon(Icons.recent_actors),
                                         onPressed: () {},
+                                      ),
+                                      IconButton(
+                                        tooltip: 'Ver situação da questão',
+                                        icon: Icon(Icons.picture_as_pdf),
+                                        onPressed: () {
+                                          launch(tarefa.situacao.url);
+                                        },
                                       ),
                                       IconButton(
                                         tooltip: 'Editar tarefa para este aluno',
@@ -111,11 +131,6 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                             arguments: tarefa.id,
                                           );
                                         },
-                                      ),
-                                      IconButton(
-                                        tooltip: 'Corrigir tarefa',
-                                        icon: Icon(Icons.playlist_add_check),
-                                        onPressed: () {},
                                       ),
                                     ],
                                   ),
