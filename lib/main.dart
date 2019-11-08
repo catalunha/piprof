@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
+import 'package:piprof/paginas/avaliacao/avaliacao_aplicar_page.dart';
 import 'package:piprof/paginas/avaliacao/avaliacao_crud_page.dart';
 import 'package:piprof/paginas/avaliacao/avaliacao_list_page.dart';
 import 'package:piprof/paginas/desenvolvimento/desenvolvimento_page.dart';
@@ -97,6 +98,11 @@ class MyApp extends StatelessWidget {
             avaliacaoID: args.avaliacaoID,
           );
         },
+        "/avaliacao/marcar": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return AvaliacaoMarcarPage(avaliacaoID:settings.arguments);
+        },
+
 
         //questao
         "/questao/list": (context) {

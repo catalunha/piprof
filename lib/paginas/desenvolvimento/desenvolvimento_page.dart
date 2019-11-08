@@ -386,30 +386,29 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
-  Future cadastrarTarefa(String tarefaId) async {
-    final docRef =
-        _firestore.collection(TarefaModel.collection).document(tarefaId);
+  Future cadastrarTarefa() async {
+    final docRef = _firestore.collection(TarefaModel.collection).document();
     docRef.delete();
     TarefaModel tarefaModel = TarefaModel(
-        id: tarefaId,
         ativo: true,
-        professor: UsuarioFk(id: '0Prof01', nome: 'prof01'),
-        turma: TurmaFk(id: '0Turma01', nome: 'turma01'),
-        avaliacao: AvaliacaoFk(id: '0Avaliacao01', nome: 'avaliacao01'),
-        questao: QuestaoFk(id: '0Questao01', numero: 1),
+        professor:
+            UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'prof01'),
+        turma: TurmaFk(id: '0Turma01', nome: 'cn2020.1'),
+        avaliacao: AvaliacaoFk(id: 'lxXRTA56hCmoW718NrW5', nome: 'a'),
+        questao: QuestaoFk(id: 'pdPfwz2YCmgw42NKlnbF', numero: 2),
         aluno: UsuarioFk(id: 'PMAxu4zKfmaOlYAmF3lgFGmCR1w2', nome: 'Cata'),
         modificado: DateTime.now(),
         inicio: DateTime.parse('2019-10-31T18:00:00-0300'),
         // iniciou: DateTime.parse('2019-10-29T09:00:00.000Z'),
         // enviou: DateTime.parse('2019-10-29T09:30:00.000Z'),
         fim: DateTime.parse('2019-10-31T23:00:00-0300'),
-        tentativa: 5,
+        tentativa: 3,
         // tentou: 0,
         tempo: 1,
         aberta: true,
         situacao: SituacaoFk(
-          id: '0situacao01',
-          nome: 'situacao01',
+          id: '548KCdtFN8Vr1j1U2WvZ',
+          nome: 'sit02',
           url:
               'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a',
         ),
@@ -574,8 +573,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future incluirSituacao01() async {
-    final docRef =
-        _firestore.collection(SituacaoModel.collection).document();
+    final docRef = _firestore.collection(SituacaoModel.collection).document();
     SituacaoModel situacaoModel = SituacaoModel(
       ativo: true,
       numero: 1,
@@ -587,8 +585,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future incluirSituacao02() async {
-    final docRef =
-        _firestore.collection(SituacaoModel.collection).document();
+    final docRef = _firestore.collection(SituacaoModel.collection).document();
     SituacaoModel situacaoModel = SituacaoModel(
       ativo: true,
       numero: 2,

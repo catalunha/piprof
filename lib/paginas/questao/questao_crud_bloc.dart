@@ -106,6 +106,10 @@ class QuestaoCRUDBlocState {
     nota = questao.nota;
     situacaoFk = questao.situacao;
   }
+  void updateStateComAvaliacao(){
+    inicioAvaliacao = avaliacao.inicio;
+    fimAvaliacao = avaliacao.fim;
+  }
 }
 
 class QuestaoCRUDBloc {
@@ -187,6 +191,8 @@ class QuestaoCRUDBloc {
         if (snap.exists) {
           _state.avaliacao =
               AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+                        _state.updateStateComAvaliacao();
+
           eventSink(GetTurmaEvent(_state.avaliacao.turma.id));
         }
       }

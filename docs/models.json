@@ -338,7 +338,8 @@
     },
     "aluno": {
       "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome"
+      "nome": "Usuario/usuarioID.nome",
+      "foto":"url da foto"
     },
     "modificado": "dh em q foi aplicada ou criado a tarefa. se modificar questão ou avaliacao atualiza esta data",
     "inicio": "dh copia de questao",

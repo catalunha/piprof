@@ -24,6 +24,7 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
       Bootstrap.instance.firestore,
     );
     bloc.eventSink(UpdateQuestaoListEvent(widget.avaliacaoID));
+    bloc.eventSink(GetAvaliacaoEvent(widget.avaliacaoID));
   }
 
   @override
@@ -72,19 +73,17 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            trailing: Text('${ordemLocal}'),
+                            trailing: Text('${questao.numero}'),
                             title: Text('''
 Turma: ${questao.turma.nome}
 Aval.: ${questao.avaliacao.nome}
 Sit.: ${questao.situacao.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(questao.inicio)} até ${DateFormat('dd-MM HH:mm').format(questao.fim)}
 Tentativas: ${questao.tentativa} | Tempo : ${questao.tempo}h
-Nota da questão: ${questao.nota}
-                            '''),
+Nota: ${questao.nota}'''),
 // Prof.: ${questao.professor.nome}
-//                             subtitle: Text('''
-// id: ${questao.id}
-//                             '''),
+                            subtitle: Text('''
+id: ${questao.id}'''),
                           ),
                           Center(
                             child: Wrap(
@@ -129,18 +128,20 @@ Nota da questão: ${questao.nota}
                                     launch(questao.situacao.url);
                                   },
                                 ),
-
-                                // IconButton(
-                                //   tooltip: 'Gerenciar alunos',
-                                //   icon: Icon(Icons.people),
-                                //   onPressed: () {
-                                //     // Navigator.pushNamed(
-                                //     //   context,
-                                //     //   "/turma/aluno",
-                                //     //   arguments: turma.id,
-                                //     // );
-                                //   },
-                                // ),
+                                if (snapshot.data?.avaliacao?.aplicada !=
+                                        null &&
+                                    snapshot.data?.avaliacao?.aplicada)
+                                  IconButton(
+                                    tooltip: 'Alunos nesta questão',
+                                    icon: Icon(Icons.perm_contact_calendar),
+                                    onPressed: () {
+                                      // Navigator.pushNamed(
+                                      //   context,
+                                      //   "/turma/aluno",
+                                      //   arguments: turma.id,
+                                      // );
+                                    },
+                                  ),
                                 // IconButton(
                                 //   tooltip: 'Agenda de encontros da turma',
                                 //   icon: Icon(Icons.calendar_today),

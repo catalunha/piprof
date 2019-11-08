@@ -72,7 +72,7 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
                             title: Text('''
 Turma: ${avaliacao.turma.nome}
 Avaliação: ${avaliacao.nome}
-Nota da avaliação: ${avaliacao.nota}'''),
+Nota: ${avaliacao.nota}'''),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(avaliacao.inicio)}\n${DateFormat('dd-MM HH:mm').format(avaliacao.fim)}'),
                           ),
@@ -106,12 +106,11 @@ Nota da avaliação: ${avaliacao.nota}'''),
                                   tooltip: 'Aplicar esta avaliacao',
                                   icon: Icon(Icons.people),
                                   onPressed: () {
-                                    // Navigator.pushNamed(
-                                    //   context,
-                                    //   "/turma/encontro/crud",
-                                    //   arguments: EncontroCRUDPageArguments(
-                                    //       encontroID: encontro.id),
-                                    // );
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/avaliacao/marcar",
+                                      arguments: avaliacao.id,
+                                    );
                                   },
                                 ),
                                 IconButton(
@@ -122,7 +121,6 @@ Nota da avaliação: ${avaliacao.nota}'''),
                                     //     widget.turmaID);
                                   },
                                 ),
-                                
                               ],
                             ),
                           ),

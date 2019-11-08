@@ -1,15 +1,22 @@
+import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:rxdart/rxdart.dart';
 
 class QuestaoListBlocEvent {}
 
+class GetAvaliacaoEvent extends QuestaoListBlocEvent {
+  final String avaliacaoID;
+
+  GetAvaliacaoEvent(this.avaliacaoID);
+}
+
 class UpdateQuestaoListEvent extends QuestaoListBlocEvent {
-    final String avaliacaoID;
+  final String avaliacaoID;
 
   UpdateQuestaoListEvent(this.avaliacaoID);
-
 }
+
 class OrdenarEvent extends QuestaoListBlocEvent {
   final QuestaoModel obj;
   final bool up;
@@ -19,6 +26,8 @@ class OrdenarEvent extends QuestaoListBlocEvent {
 
 class QuestaoListBlocState {
   bool isDataValid = false;
+    AvaliacaoModel avaliacao = AvaliacaoModel();
+
   List<QuestaoModel> questaoList = List<QuestaoModel>();
 }
 
@@ -54,8 +63,16 @@ class QuestaoListBloc {
   }
 
   _mapEventToState(QuestaoListBlocEvent event) async {
-
-
+    if (event is GetAvaliacaoEvent) {
+      final docRef = _firestore
+          .collection(AvaliacaoModel.collection)
+          .document(event.avaliacaoID);
+      final snap = await docRef.get();
+      if (snap.exists) {
+        _state.avaliacao =
+            AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+      }
+    }
     if (event is UpdateQuestaoListEvent) {
       _state.questaoList.clear();
 
@@ -71,9 +88,8 @@ class QuestaoListBloc {
           .toList());
 
       snapListRemetente.listen((List<QuestaoModel> questaoList) {
-                        if (questaoList.length > 1) {
-          questaoList
-              .sort((a, b) => a.numero.compareTo(b.numero));
+        if (questaoList.length > 1) {
+          questaoList.sort((a, b) => a.numero.compareTo(b.numero));
         }
         _state.questaoList = questaoList;
         if (!_stateController.isClosed) _stateController.add(_state);

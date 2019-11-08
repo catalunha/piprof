@@ -222,6 +222,13 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
           return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
+              if (widget.avaliacaoID != null)
+                Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      'Altere o Início e fim copiado da avaliação, se necessário:',
+                      style: TextStyle(fontSize: 15, color: Colors.greenAccent),
+                    )),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -239,10 +246,11 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                   )),
               Padding(
                   padding: EdgeInsets.all(1.0), child: _fimAvaliacao(context)),
+              Divider(),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Quanto tempo o aluno tem para resolver:',
+                    'Quanto tempo para resolução em horas:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -290,8 +298,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                       return PastaSituacaoListPage(widget.authBloc);
                     }));
                     if (situacaoFk != null) {
-                      bloc.eventSink(
-                          SelecionarSituacaoEvent(situacaoFk));
+                      bloc.eventSink(SelecionarSituacaoEvent(situacaoFk));
                     }
                   },
                   //   Navigator.pushNamed(
