@@ -90,12 +90,14 @@ class TarefaCorrigirBloc {
     }
     if (event is UpdatePedeseNotaEvent) {
       _state.pedeseInfoMap[event.key].nota = !_state.pedeseInfoMap[event.key].nota;
+      if (_state.pedeseInfoMap[event.key].nota) {
+        _state.pedeseInfoMap[event.key].pedese.nota = 1;
+      } else {
+        _state.pedeseInfoMap[event.key].pedese.nota = 0;
+      }
     }
 
-    if (event is SaveEvent) {
-
-      
-    }
+    if (event is SaveEvent) {}
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
