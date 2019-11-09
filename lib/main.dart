@@ -11,9 +11,13 @@ import 'package:piprof/paginas/encontro/encontro_crud_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_page.dart';
 import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
+import 'package:piprof/paginas/pasta/pasta_crud_page.dart';
+import 'package:piprof/paginas/pasta/pasta_list_page.dart';
 import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
+import 'package:piprof/paginas/situacao/situacao_crud_page.dart';
+import 'package:piprof/paginas/situacao/situacao_list_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_crud_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
@@ -123,7 +127,28 @@ class MyApp extends StatelessWidget {
         },
 
         //pasta
+        "/pasta/list": (context) => PastaListPage(authBloc),
+        "/pasta/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return PastaCRUDPage(authBloc:authBloc,pastaID:settings.arguments);
+        },
+
+        //situacao
         "/pasta/situacao/list": (context) => PastaSituacaoListPage(authBloc),
+        "/situacao/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return SituacaoListPage(settings.arguments);
+        },
+        "/situacao/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          final SituacaoCRUDPageArguments args = settings.arguments;
+          return SituacaoCRUDPage(
+            authBloc: authBloc,
+            pastaID: args.pastaID,
+            situacaoID: args.situacaoID,
+          );
+        },
+
 
         //tarefa
         "/tarefa/list": (context) {

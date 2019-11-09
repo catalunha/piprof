@@ -243,7 +243,7 @@ class EncontroCRUDBloc {
     }
     if (event is DeleteDocumentEvent) {
       _firestore
-          .collection(TurmaModel.collection)
+          .collection(EncontroModel.collection)
           .document(_state.encontro.id)
           .delete();
     }

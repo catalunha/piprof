@@ -156,22 +156,23 @@ class TurmaCRUDBloc {
         descricao: _state.descricao,
       );
       if (_state.turmaID == null) {
-        turmaModel.numero = _state.usuarioAuth.turmaNumeroAdicionado + 1;
+        turmaModel.questaoNumeroAdicionado=0;
+        turmaModel.questaoNumeroExcluido=0;
+        turmaModel.numero = _state.usuarioAuth.turmaNumeroAdicionado ?? 0 + 1;
+        //+++ Atualizar usuario com mais uma turma em seu cadastro
+        final usuarioDocRef = _firestore
+            .collection(UsuarioModel.collection)
+            .document(_state.usuarioAuth.id);
+        await usuarioDocRef.setData({
+          'turmaNumeroAdicionado': Bootstrap.instance.fieldValue.increment(1),
+        }, merge: true);
+        //---
         turmaModel.professor =
             UsuarioFk(id: _state.usuarioAuth.id, nome: _state.usuarioAuth.nome);
         turmaModel.questaoNumeroAdicionado = 0;
         turmaModel.questaoNumeroExcluido = 0;
       }
       await docRef.setData(turmaModel.toMap(), merge: true);
-
-      //Atualizar usuario com mais uma turma em seu cadastro
-      final usuarioDocRef = _firestore
-          .collection(UsuarioModel.collection)
-          .document(_state.usuarioAuth.id);
-      await usuarioDocRef.setData({
-        'turmaNumeroAdicionado': Bootstrap.instance.fieldValue.increment(1),
-      }, merge: true);
-    
     }
     if (event is DeleteDocumentEvent) {
       _firestore

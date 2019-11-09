@@ -17,3 +17,9 @@ class QuestaoCRUDPageArguments {
 
   QuestaoCRUDPageArguments({this.avaliacaoID, this.questaoID});
 }
+class SituacaoCRUDPageArguments {
+  final String pastaID;
+  final String situacaoID;
+
+  SituacaoCRUDPageArguments({this.pastaID, this.situacaoID});
+}

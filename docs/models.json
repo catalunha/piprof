@@ -30,7 +30,7 @@
     "matricula": "",
     "email": "email",
     "cracha": "nome",
-    "time":"string. representando pasta ou equipe q o aluno pode escrever uma palavra pra se cadastrar num time",
+    "time": "string. representando pasta ou equipe q o aluno pode escrever uma palavra pra se cadastrar num time",
     "celular": "celular",
     "professor": "true: usuario é um prof e tem acesso ao piprof. false: é um aluno pode acessar apenas ao pialuno.",
     "rotas": [
@@ -47,7 +47,6 @@
     "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero.",
     "pastaNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "situacaoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
-
   },
   "UsuarioNovo": {
     "comment": "após cadastro tem q atualizar a turma respectiva com o ID do usuario."
@@ -96,6 +95,7 @@
     "#onUpdate": "",
     "#onDelete": "Apagar as tarefas das turmas ativas que contem esta situação.",
     "ativo": "true: aparece na listagens de situacaos disponiveis. false: !true ",
+    "modificado": "data da modificação deste documento",
     "numero": "",
     "nome": "",
     "descricao": "",
@@ -107,16 +107,17 @@
       "id": "Pasta/pastaID",
       "nome": "Pasta/pastaID.nome"
     },
-    "url":"url definida para a situacao com base nos dados a seguir",
-    "precisaAlgoritmoSimulacao": "true/false",
-    "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo",
-    "situacaoTemAlgoritmo": "true/false",
-    "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
-    "urlCodigoFonteAlgoritmo": "detalhes do atendimento e desenvolvimento do codigo",
-    "urlPDFSituacaoComAlgoritmo": "pdf com estrutura para usar proposta com simulação",
     "uso": {
       "turmaID": 0
-    }
+    },
+    "url": "url definitiva para a situacao com base nos dados a seguir",
+    "simulacaoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
+    "precisaAlgoritmoPSimulacao": "true/false",
+    "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
+    "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
+    "urlCodigoFonteAlgoritmo": "detalhes do atendimento e desenvolvimento do codigo",
+    "AtivadoAlgoritmoPSimulacao": "true: ativo=true e url=urlPDFSituacaoComAlgoritmo. false: ativo=false e url indefinida",
+    "urlPDFSituacaoComAlgoritmo": "pdf com estrutura para usar proposta com simulação"
   },
   "Simulacao": {
     "comment": "",
@@ -124,9 +125,11 @@
     "#onRead": "",
     "#onUpdate": "",
     "#onDelete": "",
+    "ativo": "true: aparece na listagens de situacaos disponiveis. false: !true ",
+    "modificado": "data da modificação deste documento",
+    "numero": "para ordenar. referencia em Situacao.simulacaoNumeroAdicionado",
     "nome": "",
     "descricao": "",
-    "modificado": "data da modificação deste documento",
     "situacao": "Situacao/situacaoID",
     "ordemAdicionada": 0,
     "variavel": {
@@ -339,7 +342,7 @@
     "aluno": {
       "id": "Usuario/usuarioID",
       "nome": "Usuario/usuarioID.nome",
-      "foto":"url da foto"
+      "foto": "url da foto"
     },
     "modificado": "dh em q foi aplicada ou criado a tarefa. se modificar questão ou avaliacao atualiza esta data",
     "inicio": "dh copia de questao",
@@ -350,9 +353,9 @@
     "tentou": "numero. vezes em q o aluno enviou respostas. atualizar: _editou",
     "tempo": "numero. representa as horas em tempo necessario para realizar a prova.",
     "aberta": "true/false. true: tempo/tentativa ok  aluno pode acessar para resolver. false: tempo/tentativa acabaram aluno nao pode acessar para resolver",
-    "erroRelativo":"numero. copia da nota da avaliacao",
-    "avaliacaoNota":"numero. copia da nota da avaliacao",
-    "questaoNota":"numero. copia da nota da questao"
+    "erroRelativo": "numero. copia da nota da avaliacao",
+    "avaliacaoNota": "numero. copia da nota da avaliacao",
+    "questaoNota": "numero. copia da nota da questao"
   },
   "Encontro": {
     "comment": "",
