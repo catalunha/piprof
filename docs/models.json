@@ -130,8 +130,17 @@
     "numero": "para ordenar. referencia em Situacao.simulacaoNumeroAdicionado",
     "nome": "",
     "descricao": "",
-    "situacao": "Situacao/situacaoID",
-    "ordemAdicionada": 0,
+    "url": "url para um doc descrevendo a simulacao",
+    "algoritmoDoAdmin": "",
+    "algoritmoDoProfessor": " ",
+    "professor": {
+      "id": "Usuario/documentID",
+      "nome": ""
+    },
+    "situacao": {
+      "id": "Situacao/situacaoID",
+      "nome": ""
+    },    "ordemAdicionada": 0,
     "variavel": {
       "uid0": {
         "ordem": 0,
