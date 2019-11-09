@@ -18,7 +18,7 @@ class UpdatePedeseNotaEvent extends TarefaCorrigirBlocEvent {
 }
 
 class SaveEvent extends TarefaCorrigirBlocEvent {}
-
+//TODO: retirar esta estrutura de PedeseInfo e usar o padrao pedese verificando o null e 0 no page
 class PedeseInfo {
   final Pedese pedese;
   bool nota;
@@ -35,12 +35,15 @@ class TarefaCorrigirBlocState {
       // nota = false;
       pedeseInfoMap[pedese.key] = PedeseInfo(
         pedese: pedese.value,
-        nota: pedese.value.nota == null || pedese.value.nota == 0 ? false : true,
+        nota:
+            pedese.value.nota == null || pedese.value.nota == 0 ? false : true,
       );
     }
     Map<String, Variavel> variavelMap;
     var dic = Dictionary.fromMap(pedeseInfoMap);
-    var dicOrderBy = dic.orderBy((kv) => kv.value.pedese.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+    var dicOrderBy = dic
+        .orderBy((kv) => kv.value.pedese.ordem)
+        .toDictionary$1((kv) => kv.key, (kv) => kv.value);
     pedeseInfoMap = dicOrderBy.toMap();
   }
 }
@@ -80,7 +83,9 @@ class TarefaCorrigirBloc {
   _mapEventToState(TarefaCorrigirBlocEvent event) async {
     if (event is GetTarefaEvent) {
       if (event.tarefaID != null) {
-        final docRef = _firestore.collection(TarefaModel.collection).document(event.tarefaID);
+        final docRef = _firestore
+            .collection(TarefaModel.collection)
+            .document(event.tarefaID);
         final snap = await docRef.get();
         if (snap.exists) {
           _state.tarefa = TarefaModel(id: snap.documentID).fromMap(snap.data);
@@ -89,7 +94,8 @@ class TarefaCorrigirBloc {
       }
     }
     if (event is UpdatePedeseNotaEvent) {
-      _state.pedeseInfoMap[event.key].nota = !_state.pedeseInfoMap[event.key].nota;
+      _state.pedeseInfoMap[event.key].nota =
+          !_state.pedeseInfoMap[event.key].nota;
       if (_state.pedeseInfoMap[event.key].nota) {
         _state.pedeseInfoMap[event.key].pedese.nota = 1;
       } else {
@@ -97,7 +103,19 @@ class TarefaCorrigirBloc {
       }
     }
 
-    if (event is SaveEvent) {}
+    if (event is SaveEvent) {
+      final docRef = _firestore
+          .collection(TarefaModel.collection)
+          .document(_state.tarefa.id);
+      Map<String, Pedese> pedese = Map<String, Pedese>();
+      for (var pedeseInfoMap in _state.pedeseInfoMap.entries) {
+        pedese[pedeseInfoMap.key] = pedeseInfoMap.value.pedese;
+      }
+      TarefaModel tarefaUpdate = TarefaModel(
+        pedese: pedese,
+      );
+      await docRef.setData(tarefaUpdate.toMap(), merge: true);
+    }
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);

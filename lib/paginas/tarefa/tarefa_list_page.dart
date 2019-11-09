@@ -166,7 +166,7 @@ class _ImagemUnica extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget foto;
     if (url == null) {
-      foto = Center(child: Text('Sem foto.'));
+      foto = Center(child: Text('Sem imagem.'));
     } else {
       foto = Container(
         // child: Padding(
@@ -177,11 +177,11 @@ class _ImagemUnica extends StatelessWidget {
     }
     return Row(
       children: <Widget>[
-        // Spacer(
-        //   flex: 1,
-        // ),
+        Spacer(
+          flex: 1,
+        ),
         Expanded(
-          flex: 4,
+          flex: 14,
           child: foto,
         ),
         Spacer(

@@ -6,7 +6,8 @@ import 'package:piprof/naosuportato/naosuportado.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 import 'package:queries/collections.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TarefaCorrigirPage extends StatefulWidget {
   final String tarefaID;
@@ -48,7 +49,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
         ),
         body: StreamBuilder<TarefaCorrigirBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TarefaCorrigirBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TarefaCorrigirBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -62,15 +64,18 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
 
                 Map<String, Variavel> variavelMap;
                 var dic = Dictionary.fromMap(tarefa.variavel);
-                var dicOrderBy = dic.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                var dicOrderBy = dic
+                    .orderBy((kv) => kv.value.ordem)
+                    .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 variavelMap = dicOrderBy.toMap();
 
                 Map<String, Pedese> pedeseMap = Map<String, Pedese>();
 
                 pedeseMap.clear();
                 var dicPedese = Dictionary.fromMap(tarefa.pedese);
-                var pedeseOrderBy =
-                    dicPedese.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                var pedeseOrderBy = dicPedese
+                    .orderBy((kv) => kv.value.ordem)
+                    .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 pedeseMap = pedeseOrderBy.toMap();
                 notas = '';
                 for (var pedese in pedeseMap.entries) {
@@ -109,22 +114,6 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                 Text(
                                     "Tempo: ${tarefa.tempo} | Tentativas: ${tarefa.tentativa} | Tentou: ${tarefa.tentou}"),
                                 Text("Notas: $notas"),
-                                Wrap(
-                                  children: <Widget>[
-                                    IconButton(
-                                      tooltip: 'Relatorio detalhado desta tarefa',
-                                      icon: Icon(Icons.recent_actors),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      tooltip: 'Ver situação da questão',
-                                      icon: Icon(Icons.picture_as_pdf),
-                                      onPressed: () {
-                                        launch(tarefa.situacao.url);
-                                      },
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
                           ),
@@ -147,13 +136,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                 listaWidget.add(Divider());
 
                 for (var pedeseInfoMap in snapshot.data.pedeseInfoMap.entries) {
-                  if (['numero', 'palavra', 'texto'].contains(pedeseInfoMap.value.pedese.tipo)) {
-//  if (infoMap.value.pedese.tipo == 'numero' ||
-//                   infoMap.value.pedese.tipo == 'palavra' ||
-//                   infoMap.value.pedese.tipo == 'url' ||
-//                   infoMap.value.pedese.tipo == 'texto') {
-//                   }
-
+                  if (['numero', 'palavra', 'texto']
+                      .contains(pedeseInfoMap.value.pedese.tipo)) {
                     listaWidget.add(
                       Card(
                         child: ListTile(
@@ -170,8 +154,117 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                            bloc.eventSink(
+                                UpdatePedeseNotaEvent(pedeseInfoMap.key));
                           },
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (pedeseInfoMap.value.pedese.tipo == 'url' ||
+                      pedeseInfoMap.value.pedese.tipo == 'arquivo') {
+                    listaWidget.add(
+                      Card(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                              subtitle: Text(
+                                  'Tipo:${pedeseInfoMap.value.pedese.tipo}\nNota:${pedeseInfoMap.value.pedese.nota}'),
+                              trailing: pedeseInfoMap.value.nota
+                                  ? Icon(
+                                      Icons.thumb_up,
+                                      color: Colors.green,
+                                    )
+                                  : Icon(
+                                      Icons.thumb_down,
+                                      color: Colors.red,
+                                    ),
+                              onTap: () {
+                                bloc.eventSink(
+                                    UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                              },
+                            ),
+                            Wrap(
+                              children: <Widget>[
+                                pedeseInfoMap.value.pedese.gabarito == null
+                                    ? IconButton(
+                                        tooltip: 'url do gabarito não anexada',
+                                        icon: Icon(Icons.link_off),
+                                        onPressed: null,
+                                      )
+                                    : IconButton(
+                                        tooltip:
+                                            'Clique para ver a url do gabarito',
+                                        icon: Icon(Icons.link),
+                                        onPressed: () {
+                                          launch(pedeseInfoMap
+                                              .value.pedese.gabarito);
+                                        },
+                                      ),
+                                pedeseInfoMap.value.pedese.resposta == null
+                                    ? IconButton(
+                                        tooltip: 'url da resposta não anexada',
+                                        icon: Icon(Icons.link_off),
+                                        onPressed: null,
+                                      )
+                                    : IconButton(
+                                        tooltip:
+                                            'Clique para ver a url da resposta',
+                                        icon: Icon(Icons.link),
+                                        onPressed: () {
+                                          launch(pedeseInfoMap
+                                              .value.pedese.resposta);
+                                        },
+                                      ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (pedeseInfoMap.value.pedese.tipo == 'imagem') {
+                    listaWidget.add(
+                      Card(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                              subtitle: Text(
+                                  'Tipo:${pedeseInfoMap.value.pedese.tipo}\nNota:${pedeseInfoMap.value.pedese.nota}'),
+                              trailing: pedeseInfoMap.value.nota
+                                  ? Icon(
+                                      Icons.thumb_up,
+                                      color: Colors.green,
+                                    )
+                                  : Icon(
+                                      Icons.thumb_down,
+                                      color: Colors.red,
+                                    ),
+                              onTap: () {
+                                bloc.eventSink(
+                                    UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                              },
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  
+                                  flex: 2,
+                                  child: _ImagemUnica(
+                                      url: pedeseInfoMap.value.pedese.gabarito??null),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: _ImagemUnica(
+                                      url: pedeseInfoMap.value.pedese.resposta??null),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -201,7 +294,7 @@ class _ImagemUnica extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget foto;
     if (url == null) {
-      foto = Center(child: Text('Sem foto.'));
+      foto = Center(child: Text('Sem imagem.'));
     } else {
       foto = Container(
         // child: Padding(
@@ -212,11 +305,11 @@ class _ImagemUnica extends StatelessWidget {
     }
     return Row(
       children: <Widget>[
-        // Spacer(
-        //   flex: 1,
-        // ),
+        Spacer(
+          flex: 1,
+        ),
         Expanded(
-          flex: 4,
+          flex: 16,
           child: foto,
         ),
         Spacer(

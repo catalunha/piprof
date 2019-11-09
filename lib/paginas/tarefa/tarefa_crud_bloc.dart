@@ -217,7 +217,7 @@ class TarefaCRUDBloc {
     if (event is SaveEvent) {
       final docRef = _firestore.collection(TarefaModel.collection).document(_state.tarefa.id);
 
-      TarefaModel avaliacaoUpdate = TarefaModel(
+      TarefaModel tarefaUpdate = TarefaModel(
         inicio: _state.inicioAvaliacao,
         fim: _state.fimAvaliacao,
         tempo: int.parse(_state.tempo),
@@ -228,7 +228,7 @@ class TarefaCRUDBloc {
         modificado: DateTime.now(),
       );
 
-      await docRef.setData(avaliacaoUpdate.toMap(), merge: true);
+      await docRef.setData(tarefaUpdate.toMap(), merge: true);
     }
     if (event is DeleteDocumentEvent) {
       _firestore.collection(QuestaoModel.collection).document(_state.tarefa.id).delete();
