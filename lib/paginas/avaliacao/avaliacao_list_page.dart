@@ -104,7 +104,7 @@ Nota: ${avaliacao.nota}'''),
                                 ),
                                 IconButton(
                                   tooltip: 'Aplicar esta avaliacao',
-                                  icon: Icon(Icons.people),
+                                  icon: Icon(Icons.casino),
                                   onPressed: () {
                                     Navigator.pushNamed(
                                       context,

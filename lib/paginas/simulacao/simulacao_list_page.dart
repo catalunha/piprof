@@ -98,7 +98,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                             ),
                             IconButton(
                               tooltip: 'Gerenciar variáveis',
-                              icon: Icon(Icons.videogame_asset),
+                              icon: Icon(Icons.sort_by_alpha),
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
@@ -109,7 +109,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                             ),
                             IconButton(
                               tooltip: 'Gerenciar Pede-se',
-                              icon: Icon(Icons.assignment),
+                              icon: Icon(Icons.question_answer),
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,

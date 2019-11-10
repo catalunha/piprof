@@ -157,7 +157,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                       child: ListTile(
                         title: Text('${variavel.value.nome}'),
                         subtitle: Text(
-                            '${variavel.value.valor.substring(0, variavel.value.valor.length > 125 ? 125 : variavel.value.valor.length)}'),
+                            '${variavel?.value?.valor}'),
                         trailing: icone,
                       ),
                     ),

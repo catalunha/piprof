@@ -120,7 +120,7 @@ Turma: ${turma.nome}'''),
                               ),
                               IconButton(
                                 tooltip: 'Agenda de encontros da turma',
-                                icon: Icon(Icons.calendar_today),
+                                icon: Icon(Icons.today),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                     context,

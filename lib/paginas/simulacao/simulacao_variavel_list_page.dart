@@ -96,7 +96,7 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
                     children: <Widget>[
                       ListTile(
                         title: Text('${variavel.value.nome}'),
-                        subtitle: Text('${variavel.value.valor.substring(0, variavel.value.valor.length > 125 ? 125 : variavel.value.valor.length)}'),
+                        subtitle: Text('${variavel?.value?.valor}'),
                         trailing: icone,
                       ),
                       Center(

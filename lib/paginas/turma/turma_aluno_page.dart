@@ -62,7 +62,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
           return ListView(
             children: <Widget>[
               ListTile(
-                trailing: Icon(Icons.person_pin_circle),
+                trailing: Icon(Icons.assignment_ind),
                 title: Text('Apagar, desativar e ver notas'),
                 onTap: () {
                   Navigator.pushNamed(

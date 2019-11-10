@@ -97,7 +97,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                 ),
                                 IconButton(
                                   tooltip: 'Marcar presença de alunos',
-                                  icon: Icon(Icons.person_pin_circle),
+                                  icon: Icon(Icons.person_add),
                                   onPressed: () {
                                     Navigator.pushNamed(
                                       context,
