@@ -127,7 +127,6 @@
     "#onDelete": "",
     "ativo": "true: aparece na listagens de situacaos disponiveis. false: !true ",
     "modificado": "data da modificação deste documento",
-    "numero": "para ordenar. referencia em Situacao.simulacaoNumeroAdicionado",
     "nome": "",
     "descricao": "",
     "url": "url para um doc descrevendo a simulacao",
@@ -140,7 +139,8 @@
     "situacao": {
       "id": "Situacao/situacaoID",
       "nome": ""
-    },    "ordemAdicionada": 0,
+    },
+    "ordemAdicionada": 0,
     "variavel": {
       "uid0": {
         "ordem": 0,

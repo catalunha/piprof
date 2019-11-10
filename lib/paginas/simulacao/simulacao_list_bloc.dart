@@ -1,5 +1,6 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/pasta_model.dart';
+import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,7 +17,7 @@ class GetSimulacaoEvent extends SimulacaoListBlocEvent {
 class SimulacaoListBlocState {
   bool isDataValid = false;
   UsuarioModel usuarioAuth;
-  List<SimulacaoModel> pastaList = List<PastaModel>();
+  List<SimulacaoModel> simulacaoList = List<SimulacaoModel>();
 }
 
 class SimulacaoListBloc {
@@ -58,28 +59,26 @@ class SimulacaoListBloc {
   _mapEventToState(SimulacaoListBlocEvent event) async {
 
     if (event is GetSimulacaoEvent) {
-      _state.pastaList.clear();
+      _state.simulacaoList.clear();
 
       final streamDocsRemetente = _firestore
-          .collection(PastaModel.collection)
+          .collection(SimulacaoModel.collection)
           .where("situacao.id", isEqualTo: event.situacaoID)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
           .documents
-          .map((doc) => PastaModel(id: doc.documentID).fromMap(doc.data))
+          .map((doc) => SimulacaoModel(id: doc.documentID).fromMap(doc.data))
           .toList());
 
-      snapListRemetente.listen((List<PastaModel> pastaList) {
-        pastaList.sort((a, b) => a.numero.compareTo(b.numero));
-        _state.pastaList = pastaList;
-        // print(_state.pastaList);
+      snapListRemetente.listen((List<SimulacaoModel> simulacaoList) {
+        _state.simulacaoList = simulacaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em PastaList  = ${event.runtimeType}');
+    print('event.runtimeType em SimulacaoListBloc  = ${event.runtimeType}');
   }
 }

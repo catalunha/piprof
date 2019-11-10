@@ -16,6 +16,8 @@ import 'package:piprof/paginas/pasta/pasta_list_page.dart';
 import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
+import 'package:piprof/paginas/simulacao/simulacao_crud_page.dart';
+import 'package:piprof/paginas/simulacao/simulacao_list_page.dart';
 import 'package:piprof/paginas/situacao/situacao_crud_page.dart';
 import 'package:piprof/paginas/situacao/situacao_list_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_page.dart';
@@ -107,9 +109,8 @@ class MyApp extends StatelessWidget {
         },
         "/avaliacao/marcar": (context) {
           final settings = ModalRoute.of(context).settings;
-          return AvaliacaoMarcarPage(avaliacaoID:settings.arguments);
+          return AvaliacaoMarcarPage(avaliacaoID: settings.arguments);
         },
-
 
         //questao
         "/questao/list": (context) {
@@ -130,7 +131,7 @@ class MyApp extends StatelessWidget {
         "/pasta/list": (context) => PastaListPage(authBloc),
         "/pasta/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return PastaCRUDPage(authBloc:authBloc,pastaID:settings.arguments);
+          return PastaCRUDPage(authBloc: authBloc, pastaID: settings.arguments);
         },
 
         //situacao
@@ -149,7 +150,20 @@ class MyApp extends StatelessWidget {
           );
         },
 
-
+        //simulacao
+        "/simulacao/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return SimulacaoListPage(settings.arguments);
+        },
+        "/simulacao/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          final SimulacaoCRUDPageArguments args = settings.arguments;
+          return SimulacaoCRUDPage(
+            authBloc: authBloc,
+            situacaoID: args.situacaoID,
+            simulacaoID: args.simulacaoID,
+          );
+        },
         //tarefa
         "/tarefa/list": (context) {
           final settings = ModalRoute.of(context).settings;

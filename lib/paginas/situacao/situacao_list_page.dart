@@ -72,10 +72,10 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                             leading: situacao.ativo
                                 ? null
                                 : Icon(Icons.airplanemode_inactive),
-                            trailing: situacao.precisaAlgoritmoPSimulacao ==
-                                        true
-                                ? Icon(Icons.code)
-                                : null,
+                            trailing:
+                                situacao.precisaAlgoritmoPSimulacao == true
+                                    ? Icon(Icons.code)
+                                    : null,
                             title: Text('${situacao.nome}'),
                             subtitle:
                                 Text('${situacao.descricao}\n${situacao.id}'),
@@ -124,7 +124,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                     },
                                   ),
                                 IconButton(
-                                  tooltip: 'Lista de situações em planilha',
+                                  tooltip: 'Listar de situação em planilha',
                                   icon: Icon(Icons.recent_actors),
                                   onPressed: () {
                                     // GenerateCsvService.generateCsvFromEncontro(
@@ -132,11 +132,14 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                   },
                                 ),
                                 IconButton(
-                                    tooltip: 'Lista de simulações',
+                                    tooltip: 'Simulações',
                                     icon: Icon(Icons.bug_report),
                                     onPressed: () {
-                                      // GenerateCsvService.generateCsvFromEncontro(
-                                      //     widget.pastaID);
+                                      Navigator.pushNamed(
+                                        context,
+                                        "/simulacao/list",
+                                        arguments: situacao.id,
+                                      );
                                     }),
                               ],
                             ),
