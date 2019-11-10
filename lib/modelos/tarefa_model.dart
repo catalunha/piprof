@@ -20,11 +20,11 @@ class TarefaModel extends FirestoreModel {
   dynamic enviou;
   dynamic fim;
   int tentativa;
-  int tentou;
+  dynamic tentou;
   int tempo;
-  int erroRelativo;
-  int avaliacaoNota;
-  int questaoNota;
+  String erroRelativo;
+  String avaliacaoNota;
+  String questaoNota;
   bool aberta;
   SituacaoFk situacao;
   String simulacao;

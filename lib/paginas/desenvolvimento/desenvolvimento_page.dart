@@ -400,9 +400,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         tentativa: 3,
         // tentou: 0,
         tempo: 1,
-        erroRelativo: 1,
-        avaliacaoNota: 1,
-        questaoNota: 1,
+        erroRelativo: '1',
+        avaliacaoNota: '1',
+        questaoNota: '1',
         aberta: true,
         situacao: SituacaoFk(
           id: '548KCdtFN8Vr1j1U2WvZ',
@@ -528,7 +528,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         nome: 'cn2020.1',
         descricao: 'turma legal',
         professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
-        alunoList: ['PMAxu4zKfmaOlYAmF3lgFGmCR1w2'],
         questaoNumeroAdicionado: 0,
         questaoNumeroExcluido: 0);
 
@@ -549,7 +548,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         nome: 'cn2020.1',
         descricao: 'turma legal',
         professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
-        alunoList: ['alunoLucas', 'alunoDaniel'],
         questaoNumeroAdicionado: 0,
         questaoNumeroExcluido: 0);
 

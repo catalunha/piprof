@@ -222,9 +222,9 @@ class TarefaCRUDBloc {
         fim: _state.fimAvaliacao,
         tempo: int.parse(_state.tempo),
         tentativa: int.parse(_state.tentativa),
-        erroRelativo: int.parse(_state.erroRelativo),
-        avaliacaoNota: int.parse(_state.avaliacaoNota),
-        questaoNota: int.parse(_state.questaoNota),
+        erroRelativo: _state.erroRelativo,
+        avaliacaoNota: _state.avaliacaoNota,
+        questaoNota: _state.questaoNota,
         modificado: DateTime.now(),
       );
 
