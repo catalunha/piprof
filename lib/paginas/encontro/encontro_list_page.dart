@@ -84,17 +84,6 @@ class _EncontroListPageState extends State<EncontroListPage> {
                             child: Wrap(
                               children: <Widget>[
                                 IconButton(
-                                  tooltip: 'Marcar presença de alunos',
-                                  icon: Icon(Icons.person_pin_circle),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      "/turma/encontro/aluno",
-                                      arguments: encontro.id,
-                                    );
-                                  },
-                                ),
-                                IconButton(
                                   tooltip: 'Editar este encontro',
                                   icon: Icon(Icons.edit),
                                   onPressed: () {
@@ -106,6 +95,18 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                     );
                                   },
                                 ),
+                                IconButton(
+                                  tooltip: 'Marcar presença de alunos',
+                                  icon: Icon(Icons.person_pin_circle),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/turma/encontro/aluno",
+                                      arguments: encontro.id,
+                                    );
+                                  },
+                                ),
+                                
                               ],
                             ),
                           ),

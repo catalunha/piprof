@@ -63,7 +63,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
             children: <Widget>[
               ListTile(
                 trailing: Icon(Icons.person_pin_circle),
-                title: Text('Gerenciar aluno e ver notas'),
+                title: Text('Apagar, desativar e ver notas'),
                 onTap: () {
                   Navigator.pushNamed(
                     context,
@@ -74,7 +74,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
               ),
               ListTile(
                 trailing: Icon(Icons.recent_actors),
-                title: Text('Lista de alunos'),
+                title: Text('Lista de alunos em planilha'),
                 onTap: () {
                   GenerateCsvService.generateCsvFromUsuarioListDaTurma(snapshot.data.turma);
                 },

@@ -99,6 +99,13 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   Wrap(
                                     children: <Widget>[
                                       IconButton(
+                                        tooltip: 'Ver situação da questão',
+                                        icon: Icon(Icons.picture_as_pdf),
+                                        onPressed: () {
+                                          launch(tarefa.situacao.url);
+                                        },
+                                      ),
+                                      IconButton(
                                         tooltip: 'Corrigir tarefa',
                                         icon: Icon(Icons.playlist_add_check),
                                         onPressed: () {
@@ -114,13 +121,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                         icon: Icon(Icons.recent_actors),
                                         onPressed: () {},
                                       ),
-                                      IconButton(
-                                        tooltip: 'Ver situação da questão',
-                                        icon: Icon(Icons.picture_as_pdf),
-                                        onPressed: () {
-                                          launch(tarefa.situacao.url);
-                                        },
-                                      ),
+                                      
                                       IconButton(
                                         tooltip: 'Editar tarefa para este aluno',
                                         icon: Icon(Icons.edit),
