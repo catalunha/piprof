@@ -68,7 +68,7 @@ class _PastaListPageState extends State<PastaListPage> {
 
             int ordemLocal = 1;
             for (var pasta in snapshot.data.pastaList) {
-              print(pasta.id);
+              print('listando pasta: ${pasta.id}');
               listaWidget.add(
                 Card(
                   child: Column(

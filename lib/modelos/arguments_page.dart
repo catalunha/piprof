@@ -39,3 +39,9 @@ class SimulacaoVariavelCRUDPageArguments {
 
   SimulacaoVariavelCRUDPageArguments({this.simulacaoID, this.variavelKey});
 }
+class SimulacaoPedeseCRUDPageArguments {
+  final String simulacaoID;
+  final String pedeseKey;
+
+  SimulacaoPedeseCRUDPageArguments({this.simulacaoID, this.pedeseKey});
+}

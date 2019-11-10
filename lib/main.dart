@@ -18,6 +18,8 @@ import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_crud_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_list_page.dart';
+import 'package:piprof/paginas/simulacao/simulacao_pedese_crud_page.dart';
+import 'package:piprof/paginas/simulacao/simulacao_pedese_list_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_variavel_crud_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_variavel_list_page.dart';
 import 'package:piprof/paginas/situacao/situacao_crud_page.dart';
@@ -178,6 +180,19 @@ class MyApp extends StatelessWidget {
             variavelKey: args.variavelKey,
           );
         },
+       "/simulacao/pedese/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return SimulacaoPedeseListPage(settings.arguments);
+        },
+        "/simulacao/pedese/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          final SimulacaoPedeseCRUDPageArguments args = settings.arguments;
+          return PedeseCRUDPage(
+            simulacaoID: args.simulacaoID,
+            pedeseKey: args.pedeseKey,
+          );
+        },
+
 
         //tarefa
         "/tarefa/list": (context) {

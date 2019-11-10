@@ -176,13 +176,13 @@
         "ordem": 0,
         "nome": "d",
         "tipo": "imagem",
-        "urlGabarito": "null || informado do google docs"
+        "gabarito": "null || informado do google docs"
       },
       "uid4": {
         "ordem": 0,
         "nome": "e",
         "tipo": "arquivo",
-        "urlGabarito": "null || informado do google docs"
+        "gabarito": "null || informado do google docs"
       },
       "uid5": {
         "ordem": 0,

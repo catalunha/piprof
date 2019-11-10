@@ -101,11 +101,11 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                               tooltip: 'Gerenciar Pede-se',
                               icon: Icon(Icons.assignment),
                               onPressed: () {
-                                // Navigator.pushNamed(
-                                //   context,
-                                //   "/situacao/list",
-                                //   arguments: pasta.id,
-                                // );
+                                 Navigator.pushNamed(
+                                  context,
+                                  "/simulacao/pedese/list",
+                                  arguments: simulacao.id,
+                                );
                               },
                             ),
                           ],
