@@ -50,12 +50,14 @@ class _PastaCRUDPageState extends State<PastaCRUDPage> {
                     }
                   : null,
               child: Icon(Icons.cloud_upload),
-              backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              backgroundColor:
+                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
       body: StreamBuilder<PastaCRUDBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<PastaCRUDBlocState> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<PastaCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -65,21 +67,26 @@ class _PastaCRUDPageState extends State<PastaCRUDPage> {
           // if (snapshot.data.isDataValid) {
           return ListView(
             children: <Widget>[
-             
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: PastaNome(bloc)),
+              // Padding(padding: EdgeInsets.all(5.0), child: PastaNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Descrição:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: PastaDescricao(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'descricao')),
+
               Divider(),
 
               Padding(
@@ -94,70 +101,49 @@ class _PastaCRUDPageState extends State<PastaCRUDPage> {
               Padding(padding: EdgeInsets.only(top: 100)),
             ],
           );
-     
         },
       ),
     );
   }
 }
 
-class PastaNome extends StatefulWidget {
-  final PastaCRUDBloc bloc;
-  PastaNome(this.bloc);
-  @override
-  PastaNomeState createState() {
-    return PastaNomeState(bloc);
-  }
-}
 
-class PastaNomeState extends State<PastaNome> {
-  final _textFieldController = TextEditingController();
+class _TextFieldMultiplo extends StatefulWidget {
   final PastaCRUDBloc bloc;
-  PastaNomeState(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<PastaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<PastaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class PastaDescricao extends StatefulWidget {
-  final PastaCRUDBloc bloc;
-  PastaDescricao(this.bloc);
-  @override
-  PastaDescricaoState createState() {
-    return PastaDescricaoState(bloc);
-  }
-}
-
-class PastaDescricaoState extends State<PastaDescricao> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final PastaCRUDBloc bloc;
-  PastaDescricaoState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PastaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<PastaCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<PastaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.descricao;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -166,8 +152,8 @@ class PastaDescricaoState extends State<PastaDescricao> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateDescricaoEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextoEvent(campo, texto));
           },
         );
       },

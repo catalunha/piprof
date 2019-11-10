@@ -28,6 +28,12 @@ class UpdateDescricaoEvent extends PastaCRUDBlocEvent {
   UpdateDescricaoEvent(this.descricao);
 }
 
+class UpdateTextoEvent extends PastaCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextoEvent(this.campo, this.texto);
+}
+
 class SaveEvent extends PastaCRUDBlocEvent {}
 
 class DeleteDocumentEvent extends PastaCRUDBlocEvent {}
@@ -108,6 +114,13 @@ class PastaCRUDBloc {
     if (event is UpdateDescricaoEvent) {
       _state.descricao = event.descricao;
     }
+    if (event is UpdateTextoEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'descricao') {
+        _state.descricao = event.texto;
+      }
+    }
     if (event is SaveEvent) {
       final docRef =
           _firestore.collection(PastaModel.collection).document(_state.pastaID);
@@ -117,7 +130,6 @@ class PastaCRUDBloc {
         descricao: _state.descricao,
       );
       if (_state.pastaID == null) {
-
         pastaModel.numero = _state.usuarioAuth.pastaNumeroAdicionado ?? 0 + 1;
         // +++ Atualizar usuario com mais uma pasta em seu cadastro
         final usuarioDocRef = _firestore
