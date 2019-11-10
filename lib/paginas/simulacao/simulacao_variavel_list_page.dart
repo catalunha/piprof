@@ -1,1 +1,136 @@
-list variavel com map
+import 'package:flutter/material.dart';
+import 'package:piprof/bootstrap.dart';
+import 'package:piprof/modelos/arguments_page.dart';
+import 'package:piprof/modelos/simulacao_model.dart';
+import 'package:piprof/paginas/simulacao/simulacao_variavel_list_bloc.dart';
+import 'package:queries/collections.dart';
+
+class SimulacaoVariavelListPage extends StatefulWidget {
+  final String simulacaoID;
+
+  const SimulacaoVariavelListPage(this.simulacaoID);
+  @override
+  _SimulacaoVariavelListPageState createState() =>
+      _SimulacaoVariavelListPageState();
+}
+
+class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
+  SimulacaoVariavelListBloc bloc;
+  @override
+  void initState() {
+    super.initState();
+    bloc = SimulacaoVariavelListBloc(
+      Bootstrap.instance.firestore,
+    );
+    bloc.eventSink(GetSimulacaoEvent(widget.simulacaoID));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Variáveis da simulação'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            "/simulacao/variavel/crud",
+            arguments: SimulacaoVariavelCRUDPageArguments(
+                simulacaoID: widget.simulacaoID),
+          );
+        },
+      ),
+      body: StreamBuilder<SimulacaoVariavelListBlocState>(
+        stream: bloc.stateStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<SimulacaoVariavelListBlocState> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Existe algo errado! Informe o suporte.");
+          }
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.data.isDataValid) {
+            List<Widget> listaWidget = List<Widget>();
+
+            int lengthTurma = snapshot.data.variavelMap.length;
+            int ordemLocal = 1;
+            for (var variavel in snapshot.data.variavelMap.entries) {
+              listaWidget.add(
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('${variavel.value.nome}'),
+                        subtitle: Text('${snapshot.data.simulacao.id}'),
+                      ),
+                      Center(
+                        child: Wrap(
+                          children: <Widget>[
+                            IconButton(
+                              tooltip: 'Editar este variável',
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/simulacao/variavel/crud",
+                                  arguments: SimulacaoVariavelCRUDPageArguments(
+                                    simulacaoID: snapshot.data.simulacao.id,
+                                      variavelKey: variavel.key),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              tooltip: 'Descer ordem da variavel',
+                              icon: Icon(Icons.arrow_downward),
+                              onPressed: (ordemLocal) < lengthTurma
+                                  ? () {
+                                      bloc.eventSink(OrdenarInMapEvent(
+                                          variavel.key, false));
+                                    }
+                                  : null,
+                            ),
+                            IconButton(
+                              tooltip: 'Subir ordem da variavel',
+                              icon: Icon(Icons.arrow_upward),
+                              onPressed: ordemLocal > 1
+                                  ? () {
+                                      bloc.eventSink(OrdenarInMapEvent(
+                                          variavel.key, true));
+                                    }
+                                  : null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+              ordemLocal++;
+            }
+            listaWidget.add(Container(
+              padding: EdgeInsets.only(top: 70),
+            ));
+
+            return ListView(
+              children: listaWidget,
+            );
+          } else {
+            return Center(
+              child: Text('Sem variáveis para listar.'),
+            );
+          }
+        },
+      ),
+    );
+  }
+}

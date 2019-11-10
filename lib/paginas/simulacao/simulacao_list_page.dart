@@ -68,7 +68,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                       ListTile(
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                            '${simulacao.descricao}\nVariáveis: ${simulacao?.variavel?.length ?? 0}\nPede-se: ${simulacao?.pedese?.length ?? 0}'),
+                            '${simulacao.descricao}\nVariáveis: ${simulacao?.variavel?.length ?? 0}\nPede-se: ${simulacao?.pedese?.length ?? 0}\nid:${simulacao.id}'),
                       ),
                       Center(
                         child: Wrap(
@@ -90,11 +90,11 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                               tooltip: 'Gerenciar variáveis',
                               icon: Icon(Icons.videogame_asset),
                               onPressed: () {
-                                // Navigator.pushNamed(
-                                //   context,
-                                //   "/situacao/list",
-                                //   arguments: pasta.id,
-                                // );
+                                Navigator.pushNamed(
+                                  context,
+                                  "/simulacao/variavel/list",
+                                  arguments: simulacao.id,
+                                );
                               },
                             ),
                             IconButton(

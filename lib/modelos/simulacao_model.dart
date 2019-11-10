@@ -15,8 +15,8 @@ class SimulacaoModel extends FirestoreModel {
   String nome;
   String descricao;
   String url;
-  Map<String, Variavel> variavel;
-  Map<String, Pedese> pedese;
+  Map<String, Variavel> variavel=Map<String, Variavel>();
+  Map<String, Pedese> pedese=Map<String, Pedese>();
 
   SimulacaoModel({
     String id,

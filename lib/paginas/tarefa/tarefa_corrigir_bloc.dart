@@ -18,6 +18,7 @@ class UpdatePedeseNotaEvent extends TarefaCorrigirBlocEvent {
 }
 
 class SaveEvent extends TarefaCorrigirBlocEvent {}
+
 //TODO: retirar esta estrutura de PedeseInfo e usar o padrao pedese verificando o null e 0 no page
 class PedeseInfo {
   final Pedese pedese;
@@ -39,7 +40,6 @@ class TarefaCorrigirBlocState {
             pedese.value.nota == null || pedese.value.nota == 0 ? false : true,
       );
     }
-    Map<String, Variavel> variavelMap;
     var dic = Dictionary.fromMap(pedeseInfoMap);
     var dicOrderBy = dic
         .orderBy((kv) => kv.value.pedese.ordem)
