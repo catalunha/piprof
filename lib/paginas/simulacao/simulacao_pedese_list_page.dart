@@ -79,11 +79,26 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
                     launch(pedese.value.gabarito);
                   },
                 );
-                
+              } else if (pedese.value.tipo == 'urlimagem') {
+                icone = IconButton(
+                  tooltip: 'Um link ao uma imagem',
+                  icon: Icon(Icons.image),
+                  onPressed: () {
+                    launch(pedese.value.gabarito);
+                  },
+                );
+              } else if (pedese.value.tipo == 'arquivo') {
+                icone = IconButton(
+                  tooltip: 'Um arquivo anexado',
+                  icon: Icon(Icons.description),
+                  onPressed: () {
+                    launch(pedese.value.gabarito);
+                  },
+                );
               } else if (pedese.value.tipo == 'imagem') {
                 icone = IconButton(
-                  tooltip: 'Click para ver a imagem',
-                  icon: Icon(Icons.image),
+                  tooltip: 'Uma imagem anexada',
+                  icon: Icon(Icons.add_photo_alternate),
                   onPressed: () {
                     launch(pedese.value.gabarito);
                   },

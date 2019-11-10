@@ -63,11 +63,10 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
 
             int lengthTurma = snapshot.data.variavelMap.length;
             int ordemLocal = 1;
-                        Widget icone;
+            Widget icone;
 
             for (var variavel in snapshot.data.variavelMap.entries) {
-
-         if (variavel.value.tipo == 'numero') {
+              if (variavel.value.tipo == 'numero') {
                 icone = Icon(Icons.looks_one);
               } else if (variavel.value.tipo == 'palavra') {
                 icone = Icon(Icons.text_format);
@@ -81,7 +80,6 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
                     launch(variavel.value.valor);
                   },
                 );
-                
               } else if (variavel.value.tipo == 'imagem') {
                 icone = IconButton(
                   tooltip: 'Click para ver a imagem',
@@ -98,7 +96,7 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
                     children: <Widget>[
                       ListTile(
                         title: Text('${variavel.value.nome}'),
-                        subtitle: Text('${variavel.value.valor}'),
+                        subtitle: Text('${variavel.value.valor.substring(0, variavel.value.valor.length > 125 ? 125 : variavel.value.valor.length)}'),
                         trailing: icone,
                       ),
                       Center(
@@ -112,7 +110,7 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
                                   context,
                                   "/simulacao/variavel/crud",
                                   arguments: SimulacaoVariavelCRUDPageArguments(
-                                    simulacaoID: snapshot.data.simulacao.id,
+                                      simulacaoID: snapshot.data.simulacao.id,
                                       variavelKey: variavel.key),
                                 );
                               },

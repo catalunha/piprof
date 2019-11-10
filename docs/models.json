@@ -142,73 +142,79 @@
     },
     "ordemAdicionada": 0,
     "variavel": {
-      "uid0": {
-        "ordem": 0,
-        "nome": "pressao",
+      "uid1": {
+        "ordem": 1,
+        "nome": "",
         "tipo": "numero",
         "valor": ""
       },
-      "uid1": {
-        "ordem": 0,
-        "nome": "pressao",
+      "uid2": {
+        "ordem": 2,
+        "nome": "",
         "tipo": "palavra",
         "valor": ""
       },
-      "uid2": {
-        "ordem": 0,
-        "nome": "pressao",
+      "uid3": {
+        "ordem": 3,
+        "nome": "",
         "tipo": "texto",
         "valor": ""
       },
-      "uid3": {
-        "ordem": 0,
-        "nome": "temperatura",
+      "uid4": {
+        "ordem": 4,
+        "nome": "",
         "tipo": "url",
         "valor": ""
       },
-      "uid4": {
-        "ordem": 0,
-        "nome": "temperatura",
-        "tipo": "imagem",
+      "uid5": {
+        "ordem": 5,
+        "nome": "",
+        "tipo": "urlimagem",
         "valor": ""
       }
     },
     "pedese": {
-      "uid0": {
-        "ordem": 0,
+      "uid1": {
+        "ordem": 1,
         "nome": "a",
         "tipo": "numero",
-        "gabarito": "valor"
-      },
-      "uid1": {
-        "ordem": 0,
-        "nome": "b",
-        "tipo": "palavra",
-        "gabarito": "valor"
+        "gabarito": ""
       },
       "uid2": {
-        "ordem": 0,
-        "nome": "c",
-        "tipo": "texto",
-        "gabarito": "valor"
+        "ordem": 2,
+        "nome": "b",
+        "tipo": "palavra",
+        "gabarito": ""
       },
       "uid3": {
-        "ordem": 0,
-        "nome": "d",
-        "tipo": "imagem",
-        "gabarito": "null || informado do google docs"
+        "ordem": 3,
+        "nome": "c",
+        "tipo": "texto",
+        "gabarito": ""
       },
       "uid4": {
-        "ordem": 0,
-        "nome": "e",
-        "tipo": "arquivo",
-        "gabarito": "null || informado do google docs"
+        "ordem": 4,
+        "nome": "d",
+        "tipo": "url",
+        "gabarito": ""
       },
       "uid5": {
-        "ordem": 0,
+        "ordem": 5,
         "nome": "f",
-        "tipo": "url",
-        "gabarito": "valor"
+        "tipo": "urlimagem",
+        "gabarito": ""
+      },
+      "uid6": {
+        "ordem": 6,
+        "nome": "e",
+        "tipo": "arquivo",
+        "gabarito": ""
+      },
+      "uid7": {
+        "ordem": 7,
+        "nome": "e",
+        "tipo": "imagem",
+        "gabarito": ""
       }
     }
   },
@@ -303,55 +309,81 @@
     },
     "simulacao": "Simulacao/simulacaoID",
     "variavel": {
-      "uid0": {
-        "ordem": 0,
-        "nome": "pressao",
-        "valor": "numero/texto"
-      },
       "uid1": {
-        "ordem": 0,
-        "nome": "temperatura",
-        "valor": "numero/texto"
+        "ordem": 1,
+        "nome": "",
+        "tipo": "numero",
+        "valor": ""
+      },
+      "uid2": {
+        "ordem": 2,
+        "nome": "",
+        "tipo": "palavra",
+        "valor": ""
+      },
+      "uid3": {
+        "ordem": 3,
+        "nome": "",
+        "tipo": "texto",
+        "valor": ""
+      },
+      "uid4": {
+        "ordem": 4,
+        "nome": "",
+        "tipo": "url",
+        "valor": ""
+      },
+      "uid5": {
+        "ordem": 5,
+        "nome": "",
+        "tipo": "urlimagem",
+        "valor": ""
       }
     },
     "pedese": {
-      "uid0": {
+      "uid1": {
         "nome": "a",
-        "ordem": 0,
+        "ordem": 1,
         "tipo": "numero",
         "gabarito": "valor",
         "resposta": "valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
-      "uid1": {
+      "uid2": {
         "nome": "b",
-        "ordem": 0,
+        "ordem": 2,
         "tipo": "palavra",
         "gabarito": "valor",
         "resposta": "valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
-      "uid2": {
+      "uid3": {
         "nome": "c",
-        "ordem": 0,
+        "ordem": 3,
         "tipo": "texto",
         "gabarito": "valor",
         "resposta": "valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
-      "uid3": {
+      "uid4": {
         "nome": "d",
-        "ordem": 0,
-        "tipo": "imagem",
+        "ordem": 4,
+        "tipo": "url",
         "gabarito": "url valor",
         "resposta": "url null || valor",
-        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
-        "gabaritoUploadID": "Upload/uploadID",
-        "respostaUploadID": "Upload/uploadID"
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
-      "uid4": {
+      "uid5": {
+        "nome": "d",
+        "ordem": 5,
+        "tipo": "urlimagem",
+        "gabarito": "url valor",
+        "resposta": "url null || valor",
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
+      },
+      "uid6": {
         "nome": "e",
-        "ordem": 0,
+        "ordem": 6,
         "tipo": "arquivo",
         "gabarito": "url valor",
         "resposta": "url null || valor",
@@ -359,13 +391,15 @@
         "gabaritoUploadID": "Upload/uploadID",
         "respostaUploadID": "Upload/uploadID"
       },
-      "uid5": {
+      "uid7": {
         "nome": "f",
-        "ordem": 0,
-        "tipo": "url",
+        "ordem": 7,
+        "tipo": "imagem",
         "gabarito": "url valor",
         "resposta": "url null || valor",
-        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
+        "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
+        "gabaritoUploadID": "Upload/uploadID",
+        "respostaUploadID": "Upload/uploadID"
       }
     },
     "aluno": {

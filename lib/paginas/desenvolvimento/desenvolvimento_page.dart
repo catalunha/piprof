@@ -78,8 +78,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  // await cadastrarTarefa01();
-                  await cadastrarTarefa02();
+                  await cadastrarTarefa01();
+                  // await cadastrarTarefa02();
                 },
               ),
             ),
@@ -413,23 +413,44 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         simulacao: 'simulacao01',
         variavel: {
           'var01': Variavel(
-            nome: 'N1',
-            ordem: 0,
+            nome: 'v1',
+            ordem: 1,
             valor: '1',
+            tipo: 'numero',
           ),
           'var02': Variavel(
-            nome: 'N2',
-            ordem: 1,
-            valor: '2',
+            nome: 'v2',
+            ordem: 2,
+            valor: 'a',
+            tipo: 'palavra',
+          ),
+          'var03': Variavel(
+            nome: 'v3',
+            ordem: 3,
+            valor: 'b bb bbb',
+            tipo: 'texto',
+          ),
+          'var04': Variavel(
+            nome: 'v4',
+            ordem: 4,
+            valor: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086',
+            tipo: 'url',
+          ),
+          'var05': Variavel(
+            nome: 'v5',
+            ordem: 5,
+            valor: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086',
+            tipo: 'urlimagem',
           )
         },
         pedese: {
-          'pedese01': Pedese(nome: 'a', ordem: 0, tipo: 'numero', gabarito: '20'),
-          'pedese02': Pedese(nome: 'b', ordem: 1, tipo: 'palavra', gabarito: 'sim'),
-          'pedese03': Pedese(nome: 'c', ordem: 2, tipo: 'texto', gabarito: 'sim'),
-          'pedese04': Pedese(nome: 'd', ordem: 3, tipo: 'url', gabarito: 'sim'),
-          'pedese05': Pedese(nome: 'e', ordem: 4, tipo: 'arquivo', gabarito: 'sim'),
-          'pedese06': Pedese(nome: 'f', ordem: 5, tipo: 'imagem', gabarito: 'sim'),
+          'pedese01': Pedese(nome: 'a', ordem: 1, nota:0, tipo: 'numero', gabarito: '20', resposta:'20'),
+          'pedese02': Pedese(nome: 'b', ordem: 2, nota:0, tipo: 'palavra', gabarito: 'sim', resposta:'sim'),
+          'pedese03': Pedese(nome: 'c', ordem: 3, nota:0, tipo: 'texto', gabarito: 'sim ou nao', resposta:'sim ou nao'),
+          'pedese04': Pedese(nome: 'd', ordem: 4, nota:0, tipo: 'url', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a'),
+          'pedese05': Pedese(nome: 'e', ordem: 5, nota:0, tipo: 'urlimagem', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086'),
+          'pedese06': Pedese(nome: 'f', ordem: 6, nota:0, tipo: 'arquivo', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a'),
+          'pedese07': Pedese(nome: 'g', ordem: 7, nota:0, tipo: 'imagem', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086'),
         });
 
     // print('=>>>>>>>> ${tarefaModel.aberta}');

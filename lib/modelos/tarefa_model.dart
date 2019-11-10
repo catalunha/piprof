@@ -233,13 +233,20 @@ class TarefaModel extends FirestoreModel {
 class Variavel {
   String nome;
   int ordem;
+  String tipo;
   String valor;
 
-  Variavel({this.nome, this.ordem, this.valor});
+  Variavel({
+    this.nome,
+    this.ordem,
+    this.tipo,
+    this.valor,
+  });
 
   Variavel.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('ordem')) ordem = map['ordem'];
     if (map.containsKey('nome')) nome = map['nome'];
+    if (map.containsKey('tipo')) tipo = map['tipo'];
     if (map.containsKey('valor')) valor = map['valor'];
   }
 
@@ -247,6 +254,7 @@ class Variavel {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (ordem != null) data['ordem'] = this.ordem;
     if (nome != null) data['nome'] = this.nome;
+    if (tipo != null) data['tipo'] = this.tipo;
     if (valor != null) data['valor'] = this.valor;
     return data;
   }

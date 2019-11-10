@@ -1,5 +1,5 @@
 import 'package:firebase/firebase.dart'
-    if (dart.library.io) 'package:pialuno/naosuportato/firebase.dart';
+    if (dart.library.io) 'package:piprof/naosuportato/firebase.dart';
 
 void webSetUp() {
   initializeApp(
