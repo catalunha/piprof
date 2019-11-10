@@ -19,6 +19,11 @@ class GetVariavelEvent extends SimulacaoVariavelCRUDBlocEvent {
   GetVariavelEvent(this.variavelKey);
 }
 
+class UpdateTipoEvent extends SimulacaoVariavelCRUDBlocEvent {
+  final String tipo;
+  UpdateTipoEvent(this.tipo);
+}
+
 class UpdateNomeEvent extends SimulacaoVariavelCRUDBlocEvent {
   final String nome;
   UpdateNomeEvent(this.nome);
@@ -41,10 +46,12 @@ class SimulacaoVariavelCRUDBlocState {
 
   String nome;
   String valor;
+  String tipo;
 
   void updateState() {
     nome = variavel.nome;
     valor = variavel.valor;
+    tipo = variavel.tipo;
   }
 }
 
@@ -86,6 +93,9 @@ class SimulacaoVariavelCRUDBloc {
     if (_state.valor == null) {
       _state.isDataValid = false;
     }
+    if (_state.tipo == null) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(SimulacaoVariavelCRUDBlocEvent event) async {
@@ -106,6 +116,9 @@ class SimulacaoVariavelCRUDBloc {
       _state.variavel = _state.simulacao.variavel[event.variavelKey];
       _state.updateState();
     }
+    if (event is UpdateTipoEvent) {
+      _state.tipo = event.tipo;
+    }
     if (event is UpdateNomeEvent) {
       _state.nome = event.nome;
     }
@@ -120,6 +133,7 @@ class SimulacaoVariavelCRUDBloc {
       Variavel variavelUpdate = Variavel(
         nome: _state.nome,
         valor: _state.valor,
+        tipo: _state.tipo,
       );
       if (_state.variavelKey == null) {
         final uuidG = uuid.Uuid();

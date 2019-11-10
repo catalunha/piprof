@@ -68,6 +68,13 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
           // if (snapshot.data.isDataValid) {
           return ListView(
             children: <Widget>[
+                  Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Tipo:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: PainelTipo(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -173,6 +180,129 @@ class VariavelValorState extends State<VariavelValor> {
             bloc.eventSink(UpdateValorEvent(text));
           },
         );
+      },
+    );
+  }
+}
+
+class PainelTipo extends StatefulWidget {
+  final SimulacaoVariavelCRUDBloc bloc;
+  PainelTipo(this.bloc);
+  @override
+  PainelTipoState createState() {
+    return PainelTipoState(bloc);
+  }
+}
+
+class PainelTipoState extends State<PainelTipo> {
+  final SimulacaoVariavelCRUDBloc bloc;
+  PainelTipoState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<SimulacaoVariavelCRUDBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<SimulacaoVariavelCRUDBlocState> snapshot) {
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'numero',
+                      groupValue: snapshot.data?.tipo,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateTipoEvent(radioValue));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Um número inteiro ou decimal',
+                      icon: Icon(Icons.looks_one),
+                      onPressed: () {},
+                    ),
+                  ]),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'palavra',
+                      groupValue: snapshot.data?.tipo,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateTipoEvent(radioValue));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Um palavra ou frase curta',
+                      icon: Icon(Icons.text_format),
+                      onPressed: () {},
+                    ),
+                  ]),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'texto',
+                      groupValue: snapshot.data?.tipo,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateTipoEvent(radioValue));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Um texto com várias linhas',
+                      icon: Icon(Icons.text_fields),
+                      onPressed: () {},
+                    ),
+                  ]),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'url',
+                      groupValue: snapshot.data?.tipo,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateTipoEvent(radioValue));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Um link ao um site ou arquivo',
+                      icon: Icon(Icons.link),
+                      onPressed: () {},
+                    ),
+                  ]),
+              // Column(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: <Widget>[
+              //       Radio(
+              //         value: 'arquivo',
+              //         groupValue: snapshot.data?.tipo,
+              //         onChanged: (radioValue) {
+              //           bloc.eventSink(UpdateTipoEvent(radioValue));
+              //         },
+              //       ),
+              //       IconButton(
+              //         tooltip: 'Um link a um arquivo',
+              //         icon: Icon(Icons.description),
+              //         onPressed: () {},
+              //       ),
+              //     ]),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'imagem',
+                      groupValue: snapshot.data?.tipo,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateTipoEvent(radioValue));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Um link a uma imagem',
+                      icon: Icon(Icons.image),
+                      onPressed: () {},
+                    ),
+                  ]),
+            ]);
       },
     );
   }

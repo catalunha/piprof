@@ -265,27 +265,27 @@ class PainelTipoState extends State<PainelTipo> {
                       },
                     ),
                     IconButton(
-                      tooltip: 'Um link ao um site',
+                      tooltip: 'Um link ao um site ou arquivo',
                       icon: Icon(Icons.link),
                       onPressed: () {},
                     ),
                   ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'arquivo',
-                      groupValue: snapshot.data?.tipo,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateTipoEvent(radioValue));
-                      },
-                    ),
-                    IconButton(
-                      tooltip: 'Um link a um arquivo',
-                      icon: Icon(Icons.description),
-                      onPressed: () {},
-                    ),
-                  ]),
+              // Column(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: <Widget>[
+              //       Radio(
+              //         value: 'arquivo',
+              //         groupValue: snapshot.data?.tipo,
+              //         onChanged: (radioValue) {
+              //           bloc.eventSink(UpdateTipoEvent(radioValue));
+              //         },
+              //       ),
+              //       IconButton(
+              //         tooltip: 'Um link a um arquivo',
+              //         icon: Icon(Icons.description),
+              //         onPressed: () {},
+              //       ),
+              //     ]),
               Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

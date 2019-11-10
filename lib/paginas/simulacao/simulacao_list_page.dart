@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
-import 'package:piprof/componentes/default_scaffold.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_list_bloc.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class SimulacaoListPage extends StatefulWidget {
   final String situacaoID;
@@ -68,7 +69,16 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                       ListTile(
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                            '${simulacao.descricao}\nVariáveis: ${simulacao?.variavel?.length ?? 0}\nPede-se: ${simulacao?.pedese?.length ?? 0}\nid:${simulacao.id}'),
+                            'Desc.:${simulacao.descricao}\nVariáveis: ${simulacao?.variavel?.length ?? 0}\nPede-se: ${simulacao?.pedese?.length ?? 0}\nid:${simulacao.id}'),
+                        trailing: IconButton(
+                          tooltip: 'Um link ao um site ou arquivo',
+                          icon: Icon(Icons.link),
+                          onPressed: simulacao.url != null
+                              ? () {
+                                  launch(simulacao.url);
+                                }
+                              : null,
+                        ),
                       ),
                       Center(
                         child: Wrap(
@@ -101,7 +111,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                               tooltip: 'Gerenciar Pede-se',
                               icon: Icon(Icons.assignment),
                               onPressed: () {
-                                 Navigator.pushNamed(
+                                Navigator.pushNamed(
                                   context,
                                   "/simulacao/pedese/list",
                                   arguments: simulacao.id,

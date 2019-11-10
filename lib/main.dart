@@ -35,10 +35,11 @@ import 'package:piprof/paginas/turma/turma_inativa_list_page.dart';
 import 'package:piprof/paginas/upload/uploader_page.dart';
 import 'package:piprof/paginas/usuario/perfil_page.dart';
 import 'package:piprof/plataforma/recursos.dart';
+import 'package:piprof/web.dart';
 // import 'package:piprof/web.dart';
 
 void main() {
-  // webSetUp();
+  webSetUp();
   runApp(MyApp());
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/paginas/simulacao/simulacao_pedese_list_bloc.dart';
 
 class SimulacaoPedeseListPage extends StatefulWidget {
@@ -61,14 +63,41 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
 
             int lengthTurma = snapshot.data.pedeseMap.length;
             int ordemLocal = 1;
+            Widget icone;
             for (var pedese in snapshot.data.pedeseMap.entries) {
+              if (pedese.value.tipo == 'numero') {
+                icone = Icon(Icons.looks_one);
+              } else if (pedese.value.tipo == 'palavra') {
+                icone = Icon(Icons.text_format);
+              } else if (pedese.value.tipo == 'texto') {
+                icone = Icon(Icons.text_fields);
+              } else if (pedese.value.tipo == 'url') {
+                icone = IconButton(
+                  tooltip: 'Um link ao um site ou arquivo',
+                  icon: Icon(Icons.link),
+                  onPressed: () {
+                    launch(pedese.value.gabarito);
+                  },
+                );
+                
+              } else if (pedese.value.tipo == 'imagem') {
+                icone = IconButton(
+                  tooltip: 'Click para ver a imagem',
+                  icon: Icon(Icons.image),
+                  onPressed: () {
+                    launch(pedese.value.gabarito);
+                  },
+                );
+              }
+
               listaWidget.add(
                 Card(
                   child: Column(
                     children: <Widget>[
                       ListTile(
                         title: Text('${pedese.value.nome}'),
-                        subtitle: Text('${snapshot.data.simulacao.id}'),
+                        subtitle: Text('${pedese.value.gabarito}'),
+                        trailing: icone,
                       ),
                       Center(
                         child: Wrap(

@@ -33,7 +33,9 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
-
+      rotas["/turma/ativa/list"] = Rota("Turmas ativas", Icons.assignment);
+      rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
+      rotas["/pasta/list"] = Rota("Pastas de situações", Icons.folder);
       rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     }
   }

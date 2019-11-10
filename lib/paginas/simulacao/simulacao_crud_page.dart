@@ -93,7 +93,7 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: SimulacaoDescricao(bloc)),
+                  padding: EdgeInsets.all(5.0), child: SimulacaoUrl(bloc)),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),

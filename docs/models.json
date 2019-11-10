@@ -145,12 +145,32 @@
       "uid0": {
         "ordem": 0,
         "nome": "pressao",
-        "valor": "numero/texto"
+        "tipo": "numero",
+        "valor": ""
       },
       "uid1": {
         "ordem": 0,
+        "nome": "pressao",
+        "tipo": "palavra",
+        "valor": ""
+      },
+      "uid2": {
+        "ordem": 0,
+        "nome": "pressao",
+        "tipo": "texto",
+        "valor": ""
+      },
+      "uid3": {
+        "ordem": 0,
         "nome": "temperatura",
-        "valor": "numero/texto"
+        "tipo": "url",
+        "valor": ""
+      },
+      "uid4": {
+        "ordem": 0,
+        "nome": "temperatura",
+        "tipo": "imagem",
+        "valor": ""
       }
     },
     "pedese": {

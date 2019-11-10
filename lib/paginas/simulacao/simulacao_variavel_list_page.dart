@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
-import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/paginas/simulacao/simulacao_variavel_list_bloc.dart';
-import 'package:queries/collections.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class SimulacaoVariavelListPage extends StatefulWidget {
   final String simulacaoID;
@@ -63,14 +63,43 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
 
             int lengthTurma = snapshot.data.variavelMap.length;
             int ordemLocal = 1;
+                        Widget icone;
+
             for (var variavel in snapshot.data.variavelMap.entries) {
+
+         if (variavel.value.tipo == 'numero') {
+                icone = Icon(Icons.looks_one);
+              } else if (variavel.value.tipo == 'palavra') {
+                icone = Icon(Icons.text_format);
+              } else if (variavel.value.tipo == 'texto') {
+                icone = Icon(Icons.text_fields);
+              } else if (variavel.value.tipo == 'url') {
+                icone = IconButton(
+                  tooltip: 'Um link ao um site ou arquivo',
+                  icon: Icon(Icons.link),
+                  onPressed: () {
+                    launch(variavel.value.valor);
+                  },
+                );
+                
+              } else if (variavel.value.tipo == 'imagem') {
+                icone = IconButton(
+                  tooltip: 'Click para ver a imagem',
+                  icon: Icon(Icons.image),
+                  onPressed: () {
+                    launch(variavel.value.valor);
+                  },
+                );
+              }
+
               listaWidget.add(
                 Card(
                   child: Column(
                     children: <Widget>[
                       ListTile(
                         title: Text('${variavel.value.nome}'),
-                        subtitle: Text('${snapshot.data.simulacao.id}'),
+                        subtitle: Text('${variavel.value.valor}'),
+                        trailing: icone,
                       ),
                       Center(
                         child: Wrap(
