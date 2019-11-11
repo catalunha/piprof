@@ -23,24 +23,10 @@ class UpdateAtivoEvent extends TurmaCRUDBlocEvent {
   UpdateAtivoEvent(this.ativo);
 }
 
-class UpdateInstituicaoEvent extends TurmaCRUDBlocEvent {
-  final String instituicao;
-  UpdateInstituicaoEvent(this.instituicao);
-}
-
-class UpdateComponenteEvent extends TurmaCRUDBlocEvent {
-  final String componente;
-  UpdateComponenteEvent(this.componente);
-}
-
-class UpdateNomeEvent extends TurmaCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateDescricaoEvent extends TurmaCRUDBlocEvent {
-  final String descricao;
-  UpdateDescricaoEvent(this.descricao);
+class UpdateTextFieldEvent extends TurmaCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class SaveEvent extends TurmaCRUDBlocEvent {}
@@ -132,17 +118,16 @@ class TurmaCRUDBloc {
     if (event is UpdateAtivoEvent) {
       _state.ativo = event.ativo;
     }
-    if (event is UpdateInstituicaoEvent) {
-      _state.instituicao = event.instituicao;
-    }
-    if (event is UpdateComponenteEvent) {
-      _state.componente = event.componente;
-    }
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
-    }
-    if (event is UpdateDescricaoEvent) {
-      _state.descricao = event.descricao;
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'instituicao') {
+        _state.instituicao = event.texto;
+      } else if (event.campo == 'componente') {
+        _state.componente = event.texto;
+      } else if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'descricao') {
+        _state.descricao = event.texto;
+      }
     }
     if (event is SaveEvent) {
       final docRef =
@@ -156,8 +141,8 @@ class TurmaCRUDBloc {
         descricao: _state.descricao,
       );
       if (_state.turmaID == null) {
-        turmaModel.questaoNumeroAdicionado=0;
-        turmaModel.questaoNumeroExcluido=0;
+        turmaModel.questaoNumeroAdicionado = 0;
+        turmaModel.questaoNumeroExcluido = 0;
         turmaModel.numero = _state.usuarioAuth.turmaNumeroAdicionado ?? 0 + 1;
         //+++ Atualizar usuario com mais uma turma em seu cadastro
         final usuarioDocRef = _firestore

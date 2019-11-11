@@ -77,7 +77,9 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: SimulacaoNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -85,15 +87,17 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: SimulacaoDescricao(bloc)),
-                  Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'descricao')),
+              Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Url:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: SimulacaoUrl(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'url')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -113,57 +117,30 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
   }
 }
 
-class SimulacaoNome extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final SimulacaoCRUDBloc bloc;
-  SimulacaoNome(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  SimulacaoNomeState createState() {
-    return SimulacaoNomeState(bloc);
-  }
-}
-
-class SimulacaoNomeState extends State<SimulacaoNome> {
-  final _textFieldController = TextEditingController();
-  final SimulacaoCRUDBloc bloc;
-  SimulacaoNomeState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<SimulacaoCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<SimulacaoCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class SimulacaoDescricao extends StatefulWidget {
-  final SimulacaoCRUDBloc bloc;
-  SimulacaoDescricao(this.bloc);
-  @override
-  SimulacaoDescricaoState createState() {
-    return SimulacaoDescricaoState(bloc);
-  }
-}
-
-class SimulacaoDescricaoState extends State<SimulacaoDescricao> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final SimulacaoCRUDBloc bloc;
-  SimulacaoDescricaoState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SimulacaoCRUDBlocState>(
@@ -171,7 +148,13 @@ class SimulacaoDescricaoState extends State<SimulacaoDescricao> {
       builder: (BuildContext context,
           AsyncSnapshot<SimulacaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.descricao;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          } else if (campo == 'url') {
+            _textFieldController.text = snapshot.data?.url;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -180,46 +163,8 @@ class SimulacaoDescricaoState extends State<SimulacaoDescricao> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateDescricaoEvent(text));
-          },
-        );
-      },
-    );
-  }
-}
-
-class SimulacaoUrl extends StatefulWidget {
-  final SimulacaoCRUDBloc bloc;
-  SimulacaoUrl(this.bloc);
-  @override
-  SimulacaoDescrUrl createState() {
-    return SimulacaoDescrUrl(bloc);
-  }
-}
-
-class SimulacaoDescrUrl extends State<SimulacaoUrl> {
-  final _textFieldController = TextEditingController();
-  final SimulacaoCRUDBloc bloc;
-  SimulacaoDescrUrl(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<SimulacaoCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<SimulacaoCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.url;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateUrlEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },

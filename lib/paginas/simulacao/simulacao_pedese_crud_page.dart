@@ -81,7 +81,9 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: PedeseNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -89,7 +91,8 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: PedeseGabarito(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'gabarito')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -109,57 +112,30 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
   }
 }
 
-class PedeseNome extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final SimulacaoPedeseCRUDBloc bloc;
-  PedeseNome(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  PedeseNomeState createState() {
-    return PedeseNomeState(bloc);
-  }
-}
-
-class PedeseNomeState extends State<PedeseNome> {
-  final _textFieldController = TextEditingController();
-  final SimulacaoPedeseCRUDBloc bloc;
-  PedeseNomeState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<SimulacaoPedeseCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<SimulacaoPedeseCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class PedeseGabarito extends StatefulWidget {
-  final SimulacaoPedeseCRUDBloc bloc;
-  PedeseGabarito(this.bloc);
-  @override
-  PedeseGabaritoState createState() {
-    return PedeseGabaritoState(bloc);
-  }
-}
-
-class PedeseGabaritoState extends State<PedeseGabarito> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final SimulacaoPedeseCRUDBloc bloc;
-  PedeseGabaritoState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SimulacaoPedeseCRUDBlocState>(
@@ -167,7 +143,11 @@ class PedeseGabaritoState extends State<PedeseGabarito> {
       builder: (BuildContext context,
           AsyncSnapshot<SimulacaoPedeseCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.gabarito;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'gabarito') {
+            _textFieldController.text = snapshot.data?.gabarito;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -176,8 +156,8 @@ class PedeseGabaritoState extends State<PedeseGabarito> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateGabaritoEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },

@@ -80,7 +80,8 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
       children: <Widget>[
         StreamBuilder<TarefaCRUDBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -157,7 +158,8 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
       children: <Widget>[
         StreamBuilder<TarefaCRUDBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -210,12 +212,14 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
                     }
                   : null,
               child: Icon(Icons.cloud_upload),
-              backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              backgroundColor:
+                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
       body: StreamBuilder<TarefaCRUDBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -265,7 +269,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: AvaliacaoTempo(bloc),
+                child: _NumberFieldMultiplo(bloc, 'tempo'),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -276,7 +280,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: AvalicaoTentativa(bloc),
+                child: _NumberFieldMultiplo(bloc, 'tentativa'),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -287,7 +291,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: ErroRelativo(bloc),
+                child: _NumberFieldMultiplo(bloc, 'erroRelativo'),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -298,7 +302,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: AvaliacaoNota(bloc),
+                child: _NumberFieldMultiplo(bloc, 'avaliacaoNota'),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -309,7 +313,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: QuestaoNota(bloc),
+                child: _NumberFieldMultiplo(bloc, 'questaoNota'),
               ),
               Divider(),
               Padding(
@@ -335,194 +339,59 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
   }
 }
 
-class AvaliacaoTempo extends StatefulWidget {
+class _NumberFieldMultiplo extends StatefulWidget {
   final TarefaCRUDBloc bloc;
-  AvaliacaoTempo(this.bloc);
+  final String campo;
+  _NumberFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  AvaliacaoTempoState createState() {
-    return AvaliacaoTempoState(bloc);
-  }
-}
-
-class AvaliacaoTempoState extends State<AvaliacaoTempo> {
-  final _textFieldController = TextEditingController();
-  final TarefaCRUDBloc bloc;
-  AvaliacaoTempoState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TarefaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.tempo;
-        }
-        return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal: false,signed: false),
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(
-              UpdateTempoEvent(text),
-            );
-          },
-        );
-      },
+  _NumberFieldMultiploState createState() {
+    return _NumberFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class AvalicaoTentativa extends StatefulWidget {
-  final TarefaCRUDBloc bloc;
-  AvalicaoTentativa(this.bloc);
-  @override
-  AvalicaoTentativaState createState() {
-    return AvalicaoTentativaState(bloc);
-  }
-}
-
-class AvalicaoTentativaState extends State<AvalicaoTentativa> {
+class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final TarefaCRUDBloc bloc;
-  AvalicaoTentativaState(this.bloc);
+  final String campo;
+  _NumberFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<TarefaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.tentativa;
+          if (campo == 'tempo') {
+            _textFieldController.text = snapshot.data?.tempo;
+          } else if (campo == 'tentativa') {
+            _textFieldController.text = snapshot.data?.tentativa;
+          } else if (campo == 'erroRelativo') {
+            _textFieldController.text = snapshot.data?.erroRelativo;
+          } else if (campo == 'avaliacaoNota') {
+            _textFieldController.text = snapshot.data?.avaliacaoNota;
+          } else if (campo == 'questaoNota') {
+            _textFieldController.text = snapshot.data?.questaoNota;
+          }
         }
         return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal: false,signed: false),
+          keyboardType:
+              TextInputType.numberWithOptions(decimal: false, signed: false),
           maxLines: null,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(
-              UpdateTentativaEvent(text),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class ErroRelativo extends StatefulWidget {
-  final TarefaCRUDBloc bloc;
-  ErroRelativo(this.bloc);
-  @override
-  ErroRelativoState createState() {
-    return ErroRelativoState(bloc);
-  }
-}
-
-class ErroRelativoState extends State<ErroRelativo> {
-  final _textFieldController = TextEditingController();
-  final TarefaCRUDBloc bloc;
-  ErroRelativoState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TarefaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.erroRelativo;
-        }
-        return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal: false,signed: false),
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(
-              UpdateErroRelativoEvent(text),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class AvaliacaoNota extends StatefulWidget {
-  final TarefaCRUDBloc bloc;
-  AvaliacaoNota(this.bloc);
-  @override
-  AvaliacaoNotaState createState() {
-    return AvaliacaoNotaState(bloc);
-  }
-}
-
-class AvaliacaoNotaState extends State<AvaliacaoNota> {
-  final _textFieldController = TextEditingController();
-  final TarefaCRUDBloc bloc;
-  AvaliacaoNotaState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TarefaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.avaliacaoNota;
-        }
-        return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal: false,signed: false),
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(
-              UpdateAvaliacaoNotaEvent(text),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class QuestaoNota extends StatefulWidget {
-  final TarefaCRUDBloc bloc;
-  QuestaoNota(this.bloc);
-  @override
-  QuestaoNotaState createState() {
-    return QuestaoNotaState(bloc);
-  }
-}
-
-class QuestaoNotaState extends State<QuestaoNota> {
-  final _textFieldController = TextEditingController();
-  final TarefaCRUDBloc bloc;
-  QuestaoNotaState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TarefaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.questaoNota;
-        }
-        return TextField(
-          keyboardType: TextInputType.numberWithOptions(decimal: false,signed: false),
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(
-              UpdateQuestaoNotaEvent(text),
-            );
+          onChanged: (texto) {
+            bloc.eventSink(UpdateNumberFieldEvent(campo, texto));
           },
         );
       },

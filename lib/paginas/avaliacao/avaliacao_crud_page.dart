@@ -244,14 +244,16 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: EncontroNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Nota:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: EncontroNota(bloc)),
+              Padding(padding: EdgeInsets.all(5.0), child: _NumberFieldMultiplo(bloc,'nota')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -259,7 +261,8 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: EncontroDescricao(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'descricao')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -280,19 +283,30 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
   }
 }
 
-class EncontroNome extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final AvaliacaoCRUDBloc bloc;
-  EncontroNome(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  EncontroNomeState createState() {
-    return EncontroNomeState(bloc);
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
+    );
   }
 }
 
-class EncontroNomeState extends State<EncontroNome> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final AvaliacaoCRUDBloc bloc;
-  EncontroNomeState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<AvaliacaoCRUDBlocState>(
@@ -300,7 +314,11 @@ class EncontroNomeState extends State<EncontroNome> {
       builder: (BuildContext context,
           AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -309,8 +327,8 @@ class EncontroNomeState extends State<EncontroNome> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },
@@ -318,57 +336,30 @@ class EncontroNomeState extends State<EncontroNome> {
   }
 }
 
-class EncontroNota extends StatefulWidget {
+class _NumberFieldMultiplo extends StatefulWidget {
   final AvaliacaoCRUDBloc bloc;
-  EncontroNota(this.bloc);
+  final String campo;
+  _NumberFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  EncontroNotaState createState() {
-    return EncontroNotaState(bloc);
-  }
-}
-
-class EncontroNotaState extends State<EncontroNota> {
-  final _textFieldController = TextEditingController();
-  final AvaliacaoCRUDBloc bloc;
-  EncontroNotaState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<AvaliacaoCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nota;
-        }
-        return TextField(
-          keyboardType: TextInputType.number,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNotaEvent(text));
-          },
-        );
-      },
+  _NumberFieldMultiploState createState() {
+    return _NumberFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class EncontroDescricao extends StatefulWidget {
-  final AvaliacaoCRUDBloc bloc;
-  EncontroDescricao(this.bloc);
-  @override
-  EncontroDescricaoState createState() {
-    return EncontroDescricaoState(bloc);
-  }
-}
-
-class EncontroDescricaoState extends State<EncontroDescricao> {
+class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final AvaliacaoCRUDBloc bloc;
-  EncontroDescricaoState(this.bloc);
+  final String campo;
+  _NumberFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<AvaliacaoCRUDBlocState>(
@@ -376,7 +367,9 @@ class EncontroDescricaoState extends State<EncontroDescricao> {
       builder: (BuildContext context,
           AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.descricao;
+          if (campo == 'nota') {
+            _textFieldController.text = snapshot.data?.nota;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -385,8 +378,8 @@ class EncontroDescricaoState extends State<EncontroDescricao> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateDescricaoEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateNumberFieldEvent(campo, texto));
           },
         );
       },

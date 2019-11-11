@@ -94,7 +94,9 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: SituacaoNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -102,7 +104,8 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: SituacaoDescricao(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'descricao')),
               SwitchListTile(
                 title: Text(
                   'Precisa de algoritmo para simulação ? ',
@@ -123,7 +126,10 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
                     )),
               if (snapshot.data?.precisaAlgoritmoPSimulacao != null &&
                   snapshot.data?.precisaAlgoritmoPSimulacao == false)
-                Padding(padding: EdgeInsets.all(5.0), child: SituacaoPdf(bloc)),
+                Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child:
+                        _TextFieldMultiplo(bloc, 'urlPDFSituacaoSemAlgoritmo')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -144,57 +150,30 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
   }
 }
 
-class SituacaoNome extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final SituacaoCRUDBloc bloc;
-  SituacaoNome(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  SituacaoNomeState createState() {
-    return SituacaoNomeState(bloc);
-  }
-}
-
-class SituacaoNomeState extends State<SituacaoNome> {
-  final _textFieldController = TextEditingController();
-  final SituacaoCRUDBloc bloc;
-  SituacaoNomeState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<SituacaoCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<SituacaoCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class SituacaoDescricao extends StatefulWidget {
-  final SituacaoCRUDBloc bloc;
-  SituacaoDescricao(this.bloc);
-  @override
-  SituacaoDescricaoState createState() {
-    return SituacaoDescricaoState(bloc);
-  }
-}
-
-class SituacaoDescricaoState extends State<SituacaoDescricao> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final SituacaoCRUDBloc bloc;
-  SituacaoDescricaoState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SituacaoCRUDBlocState>(
@@ -202,7 +181,14 @@ class SituacaoDescricaoState extends State<SituacaoDescricao> {
       builder: (BuildContext context,
           AsyncSnapshot<SituacaoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.descricao;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          } else if (campo == 'urlPDFSituacaoSemAlgoritmo') {
+            _textFieldController.text =
+                snapshot.data?.urlPDFSituacaoSemAlgoritmo;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -211,46 +197,8 @@ class SituacaoDescricaoState extends State<SituacaoDescricao> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateDescricaoEvent(text));
-          },
-        );
-      },
-    );
-  }
-}
-
-class SituacaoPdf extends StatefulWidget {
-  final SituacaoCRUDBloc bloc;
-  SituacaoPdf(this.bloc);
-  @override
-  SituacaoPdfState createState() {
-    return SituacaoPdfState(bloc);
-  }
-}
-
-class SituacaoPdfState extends State<SituacaoPdf> {
-  final _textFieldController = TextEditingController();
-  final SituacaoCRUDBloc bloc;
-  SituacaoPdfState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<SituacaoCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<SituacaoCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.urlPDFSituacaoSemAlgoritmo;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateUrlPDFSituacaoSemAlgoritmoEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },

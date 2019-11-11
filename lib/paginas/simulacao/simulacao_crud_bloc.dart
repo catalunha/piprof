@@ -26,19 +26,10 @@ class GetSituacaoEvent extends SimulacaoCRUDBlocEvent {
   GetSituacaoEvent(this.situacaoID);
 }
 
-class UpdateNomeEvent extends SimulacaoCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateDescricaoEvent extends SimulacaoCRUDBlocEvent {
-  final String descricao;
-  UpdateDescricaoEvent(this.descricao);
-}
-
-class UpdateUrlEvent extends SimulacaoCRUDBlocEvent {
-  final String url;
-  UpdateUrlEvent(this.url);
+class UpdateTextFieldEvent extends SimulacaoCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class SaveEvent extends SimulacaoCRUDBlocEvent {}
@@ -128,15 +119,16 @@ class SimulacaoCRUDBloc {
         _state.situacao = SituacaoModel(id: snap.documentID).fromMap(snap.data);
       }
     }
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'descricao') {
+        _state.descricao = event.texto;
+      } else if (event.campo == 'url') {
+        _state.url = event.texto;
+      }
     }
-    if (event is UpdateDescricaoEvent) {
-      _state.descricao = event.descricao;
-    }
-    if (event is UpdateUrlEvent) {
-      _state.url = event.url;
-    }
+
     if (event is SaveEvent) {
       final docRef = _firestore
           .collection(SimulacaoModel.collection)
@@ -148,7 +140,7 @@ class SimulacaoCRUDBloc {
         url: _state.url,
       );
       if (_state.simulacaoID == null) {
-        simulacaoModel.ordemAdicionada=0;
+        simulacaoModel.ordemAdicionada = 0;
         simulacaoModel.algoritmoDoAdmin = false;
         simulacaoModel.algoritmoDoProfessor = false;
         simulacaoModel.professor =

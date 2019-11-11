@@ -18,20 +18,10 @@ class GetPastaEvent extends PastaCRUDBlocEvent {
   GetPastaEvent(this.pastaID);
 }
 
-class UpdateNomeEvent extends PastaCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateDescricaoEvent extends PastaCRUDBlocEvent {
-  final String descricao;
-  UpdateDescricaoEvent(this.descricao);
-}
-
-class UpdateTextoEvent extends PastaCRUDBlocEvent {
+class UpdateTextFieldEvent extends PastaCRUDBlocEvent {
   final String campo;
   final String texto;
-  UpdateTextoEvent(this.campo, this.texto);
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class SaveEvent extends PastaCRUDBlocEvent {}
@@ -108,19 +98,14 @@ class PastaCRUDBloc {
       }
     }
 
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
-    }
-    if (event is UpdateDescricaoEvent) {
-      _state.descricao = event.descricao;
-    }
-    if (event is UpdateTextoEvent) {
+    if (event is UpdateTextFieldEvent) {
       if (event.campo == 'nome') {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
       }
     }
+
     if (event is SaveEvent) {
       final docRef =
           _firestore.collection(PastaModel.collection).document(_state.pastaID);

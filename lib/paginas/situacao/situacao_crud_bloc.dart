@@ -31,24 +31,15 @@ class UpdateAtivoEvent extends SituacaoCRUDBlocEvent {
   UpdateAtivoEvent(this.ativo);
 }
 
-class UpdateNomeEvent extends SituacaoCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateDescricaoEvent extends SituacaoCRUDBlocEvent {
-  final String descricao;
-  UpdateDescricaoEvent(this.descricao);
+class UpdateTextFieldEvent extends SituacaoCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class UpdatePrecisaAlgoritmoPSimulacaoEvent extends SituacaoCRUDBlocEvent {
   final bool precisa;
   UpdatePrecisaAlgoritmoPSimulacaoEvent(this.precisa);
-}
-
-class UpdateUrlPDFSituacaoSemAlgoritmoEvent extends SituacaoCRUDBlocEvent {
-  final String url;
-  UpdateUrlPDFSituacaoSemAlgoritmoEvent(this.url);
 }
 
 class SaveEvent extends SituacaoCRUDBlocEvent {}
@@ -164,19 +155,19 @@ class SituacaoCRUDBloc {
     if (event is UpdateAtivoEvent) {
       _state.ativo = event.ativo;
     }
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'descricao') {
+        _state.descricao = event.texto;
+      } else if (event.campo == 'urlPDFSituacaoSemAlgoritmo') {
+        _state.urlPDFSituacaoSemAlgoritmo = event.texto;
+      }
+    }
 
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
-    }
-    if (event is UpdateDescricaoEvent) {
-      _state.descricao = event.descricao;
-    }
     if (event is UpdatePrecisaAlgoritmoPSimulacaoEvent) {
       _state.precisaAlgoritmoPSimulacao = event.precisa;
       _state.ativadoAlgoritmoPSimulacao = false;
-    }
-    if (event is UpdateUrlPDFSituacaoSemAlgoritmoEvent) {
-      _state.urlPDFSituacaoSemAlgoritmo = event.url;
     }
 
     if (event is SaveEvent) {

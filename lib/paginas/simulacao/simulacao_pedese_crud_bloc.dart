@@ -19,14 +19,10 @@ class GetPedeseEvent extends SimulacaoPedeseCRUDBlocEvent {
   GetPedeseEvent(this.pedeseKey);
 }
 
-class UpdateNomeEvent extends SimulacaoPedeseCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateGabaritoEvent extends SimulacaoPedeseCRUDBlocEvent {
-  final String gabarito;
-  UpdateGabaritoEvent(this.gabarito);
+class UpdateTextFieldEvent extends SimulacaoPedeseCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class UpdateTipoEvent extends SimulacaoPedeseCRUDBlocEvent {
@@ -89,7 +85,7 @@ class SimulacaoPedeseCRUDBloc {
     if (_state.nome == null) {
       _state.isDataValid = false;
     }
-     if (_state.tipo == null) {
+    if (_state.tipo == null) {
       _state.isDataValid = false;
     }
   }
@@ -111,11 +107,12 @@ class SimulacaoPedeseCRUDBloc {
       _state.pedese = _state.simulacao.pedese[event.pedeseKey];
       _state.updateState();
     }
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
-    }
-    if (event is UpdateGabaritoEvent) {
-      _state.gabarito = event.gabarito;
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'gabarito') {
+        _state.gabarito = event.texto;
+      }
     }
     if (event is UpdateTipoEvent) {
       _state.tipo = event.tipo;

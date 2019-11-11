@@ -39,14 +39,10 @@ class UpdateDataFimEvent extends EncontroCRUDBlocEvent {
   UpdateDataFimEvent({this.data, this.hora});
 }
 
-class UpdateNomeEvent extends EncontroCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateDescricaoEvent extends EncontroCRUDBlocEvent {
-  final String descricao;
-  UpdateDescricaoEvent(this.descricao);
+class UpdateTextFieldEvent extends EncontroCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class SaveEvent extends EncontroCRUDBlocEvent {}
@@ -213,12 +209,14 @@ class EncontroCRUDBloc {
       _state.fimEncontro = newDate;
     }
 
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'descricao') {
+        _state.descricao = event.texto;
+      }
     }
-    if (event is UpdateDescricaoEvent) {
-      _state.descricao = event.descricao;
-    }
+
     if (event is SaveEvent) {
       final docRef = _firestore
           .collection(EncontroModel.collection)

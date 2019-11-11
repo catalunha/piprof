@@ -153,7 +153,7 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
           ),
           controller: _textFieldController,
           onChanged: (texto) {
-            bloc.eventSink(UpdateTextoEvent(campo, texto));
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },

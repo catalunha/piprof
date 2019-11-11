@@ -47,25 +47,10 @@ class UpdateDataFimEvent extends QuestaoCRUDBlocEvent {
 
   UpdateDataFimEvent({this.data, this.hora});
 }
-
-class UpdateTempoEvent extends QuestaoCRUDBlocEvent {
-  final String tempo;
-  UpdateTempoEvent(this.tempo);
-}
-
-class UpdateTentativaEvent extends QuestaoCRUDBlocEvent {
-  final String tentativa;
-  UpdateTentativaEvent(this.tentativa);
-}
-
-class UpdateErroRelativoEvent extends QuestaoCRUDBlocEvent {
-  final String erroRelativo;
-  UpdateErroRelativoEvent(this.erroRelativo);
-}
-
-class UpdateNotaEvent extends QuestaoCRUDBlocEvent {
-  final String nota;
-  UpdateNotaEvent(this.nota);
+class UpdateNumberFieldEvent extends QuestaoCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateNumberFieldEvent(this.campo, this.texto);
 }
 
 class SelecionarSituacaoEvent extends QuestaoCRUDBlocEvent {
@@ -273,18 +258,19 @@ class QuestaoCRUDBloc {
       _state.fimAvaliacao = newDate;
     }
 
-    if (event is UpdateTempoEvent) {
-      _state.tempo = event.tempo;
+
+   if (event is UpdateNumberFieldEvent) {
+      if (event.campo == 'tempo') {
+        _state.tempo = event.texto;
+      }else if (event.campo == 'tentativa') {
+        _state.tentativa = event.texto;
+      }else if (event.campo == 'erroRelativo') {
+        _state.erroRelativo = event.texto;
+      }else if (event.campo == 'nota') {
+        _state.nota = event.texto;
+      }
     }
-    if (event is UpdateTentativaEvent) {
-      _state.tentativa = event.tentativa;
-    }
-    if (event is UpdateErroRelativoEvent) {
-      _state.erroRelativo = event.erroRelativo;
-    }
-    if (event is UpdateNotaEvent) {
-      _state.nota = event.nota;
-    }
+
 
     if (event is SelecionarSituacaoEvent) {
       _state.situacaoFk = event.situacaoFk;

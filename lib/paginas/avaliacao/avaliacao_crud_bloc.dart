@@ -39,14 +39,16 @@ class UpdateDataFimEvent extends AvaliacaoCRUDBlocEvent {
   UpdateDataFimEvent({this.data, this.hora});
 }
 
-class UpdateNomeEvent extends AvaliacaoCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
+class UpdateTextFieldEvent extends AvaliacaoCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
-class UpdateDescricaoEvent extends AvaliacaoCRUDBlocEvent {
-  final String descricao;
-  UpdateDescricaoEvent(this.descricao);
+class UpdateNumberFieldEvent extends AvaliacaoCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateNumberFieldEvent(this.campo, this.texto);
 }
 
 class UpdateNotaEvent extends AvaliacaoCRUDBlocEvent {
@@ -220,14 +222,17 @@ class AvaliacaoCRUDBloc {
       _state.fimEncontro = newDate;
     }
 
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'descricao') {
+        _state.descricao = event.texto;
+      }
     }
-    if (event is UpdateDescricaoEvent) {
-      _state.descricao = event.descricao;
-    }
-    if (event is UpdateNotaEvent) {
-      _state.nota = event.nota;
+    if (event is UpdateNumberFieldEvent) {
+      if (event.campo == 'nota') {
+        _state.nota = event.texto;
+      }
     }
     if (event is SaveEvent) {
       final docRef = _firestore

@@ -24,14 +24,10 @@ class UpdateTipoEvent extends SimulacaoVariavelCRUDBlocEvent {
   UpdateTipoEvent(this.tipo);
 }
 
-class UpdateNomeEvent extends SimulacaoVariavelCRUDBlocEvent {
-  final String nome;
-  UpdateNomeEvent(this.nome);
-}
-
-class UpdateValorEvent extends SimulacaoVariavelCRUDBlocEvent {
-  final String valor;
-  UpdateValorEvent(this.valor);
+class UpdateTextFieldEvent extends SimulacaoVariavelCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
 }
 
 class SaveEvent extends SimulacaoVariavelCRUDBlocEvent {}
@@ -119,12 +115,14 @@ class SimulacaoVariavelCRUDBloc {
     if (event is UpdateTipoEvent) {
       _state.tipo = event.tipo;
     }
-    if (event is UpdateNomeEvent) {
-      _state.nome = event.nome;
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nome') {
+        _state.nome = event.texto;
+      } else if (event.campo == 'valor') {
+        _state.valor = event.texto;
+      }
     }
-    if (event is UpdateValorEvent) {
-      _state.valor = event.valor;
-    }
+
     if (event is SaveEvent) {
       final docRef = _firestore
           .collection(SimulacaoModel.collection)

@@ -10,7 +10,11 @@ class EncontroCRUDPage extends StatefulWidget {
   final String turmaID;
   final String encontroID;
 
-  const EncontroCRUDPage({this.authBloc,this.turmaID, this.encontroID, });
+  const EncontroCRUDPage({
+    this.authBloc,
+    this.turmaID,
+    this.encontroID,
+  });
 
   @override
   _EncontroCRUDPageState createState() => _EncontroCRUDPageState();
@@ -73,15 +77,13 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
   }
 
   _inicioEncontro(context) {
-    return
-
-        Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-
         StreamBuilder<EncontroCRUDBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -111,7 +113,6 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
       // ),
     );
   }
-
 
   Future<Null> _selectDateFim(BuildContext context) async {
     final DateTime selectedDate = await showDatePicker(
@@ -148,15 +149,13 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
   }
 
   _fimEncontro(context) {
-    return
-
-        Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-
         StreamBuilder<EncontroCRUDBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -187,8 +186,6 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,21 +204,21 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
                     }
                   : null,
               child: Icon(Icons.cloud_upload),
-              backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              backgroundColor:
+                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
       body: StreamBuilder<EncontroCRUDBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          return
-
-              ListView(
+          return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
               Padding(
@@ -230,28 +227,35 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
                     'Data e hora do início:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(1.0), child: _inicioEncontro(context)),
-                            Padding(
+              Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: _inicioEncontro(context)),
+              Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Data e hora do fim:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
+              Padding(
+                  padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: EncontroNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Descrição:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: EncontroDescricao(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'descricao')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -272,63 +276,42 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
   }
 }
 
-class EncontroNome extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final EncontroCRUDBloc bloc;
-  EncontroNome(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  EncontroNomeState createState() {
-    return EncontroNomeState(bloc);
-  }
-}
-
-class EncontroNomeState extends State<EncontroNome> {
-  final _textFieldController = TextEditingController();
-  final EncontroCRUDBloc bloc;
-  EncontroNomeState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<EncontroCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class EncontroDescricao extends StatefulWidget {
-  final EncontroCRUDBloc bloc;
-  EncontroDescricao(this.bloc);
-  @override
-  EncontroDescricaoState createState() {
-    return EncontroDescricaoState(bloc);
-  }
-}
-
-class EncontroDescricaoState extends State<EncontroDescricao> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final EncontroCRUDBloc bloc;
-  EncontroDescricaoState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<EncontroCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<EncontroCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.descricao;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -337,8 +320,8 @@ class EncontroDescricaoState extends State<EncontroDescricao> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateDescricaoEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },

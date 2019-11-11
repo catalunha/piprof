@@ -50,12 +50,14 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
                     }
                   : null,
               child: Icon(Icons.cloud_upload),
-              backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              backgroundColor:
+                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
       body: StreamBuilder<TurmaCRUDBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -82,28 +84,36 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
                     'Instituição:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: TurmaInstituicao(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'instituicao')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Componente:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: TurmaComponente(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'componente')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: TurmaNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Descrição:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: TurmaDescricao(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'descricao')),
               Divider(),
               // Padding(
               //   padding: EdgeInsets.all(5.0),
@@ -130,63 +140,46 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
   }
 }
 
-class TurmaInstituicao extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final TurmaCRUDBloc bloc;
-  TurmaInstituicao(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  TurmaInstituicaoState createState() {
-    return TurmaInstituicaoState(bloc);
-  }
-}
-
-class TurmaInstituicaoState extends State<TurmaInstituicao> {
-  final _textFieldController = TextEditingController();
-  final TurmaCRUDBloc bloc;
-  TurmaInstituicaoState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TurmaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.instituicao;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateInstituicaoEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class TurmaComponente extends StatefulWidget {
-  final TurmaCRUDBloc bloc;
-  TurmaComponente(this.bloc);
-  @override
-  TurmaComponenteState createState() {
-    return TurmaComponenteState(bloc);
-  }
-}
-
-class TurmaComponenteState extends State<TurmaComponente> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final TurmaCRUDBloc bloc;
-  TurmaComponenteState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<TurmaCRUDBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.componente;
+          if (campo == 'instituicao') {
+            _textFieldController.text = snapshot.data?.instituicao;
+          } else if (campo == 'componente') {
+            _textFieldController.text = snapshot.data?.componente;
+          } else if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -195,82 +188,8 @@ class TurmaComponenteState extends State<TurmaComponente> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateComponenteEvent(text));
-          },
-        );
-      },
-    );
-  }
-}
-
-class TurmaNome extends StatefulWidget {
-  final TurmaCRUDBloc bloc;
-  TurmaNome(this.bloc);
-  @override
-  TurmaNomeState createState() {
-    return TurmaNomeState(bloc);
-  }
-}
-
-class TurmaNomeState extends State<TurmaNome> {
-  final _textFieldController = TextEditingController();
-  final TurmaCRUDBloc bloc;
-  TurmaNomeState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TurmaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
-    );
-  }
-}
-
-class TurmaDescricao extends StatefulWidget {
-  final TurmaCRUDBloc bloc;
-  TurmaDescricao(this.bloc);
-  @override
-  TurmaDescricaoState createState() {
-    return TurmaDescricaoState(bloc);
-  }
-}
-
-class TurmaDescricaoState extends State<TurmaDescricao> {
-  final _textFieldController = TextEditingController();
-  final TurmaCRUDBloc bloc;
-  TurmaDescricaoState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<TurmaCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<TurmaCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.descricao;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateDescricaoEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },

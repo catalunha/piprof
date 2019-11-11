@@ -68,7 +68,7 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
           // if (snapshot.data.isDataValid) {
           return ListView(
             children: <Widget>[
-                  Padding(
+              Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'Tipo:',
@@ -81,7 +81,9 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
                     'Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: VariavelNome(bloc)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'nome')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -89,7 +91,8 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
-                  padding: EdgeInsets.all(5.0), child: VariavelValor(bloc)),
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'valor')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -109,57 +112,30 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
   }
 }
 
-class VariavelNome extends StatefulWidget {
+class _TextFieldMultiplo extends StatefulWidget {
   final SimulacaoVariavelCRUDBloc bloc;
-  VariavelNome(this.bloc);
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
   @override
-  VariavelNomeState createState() {
-    return VariavelNomeState(bloc);
-  }
-}
-
-class VariavelNomeState extends State<VariavelNome> {
-  final _textFieldController = TextEditingController();
-  final SimulacaoVariavelCRUDBloc bloc;
-  VariavelNomeState(this.bloc);
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<SimulacaoVariavelCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<SimulacaoVariavelCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.nome;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateNomeEvent(text));
-          },
-        );
-      },
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
     );
   }
 }
 
-class VariavelValor extends StatefulWidget {
-  final SimulacaoVariavelCRUDBloc bloc;
-  VariavelValor(this.bloc);
-  @override
-  VariavelValorState createState() {
-    return VariavelValorState(bloc);
-  }
-}
-
-class VariavelValorState extends State<VariavelValor> {
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
   final SimulacaoVariavelCRUDBloc bloc;
-  VariavelValorState(this.bloc);
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SimulacaoVariavelCRUDBlocState>(
@@ -167,7 +143,11 @@ class VariavelValorState extends State<VariavelValor> {
       builder: (BuildContext context,
           AsyncSnapshot<SimulacaoVariavelCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.valor;
+          if (campo == 'nome') {
+            _textFieldController.text = snapshot.data?.nome;
+          } else if (campo == 'valor') {
+            _textFieldController.text = snapshot.data?.valor;
+          }
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -176,8 +156,8 @@ class VariavelValorState extends State<VariavelValor> {
             border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateValorEvent(text));
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
           },
         );
       },
