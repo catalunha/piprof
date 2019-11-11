@@ -63,7 +63,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                 listaWidget.add(
                   ListTile(
                     title: Text('Lista de encontros em planilha'),
-                    trailing: Icon(Icons.recent_actors),
+                    trailing: Icon(Icons.grid_on),
                     onTap: () {
                       GenerateCsvService.generateCsvFromEncontro(
                           widget.turmaID);
@@ -78,7 +78,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                           ListTile(
                             title: Text('${encontro.nome}'),
                             trailing: Text(
-                                '${DateFormat('dd-MM HH:mm').format(encontro.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro.fim)}'),
+                                '${DateFormat('dd-MM HH:mm').format(encontro?.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro?.fim)}'),
                           ),
                           Center(
                             child: Wrap(

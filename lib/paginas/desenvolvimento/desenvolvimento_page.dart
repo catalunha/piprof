@@ -14,6 +14,7 @@ import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:piprof/modelos/upload_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
+import 'package:piprof/modelos/usuario_novo_model.dart';
 
 class Desenvolvimento extends StatefulWidget {
   @override
@@ -57,9 +58,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  await cadastrarAlunoCatalunha();
-                  await cadastrarAlunoLucas();
-                  await cadastrarAlunoDaniel();
+                  // await cadastrarAlunoCatalunha();
+                  // await cadastrarAlunoLucas();
+                  await usuarioNovoAlunoDaniel();
                 },
               ),
             ),
@@ -295,20 +296,16 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
-  Future cadastrarAlunoDaniel() async {
-    String userId = 'alunoDaniel';
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
-    docRef.delete();
-    UsuarioModel usuarioModel = UsuarioModel(
-        id: userId,
-        aluno: true,
+  Future usuarioNovoAlunoDaniel() async {
+    // String userId = 'usuarioNovoDaniel';
+    final docRef = _firestore.collection(UsuarioNovoModel.collection).document();
+
+    UsuarioNovoModel usuarioModel = UsuarioNovoModel(
         ativo: true,
-        celular: '123',
-        cracha: 'Daniel',
         email: 'daniel@gmail.com',
-        foto: UploadFk(uploadID: 'uploadDaniel'),
         matricula: '20110924',
         nome: 'Daniel L Catalunha',
+        turma: '0Turma02',
         rota: [
           '/',
           '/perfil',
@@ -316,9 +313,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           '/versao',
           '/turma/list',
         ],
-        turmaList: [
-          '0Turma01'
-        ]);
+        );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
