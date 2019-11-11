@@ -116,11 +116,11 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                           );
                                         },
                                       ),
-                                      IconButton(
-                                        tooltip: 'Relatorio detalhado desta tarefa',
-                                        icon: Icon(Icons.recent_actors),
-                                        onPressed: () {},
-                                      ),
+                                      // IconButton(
+                                      //   tooltip: 'Relatorio detalhado desta tarefa',
+                                      //   icon: Icon(Icons.grid_on),
+                                      //   onPressed: () {},
+                                      // ),
                                       
                                       IconButton(
                                         tooltip: 'Editar tarefa para este aluno',

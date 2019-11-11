@@ -73,10 +73,10 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
                 },
               ),
               ListTile(
-                trailing: Icon(Icons.recent_actors),
+                trailing: Icon(Icons.grid_on),
                 title: Text('Lista de alunos em planilha'),
                 onTap: () {
-                  GenerateCsvService.generateCsvFromUsuarioListDaTurma(snapshot.data.turma);
+                  GenerateCsvService.csvListaAlunoNaTurma(snapshot.data.turma);
                 },
               ),
               Padding(

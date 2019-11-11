@@ -104,7 +104,7 @@ Nota: ${avaliacao.nota}'''),
                                 ),
                                 IconButton(
                                   tooltip: 'Aplicar esta avaliacao',
-                                  icon: Icon(Icons.casino),
+                                  icon: Icon(Icons.colorize),
                                   onPressed: () {
                                     Navigator.pushNamed(
                                       context,
@@ -114,11 +114,11 @@ Nota: ${avaliacao.nota}'''),
                                   },
                                 ),
                                 IconButton(
-                                  tooltip: 'Relatorio desta avaliação',
-                                  icon: Icon(Icons.recent_actors),
+                                  tooltip: 'Notas desta avaliação',
+                                  icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    // GenerateCsvService.generateCsvFromEncontro(
-                                    //     widget.turmaID);
+                                    GenerateCsvService.csvNotasDaAvaliacao(
+                                        avaliacao);
                                   },
                                 ),
                               ],

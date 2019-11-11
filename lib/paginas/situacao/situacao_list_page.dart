@@ -125,7 +125,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                   ),
                                 IconButton(
                                   tooltip: 'Listar de situação em planilha',
-                                  icon: Icon(Icons.recent_actors),
+                                  icon: Icon(Icons.grid_on),
                                   onPressed: () {
                                     // GenerateCsvService.generateCsvFromEncontro(
                                     //     widget.pastaID);

@@ -13,7 +13,6 @@ import 'package:piprof/paginas/login/home.dart';
 import 'package:piprof/paginas/login/versao.dart';
 import 'package:piprof/paginas/pasta/pasta_crud_page.dart';
 import 'package:piprof/paginas/pasta/pasta_list_page.dart';
-import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_crud_page.dart';
@@ -24,6 +23,7 @@ import 'package:piprof/paginas/simulacao/simulacao_variavel_crud_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_variavel_list_page.dart';
 import 'package:piprof/paginas/situacao/situacao_crud_page.dart';
 import 'package:piprof/paginas/situacao/situacao_list_page.dart';
+import 'package:piprof/paginas/situacao/situacao_selecionar_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_crud_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
@@ -140,7 +140,7 @@ class MyApp extends StatelessWidget {
         },
 
         //situacao
-        "/pasta/situacao/list": (context) => PastaSituacaoListPage(authBloc),
+        "/situacao/selecionar": (context) => SituacaoSelecionarPage(authBloc),
         "/situacao/list": (context) {
           final settings = ModalRoute.of(context).settings;
           return SituacaoListPage(settings.arguments);

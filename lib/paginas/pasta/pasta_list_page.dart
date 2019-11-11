@@ -58,7 +58,7 @@ class _PastaListPageState extends State<PastaListPage> {
             listaWidget.add(
               ListTile(
                 title: Text('Lista de pastas em planilha'),
-                trailing: Icon(Icons.recent_actors),
+                trailing: Icon(Icons.grid_on),
                 onTap: () {
                   // GenerateCsvService.generateCsvFromPasta(widget.turmaID);
                 },
@@ -111,7 +111,7 @@ class _PastaListPageState extends State<PastaListPage> {
                             ),
                             IconButton(
                                     tooltip: 'Lista de situações em planilha',
-                                    icon: Icon(Icons.recent_actors),
+                                    icon: Icon(Icons.grid_on),
                                     onPressed: () {
                                       // GenerateCsvService.generateCsvFromEncontro(
                                       //     widget.pastaID);

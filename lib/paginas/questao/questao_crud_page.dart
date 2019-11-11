@@ -3,8 +3,8 @@ import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
 import 'package:piprof/modelos/situacao_model.dart';
-import 'package:piprof/paginas/pasta/pasta_situacao_list_page.dart';
 import 'package:piprof/paginas/questao/questao_crud_bloc.dart';
+import 'package:piprof/paginas/situacao/situacao_selecionar_page.dart';
 
 class QuestaoCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -299,7 +299,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                   onTap: () async {
                     SituacaoFk situacaoFk = await Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return PastaSituacaoListPage(widget.authBloc);
+                      return SituacaoSelecionarPage(widget.authBloc);
                     }));
                     if (situacaoFk != null) {
                       bloc.eventSink(SelecionarSituacaoEvent(situacaoFk));

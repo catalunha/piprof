@@ -65,7 +65,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                     title: Text('Lista de encontros em planilha'),
                     trailing: Icon(Icons.grid_on),
                     onTap: () {
-                      GenerateCsvService.generateCsvFromEncontro(
+                      GenerateCsvService.csvEncontro(
                           widget.turmaID);
                     },
                   ),
