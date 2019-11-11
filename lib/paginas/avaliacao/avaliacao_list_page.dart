@@ -117,7 +117,7 @@ Nota: ${avaliacao.nota}'''),
                                   tooltip: 'Notas desta avaliação',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    GenerateCsvService.csvNotasDaAvaliacao(
+                                    GenerateCsvService.csvAvaliacaoListaNota(
                                         avaliacao);
                                   },
                                 ),

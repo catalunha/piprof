@@ -97,7 +97,7 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                                       tooltip: 'Gerar notas deste aluno',
                                       icon: Icon(Icons.grid_on),
                                       onPressed: () {
-                                        GenerateCsvService.csvNotasDoAluno(aluno);
+                                        GenerateCsvService.csvAlunoListaNota(aluno);
                                       },
                                     ),
                                   ],

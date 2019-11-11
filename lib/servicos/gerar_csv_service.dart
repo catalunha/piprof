@@ -15,7 +15,7 @@ import 'package:csv/csv.dart';
 class GenerateCsvService {
   // PUBLIC
 
-  static csvListaAlunoNaTurma(TurmaModel turma) async {
+  static csvTurmaListaAluno(TurmaModel turma) async {
     List<List<dynamic>> planilha = List<List<dynamic>>();
 
     planilha.add(['Turma', 'Informacao']);
@@ -64,7 +64,7 @@ class GenerateCsvService {
     // _saveFileAndOpen(csvData);
   }
 
-  static csvNotasDoAluno(UsuarioModel usuario) async {
+  static csvAlunoListaNota(UsuarioModel usuario) async {
     List<List<dynamic>> planilha = List<List<dynamic>>();
     planilha.add(['Aluno', 'Informacao']);
     planilha.add(['id', '${usuario.id}']);
@@ -344,7 +344,7 @@ class GenerateCsvService {
     _saveFileAndOpen(csvData);
   }
 
-  static csvNotasDaAvaliacao(AvaliacaoModel avaliacao) async {
+  static csvAvaliacaoListaNota(AvaliacaoModel avaliacao) async {
     print('csvNotasDaAvaliacao...');
     List<List<dynamic>> planilha = List<List<dynamic>>();
     planilha.add(['Turma', 'Informacao']);
@@ -537,6 +537,59 @@ class GenerateCsvService {
     // print('+++ generateCsvFromUsuarioModel\n$csvData\n--- generateCsvFromUsuarioModel');
     _saveFileAndOpen(csvData);
   }
+
+
+  static csvPastaListaSituacao(TurmaModel turma) async {
+    List<List<dynamic>> planilha = List<List<dynamic>>();
+
+    planilha.add(['Turma', 'Informacao']);
+    planilha.add(['id', '${turma.id}']);
+    planilha.add(['ativo', '${turma.ativo}']);
+    planilha.add(['nome', '${turma.nome}']);
+    planilha.add(['instituicao', '${turma.instituicao}']);
+    planilha.add(['componente', '${turma.componente}']);
+    planilha.add(['descricao', '${turma.descricao}']);
+    planilha.add([
+      'questoes',
+      '${turma.questaoNumeroAdicionado - turma.questaoNumeroExcluido}'
+    ]);
+
+    final futureQuerySnapshot = await Bootstrap.instance.firestore
+        .collection(UsuarioModel.collection)
+        // .where("ativo", isEqualTo: true)
+        .where("turmaList", arrayContains: turma.id)
+        .getDocuments();
+
+    planilha.add([
+      'foto',
+      'nome',
+      'matricula',
+      'email',
+      'celular',
+      'cracha',
+    ]);
+    for (var usuarioDocSnapshot in futureQuerySnapshot.documents) {
+      UsuarioModel usuario = UsuarioModel(id: usuarioDocSnapshot.documentID)
+          .fromMap(usuarioDocSnapshot.data);
+      planilha.add([
+        '=IMAGE("${usuario.foto.url}")',
+        '${usuario.nome}',
+        '${usuario.matricula}',
+        '${usuario.email}',
+        '${usuario.celular}',
+        '${usuario.cracha}',
+      ]);
+    }
+
+// print(planilha.toList());
+    String csvData =
+        ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
+    // print('+++ generateCsvFromUsuarioListDaTurma\n$csvData\n--- generateCsvFromUsuarioListDaTurma');
+    // _saveFileAndOpen(csvData);
+  }
+
+
+
 
   static _saveFileAndOpen(String csvData) async {
     //gerar e salvar

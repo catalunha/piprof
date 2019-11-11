@@ -76,7 +76,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
                 trailing: Icon(Icons.grid_on),
                 title: Text('Lista de alunos em planilha'),
                 onTap: () {
-                  GenerateCsvService.csvListaAlunoNaTurma(snapshot.data.turma);
+                  GenerateCsvService.csvTurmaListaAluno(snapshot.data.turma);
                 },
               ),
               Padding(
