@@ -20,6 +20,8 @@ class GetPastaEvent extends SituacaoCRUDBlocEvent {
   GetPastaEvent(this.pastaID);
 }
 
+class GetPastaListEvent extends SituacaoCRUDBlocEvent {}
+
 class GetSituacaoEvent extends SituacaoCRUDBlocEvent {
   final String situacaoID;
 
@@ -42,6 +44,12 @@ class UpdatePrecisaAlgoritmoPSimulacaoEvent extends SituacaoCRUDBlocEvent {
   UpdatePrecisaAlgoritmoPSimulacaoEvent(this.precisa);
 }
 
+class SelectPastaIDEvent extends SituacaoCRUDBlocEvent {
+  final PastaModel pasta;
+
+  SelectPastaIDEvent(this.pasta);
+}
+
 class SaveEvent extends SituacaoCRUDBlocEvent {}
 
 class DeleteDocumentEvent extends SituacaoCRUDBlocEvent {}
@@ -52,6 +60,8 @@ class SituacaoCRUDBlocState {
   UsuarioModel usuarioAuth;
 
   PastaModel pasta = PastaModel();
+  List<PastaModel> pastaList = List<PastaModel>();
+
   SituacaoModel situacao = SituacaoModel();
 
   // dynamic data;
@@ -61,6 +71,7 @@ class SituacaoCRUDBlocState {
   bool precisaAlgoritmoPSimulacao = false;
   String urlPDFSituacaoSemAlgoritmo;
   bool ativadoAlgoritmoPSimulacao;
+  PastaFk pastaDestino;
 
   void updateState() {
     ativo = situacao.ativo;
@@ -69,6 +80,7 @@ class SituacaoCRUDBlocState {
     precisaAlgoritmoPSimulacao = situacao.precisaAlgoritmoPSimulacao;
     urlPDFSituacaoSemAlgoritmo = situacao.urlPDFSituacaoSemAlgoritmo;
     ativadoAlgoritmoPSimulacao = situacao.ativadoAlgoritmoPSimulacao;
+    pastaDestino = situacao?.pasta;
   }
 
   bool liberaAtivo() {
@@ -103,6 +115,7 @@ class SituacaoCRUDBloc {
     _authBloc.perfil.listen((usuarioAuth) {
       eventSink(GetUsuarioAuthEvent(usuarioAuth));
       if (!_stateController.isClosed) _stateController.add(_state);
+      eventSink(GetPastaListEvent());
     });
   }
 
@@ -139,7 +152,30 @@ class SituacaoCRUDBloc {
       final snap = await docRef.get();
       if (snap.exists) {
         _state.pasta = PastaModel(id: snap.documentID).fromMap(snap.data);
+        _state.pastaDestino =
+            PastaFk(id: _state.pasta.id, nome: _state.pasta.nome);
       }
+    }
+
+    if (event is GetPastaListEvent) {
+      _state.pastaList.clear();
+
+      final streamDocsRemetente = _firestore
+          .collection(PastaModel.collection)
+          .where("professor.id", isEqualTo: _state.usuarioAuth.id)
+          .snapshots();
+
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => PastaModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<PastaModel> pastaList) {
+        pastaList.sort((a, b) => a.numero.compareTo(b.numero));
+        _state.pastaList = pastaList;
+        // print(_state.pastaList);
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
     }
     if (event is GetSituacaoEvent) {
       final docRef = _firestore
@@ -170,6 +206,10 @@ class SituacaoCRUDBloc {
       _state.ativadoAlgoritmoPSimulacao = false;
     }
 
+    if (event is SelectPastaIDEvent) {
+      _state.pastaDestino = PastaFk(id: event.pasta.id, nome: event.pasta.nome);
+    }
+
     if (event is SaveEvent) {
       final docRef = _firestore
           .collection(SituacaoModel.collection)
@@ -186,6 +226,7 @@ class SituacaoCRUDBloc {
         urlPDFSituacaoSemAlgoritmo: _state.urlPDFSituacaoSemAlgoritmo,
         ativadoAlgoritmoPSimulacao: _state.ativadoAlgoritmoPSimulacao,
         modificado: DateTime.now(),
+        pasta: _state.pastaDestino,
       );
       if (_state.precisaAlgoritmoPSimulacao) {
         situacaoUpdate.url = null;
@@ -210,8 +251,6 @@ class SituacaoCRUDBloc {
           id: _state.usuarioAuth.id,
           nome: _state.usuarioAuth.nome,
         );
-        situacaoUpdate.pasta =
-            PastaFk(id: _state.pasta.id, nome: _state.pasta.nome);
       }
 
       await docRef.setData(situacaoUpdate.toMap(), merge: true);
