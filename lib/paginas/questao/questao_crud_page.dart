@@ -289,24 +289,27 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                     'Selectione uma situação ou problema:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: ListTile(
-                  title: snapshot.data.situacaoFk == null
-                      ? Text('Aguardado seleção')
-                      : Text('${snapshot.data.situacaoFk.nome}'),
-                  trailing: Icon(Icons.search),
-                  onTap: () async {
-                    SituacaoFk situacaoFk = await Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return SituacaoSelecionarPage(widget.authBloc);
-                    }));
-                    if (situacaoFk != null) {
-                      bloc.eventSink(SelecionarSituacaoEvent(situacaoFk));
-                    }
-                  },
-                ),
-              ),
+              snapshot.data?.questao?.aplicada != null &&
+                      snapshot.data?.questao?.aplicada == true
+                  ? Text('Questão já aplicada não pode alterar situação.')
+                  : Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: ListTile(
+                        title: snapshot.data.situacaoFk == null
+                            ? Text('Aguardado seleção')
+                            : Text('${snapshot.data.situacaoFk.nome}'),
+                        trailing: Icon(Icons.search),
+                        onTap: () async {
+                          SituacaoFk situacaoFk = await Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return SituacaoSelecionarPage(widget.authBloc);
+                          }));
+                          if (situacaoFk != null) {
+                            bloc.eventSink(SelecionarSituacaoEvent(situacaoFk));
+                          }
+                        },
+                      ),
+                    ),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),

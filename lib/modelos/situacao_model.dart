@@ -15,7 +15,7 @@ class SituacaoModel extends FirestoreModel {
   bool precisaAlgoritmoPSimulacao;
   String urlPDFSituacaoSemAlgoritmo;
   bool ativadoAlgoritmoPSimulacao;
-  int simulacaoNumeroAdicionado;
+  int simulacaoNumero;
   Map<String, dynamic> uso;
   SituacaoModel({
     String id,
@@ -30,7 +30,7 @@ class SituacaoModel extends FirestoreModel {
     this.precisaAlgoritmoPSimulacao,
     this.urlPDFSituacaoSemAlgoritmo,
     this.ativadoAlgoritmoPSimulacao,
-    this.simulacaoNumeroAdicionado,
+    this.simulacaoNumero,
     this.uso,
   }) : super(id);
 
@@ -57,8 +57,8 @@ class SituacaoModel extends FirestoreModel {
       urlPDFSituacaoSemAlgoritmo = map['urlPDFSituacaoSemAlgoritmo'];
     if (map.containsKey('ativadoAlgoritmoPSimulacao'))
       ativadoAlgoritmoPSimulacao = map['ativadoAlgoritmoPSimulacao'];
-    if (map.containsKey('simulacaoNumeroAdicionado'))
-      simulacaoNumeroAdicionado = map['simulacaoNumeroAdicionado'];
+    if (map.containsKey('simulacaoNumero'))
+      simulacaoNumero = map['simulacaoNumero'];
     if (map.containsKey('uso')) uso = map['uso'];
 
     return this;
@@ -87,8 +87,8 @@ class SituacaoModel extends FirestoreModel {
       data['urlPDFSituacaoSemAlgoritmo'] = this.urlPDFSituacaoSemAlgoritmo;
     if (ativadoAlgoritmoPSimulacao != null)
       data['ativadoAlgoritmoPSimulacao'] = this.ativadoAlgoritmoPSimulacao;
-    if (simulacaoNumeroAdicionado != null)
-      data['simulacaoNumeroAdicionado'] = this.simulacaoNumeroAdicionado;
+    if (simulacaoNumero != null)
+      data['simulacaoNumero'] = this.simulacaoNumero;
 
     return data;
   }

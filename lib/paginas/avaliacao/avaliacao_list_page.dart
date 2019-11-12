@@ -68,7 +68,7 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            // leading: avaliacao.ativo ? Text('') : Icon(Icons.lock),
+                            selected: avaliacao.aplicada,
                             title: Text('''
 Turma: ${avaliacao.turma.nome}
 Avaliação: ${avaliacao.nome}

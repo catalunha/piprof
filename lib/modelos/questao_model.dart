@@ -7,6 +7,7 @@ import 'package:piprof/modelos/usuario_model.dart';
 class QuestaoModel extends FirestoreModel {
   static final String collection = "Questao";
   bool ativo;
+  bool aplicada;
   int numero;
   UsuarioFk professor;
   TurmaFk turma;
@@ -23,6 +24,7 @@ class QuestaoModel extends FirestoreModel {
   QuestaoModel({
     String id,
     this.ativo,
+    this.aplicada,
     this.numero,
     this.professor,
     this.turma,
@@ -40,6 +42,7 @@ class QuestaoModel extends FirestoreModel {
   @override
   QuestaoModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('ativo')) ativo = map['ativo'];
+    if (map.containsKey('aplicada')) aplicada = map['aplicada'];
     if (map.containsKey('numero')) numero = map['numero'];
     professor = map.containsKey('professor') && map['professor'] != null
         ? UsuarioFk.fromMap(map['professor'])
@@ -75,6 +78,7 @@ class QuestaoModel extends FirestoreModel {
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (ativo != null) data['ativo'] = this.ativo;
+    if (aplicada != null) data['aplicada'] = this.aplicada;
     if (numero != null) data['numero'] = this.numero;
     if (this.professor != null) {
       data['professor'] = this.professor.toMap();

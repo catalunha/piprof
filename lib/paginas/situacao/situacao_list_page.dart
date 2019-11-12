@@ -78,7 +78,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                     : null,
                             title: Text('${situacao.nome}'),
                             subtitle:
-                                Text('${situacao.descricao}\n${situacao.id}'),
+                                Text('${situacao.descricao}\nSimulações: ${situacao.simulacaoNumero??0}\n${situacao.id}'),
                           ),
                           Center(
                             child: Wrap(

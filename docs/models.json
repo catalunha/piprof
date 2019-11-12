@@ -110,6 +110,7 @@
     "uso": {
       "turmaID": 0
     },
+    "simulacaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "url": "url definitiva para a situacao com base nos dados a seguir",
     "precisaAlgoritmoPSimulacao": "true/false",
     "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
@@ -126,6 +127,7 @@
     "#onDelete": "",
     "ativo": "true: aparece na listagens de situacaos disponiveis. false: !true ",
     "modificado": "data da modificação deste documento",
+    "numero": "",
     "nome": "",
     "descricao": "",
     "url": "url para um doc descrevendo a simulacao",
@@ -139,7 +141,7 @@
       "id": "Situacao/situacaoID",
       "nome": ""
     },
-    "ordemAdicionada": 0,
+    "ordem": 0,
     "variavel": {
       "uid1": {
         "ordem": 1,

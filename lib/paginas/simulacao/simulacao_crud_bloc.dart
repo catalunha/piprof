@@ -140,7 +140,18 @@ class SimulacaoCRUDBloc {
         url: _state.url,
       );
       if (_state.simulacaoID == null) {
-        simulacaoModel.ordemAdicionada = 0;
+               simulacaoModel.numero =
+            (_state.situacao.simulacaoNumero ?? 0) + 1;
+        //+++ Atualizar situacao com mais uma em seu cadastro
+        final usuarioDocRef = _firestore
+            .collection(SituacaoModel.collection)
+            .document(_state.situacao.id);
+        await usuarioDocRef.setData({
+          'simulacaoNumero':
+              Bootstrap.instance.fieldValue.increment(1),
+        }, merge: true);
+        //---
+        simulacaoModel.ordem = 0;
         simulacaoModel.algoritmoDoAdmin = false;
         simulacaoModel.algoritmoDoProfessor = false;
         simulacaoModel.professor =
@@ -149,12 +160,24 @@ class SimulacaoCRUDBloc {
             SituacaoFk(id: _state.situacao.id, nome: _state.situacao.nome);
       }
       await docRef.setData(simulacaoModel.toMap(), merge: true);
+
+
+
     }
     if (event is DeleteDocumentEvent) {
       _firestore
           .collection(SimulacaoModel.collection)
           .document(_state.simulacao.id)
           .delete();
+          //+++ Atualizar situacao com mais uma em seu cadastro
+        final docRef = _firestore
+            .collection(SituacaoModel.collection)
+            .document(_state.situacao.id);
+        await docRef.setData({
+          'simulacaoNumero':
+              Bootstrap.instance.fieldValue.increment(-1),
+        }, merge: true);
+        //---
     }
 
     _validateData();

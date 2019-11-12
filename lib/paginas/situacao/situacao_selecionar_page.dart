@@ -38,7 +38,7 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pastas e Situações'),
+        title: Text('Selecione uma situação'),
       ),
       body: StreamBuilder<SituacaoSelecionarBlocState>(
         stream: bloc.stateStream,
@@ -72,18 +72,35 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
           List<Widget> widgetSituacaoList = List<Widget>();
 
           for (var situacao in snapshot.data.situacaoList) {
-            SituacaoFk situacaoFk = SituacaoFk(id:situacao.id,nome: situacao.nome,url: situacao.url);
-            widgetSituacaoList.add(ListTile(
-              title: Text('${situacao.nome}'),
-              trailing: Icon(Icons.check),
-              onLongPress: (){
-                launch(situacao.url);
-              },
-              onTap: () {
-                // bloc.eventSink(SelecionarSituacaoEvent(situacao));
-                Navigator.pop(context, situacaoFk);
-              },
-            ));
+            SituacaoFk situacaoFk = SituacaoFk(
+                id: situacao.id, nome: situacao.nome, url: situacao.url);
+            if (situacao.simulacaoNumero == null ||
+                situacao.simulacaoNumero <= 0) {
+              widgetSituacaoList.add(
+                ListTile(
+                  selected: true,
+                  title: Text('${situacao.nome}'),
+                  subtitle: Text('SITUAÇÃO SEM SIMULAÇÕES ! FAVOR CORRIGIR.'),
+                  onLongPress: () {
+                    launch(situacao.url);
+                  },
+                ),
+              );
+            } else {
+              widgetSituacaoList.add(
+                ListTile(
+                  title: Text('${situacao.nome}'),
+                  trailing: Icon(Icons.check),
+                  onLongPress: () {
+                    launch(situacao.url);
+                  },
+                  onTap: () {
+                    // bloc.eventSink(SelecionarSituacaoEvent(situacao));
+                    Navigator.pop(context, situacaoFk);
+                  },
+                ),
+              );
+            }
           }
           return ListView(
             children: [

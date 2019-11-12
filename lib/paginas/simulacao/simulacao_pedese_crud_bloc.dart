@@ -129,10 +129,10 @@ class SimulacaoPedeseCRUDBloc {
       );
       if (_state.pedeseKey == null) {
         final uuidG = uuid.Uuid();
-        pedeseUpdate.ordem = _state.simulacao.ordemAdicionada ?? 1;
+        pedeseUpdate.ordem = _state.simulacao.ordem ?? 1;
         print(uuidG.v4());
         _state.simulacao.pedese = {uuidG.v4(): pedeseUpdate};
-        _state.simulacao.ordemAdicionada = _state.simulacao.ordemAdicionada + 1;
+        _state.simulacao.ordem = _state.simulacao.ordem + 1;
       } else {
         _state.simulacao.pedese[_state.pedeseKey] = pedeseUpdate;
       }

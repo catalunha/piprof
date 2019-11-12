@@ -7,11 +7,12 @@ class SimulacaoModel extends FirestoreModel {
   static final String collection = "Simulacao";
   bool ativo;
   dynamic modificado;
+  int numero;
   UsuarioFk professor;
   SituacaoFk situacao;
   bool algoritmoDoAdmin;
   bool algoritmoDoProfessor;
-  int ordemAdicionada;
+  int ordem;
 
   String nome;
   String descricao;
@@ -23,12 +24,13 @@ class SimulacaoModel extends FirestoreModel {
     String id,
     this.ativo,
     this.modificado,
+    this.numero,
     this.professor,
     this.situacao,
     this.algoritmoDoAdmin,
     this.algoritmoDoProfessor,
     this.nome,
-    this.ordemAdicionada,
+    this.ordem,
     this.descricao,
     this.url,
     this.variavel,
@@ -38,6 +40,7 @@ class SimulacaoModel extends FirestoreModel {
   @override
   SimulacaoModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('ativo')) ativo = map['ativo'];
+    if (map.containsKey('numero')) numero = map['numero'];
     professor = map.containsKey('professor') && map['professor'] != null
         ? UsuarioFk.fromMap(map['professor'])
         : null;
@@ -55,7 +58,7 @@ class SimulacaoModel extends FirestoreModel {
     if (map.containsKey('algoritmoDoProfessor'))
       algoritmoDoProfessor = map['algoritmoDoProfessor'];
     if (map.containsKey('ordemAdicionada'))
-      ordemAdicionada = map['ordemAdicionada'];
+      ordem = map['ordemAdicionada'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('descricao')) descricao = map['descricao'];
     if (map.containsKey('url')) url = map['url'];
@@ -80,6 +83,7 @@ class SimulacaoModel extends FirestoreModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     // _updateAll();
     if (ativo != null) data['ativo'] = this.ativo;
+    if (numero != null) data['numero'] = this.numero;
     if (this.professor != null) {
       data['professor'] = this.professor.toMap();
     }
@@ -92,7 +96,7 @@ class SimulacaoModel extends FirestoreModel {
       data['algoritmoDoAdmin'] = this.algoritmoDoAdmin;
     if (algoritmoDoProfessor != null)
       data['algoritmoDoProfessor'] = this.algoritmoDoProfessor;
-    if (ordemAdicionada != null) data['ordemAdicionada'] = this.ordemAdicionada;
+    if (ordem != null) data['ordemAdicionada'] = this.ordem;
     if (nome != null) data['nome'] = this.nome;
     if (descricao != null) data['descricao'] = this.descricao;
     if (url != null) data['url'] = this.url;

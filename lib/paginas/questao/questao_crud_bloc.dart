@@ -47,6 +47,7 @@ class UpdateDataFimEvent extends QuestaoCRUDBlocEvent {
 
   UpdateDataFimEvent({this.data, this.hora});
 }
+
 class UpdateNumberFieldEvent extends QuestaoCRUDBlocEvent {
   final String campo;
   final String texto;
@@ -90,6 +91,7 @@ class QuestaoCRUDBlocState {
     tentativa = questao.tentativa.toString();
     nota = questao.nota;
     situacaoFk = questao.situacao;
+    questao.aplicada = questao.aplicada == null ? false : questao.aplicada;
   }
 
   void updateStateComAvaliacao() {
@@ -258,19 +260,17 @@ class QuestaoCRUDBloc {
       _state.fimAvaliacao = newDate;
     }
 
-
-   if (event is UpdateNumberFieldEvent) {
+    if (event is UpdateNumberFieldEvent) {
       if (event.campo == 'tempo') {
         _state.tempo = event.texto;
-      }else if (event.campo == 'tentativa') {
+      } else if (event.campo == 'tentativa') {
         _state.tentativa = event.texto;
-      }else if (event.campo == 'erroRelativo') {
+      } else if (event.campo == 'erroRelativo') {
         _state.erroRelativo = event.texto;
-      }else if (event.campo == 'nota') {
+      } else if (event.campo == 'nota') {
         _state.nota = event.texto;
       }
     }
-
 
     if (event is SelecionarSituacaoEvent) {
       _state.situacaoFk = event.situacaoFk;
@@ -295,6 +295,8 @@ class QuestaoCRUDBloc {
         ),
       );
       if (_state.questaoID == null) {
+        questaoUpdate.ativo = true;
+        questaoUpdate.aplicada = false;
         questaoUpdate.numero = _state.turma.questaoNumeroAdicionado ?? 0 + 1;
         //+++ Atualizar turma com mais uma questao
         final turmaDocRef = _firestore
