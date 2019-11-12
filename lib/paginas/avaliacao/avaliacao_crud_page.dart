@@ -253,7 +253,9 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                     'Nota:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(padding: EdgeInsets.all(5.0), child: _NumberFieldMultiplo(bloc,'nota')),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _NumberFieldMultiplo(bloc, 'nota')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -263,6 +265,19 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
+              SwitchListTile(
+                title: Text(
+                  'Aplicar ? ',
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                ),
+                value: snapshot.data?.aplicar == null
+                    ? false
+                    : snapshot.data?.aplicar,
+                onChanged: (bool value) {
+                  bloc.eventSink(UpdateAplicarEvent(value));
+                },
+                // secondary: Icon(Icons.thumbs_up_down),
+              ),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),

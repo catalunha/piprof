@@ -16,6 +16,7 @@ class AvaliacaoModel extends FirestoreModel {
   bool aplicar;
   bool aplicada;
   List<dynamic> aplicadaPAluno;
+  List<dynamic> questaoAplicada;
 
   AvaliacaoModel({
     String id,
@@ -31,6 +32,7 @@ class AvaliacaoModel extends FirestoreModel {
     this.aplicar,
     this.aplicada,
     this.aplicadaPAluno,
+    this.questaoAplicada,
   }) : super(id);
 
   @override
@@ -60,6 +62,8 @@ class AvaliacaoModel extends FirestoreModel {
     if (map.containsKey('aplicada')) aplicada = map['aplicada'];
     if (map.containsKey('aplicadaPAluno'))
       aplicadaPAluno = map['aplicadaPAluno'];
+    if (map.containsKey('questaoAplicada'))
+      questaoAplicada = map['questaoAplicada'];
     return this;
   }
 
@@ -82,6 +86,7 @@ class AvaliacaoModel extends FirestoreModel {
     if (aplicar != null) data['aplicar'] = this.aplicar;
     if (aplicada != null) data['aplicada'] = this.aplicada;
     if (aplicadaPAluno != null) data['aplicadaPAluno'] = this.aplicadaPAluno;
+    if (questaoAplicada != null) data['questaoAplicada'] = this.questaoAplicada;
     return data;
   }
 }

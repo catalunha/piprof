@@ -73,7 +73,9 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            selected: questao?.aplicada!=null && questao.ativo?true:false,
+                            selected: questao?.aplicada != null && questao.aplicada,
+                                // ? true
+                                // : false,
                             trailing: Text('${questao.numero}'),
                             title: Text('''
 Turma: ${questao.turma.nome}
@@ -98,6 +100,7 @@ id: ${questao.id}'''),
                                       "/questao/crud",
                                       arguments: QuestaoCRUDPageArguments(
                                         questaoID: questao.id,
+                                        avaliacaoID: widget.avaliacaoID,
                                       ),
                                     );
                                   },

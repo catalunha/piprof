@@ -51,9 +51,9 @@ class UpdateNumberFieldEvent extends AvaliacaoCRUDBlocEvent {
   UpdateNumberFieldEvent(this.campo, this.texto);
 }
 
-class UpdateNotaEvent extends AvaliacaoCRUDBlocEvent {
-  final String nota;
-  UpdateNotaEvent(this.nota);
+class UpdateAplicarEvent extends AvaliacaoCRUDBlocEvent {
+  final bool aplicar;
+  UpdateAplicarEvent(this.aplicar);
 }
 
 class SaveEvent extends AvaliacaoCRUDBlocEvent {}
@@ -71,6 +71,7 @@ class AvaliacaoCRUDBlocState {
   String nome;
   String descricao;
   String nota;
+  bool aplicar;
   DateTime inicioEncontro;
   DateTime fimEncontro;
   DateTime dataInicio;
@@ -83,6 +84,7 @@ class AvaliacaoCRUDBlocState {
     nome = avaliacao.nome;
     descricao = avaliacao.descricao;
     nota = avaliacao.nota;
+    aplicar = avaliacao.aplicar == null ? false : avaliacao.aplicar;
   }
 }
 
@@ -234,6 +236,16 @@ class AvaliacaoCRUDBloc {
         _state.nota = event.texto;
       }
     }
+    if (event is UpdateAplicarEvent) {
+      _state.aplicar = event.aplicar;
+      if (_state.avaliacao.aplicadaPAluno?.length == null ||
+          _state.avaliacao.aplicadaPAluno?.length == 0 ||
+          _state.avaliacao.questaoAplicada?.length == null ||
+          _state.avaliacao.questaoAplicada?.length == 0) {
+        _state.aplicar = false;
+      }
+    }
+
     if (event is SaveEvent) {
       final docRef = _firestore
           .collection(AvaliacaoModel.collection)
@@ -245,6 +257,7 @@ class AvaliacaoCRUDBloc {
         nome: _state.nome,
         descricao: _state.descricao,
         nota: _state.nota,
+        aplicar: _state.aplicar,
         modificado: DateTime.now(),
       );
       if (_state.avaliacaoID == null) {

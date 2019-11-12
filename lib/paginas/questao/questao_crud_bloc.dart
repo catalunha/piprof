@@ -321,6 +321,19 @@ class QuestaoCRUDBloc {
         );
       }
       await docRef.setData(questaoUpdate.toMap(), merge: true);
+      if (_state.questaoID == null) {
+        //+++ Atualizando avaliacao acrescentando esta questao da lista questaoAplicada
+        var avaliacaoDocRef = _firestore
+            .collection(AvaliacaoModel.collection)
+            .document(_state.avaliacao.id);
+        await avaliacaoDocRef.setData({
+          "questaoAplicada":
+              Bootstrap.instance.fieldValue.arrayUnion([docRef.documentID]),
+          "aplicar": false,
+          "aplicada": false,
+        }, merge: true);
+        //---
+      }
     }
     if (event is DeleteDocumentEvent) {
       if (_state.questaoID != null) {
@@ -328,6 +341,17 @@ class QuestaoCRUDBloc {
             .collection(QuestaoModel.collection)
             .document(_state.questao.id)
             .delete();
+        //+++ Atualizando avaliacao tirando esta questao da lista questaoAplicada
+        var avaliacaoDocRef = _firestore
+            .collection(AvaliacaoModel.collection)
+            .document(_state.avaliacao.id);
+        await avaliacaoDocRef.setData({
+          "questaoAplicada":
+              Bootstrap.instance.fieldValue.arrayRemove([_state.questao.id]),
+          "questaoAplicadaFunction":
+              Bootstrap.instance.fieldValue.arrayRemove([_state.questao.id]),
+        }, merge: true);
+        //---
       }
     }
 

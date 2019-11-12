@@ -89,7 +89,7 @@ class AvaliacaoAplicarBloc {
       final futureQuerySnapshot = await _firestore
           .collection(UsuarioModel.collection)
           // .where("ativo", isEqualTo: true)
-          .where("turmaList", arrayContains: avaliacao.turma.id)
+          .where("turma", arrayContains: avaliacao.turma.id)
           .getDocuments();
 
       var usuarioList = futureQuerySnapshot.documents
@@ -129,9 +129,6 @@ class AvaliacaoAplicarBloc {
       }
     }
     if (event is SaveEvent) {
-      var docRef = await _firestore
-          .collection(AvaliacaoModel.collection)
-          .document(_state.avaliacao.id);
       List<dynamic> aplicadaPAluno = List<dynamic>();
       for (var alunoMap in _state.alunoInfoMap.entries) {
         if (alunoMap.value.aplicar || alunoMap.value.aplicada) {
@@ -139,11 +136,18 @@ class AvaliacaoAplicarBloc {
           _state.alunoInfoMap[alunoMap.key].aplicada = true;
         }
       }
-
-      await docRef.setData({
-        "aplicadaPAluno": aplicadaPAluno,
-        "aplicar": true,
-      }, merge: true);
+      if (_state.avaliacao.aplicadaPAluno?.length != null &&
+          aplicadaPAluno.length != null &&
+          _state.avaliacao.aplicadaPAluno?.length != aplicadaPAluno.length) {
+        var docRef = _firestore
+            .collection(AvaliacaoModel.collection)
+            .document(_state.avaliacao.id);
+        await docRef.setData({
+          "aplicadaPAluno": aplicadaPAluno,
+          "aplicar": false,
+          "aplicada": false,
+        }, merge: true);
+      }
     }
 
     _validateData();

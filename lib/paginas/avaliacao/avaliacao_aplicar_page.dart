@@ -105,7 +105,7 @@ class _AvaliacaoMarcarPageState extends State<AvaliacaoMarcarPage> {
                         children: <Widget>[
                           Expanded(
                             flex: 2,
-                            child: _ImagemUnica(url: aluno.foto.url),
+                            child: _ImagemUnica(url: aluno?.foto?.url),
                           ),
                           Expanded(
                             flex: 4,

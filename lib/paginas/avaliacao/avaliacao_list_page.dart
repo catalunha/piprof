@@ -72,10 +72,11 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
                             title: Text('''
 Turma: ${avaliacao.turma.nome}
 Avaliação: ${avaliacao.nome}
+Alunos: ${avaliacao.aplicadaPAluno?.length ?? 0}
+Questões: ${avaliacao.questaoAplicada?.length ?? 0}
 Nota: ${avaliacao.nota}'''),
                             subtitle: Text('''
 id: ${avaliacao.id}'''),
-
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(avaliacao.inicio)}\n${DateFormat('dd-MM HH:mm').format(avaliacao.fim)}'),
                           ),
@@ -106,8 +107,8 @@ id: ${avaliacao.id}'''),
                                   },
                                 ),
                                 IconButton(
-                                  tooltip: 'Aplicar esta avaliacao',
-                                  icon: Icon(Icons.colorize),
+                                  tooltip: 'Acrescentar aluno',
+                                  icon: Icon(Icons.group_add),
                                   onPressed: () {
                                     Navigator.pushNamed(
                                       context,
