@@ -3,6 +3,7 @@ import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/default_scaffold.dart';
 import 'package:piprof/paginas/pasta/pasta_list_bloc.dart';
+import 'package:piprof/servicos/gerar_csv_service.dart';
 
 class PastaListPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -57,10 +58,10 @@ class _PastaListPageState extends State<PastaListPage> {
             List<Widget> listaWidget = List<Widget>();
             listaWidget.add(
               ListTile(
-                title: Text('Lista de pastas em planilha'),
+                title: Text('Lista de pastas em situações em planilha'),
                 trailing: Icon(Icons.grid_on),
                 onTap: () {
-                  // GenerateCsvService.generateCsvFromPasta(widget.turmaID);
+                  GenerateCsvService.csvPastaListaSituacao(snapshot.data.pastaList);
                 },
               ),
             );
@@ -109,13 +110,13 @@ class _PastaListPageState extends State<PastaListPage> {
                                     }
                                   : null,
                             ),
-                            IconButton(
-                                    tooltip: 'Lista de situações em planilha',
-                                    icon: Icon(Icons.grid_on),
-                                    onPressed: () {
-                                      // GenerateCsvService.generateCsvFromEncontro(
-                                      //     widget.pastaID);
-                                    }),
+                            // IconButton(
+                            //         tooltip: 'Lista de situações em planilha',
+                            //         icon: Icon(Icons.grid_on),
+                            //         onPressed: () {
+                            //           // GenerateCsvService.generateCsvFromEncontro(
+                            //           //     widget.pastaID);
+                            //         }),
                             IconButton(
                               tooltip: 'Gerenciar situações nesta pasta',
                               icon: Icon(Icons.folder),

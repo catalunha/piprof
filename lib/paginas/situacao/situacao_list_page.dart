@@ -124,11 +124,11 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                     },
                                   ),
                                 IconButton(
-                                  tooltip: 'Listar de situação em planilha',
+                                  tooltip: 'Listar de situação e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    // GenerateCsvService.generateCsvFromEncontro(
-                                    //     widget.pastaID);
+                                    GenerateCsvService.csvSituacaoListaSimulacao(
+                                        situacao);
                                   },
                                 ),
                                 IconButton(

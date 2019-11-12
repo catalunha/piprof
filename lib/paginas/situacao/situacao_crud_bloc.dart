@@ -195,9 +195,8 @@ class SituacaoCRUDBloc {
       situacaoUpdate.url = _state.situacao.url;
 
       if (_state.situacaoID == null) {
-        situacaoUpdate.simulacaoNumeroAdicionado = 0;
         situacaoUpdate.numero =
-            _state.usuarioAuth.situacaoNumeroAdicionado ?? 0 + 1;
+            (_state.usuarioAuth.situacaoNumeroAdicionado ?? 0) + 1;
         //+++ Atualizar usuario com mais uma pasta em seu cadastro
         final usuarioDocRef = _firestore
             .collection(UsuarioModel.collection)

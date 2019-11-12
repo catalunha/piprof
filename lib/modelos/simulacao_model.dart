@@ -1,3 +1,4 @@
+import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/base_model.dart';
 import 'package:piprof/modelos/situacao_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
@@ -147,12 +148,22 @@ class Pedese {
   int ordem;
   String tipo;
   String gabarito;
+  String resposta;
+  int nota;
+  String gabaritoUploadID;
+  String respostaUploadID;
+  String respostaPath;
 
   Pedese({
     this.nome,
     this.ordem,
     this.tipo,
     this.gabarito,
+    this.resposta,
+    this.nota,
+    this.gabaritoUploadID,
+    this.respostaPath,
+    this.respostaUploadID,
   });
 
   Pedese.fromMap(Map<dynamic, dynamic> map) {
@@ -160,6 +171,13 @@ class Pedese {
     if (map.containsKey('ordem')) ordem = map['ordem'];
     if (map.containsKey('tipo')) tipo = map['tipo'];
     if (map.containsKey('gabarito')) gabarito = map['gabarito'];
+    if (map.containsKey('resposta')) resposta = map['resposta'];
+    if (map.containsKey('nota')) nota = map['nota'];
+    if (map.containsKey('gabaritoUploadID'))
+      gabaritoUploadID = map['gabaritoUploadID'];
+    if (map.containsKey('respostaPath')) respostaPath = map['respostaPath'];
+    if (map.containsKey('respostaUploadID'))
+      respostaUploadID = map['respostaUploadID'];
   }
 
   Map<dynamic, dynamic> toMap() {
@@ -168,6 +186,43 @@ class Pedese {
     if (ordem != null) data['ordem'] = this.ordem;
     if (tipo != null) data['tipo'] = this.tipo;
     if (gabarito != null) data['gabarito'] = this.gabarito;
+    if (resposta != null) data['resposta'] = this.resposta;
+    data['nota'] = this.nota ?? Bootstrap.instance.fieldValue.delete();
+    if (gabaritoUploadID != null)
+      data['gabaritoUploadID'] = this.gabaritoUploadID;
+    if (respostaPath != null) data['respostaPath'] = this.respostaPath;
+    if (respostaUploadID != null)
+      data['respostaUploadID'] = this.respostaUploadID;
     return data;
   }
 }
+
+// class Pedese {
+//   String nome;
+//   int ordem;
+//   String tipo;
+//   String gabarito;
+
+//   Pedese({
+//     this.nome,
+//     this.ordem,
+//     this.tipo,
+//     this.gabarito,
+//   });
+
+//   Pedese.fromMap(Map<dynamic, dynamic> map) {
+//     if (map.containsKey('nome')) nome = map['nome'];
+//     if (map.containsKey('ordem')) ordem = map['ordem'];
+//     if (map.containsKey('tipo')) tipo = map['tipo'];
+//     if (map.containsKey('gabarito')) gabarito = map['gabarito'];
+//   }
+
+//   Map<dynamic, dynamic> toMap() {
+//     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+//     if (nome != null) data['nome'] = this.nome;
+//     if (ordem != null) data['ordem'] = this.ordem;
+//     if (tipo != null) data['tipo'] = this.tipo;
+//     if (gabarito != null) data['gabarito'] = this.gabarito;
+//     return data;
+//   }
+// }

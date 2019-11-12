@@ -1,6 +1,9 @@
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/encontro_model.dart';
+import 'package:piprof/modelos/pasta_model.dart';
+import 'package:piprof/modelos/simulacao_model.dart';
+import 'package:piprof/modelos/situacao_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
@@ -35,6 +38,10 @@ class GenerateCsvService {
         // .where("ativo", isEqualTo: true)
         .where("turmaList", arrayContains: turma.id)
         .getDocuments();
+    List<UsuarioModel> usuarioList = futureQuerySnapshot.documents
+        .map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data))
+        .toList();
+
 
     planilha.add([
       'foto',
@@ -44,9 +51,8 @@ class GenerateCsvService {
       'celular',
       'cracha',
     ]);
-    for (var usuarioDocSnapshot in futureQuerySnapshot.documents) {
-      UsuarioModel usuario = UsuarioModel(id: usuarioDocSnapshot.documentID)
-          .fromMap(usuarioDocSnapshot.data);
+    for (var usuario in usuarioList) {
+      
       planilha.add([
         '=IMAGE("${usuario.foto.url}")',
         '${usuario.nome}',
@@ -76,12 +82,15 @@ class GenerateCsvService {
     planilha.add(['celular', '${usuario.celular}']);
     planilha.add(['foto', '=IMAGE("${usuario.foto.url}")']);
 
-    List<TarefaModel> tarefaList = List<TarefaModel>();
 
     final futureQuerySnapshot = await Bootstrap.instance.firestore
         .collection(TarefaModel.collection)
         .where("aluno.id", isEqualTo: usuario.id)
         .getDocuments();
+
+    List<TarefaModel> tarefaList = futureQuerySnapshot.documents
+        .map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data))
+        .toList();
 
     Map<String, Variavel> variavelMap = Map<String, Variavel>();
     Map<String, Pedese> pedeseMap = Map<String, Pedese>();
@@ -92,9 +101,8 @@ class GenerateCsvService {
       'Item',
       'Valor',
     ]);
-    for (var tarefaDocSnapshot in futureQuerySnapshot.documents) {
-      TarefaModel tarefa = TarefaModel(id: tarefaDocSnapshot.documentID)
-          .fromMap(tarefaDocSnapshot.data);
+    for (var tarefa in tarefaList) {
+
       planilha.add([
         '${tarefa.avaliacao.nome}',
         '${tarefa.questao.numero}',
@@ -194,7 +202,7 @@ class GenerateCsvService {
       variavelMap = variavelOrdered.toMap();
 
       for (var variavel in variavelMap.entries) {
-        print(variavel.key);
+        // print(variavel.key);
         planilha.add([
           '${tarefa.avaliacao.nome}',
           '${tarefa.questao.numero}',
@@ -217,7 +225,7 @@ class GenerateCsvService {
       pedeseMap = pedeseOrderBy.toMap();
       String nota = '=';
       for (var pedese in pedeseMap.entries) {
-        print(pedese.key);
+        // print(pedese.key);
 
         nota = nota + '+${pedese.value.nota}';
         planilha.add([
@@ -530,7 +538,6 @@ class GenerateCsvService {
       //   '${tarefa.erroRelativo}',
       // ]);
 
-      
     }
     String csvData =
         ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
@@ -538,58 +545,187 @@ class GenerateCsvService {
     _saveFileAndOpen(csvData);
   }
 
-
-  static csvPastaListaSituacao(TurmaModel turma) async {
+  static csvPastaListaSituacao(List<PastaModel> pastaList) async {
     List<List<dynamic>> planilha = List<List<dynamic>>();
 
-    planilha.add(['Turma', 'Informacao']);
-    planilha.add(['id', '${turma.id}']);
-    planilha.add(['ativo', '${turma.ativo}']);
-    planilha.add(['nome', '${turma.nome}']);
-    planilha.add(['instituicao', '${turma.instituicao}']);
-    planilha.add(['componente', '${turma.componente}']);
-    planilha.add(['descricao', '${turma.descricao}']);
     planilha.add([
-      'questoes',
-      '${turma.questaoNumeroAdicionado - turma.questaoNumeroExcluido}'
+      'pasta_nome',
+      'pasta_descricao',
+      'situacao_nome',
+      'situacao_descricao',
+      'situacao_uso',
+      'situacao_algoritmo',
+      'situacao_url',
     ]);
+    for (var pasta in pastaList) {
+      final futureQuerySnapshot = await Bootstrap.instance.firestore
+          .collection(SituacaoModel.collection)
+          .where("pasta.id", isEqualTo: pasta.id)
+          .getDocuments();
 
-    final futureQuerySnapshot = await Bootstrap.instance.firestore
-        .collection(UsuarioModel.collection)
-        // .where("ativo", isEqualTo: true)
-        .where("turmaList", arrayContains: turma.id)
-        .getDocuments();
-
-    planilha.add([
-      'foto',
-      'nome',
-      'matricula',
-      'email',
-      'celular',
-      'cracha',
-    ]);
-    for (var usuarioDocSnapshot in futureQuerySnapshot.documents) {
-      UsuarioModel usuario = UsuarioModel(id: usuarioDocSnapshot.documentID)
-          .fromMap(usuarioDocSnapshot.data);
-      planilha.add([
-        '=IMAGE("${usuario.foto.url}")',
-        '${usuario.nome}',
-        '${usuario.matricula}',
-        '${usuario.email}',
-        '${usuario.celular}',
-        '${usuario.cracha}',
-      ]);
+      List<SituacaoModel> situacaoList = futureQuerySnapshot.documents
+          .map((doc) => SituacaoModel(id: doc.documentID).fromMap(doc.data))
+          .toList();
+      var base = [
+        '${pasta.nome}',
+        '${pasta.descricao}',
+      ];
+      int usoTotal = 0;
+      for (var situacao in situacaoList) {
+        usoTotal = 0;
+        if (situacao?.uso != null) {
+          for (var uso in situacao.uso?.entries) {
+            usoTotal = usoTotal + uso.value;
+          }
+        }
+        planilha.add([
+          ...base,
+          '${situacao.nome}',
+          '${situacao.descricao}',
+          '$usoTotal',
+          '${situacao.precisaAlgoritmoPSimulacao}',
+          '=HYPERLINK("${situacao.url}";"Link para a situacao")',
+        ]);
+      }
     }
 
 // print(planilha.toList());
     String csvData =
         ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
     // print('+++ generateCsvFromUsuarioListDaTurma\n$csvData\n--- generateCsvFromUsuarioListDaTurma');
-    // _saveFileAndOpen(csvData);
+    _saveFileAndOpen(csvData);
   }
 
+  static csvSituacaoListaSimulacao(SituacaoModel situacao) async {
+    List<List<dynamic>> planilha = List<List<dynamic>>();
 
+    final futureQuerySnapshot = await Bootstrap.instance.firestore
+        .collection(SimulacaoModel.collection)
+        .where("situacao.id", isEqualTo: situacao.id)
+        .getDocuments();
 
+    List<SimulacaoModel> simulacaoList = futureQuerySnapshot.documents
+        .map((doc) => SimulacaoModel(id: doc.documentID).fromMap(doc.data))
+        .toList();
+    planilha.add([
+      'pasta_nome',
+      'situacao_nome',
+      'situacao_descricao',
+      'situacao_url',
+      'simulacao_nome',
+      'simulacao_descricao',
+      'simulacao_url',
+      'item',
+      'valor',
+    ]);
+
+    var base1 = [
+      '${situacao.pasta.nome}',
+      '${situacao.nome}',
+      '${situacao.descricao}',
+      '=HYPERLINK("${situacao.url}";"Link para a situacao")',
+    ];
+    Map<String, Variavel> variavelMap = Map<String, Variavel>();
+    Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+    for (var simulacao in simulacaoList) {
+      var base2 = [
+        '${simulacao.nome}',
+        '${simulacao.descricao}',
+        '=HYPERLINK("${simulacao.url}";"Link para a simulacao")',
+      ];
+      var dicVariavel = Dictionary.fromMap(simulacao.variavel);
+      var variavelOrdered = dicVariavel
+          .orderBy((kv) => kv.value.ordem)
+          .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+      variavelMap.clear();
+      variavelMap = variavelOrdered.toMap();
+      for (var variavel in variavelMap.entries) {
+        planilha.add([
+          ...base1,
+          ...base2,
+          'variavel_nome',
+              '${variavel.value.nome}',
+        ]);
+        planilha.add([
+          ...base1,
+          ...base2,
+          'variavel_tipo',
+              '${variavel.value.tipo}',
+        ]);
+        if (variavel.value.tipo == 'url') {
+          planilha.add([
+            ...base1,
+            ...base2,
+            'variavel_valor',
+                '=HYPERLINK("${variavel.value.valor}";"Link para a variavel")',
+          ]);
+        } else if (variavel.value.tipo == 'urlimagem') {
+          planilha.add([
+            ...base1,
+            ...base2,
+            'variavel_valor',
+                '=IMAGE("${variavel.value.valor}")',
+          ]);
+        } else {
+          planilha.add([
+            ...base1,
+            ...base2,
+            'variavel_valor',
+                '${variavel.value.valor}',
+          ]);
+        }
+      }
+      var dicPedese = Dictionary.fromMap(simulacao.pedese);
+      var pedeseOrderBy = dicPedese
+          .orderBy((kv) => kv.value.ordem)
+          .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+      pedeseMap.clear();
+      pedeseMap = pedeseOrderBy.toMap();
+      String nota = '=';
+      for (var pedese in pedeseMap.entries) {
+         planilha.add([
+          ...base1,
+          ...base2,
+          'pedese_nome',
+              '${pedese.value.nome}',
+        ]);
+        planilha.add([
+          ...base1,
+          ...base2,
+          'pedese_tipo',
+              '${pedese.value.tipo}',
+        ]);
+        if (pedese.value.tipo == 'url'||pedese.value.tipo == 'arquivo') {
+          planilha.add([
+            ...base1,
+            ...base2,
+            'pedese_gabarito',
+                '=HYPERLINK("${pedese.value.gabarito}";"Link para a pedese")',
+          ]);
+        } else if (pedese.value.tipo == 'urlimagem'||pedese.value.tipo == 'imagem') {
+          planilha.add([
+            ...base1,
+            ...base2,
+            'pedese_gabarito',
+                '=IMAGE("${pedese.value.gabarito}")',
+          ]);
+        } else {
+          planilha.add([
+            ...base1,
+            ...base2,
+            'pedese_gabarito',
+                '${pedese.value.gabarito}',
+          ]);
+        }
+      }
+    }
+
+// print(planilha.toList());
+    String csvData =
+        ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
+    // print('+++ generateCsvFromUsuarioListDaTurma\n$csvData\n--- generateCsvFromUsuarioListDaTurma');
+    _saveFileAndOpen(csvData);
+  }
 
   static _saveFileAndOpen(String csvData) async {
     //gerar e salvar

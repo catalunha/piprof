@@ -9,6 +9,7 @@ import 'package:piprof/componentes/default_scaffold.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
+import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/modelos/situacao_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/modelos/turma_model.dart';

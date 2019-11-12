@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
+import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/naosuportato/naosuportado.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_bloc.dart';

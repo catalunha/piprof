@@ -64,7 +64,7 @@
     "nome": "",
     "descricao": "",
     "professor": {
-      "id": "Usuario/documentID",
+      "id": "documentID",
       "nome": ""
     },
     "alunoList": [
@@ -84,7 +84,7 @@
     "nome": "",
     "descricao": "",
     "professor": {
-      "id": "Usuario/usuarioID",
+      "id": "usuarioID",
       "nome": ""
     }
   },
@@ -100,8 +100,8 @@
     "nome": "",
     "descricao": "",
     "professor": {
-      "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome"
+      "id": "usuarioID",
+      "nome": "usuarioID.nome"
     },
     "pasta": {
       "id": "Pasta/pastaID",
@@ -111,7 +111,6 @@
       "turmaID": 0
     },
     "url": "url definitiva para a situacao com base nos dados a seguir",
-    "simulacaoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
     "precisaAlgoritmoPSimulacao": "true/false",
     "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
     "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
@@ -133,7 +132,7 @@
     "algoritmoDoAdmin": "",
     "algoritmoDoProfessor": " ",
     "professor": {
-      "id": "Usuario/documentID",
+      "id": "documentID",
       "nome": ""
     },
     "situacao": {
@@ -226,7 +225,7 @@
     "#onDelete": "Se Aplicada=true apagar tarefas com esta avaliacao. ",
     "ativo": "true: aparece na listagens. false: !true ",
     "professor": {
-      "id": "Usuario/usuarioID",
+      "id": "usuarioID",
       "nome": ""
     },
     "turma": {
@@ -238,13 +237,19 @@
     "inicio": "",
     "fim": "",
     "nota": "string",
-    "aplicar": "false: por padrao. quando mudar para true a function começa a aplicar as questoes desta avaliação para cada aluno. qdo terminar muda aplicada para true",
-    "aplicada": "inicia com false. so a function muda esta condição para true ",
+    "aplicar": "iniciar com false: quando mudar para true (aplicada:false) a function começa a aplicar as questoes desta avaliação para cada aluno. se editar lista de alunos ou questao muda aplicar:false e aplicada:false",
+    "aplicada": "inicia com false. so a function muda esta condição para true.  ",
     "aplicadaPAluno": [
-      "Usuario/usuarioID"
+      "usuarioID"
+    ],
+    "aplicadaPAlunoFunction": [
+      "usuarioID. criada pela function para controlar a lista de feitos e a fazer"
     ],
     "questaoAplicada": [
-      "Usuario/usuarioID"
+      "questaoID"
+    ],
+    "questaoAplicadaFunction": [
+      "questaoID. criada pela function para controlar a lista de feitos e a fazer"
     ]
   },
   "Questao": {
@@ -256,7 +261,7 @@
     "ativo": "true: aparece na listagens. false: !true ",
     "numero": "numero. usado para referenciar a questao e ordenar.",
     "professor": {
-      "id": "Usuario/usuarioID",
+      "id": "usuarioID",
       "nome": ""
     },
     "turma": {
@@ -277,7 +282,8 @@
     "tentativa": "numero: 3. de 1 a 5",
     "tempo": "numero: 2. representa quando horas tem para resolver o problema.",
     "erroRelativo": "numero: 10. valor para calculo do erro relativo.",
-    "nota": "string"
+    "nota": "string",
+    "aplicada": "true/false. quando uma questao foi aplicada pela function marca pra ela nao ser editada em outra situacao."
   },
   "Tarefa": {
     "comment": "",
@@ -289,8 +295,8 @@
     "@update_podeResolver": " . Para aberta se (tentou > tentativa) = false. se (inicio - agora > tempo) = false. se (iniciou > inicio) = false",
     "ativo": "true: aparece na listagens de tarefas disponiveis. false: !true ",
     "professor": {
-      "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome"
+      "id": "usuarioID",
+      "nome": "usuarioID.nome"
     },
     "turma": {
       "id": "Turma/turmaID",
@@ -405,8 +411,8 @@
       }
     },
     "aluno": {
-      "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome",
+      "id": "usuarioID",
+      "nome": "usuarioID.nome",
       "foto": "url da foto"
     },
     "modificado": "dh em q foi aplicada ou criado a tarefa. se modificar questão ou avaliacao atualiza esta data",
@@ -429,8 +435,8 @@
     "#onUpdate": "",
     "#onDelete": "",
     "professor": {
-      "id": "Usuario/usuarioID",
-      "nome": "Usuario/usuarioID.nome"
+      "id": "usuarioID",
+      "nome": "usuarioID.nome"
     },
     "turma": {
       "id": "Turma/turmaID",
@@ -441,7 +447,7 @@
     "nome": "",
     "descricao": "",
     "alunoList": [
-      "Usuario/usuarioID"
+      "usuarioID"
     ]
   },
   "Programa": {

@@ -1,4 +1,5 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:queries/collections.dart';
 import 'package:rxdart/rxdart.dart';
