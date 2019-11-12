@@ -33,7 +33,7 @@ class _AvaliacaoMarcarPageState extends State<AvaliacaoMarcarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Aplicar avaliação'),
+          title: Text('Selecionar aluno'),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.cloud_upload),

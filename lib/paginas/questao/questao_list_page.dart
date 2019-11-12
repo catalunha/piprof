@@ -132,6 +132,16 @@ id: ${questao.id}'''),
                                     launch(questao.situacao.url);
                                   },
                                 ),
+                                if(questao.aplicada!=null && questao.aplicada)
+                                 IconButton(
+                                  tooltip: 'Reset tempo e tentativa',
+                                  icon: Icon(Icons.child_care),
+                                  onPressed: () {
+                                    bloc.eventSink(
+                                              ResetTempoTentativaQuestaEvent(questao.id,questao.aplicada));
+                                    
+                                  },
+                                ),
                                 if (snapshot.data?.avaliacao?.aplicada !=
                                         null &&
                                     snapshot.data?.avaliacao?.aplicada)

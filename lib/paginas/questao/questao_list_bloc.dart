@@ -1,6 +1,8 @@
+import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class QuestaoListBlocEvent {}
@@ -24,9 +26,16 @@ class OrdenarEvent extends QuestaoListBlocEvent {
   OrdenarEvent(this.obj, this.up);
 }
 
+class ResetTempoTentativaQuestaEvent extends QuestaoListBlocEvent {
+  final String questaoID;
+  final bool aplicada;
+
+  ResetTempoTentativaQuestaEvent(this.questaoID, this.aplicada);
+}
+
 class QuestaoListBlocState {
   bool isDataValid = false;
-    AvaliacaoModel avaliacao = AvaliacaoModel();
+  AvaliacaoModel avaliacao = AvaliacaoModel();
 
   List<QuestaoModel> questaoList = List<QuestaoModel>();
 }
@@ -96,6 +105,29 @@ class QuestaoListBloc {
       });
     }
 
+    if (event is ResetTempoTentativaQuestaEvent) {
+      if (event.aplicada) {
+        //+++ Atualizar tarefa resetando tempo e tentativa desta questao
+        final futureQuerySnapshot = await _firestore
+            .collection(TarefaModel.collection)
+            .where("questao.id", isEqualTo: event.questaoID)
+            .getDocuments();
+        var tarefaList = futureQuerySnapshot.documents
+            .map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data))
+            .toList();
+        for (var tarefa in tarefaList) {
+          //+++ Atualizar turma com mais uma questao
+          final tarefaDocRef =
+              _firestore.collection(TarefaModel.collection).document(tarefa.id);
+          await tarefaDocRef.setData({
+            'tentou': 0,
+            'iniciou': null,
+            'enviou': null,
+          }, merge: true);
+          //---
+        }
+      }
+    }
     if (event is OrdenarEvent) {
       final ordemOrigem = _state.questaoList.indexOf(event.obj);
       final ordemDestino = event.up ? ordemOrigem - 1 : ordemOrigem + 1;

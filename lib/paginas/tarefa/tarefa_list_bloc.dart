@@ -10,6 +10,12 @@ class GetTarefaListPorQuestaoEvent extends TarefaListBlocEvent {
   GetTarefaListPorQuestaoEvent(this.questaoID);
 }
 
+class ResetTempoTentativaTarefaEvent extends TarefaListBlocEvent {
+  final String tarefaID;
+
+  ResetTempoTentativaTarefaEvent(this.tarefaID);
+}
+
 class TarefaListBlocState {
   bool isDataValid = false;
   List<TarefaModel> tarefaList = List<TarefaModel>();
@@ -49,22 +55,36 @@ class TarefaListBloc {
 
   _mapEventToState(TarefaListBlocEvent event) async {
     if (event is GetTarefaListPorQuestaoEvent) {
-        _state.tarefaList.clear();
+      _state.tarefaList.clear();
 
-        final streamDocsRemetente = _firestore
-            .collection(TarefaModel.collection)
-            .where("questao.id", isEqualTo: event.questaoID)
-            .snapshots();
+      final streamDocsRemetente = _firestore
+          .collection(TarefaModel.collection)
+          .where("questao.id", isEqualTo: event.questaoID)
+          .snapshots();
 
-        final snapListRemetente = streamDocsRemetente.map(
-            (snapDocs) => snapDocs.documents.map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data)).toList());
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
 
-        snapListRemetente.listen((List<TarefaModel> tarefaList) {
-          tarefaList.sort((a, b) => a.aluno.nome.compareTo(b.aluno.nome));
-          _state.tarefaList = tarefaList;
-          if (!_stateController.isClosed) _stateController.add(_state);
-        });
+      snapListRemetente.listen((List<TarefaModel> tarefaList) {
+        tarefaList.sort((a, b) => a.aluno.nome.compareTo(b.aluno.nome));
+        _state.tarefaList = tarefaList;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
     }
+    if (event is ResetTempoTentativaTarefaEvent) {
+      final docRef = _firestore
+          .collection(TarefaModel.collection)
+          .document(event.tarefaID);
+
+      await docRef.setData({
+        'tentou': 0,
+        'iniciou': null,
+        'enviou': null,
+      }, merge: true);
+    }
+
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em TarefaAlunoList  = ${event.runtimeType}');

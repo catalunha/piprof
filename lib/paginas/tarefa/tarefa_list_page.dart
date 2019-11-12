@@ -122,7 +122,15 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                       //   icon: Icon(Icons.grid_on),
                                       //   onPressed: () {},
                                       // ),
-                                      
+                                 IconButton(
+                                  tooltip: 'Reset tempo e tentativa',
+                                  icon: Icon(Icons.child_care),
+                                  onPressed: () {
+                                    bloc.eventSink(
+                                              ResetTempoTentativaTarefaEvent(tarefa.id));
+                                    
+                                  },
+                                ),
                                       IconButton(
                                         tooltip: 'Editar tarefa para este aluno',
                                         icon: Icon(Icons.edit),
