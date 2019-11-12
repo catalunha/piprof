@@ -237,10 +237,13 @@
     "descricao": "",
     "inicio": "",
     "fim": "",
-    "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
+    "nota": "string",
     "aplicar": "false: por padrao. quando mudar para true a function começa a aplicar as questoes desta avaliação para cada aluno. qdo terminar muda aplicada para true",
     "aplicada": "inicia com false. so a function muda esta condição para true ",
     "aplicadaPAluno": [
+      "Usuario/usuarioID"
+    ],
+    "questaoAplicada": [
       "Usuario/usuarioID"
     ]
   },
@@ -274,7 +277,7 @@
     "tentativa": "numero: 3. de 1 a 5",
     "tempo": "numero: 2. representa quando horas tem para resolver o problema.",
     "erroRelativo": "numero: 10. valor para calculo do erro relativo.",
-    "nota": "numero. valor desta questao"
+    "nota": "string"
   },
   "Tarefa": {
     "comment": "",
