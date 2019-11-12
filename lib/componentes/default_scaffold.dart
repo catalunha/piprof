@@ -25,9 +25,9 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
     if (Recursos.instance.plataforma == 'android') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/upload"] = Rota("Upload de arquivos", Icons.cloud_upload);
-      rotas["/turma/ativa/list"] = Rota("Turmas ativas", Icons.supervised_user_circle);
+      rotas["/turma/ativa/list"] =
+          Rota("Turmas ativas", Icons.supervised_user_circle);
       rotas["/pasta/list"] = Rota("Pastas de situações", Icons.folder);
-      rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
 
       rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     } else if (Recursos.instance.plataforma == 'web') {
@@ -35,7 +35,6 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
       rotas["/turma/ativa/list"] = Rota("Turmas ativas", Icons.assignment);
       rotas["/pasta/list"] = Rota("Pastas de situações", Icons.folder);
-      rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
       rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     }
   }
@@ -180,8 +179,8 @@ class _ImagemUnica extends StatelessWidget {
         maxRadius: 50,
         backgroundImage: NetworkImage(fotoUrl),
       );
-    }else{
-            foto = Center(child: Text('Falta foto.'));
+    } else {
+      foto = Center(child: Text('Falta foto.'));
     }
 
     return Row(
@@ -213,10 +212,13 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
     rotas = Map<String, Rota>();
     if (Recursos.instance.plataforma == 'android') {
       rotas["/perfil"] = Rota("Perfil", Icons.settings);
+      rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
+
       rotas["/versao"] = Rota("Versão & Sobre", Icons.device_unknown);
       // rotas["/modooffline"] = Rota("Habilitar modo offline", Icons.save);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/perfil"] = Rota("Perfil", Icons.settings);
+      rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
       rotas["/versao"] = Rota("Versão & Sobre", Icons.device_unknown);
     }
   }
