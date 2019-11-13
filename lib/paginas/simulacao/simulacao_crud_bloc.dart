@@ -169,7 +169,7 @@ class SimulacaoCRUDBloc {
           .collection(SimulacaoModel.collection)
           .document(_state.simulacao.id)
           .delete();
-          //+++ Atualizar situacao com mais uma em seu cadastro
+          //+++ Atualizar situacao com menos uma em seu cadastro
         final docRef = _firestore
             .collection(SituacaoModel.collection)
             .document(_state.situacao.id);

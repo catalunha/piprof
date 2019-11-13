@@ -341,17 +341,7 @@ class QuestaoCRUDBloc {
             .collection(QuestaoModel.collection)
             .document(_state.questao.id)
             .delete();
-        //+++ Atualizando avaliacao tirando esta questao da lista questaoAplicada
-        var avaliacaoDocRef = _firestore
-            .collection(AvaliacaoModel.collection)
-            .document(_state.avaliacao.id);
-        await avaliacaoDocRef.setData({
-          "questaoAplicada":
-              Bootstrap.instance.fieldValue.arrayRemove([_state.questao.id]),
-          "questaoAplicadaFunction":
-              Bootstrap.instance.fieldValue.arrayRemove([_state.questao.id]),
-        }, merge: true);
-        //---
+      //Function atualiza Avaliacao.questaoAplicada e Avaliacao.questaoAplicadaFunction
       }
     }
 
