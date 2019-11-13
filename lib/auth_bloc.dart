@@ -28,6 +28,7 @@ class UpdatePasswordAuthBlocEvent extends AuthBlocEvent {
 class LoginAuthBlocEvent extends AuthBlocEvent {}
 
 class LogoutAuthBlocEvent extends AuthBlocEvent {}
+class ResetPassword extends AuthBlocEvent {}
 
 class AuthBlocState {
   String usuarioID;
@@ -151,6 +152,8 @@ class AuthBloc {
       _handleLoginAuthBlocEvent();
     } else if (event is LogoutAuthBlocEvent) {
       _authApi.logout();
+    }else if (event is ResetPassword) {
+      // _authApi.sendPasswordResetEmail(_state.email);
     }
   }
 
@@ -164,4 +167,7 @@ class AuthBloc {
       }
     });
   }
+
+
+
 }
