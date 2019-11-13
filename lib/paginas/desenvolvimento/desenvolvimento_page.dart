@@ -250,7 +250,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
         id: userId,
-        aluno: true,
+        professor: false,
         ativo: true,
         celular: '123',
         cracha: 'Marcio',
@@ -278,7 +278,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
-      aluno: true,
+      professor: false,
       ativo: true,
       celular: '123',
       cracha: 'Lucas',
@@ -324,7 +324,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
-      aluno: false,
+      professor: true,
       ativo: true,
       celular: '456',
       cracha: 'Catalunha',
@@ -352,7 +352,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
-      aluno: false,
+      professor: true,
       ativo: true,
       celular: '456',
       cracha: 'Ricelly',

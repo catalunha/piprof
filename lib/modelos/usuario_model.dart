@@ -3,7 +3,7 @@ import 'package:piprof/modelos/upload_model.dart';
 
 class UsuarioModel extends FirestoreModel {
   static final String collection = "Usuario";
-  bool aluno;
+  bool professor;
   bool ativo;
   String celular;
   String cracha;
@@ -27,7 +27,7 @@ class UsuarioModel extends FirestoreModel {
     this.email,
     this.tokenFCM,
     this.ativo,
-    this.aluno,
+    this.professor,
     this.foto,
     this.turmaNumeroAdicionado,
     this.pastaNumeroAdicionado,
@@ -45,7 +45,7 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('tokenFCM')) tokenFCM = map['tokenFCM'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
-    if (map.containsKey('aluno')) aluno = map['aluno'];
+    if (map.containsKey('professor')) professor = map['professor'];
     if (map.containsKey('pastaNumeroAdicionado')) pastaNumeroAdicionado = map['pastaNumeroAdicionado'];
     if (map.containsKey('situacaoNumeroAdicionado')) situacaoNumeroAdicionado = map['situacaoNumeroAdicionado'];
     if (map.containsKey('turmaNumeroAdicionado')) turmaNumeroAdicionado = map['turmaNumeroAdicionado'];
@@ -69,7 +69,7 @@ class UsuarioModel extends FirestoreModel {
     if (tokenFCM != null) data['tokenFCM'] = this.tokenFCM;
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
-    if (aluno != null) data['aluno'] = this.aluno;
+    if (professor != null) data['professor'] = this.professor;
     if (pastaNumeroAdicionado != null) data['pastaNumeroAdicionado'] = this.pastaNumeroAdicionado;
     if (situacaoNumeroAdicionado != null) data['situacaoNumeroAdicionado'] = this.situacaoNumeroAdicionado;
     if (turmaNumeroAdicionado != null) data['turmaNumeroAdicionado'] = this.turmaNumeroAdicionado;

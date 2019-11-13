@@ -116,7 +116,7 @@ class TurmaAlunoBloc {
               print('::email::$email');
               print('::nome::$nome');
               UsuarioModel usuarioModel = UsuarioModel(
-                  aluno: true,
+                  professor: false,
                   ativo: true,
                   email: email,
                   matricula: matricula,

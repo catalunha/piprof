@@ -126,7 +126,12 @@ class AuthBloc {
   }
 
   void _pipPerfil(UsuarioModel perfil) {
-    _perfilController.sink.add(perfil);
+    print('professor: ${perfil.professor}');
+    if (perfil.professor) {
+      _perfilController.sink.add(perfil);
+    } else {
+      _authApi.logout();
+    }
   }
 
   void _updateStatus(String userId) {
@@ -151,10 +156,10 @@ class AuthBloc {
 
   void _handleLoginAuthBlocEvent() {
     _statusController.sink.add(AuthStatus.Authenticating);
-    _authApi.loginWithEmailAndPassword(_state.email, _state.password).then((r){
-      if(r){
+    _authApi.loginWithEmailAndPassword(_state.email, _state.password).then((r) {
+      if (r) {
         _statusController.sink.add(AuthStatus.Authenticated);
-      }else{
+      } else {
         _statusController.sink.add(AuthStatus.Unauthenticated);
       }
     });

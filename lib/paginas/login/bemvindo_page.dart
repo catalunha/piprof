@@ -39,7 +39,7 @@ class _BemVindoPageState extends State<BemVindoPage> {
           if (!snap.hasData) {
             return Text("Buscando usuario...");
           }
-          return Text("Oi Prof. ${snap.data?.usuarioID?.cracha}");
+          return Text("Oi Prof. ${snap.data?.usuario?.cracha}");
         },
       ),
       body: Center(
