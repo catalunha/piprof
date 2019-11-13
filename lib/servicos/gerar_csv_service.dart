@@ -293,7 +293,7 @@ class GenerateCsvService {
 
     final alunoFutureQuerySnapshot = await Bootstrap.instance.firestore
         .collection(UsuarioModel.collection)
-        .where("turmaList", arrayContains: turmaID)
+        .where("turma", arrayContains: turmaID)
         .getDocuments();
     var alunoList = alunoFutureQuerySnapshot.documents
         .map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data))
@@ -330,7 +330,7 @@ class GenerateCsvService {
         '-',
         '-',
       ]);
-      for (var aluno in encontro.alunoList) {
+      for (var aluno in encontro.aluno) {
         planilha.add([
           '${encontro.inicio}',
           '${encontro.fim}',

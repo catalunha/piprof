@@ -11,7 +11,7 @@ class EncontroModel extends FirestoreModel {
   dynamic modificado;
   String nome;
   String descricao;
-  List<dynamic> alunoList;
+  List<dynamic> aluno;
 
   EncontroModel({
     String id,
@@ -22,7 +22,7 @@ class EncontroModel extends FirestoreModel {
     this.modificado,
     this.nome,
     this.descricao,
-    this.alunoList,
+    this.aluno,
   }) : super(id);
 
   @override
@@ -46,7 +46,7 @@ class EncontroModel extends FirestoreModel {
         : null;
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('descricao')) descricao = map['descricao'];
-    if (map.containsKey('alunoList')) alunoList = map['alunoList'];
+    if (map.containsKey('aluno')) aluno = map['aluno'];
     return this;
   }
 
@@ -63,7 +63,7 @@ class EncontroModel extends FirestoreModel {
     if (modificado != null) data['modificado'] = this.modificado;
     if (nome != null) data['nome'] = this.nome;
     if (descricao != null) data['descricao'] = this.descricao;
-    if (alunoList != null) data['alunoList'] = this.alunoList;
+    if (aluno != null) data['aluno'] = this.aluno;
     return data;
   }
 }

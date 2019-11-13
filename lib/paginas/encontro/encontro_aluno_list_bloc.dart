@@ -92,8 +92,8 @@ class EncontroAlunoListBloc {
       bool presente;
       for (var usuario in usuarioList) {
         presente = false;
-        if (encontro.alunoList != null) {
-          presente = encontro.alunoList.contains(usuario.id);
+        if (encontro.aluno != null) {
+          presente = encontro.aluno.contains(usuario.id);
         }
         _state.alunoInfoMap[usuario.id] =
             AlunoInfo(usuario: usuario, presente: presente);
@@ -109,14 +109,14 @@ class EncontroAlunoListBloc {
       var docRef = await _firestore
           .collection(EncontroModel.collection)
           .document(_state.encontro.id);
-      List<dynamic> alunoList = List<dynamic>();
+      List<dynamic> aluno = List<dynamic>();
       for (var alunoMap in _state.alunoInfoMap.entries) {
         if (alunoMap.value.presente) {
-          alunoList.add(alunoMap.key);
+          aluno.add(alunoMap.key);
         }
       }
 
-      await docRef.setData({"alunoList": alunoList}, merge: true);
+      await docRef.setData({"aluno": aluno}, merge: true);
     }
 
     _validateData();
