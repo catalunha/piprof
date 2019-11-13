@@ -80,9 +80,7 @@ class TurmaAlunoListBloc {
 
         final streamDocsRemetente = _firestore
             .collection(UsuarioModel.collection)
-            // .where("ativo", isEqualTo: true)
-            .where("turmaList", arrayContains: _state.turma.id)
-            .where("aluno", isEqualTo: true)
+            .where("turma", arrayContains: _state.turma.id)
             .snapshots();
 
         final snapListRemetente = streamDocsRemetente.map(

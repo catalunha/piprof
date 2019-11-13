@@ -1,6 +1,8 @@
+import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
+import 'package:piprof/modelos/usuario_novo_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TurmaAlunoBlocEvent {}
@@ -11,11 +13,13 @@ class GetTurmaEvent extends TurmaAlunoBlocEvent {
   GetTurmaEvent(this.turmaID);
 }
 
-class UpdateCadastroAlunoEvent extends TurmaAlunoBlocEvent {
+class UpdateListaDeAlunosEvent extends TurmaAlunoBlocEvent {
   final String cadastro;
 
-  UpdateCadastroAlunoEvent(this.cadastro);
+  UpdateListaDeAlunosEvent(this.cadastro);
 }
+
+class UpdateAnalisarListaDeAlunosEvent extends TurmaAlunoBlocEvent {}
 
 class NotaListEvent extends TurmaAlunoBlocEvent {
   final String turmaID;
@@ -30,8 +34,8 @@ class CadastrarAlunoEvent extends TurmaAlunoBlocEvent {}
 class TurmaAlunoBlocState {
   bool isDataValid = false;
   TurmaModel turma = TurmaModel();
-
   String cadastro;
+  List<List<String>> listaDeAlunos = List<List<String>>();
 }
 
 class TurmaAlunoBloc {
@@ -64,6 +68,9 @@ class TurmaAlunoBloc {
 
   _validateData() {
     _state.isDataValid = true;
+    if (_state.listaDeAlunos == null || _state.listaDeAlunos.isEmpty || _state.listaDeAlunos.length == 0) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(TurmaAlunoBlocEvent event) async {
@@ -78,19 +85,19 @@ class TurmaAlunoBloc {
     if (event is NotaListEvent) {
       print('Gerando csv com lista de alunos da turmaID: ${event.turmaID}');
     }
-    if (event is UpdateCadastroAlunoEvent) {
+    if (event is UpdateListaDeAlunosEvent) {
       _state.cadastro = event.cadastro.trim();
     }
-    if (event is CadastrarAlunoEvent) {
-      String cadastro = _state.cadastro;
+    if (event is UpdateAnalisarListaDeAlunosEvent) {
+      _state.listaDeAlunos.clear();
       String matricula;
       String email;
       String nome;
-
-      if (cadastro != null) {
+      // print('cadastro: ${_state.cadastro}');
+      if (_state.cadastro != null) {
         // print('::cadastro::');
-        // print(cadastro);
-        List<String> linhas = cadastro.split('\n');
+        // print(_state.cadastro);
+        List<String> linhas = _state.cadastro.split('\n');
         // print('::linhas::');
         // print(linhas);
         for (var linha in linhas) {
@@ -105,32 +112,102 @@ class TurmaAlunoBloc {
                 campos[0] != null &&
                 campos[0].length >= 3 &&
                 campos[1] != null &&
-                campos[1].length >= 10 &&
+                campos[1].length >= 3 &&
                 campos[1].contains('@') &&
                 campos[2] != null &&
-                campos[2].length >= 10) {
+                campos[2].length >= 3) {
               matricula = campos[0].trim();
               email = campos[1].trim();
               nome = campos[2].trim();
-              print('::matricula::$matricula');
-              print('::email::$email');
-              print('::nome::$nome');
-              UsuarioModel usuarioModel = UsuarioModel(
-                  professor: false,
-                  ativo: true,
-                  email: email,
-                  matricula: matricula,
-                  nome: nome,
-                  rota: ['/', '/perfil', '/upload', '/versao', '/turma/list'],
-                  turmaList: [_state.turma.id]
-                  );
-
-              final docRef = _firestore.collection('UsuarioNovo').document();
-              await docRef.setData(usuarioModel.toMap(), merge: true);
+              // print('::matricula::$matricula');
+              // print('::email::$email');
+              // print('::nome::$nome');
+              _state.listaDeAlunos.add([matricula, email, nome]);
             }
           }
         }
       }
+      // for (var aluno in _state.listaDeAlunos) {
+      //   matricula = aluno[0];
+      //   email = aluno[1];
+      //   nome = aluno[2];
+      //   print('::matricula2::$matricula');
+      //   print('::email2::$email');
+      //   print('::nome2::$nome');
+      // }
+    }
+
+    if (event is CadastrarAlunoEvent) {
+      if (_state.listaDeAlunos != null && _state.listaDeAlunos.isNotEmpty && _state.listaDeAlunos.length > 0) {
+        String matricula;
+        String email;
+        String nome;
+
+        for (var aluno in _state.listaDeAlunos) {
+          matricula = aluno[0];
+          email = aluno[1];
+          nome = aluno[2];
+          UsuarioNovoModel usuarioNovo = UsuarioNovoModel(
+            professor: false,
+            cadastrado: Bootstrap.instance.fieldValue.serverTimestamp(),
+            ativo: true,
+            email: email,
+            matricula: matricula,
+            nome: nome,
+            rota: ['/', '/perfil', '/upload', '/versao', '/turma/list'],
+            turma: _state.turma.id,
+          );
+
+          final docRef = _firestore.collection(UsuarioNovoModel.collection).document();
+          await docRef.setData(usuarioNovo.toMap(), merge: true);
+        }
+      }
+      // String cadastro = _state.cadastro;
+
+      // if (cadastro != null) {
+      //   // print('::cadastro::');
+      //   // print(cadastro);
+      //   List<String> linhas = cadastro.split('\n');
+      //   // print('::linhas::');
+      //   // print(linhas);
+      //   for (var linha in linhas) {
+      //     // print('::linha::');
+      //     // print(linha);
+      //     if (linha != null) {
+      //       List<String> campos = linha.trim().split(';');
+      //       // print('::campos::');
+      //       // print(campos);
+      //       if (campos != null &&
+      //           campos.length == 3 &&
+      //           campos[0] != null &&
+      //           campos[0].length >= 3 &&
+      //           campos[1] != null &&
+      //           campos[1].length >= 10 &&
+      //           campos[1].contains('@') &&
+      //           campos[2] != null &&
+      //           campos[2].length >= 10) {
+      //         matricula = campos[0].trim();
+      //         email = campos[1].trim();
+      //         nome = campos[2].trim();
+      //         print('::matricula::$matricula');
+      //         print('::email::$email');
+      //         print('::nome::$nome');
+      //         UsuarioModel usuarioModel = UsuarioModel(
+      //             professor: false,
+      //             ativo: true,
+      //             email: email,
+      //             matricula: matricula,
+      //             nome: nome,
+      //             rota: ['/', '/perfil', '/upload', '/versao', '/turma/list'],
+      //             turmaList: [_state.turma.id]);
+
+      //         final docRef = _firestore.collection('UsuarioNovo').document();
+      //         await docRef.setData(usuarioModel.toMap(), merge: true);
+      //       }
+      //     }
+      //   }
+      // }
+
     }
     if (event is SaveEvent) {}
 

@@ -81,7 +81,7 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                         children: <Widget>[
                           Expanded(
                             flex: 2,
-                            child: _ImagemUnica(url: aluno.foto.url),
+                            child: _ImagemUnica(url: aluno?.foto?.url),
                           ),
                           Expanded(
                             flex: 4,
@@ -90,10 +90,10 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Crachá: ${aluno.cracha}"),
-                                Text("matricula: ${aluno.matricula}"),
                                 Text("Nome: ${aluno.nome}"),
+                                Text("Crachá: ${aluno.cracha}"),
                                 Text("Celular: ${aluno.celular}"),
+                                Text("matricula: ${aluno.matricula}"),
                                 Text("email: ${aluno.email}"),
                                 Text("id: ${aluno.id}"),
                                 Wrap(

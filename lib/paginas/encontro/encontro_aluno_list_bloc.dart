@@ -80,9 +80,7 @@ class EncontroAlunoListBloc {
 
       final futureQuerySnapshot = await _firestore
           .collection(UsuarioModel.collection)
-          // .where("ativo", isEqualTo: true)
-          .where("turmaList", arrayContains: encontro.turma.id)
-          .where("aluno", isEqualTo: true)
+          .where("turma", arrayContains: encontro.turma.id)
           .getDocuments();
 
       var usuarioList = futureQuerySnapshot.documents
