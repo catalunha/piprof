@@ -15,7 +15,7 @@ class UsuarioModel extends FirestoreModel {
   int turmaNumeroAdicionado;
   int pastaNumeroAdicionado;
   int situacaoNumeroAdicionado;
-  String tokenFCM;
+  // String tokenFCM;
   List<dynamic> turmaList;
 
   UsuarioModel({
@@ -25,7 +25,7 @@ class UsuarioModel extends FirestoreModel {
     this.matricula,
     this.celular,
     this.email,
-    this.tokenFCM,
+    // this.tokenFCM,
     this.ativo,
     this.professor,
     this.foto,
@@ -42,7 +42,7 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('cracha')) cracha = map['cracha'];
     if (map.containsKey('matricula')) matricula = map['matricula'];
     if (map.containsKey('celular')) celular = map['celular'];
-    if (map.containsKey('tokenFCM')) tokenFCM = map['tokenFCM'];
+    // if (map.containsKey('tokenFCM')) tokenFCM = map['tokenFCM'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
     if (map.containsKey('professor')) professor = map['professor'];
@@ -66,7 +66,7 @@ class UsuarioModel extends FirestoreModel {
     if (cracha != null) data['cracha'] = this.cracha;
     if (matricula != null) data['matricula'] = this.matricula;
     if (celular != null) data['celular'] = this.celular;
-    if (tokenFCM != null) data['tokenFCM'] = this.tokenFCM;
+    // if (tokenFCM != null) data['tokenFCM'] = this.tokenFCM;
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
     if (professor != null) data['professor'] = this.professor;
