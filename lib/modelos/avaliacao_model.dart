@@ -16,7 +16,9 @@ class AvaliacaoModel extends FirestoreModel {
   bool aplicar;
   bool aplicada;
   List<dynamic> aplicadaPAluno;
+  List<dynamic> aplicadaPAlunoFunction;
   List<dynamic> questaoAplicada;
+  List<dynamic> questaoAplicadaFunction;
 
   AvaliacaoModel({
     String id,
@@ -32,7 +34,9 @@ class AvaliacaoModel extends FirestoreModel {
     this.aplicar,
     this.aplicada,
     this.aplicadaPAluno,
+    this.aplicadaPAlunoFunction,
     this.questaoAplicada,
+    this.questaoAplicadaFunction,
   }) : super(id);
 
   @override
@@ -64,6 +68,10 @@ class AvaliacaoModel extends FirestoreModel {
       aplicadaPAluno = map['aplicadaPAluno'];
     if (map.containsKey('questaoAplicada'))
       questaoAplicada = map['questaoAplicada'];
+    if (map.containsKey('aplicadaPAlunoFunction'))
+      aplicadaPAlunoFunction = map['aplicadaPAlunoFunction'];
+    if (map.containsKey('questaoAplicadaFunction'))
+      questaoAplicadaFunction = map['questaoAplicadaFunction'];
     return this;
   }
 
@@ -85,8 +93,14 @@ class AvaliacaoModel extends FirestoreModel {
     if (nota != null) data['nota'] = this.nota;
     if (aplicar != null) data['aplicar'] = this.aplicar;
     if (aplicada != null) data['aplicada'] = this.aplicada;
-    if (aplicadaPAluno != null) data['aplicadaPAluno'] = this.aplicadaPAluno;
-    if (questaoAplicada != null) data['questaoAplicada'] = this.questaoAplicada;
+    if (aplicadaPAluno != null)
+      data['aplicadaPAluno'] = this.aplicadaPAluno;
+    if (questaoAplicada != null)
+      data['questaoAplicada'] = this.questaoAplicada;
+    if (aplicadaPAlunoFunction != null)
+      data['aplicadaPAlunoFunction'] = this.aplicadaPAlunoFunction;
+    if (questaoAplicadaFunction != null)
+      data['questaoAplicadaFunction'] = this.questaoAplicadaFunction;
     return data;
   }
 }

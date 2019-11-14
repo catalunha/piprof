@@ -247,6 +247,11 @@ class AvaliacaoCRUDBloc {
     }
 
     if (event is SaveEvent) {
+      print('inicio');
+      print(_state.inicioEncontro);
+      print(_state.avaliacao.inicio);
+      print(_state.avaliacao.inicio != _state.inicioEncontro);
+
       final docRef = _firestore
           .collection(AvaliacaoModel.collection)
           .document(_state.avaliacaoID);
@@ -260,6 +265,7 @@ class AvaliacaoCRUDBloc {
         aplicar: _state.aplicar,
         modificado: DateTime.now(),
       );
+
       if (_state.avaliacaoID == null) {
         avaliacaoUpdate.ativo = true;
         avaliacaoUpdate.aplicar = false;

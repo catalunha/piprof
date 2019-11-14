@@ -61,8 +61,9 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
               }
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
-
+// Widget alertaNovoAlunoQuestao
                 for (var avaliacao in snapshot.data.avaliacaoList) {
+
                   listaWidget.add(
                     Card(
                       child: Column(
@@ -72,8 +73,7 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
                             title: Text('''
 Turma: ${avaliacao.turma.nome}
 Avaliação: ${avaliacao.nome}
-Alunos: ${avaliacao.aplicadaPAluno?.length ?? 0}
-Questões: ${avaliacao.questaoAplicada?.length ?? 0}
+Alunos: ${avaliacao.aplicadaPAluno?.length ?? 0} | Questões: ${avaliacao.questaoAplicada?.length ?? 0}
 Nota: ${avaliacao.nota}'''),
                             subtitle: Text('''
 id: ${avaliacao.id}'''),

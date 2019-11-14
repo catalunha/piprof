@@ -1,3 +1,4 @@
+import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/encontro_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -136,18 +137,16 @@ class AvaliacaoAplicarBloc {
           _state.alunoInfoMap[alunoMap.key].aplicada = true;
         }
       }
-      if (_state.avaliacao.aplicadaPAluno?.length != null &&
-          aplicadaPAluno.length != null &&
-          _state.avaliacao.aplicadaPAluno?.length != aplicadaPAluno.length) {
+
         var docRef = _firestore
             .collection(AvaliacaoModel.collection)
             .document(_state.avaliacao.id);
         await docRef.setData({
-          "aplicadaPAluno": aplicadaPAluno,
+          "aplicadaPAluno": Bootstrap.instance.fieldValue.arrayUnion(aplicadaPAluno),
           "aplicar": false,
           "aplicada": false,
         }, merge: true);
-      }
+      
     }
 
     _validateData();
