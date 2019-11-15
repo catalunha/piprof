@@ -250,7 +250,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nota:',
+                    'Nota ou Peso:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -259,7 +259,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Descrição:',
+                    'Detalhes:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -274,7 +274,24 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                     ? false
                     : snapshot.data?.aplicar,
                 onChanged: (bool value) {
-                  bloc.eventSink(UpdateAplicarEvent(value));
+                  if (snapshot.data?.avaliacao?.aplicadaPAluno == null ||
+                      snapshot.data.avaliacao.aplicadaPAluno.length <= 0 ||
+                      snapshot.data?.avaliacao?.questaoAplicada == null ||
+                      snapshot.data.avaliacao.questaoAplicada.length <= 0) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        elevation: 5,
+                        child: ListTile(
+                          selected: true,
+                          title: Text("Você ainda não pode aplicar esta avaliação pois faltam alunos ou questões !"),
+                          onTap: () {},
+                        ),
+                      ),
+                    );
+                  } else {
+                    bloc.eventSink(UpdateAplicarEvent(value));
+                  }
                 },
                 // secondary: Icon(Icons.thumbs_up_down),
               ),

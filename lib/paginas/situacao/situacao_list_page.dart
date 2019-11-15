@@ -34,7 +34,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Lista de situações'),
+          title: Text('Problemas'),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -78,7 +78,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                     : null,
                             title: Text('${situacao.nome}'),
                             subtitle:
-                                Text('${situacao.descricao}\nSimulações: ${situacao.simulacaoNumero??0}\n${situacao.id}'),
+                                Text('Simulações: ${situacao.simulacaoNumero??0}\n${situacao.id}'),
                           ),
                           Center(
                             child: Wrap(

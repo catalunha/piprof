@@ -37,7 +37,7 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar variável'),
+        title: Text('Editar valores'),
       ),
       floatingActionButton: StreamBuilder<SimulacaoVariavelCRUDBlocState>(
           stream: bloc.stateStream,
@@ -68,13 +68,7 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
           // if (snapshot.data.isDataValid) {
           return ListView(
             children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Tipo:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  )),
-              Padding(padding: EdgeInsets.all(5.0), child: PainelTipo(bloc)),
+              
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -84,6 +78,13 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'nome')),
+                  Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Tipo:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: PainelTipo(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(

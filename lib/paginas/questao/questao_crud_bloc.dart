@@ -74,10 +74,10 @@ class QuestaoCRUDBlocState {
   SituacaoFk situacaoFk;
   // SituacaoModel situacao;
   // dynamic data;
-  String tempo = '2';
-  String tentativa = '3';
-  String erroRelativo = '10';
-  String nota = '1';
+  String tempo;
+  String tentativa;
+  String erroRelativo;
+  String nota;
   DateTime inicioAvaliacao;
   DateTime fimAvaliacao;
   DateTime dataInicio;
@@ -87,8 +87,9 @@ class QuestaoCRUDBlocState {
   void updateState() {
     inicioAvaliacao = questao.inicio;
     fimAvaliacao = questao.fim;
-    tempo = questao.tempo.toString();
-    tentativa = questao.tentativa.toString();
+    tempo = questao.tempo.toString() ?? '2';
+    tentativa = questao.tentativa.toString() ?? '3';
+    erroRelativo = questao.erroRelativo.toString() ?? '10';
     nota = questao.nota;
     situacaoFk = questao.situacao;
     questao.aplicada = questao.aplicada == null ? false : questao.aplicada;
@@ -263,10 +264,40 @@ class QuestaoCRUDBloc {
     if (event is UpdateNumberFieldEvent) {
       if (event.campo == 'tempo') {
         _state.tempo = event.texto;
+        int a;
+        try {
+          a = int.parse(_state.tempo);
+        } catch (e) {
+          _state.tempo = '2';
+          a = 2;
+        }
+        if (a <= 0) {
+          _state.tempo = '2';
+        }
       } else if (event.campo == 'tentativa') {
         _state.tentativa = event.texto;
+        int a;
+        try {
+          a = int.parse(_state.tentativa);
+        } catch (e) {
+          _state.tentativa = '3';
+          a = 3;
+        }
+        if (a <= 0) {
+          _state.tentativa = '3';
+        }
       } else if (event.campo == 'erroRelativo') {
         _state.erroRelativo = event.texto;
+        int a;
+        try {
+          a = int.parse(_state.erroRelativo);
+        } catch (e) {
+          _state.erroRelativo = '10';
+          a = 10;
+        }
+        if (a <= 0) {
+          _state.erroRelativo = '10';
+        }
       } else if (event.campo == 'nota') {
         _state.nota = event.texto;
       }
@@ -297,7 +328,7 @@ class QuestaoCRUDBloc {
       if (_state.questaoID == null) {
         questaoUpdate.ativo = true;
         questaoUpdate.aplicada = false;
-        questaoUpdate.numero = _state.turma.questaoNumeroAdicionado ?? 0 + 1;
+        questaoUpdate.numero = (_state.turma.questaoNumeroAdicionado ?? 0) + 1;
         //+++ Atualizar turma com mais uma questao
         final turmaDocRef = _firestore
             .collection(TurmaModel.collection)
@@ -341,7 +372,7 @@ class QuestaoCRUDBloc {
             .collection(QuestaoModel.collection)
             .document(_state.questao.id)
             .delete();
-      //Function atualiza Avaliacao.questaoAplicada e Avaliacao.questaoAplicadaFunction
+        //Function atualiza Avaliacao.questaoAplicada e Avaliacao.questaoAplicadaFunction
       }
     }
 

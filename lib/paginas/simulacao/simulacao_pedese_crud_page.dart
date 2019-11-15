@@ -37,7 +37,7 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar Pede-se'),
+        title: Text('Editar gabarito'),
       ),
       floatingActionButton: StreamBuilder<SimulacaoPedeseCRUDBlocState>(
           stream: bloc.stateStream,
@@ -71,19 +71,19 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Tipo:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  )),
-              Padding(padding: EdgeInsets.all(5.0), child: PainelTipo(bloc)),
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Nome:',
+                    'Letra:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'nome')),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Tipo:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(padding: EdgeInsets.all(5.0), child: PainelTipo(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(

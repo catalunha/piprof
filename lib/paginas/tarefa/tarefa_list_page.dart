@@ -38,7 +38,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Tarefas da questão'),
+          title: Text('Tarefa do aluno'),
         ),
         body: StreamBuilder<TarefaListBlocState>(
             stream: bloc.stateStream,
@@ -62,7 +62,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                   pedeseMap = pedeseOrderBy.toMap();
                   notas = '';
                   for (var pedese in pedeseMap.entries) {
-                    notas += '${pedese.value.nome}=${pedese.value.nota ?? ""} ';
+                    notas += '${pedese.value.nome}=${pedese.value.nota ?? "?"} ';
                   }
                   listaWidget.add(
                     Card(
@@ -76,7 +76,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                           children: <Widget>[
                             Expanded(
                               flex: 2,
-                              child: _ImagemUnica(url: tarefa.aluno.foto),
+                              child: _ImagemUnica(url: tarefa.aluno?.foto),
                             ),
                             Expanded(
                               flex: 4,
@@ -86,7 +86,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text("id: ${tarefa.id}"),
-                                  Text("Turma: ${tarefa.turma.nome}"),
+                                  // Text("Turma: ${tarefa.turma.nome}"),
                                   Text("Avaliação: ${tarefa.avaliacao.nome}"),
                                   Text("Questão: ${tarefa.questao.numero}"),
                                   Text("Aluno: ${tarefa.aluno.nome}"),
@@ -174,6 +174,7 @@ class _ImagemUnica extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('_ImagemUnica: $url');
     Widget foto;
     if (url == null) {
       foto = Center(child: Text('Sem imagem.'));

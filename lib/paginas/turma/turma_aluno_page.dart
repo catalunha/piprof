@@ -88,7 +88,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
               Padding(padding: EdgeInsets.all(5.0), child: CadastrarAluno(bloc)),
               ListTile(
                 trailing: Icon(Icons.thumbs_up_down),
-                title: Text('Verificar qualidade da lista antes de cadastrar'),
+                title: Text('Click aqui para conferir a lista antes de cadastrar'),
                 onTap: () {
                   bloc.eventSink(UpdateAnalisarListaDeAlunosEvent());
                   showDialog(
@@ -98,7 +98,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
                       child: ListView(
                         children: <Widget>[
                           ListTile(
-                            title: Text("Lista após análise. Se estiver consistente pode envia para cadastro."),
+                            title: Text("Lista após análise. Se estiver consistente pode enviar para cadastro."),
                           ),
                           for (var item in snapshot.data.listaDeAlunos)
                             ListTile(

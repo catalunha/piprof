@@ -172,7 +172,7 @@ class _ImagemUnica extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget foto;
     if (fotoUrl == null && fotoUploadID != null) {
-      foto = Center(child: Text('Enviar imagem.'));
+      foto = Center(child: Text('Enviar imagem em upload de arquivos.'));
     } else if (fotoUrl != null) {
       foto = CircleAvatar(
         minRadius: 40,

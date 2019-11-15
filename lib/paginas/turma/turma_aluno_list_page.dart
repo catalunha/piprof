@@ -68,9 +68,9 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text("Nome: ${aluno.nome}"),
+                                Text("matricula: ${aluno.matricula}"),
                                 Text("Crachá: ${aluno.cracha??'?'}"),
                                 Text("Celular: ${aluno.celular??'?'}"),
-                                Text("matricula: ${aluno.matricula}"),
                                 Text("email: ${aluno.email}"),
                                 Text("id: ${aluno.id}"),
                                 Wrap(

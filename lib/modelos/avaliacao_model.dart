@@ -93,14 +93,10 @@ class AvaliacaoModel extends FirestoreModel {
     if (nota != null) data['nota'] = this.nota;
     if (aplicar != null) data['aplicar'] = this.aplicar;
     if (aplicada != null) data['aplicada'] = this.aplicada;
-    if (aplicadaPAluno != null)
-      data['aplicadaPAluno'] = this.aplicadaPAluno;
-    if (questaoAplicada != null)
-      data['questaoAplicada'] = this.questaoAplicada;
-    if (aplicadaPAlunoFunction != null)
-      data['aplicadaPAlunoFunction'] = this.aplicadaPAlunoFunction;
-    if (questaoAplicadaFunction != null)
-      data['questaoAplicadaFunction'] = this.questaoAplicadaFunction;
+    if (aplicadaPAluno != null) data['aplicadaPAluno'] = this.aplicadaPAluno;
+    if (questaoAplicada != null) data['questaoAplicada'] = this.questaoAplicada;
+    data['aplicadaPAlunoFunction'] = this.aplicadaPAlunoFunction;
+    data['questaoAplicadaFunction'] = this.questaoAplicadaFunction;
     return data;
   }
 }

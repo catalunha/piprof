@@ -268,7 +268,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Qual o erro relativo na correção:',
+                    'Qual o erro relativo na correção em %:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -286,7 +286,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Selectione uma situação ou problema:',
+                    'Selectione um problema:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               snapshot.data?.questao?.aplicada != null &&

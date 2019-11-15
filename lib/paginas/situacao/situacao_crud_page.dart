@@ -101,7 +101,7 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Descrição:',
+                    'Detalhes:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -122,7 +122,7 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
                 Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Text(
-                      'Url para PDF da situação:',
+                      'Link para PDF da situação:',
                       style: TextStyle(fontSize: 15, color: Colors.blue),
                     )),
               if (snapshot.data?.precisaAlgoritmoPSimulacao != null &&

@@ -115,13 +115,13 @@ class _AvaliacaoMarcarPageState extends State<AvaliacaoMarcarPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text("Nome: ${aluno.nome}"),
+                                Text("matricula: ${aluno.matricula}"),
                                 Text("Crachá: ${aluno.cracha}"),
                                 Text("Celular: ${aluno.celular}"),
-                                Text("matricula: ${aluno.matricula}"),
                                 Text("email: ${aluno.email}"),
                                 // Text("id: ${aluno.id}"),
                                 aplicada
-                                    ? Text('... Ja aplicada ...')
+                                    ? Text('\n*** Aluno selecionado ***')
                                     : Wrap(
                                         children: <Widget>[
                                           IconButton(

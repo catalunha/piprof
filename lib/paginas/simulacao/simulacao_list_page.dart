@@ -73,7 +73,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                             : false,
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                          'Desc.:${simulacao.descricao}\nVariáveis: ${simulacao?.variavel?.length ?? 0}\nPede-se: ${simulacao?.pedese?.length == null || simulacao?.pedese?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.pedese?.length}\nid:${simulacao.id}',
+                          'Variaveis: ${simulacao?.variavel?.length ?? 0} | Gabarito: ${simulacao?.pedese?.length == null || simulacao?.pedese?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.pedese?.length}\nid:${simulacao.id}',
                         ),
                         trailing: IconButton(
                           tooltip: 'Um link ao um site ou arquivo',
@@ -103,7 +103,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                               },
                             ),
                             IconButton(
-                              tooltip: 'Gerenciar variáveis',
+                              tooltip: 'Gerenciar valores',
                               icon: Icon(Icons.sort_by_alpha),
                               onPressed: () {
                                 Navigator.pushNamed(
@@ -113,8 +113,9 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                 );
                               },
                             ),
+                            
                             IconButton(
-                              tooltip: 'Gerenciar Pede-se',
+                              tooltip: 'Gerenciar gabarito',
                               icon: Icon(Icons.question_answer),
                               onPressed: () {
                                 Navigator.pushNamed(

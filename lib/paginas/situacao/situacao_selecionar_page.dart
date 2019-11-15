@@ -38,7 +38,7 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selecione uma situação'),
+        title: Text('Selecione um problema'),
       ),
       body: StreamBuilder<SituacaoSelecionarBlocState>(
         stream: bloc.stateStream,
@@ -77,27 +77,37 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
             if (situacao.simulacaoNumero == null ||
                 situacao.simulacaoNumero <= 0) {
               widgetSituacaoList.add(
-                ListTile(
-                  selected: true,
-                  title: Text('${situacao.nome}'),
-                  subtitle: Text('SITUAÇÃO SEM SIMULAÇÕES ! FAVOR CORRIGIR.'),
-                  onLongPress: () {
-                    launch(situacao.url);
-                  },
+                Card(
+                  child: ListTile(
+                    selected: true,
+                    title: Text('${situacao.nome}'),
+                    subtitle: Text('SITUAÇÃO SEM SIMULAÇÕES ! FAVOR CORRIGIR.'),
+                    onLongPress: () {
+                      launch(situacao.url);
+                    },
+                  ),
                 ),
               );
             } else {
               widgetSituacaoList.add(
-                ListTile(
-                  title: Text('${situacao.nome}'),
-                  trailing: Icon(Icons.check),
-                  onLongPress: () {
-                    launch(situacao.url);
-                  },
-                  onTap: () {
-                    // bloc.eventSink(SelecionarSituacaoEvent(situacao));
-                    Navigator.pop(context, situacaoFk);
-                  },
+                Card(
+                  child: ListTile(
+                    title: Text('${situacao.nome}'),
+                    trailing: Icon(Icons.question_answer),
+                    leading: IconButton(
+                      icon: Icon(Icons.picture_as_pdf),
+                      onPressed: () {
+                        launch(situacao.url);
+                      },
+                    ),
+                    onLongPress: () {
+                      launch(situacao.url);
+                    },
+                    onTap: () {
+                      // bloc.eventSink(SelecionarSituacaoEvent(situacao));
+                      Navigator.pop(context, situacaoFk);
+                    },
+                  ),
                 ),
               );
             }

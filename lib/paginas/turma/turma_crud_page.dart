@@ -90,7 +90,7 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Componente:',
+                    'Componente curricular ou disciplina:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -108,7 +108,7 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Descrição:',
+                    'Detalhes:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

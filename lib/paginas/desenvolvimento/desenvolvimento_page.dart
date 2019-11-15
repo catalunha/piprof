@@ -266,7 +266,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           '/desenvolvimento',
           '/turma/list',
         ],
-        turmaList: [
+        turma: [
           '0Turma01'
         ]);
     await docRef.setData(usuarioModel.toMap(), merge: true);
@@ -396,7 +396,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         tentativa: 3,
         // tentou: 0,
         tempo: 1,
-        erroRelativo: '1',
+        erroRelativo: 10,
         avaliacaoNota: '1',
         questaoNota: '1',
         aberta: true,

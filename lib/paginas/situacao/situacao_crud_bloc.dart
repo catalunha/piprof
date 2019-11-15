@@ -233,8 +233,6 @@ class SituacaoCRUDBloc {
       } else {
         situacaoUpdate.url = _state.urlPDFSituacaoSemAlgoritmo;
       }
-      situacaoUpdate.url = _state.situacao.url;
-
       if (_state.situacaoID == null) {
         situacaoUpdate.numero =
             (_state.usuarioAuth.situacaoNumeroAdicionado ?? 0) + 1;

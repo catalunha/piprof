@@ -143,7 +143,7 @@ class TurmaCRUDBloc {
       if (_state.turmaID == null) {
         turmaModel.questaoNumeroAdicionado = 0;
         turmaModel.questaoNumeroExcluido = 0;
-        turmaModel.numero = _state.usuarioAuth.turmaNumeroAdicionado ?? 0 + 1;
+        turmaModel.numero = (_state.usuarioAuth.turmaNumeroAdicionado ?? 0) + 1;
         //+++ Atualizar usuario com mais uma turma em seu cadastro
         final usuarioDocRef = _firestore
             .collection(UsuarioModel.collection)

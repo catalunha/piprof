@@ -179,12 +179,27 @@ class FotoUsuario extends StatelessWidget {
                     await _selecionarNovoArquivo().then((arq) {
                       localPath = arq;
                     });
+                    print('localPath: $localPath');
                     bloc.eventSink(UpdateFotoEvent(localPath));
+                    if (localPath != null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          elevation: 5,
+                          child: ListTile(
+                            selected: true,
+                            title: Text(
+                                "Você apenas selecionou a foto.\nApós salvar este perfil é necessário enviar a foto em upload de arquivos."),
+                            onTap: () {},
+                          ),
+                        ),
+                      );
+                    }
                   },
                 ),
               ]),
             _ImagemUnica(
-              fotoUploadID:snapshot.data?.fotoUploadID,
+                fotoUploadID: snapshot.data?.fotoUploadID,
                 fotoUrl: snapshot.data?.fotoUrl,
                 localPath: snapshot.data?.localPath),
           ],
@@ -211,14 +226,25 @@ class _ImagemUnica extends StatelessWidget {
   final String fotoUrl;
   final String localPath;
 
-  const _ImagemUnica({this.fotoUploadID,this.fotoUrl, this.localPath});
+  const _ImagemUnica({this.fotoUploadID, this.fotoUrl, this.localPath});
 
   @override
   Widget build(BuildContext context) {
+    print('localPath: $localPath');
     Widget foto;
+    Widget enviar = Text('');
     if (fotoUploadID != null && fotoUrl == null) {
-      foto = Center(child: Text('Você não enviou a última imagem selecionada. Vá para o menu Upload de Arquivos.'));
-    }else if (fotoUrl == null && localPath == null) {
+      // enviar = Center(child: Text('Você não enviou a última imagem selecionada. Vá para o menu Upload de Arquivos.'));
+      enviar = Container(
+          child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Center(
+          child: Text(
+              'Você não enviou esta última imagem selecionada. Vá para o menu Upload de Arquivos após salvar este perfil.'),
+        ),
+      ));
+    }
+    if (fotoUrl == null && localPath == null) {
       foto = Center(child: Text('Sem imagem selecionada.'));
     } else if (fotoUrl != null) {
       foto = Container(
@@ -230,22 +256,27 @@ class _ImagemUnica extends StatelessWidget {
       foto = Container(
           // color: Colors.yellow,
           child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Image.asset(localPath),
-          ));
+        padding: const EdgeInsets.all(2.0),
+        child: Image.asset(localPath),
+      ));
     }
 
-    return Row(
+    return Column(
       children: <Widget>[
-        Spacer(
-          flex: 3,
-        ),
-        Expanded(
-          flex: 4,
-          child: foto,
-        ),
-        Spacer(
-          flex: 3,
+        enviar,
+        Row(
+          children: <Widget>[
+            Spacer(
+              flex: 3,
+            ),
+            Expanded(
+              flex: 4,
+              child: foto,
+            ),
+            Spacer(
+              flex: 3,
+            ),
+          ],
         ),
       ],
     );

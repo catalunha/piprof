@@ -194,10 +194,40 @@ class TarefaCRUDBloc {
     if (event is UpdateNumberFieldEvent) {
       if (event.campo == 'tempo') {
         _state.tempo = event.texto;
+        int a;
+        try {
+          a = int.parse(_state.tempo);
+        } catch (e) {
+          _state.tempo = '2';
+          a = 2;
+        }
+        if (a <= 0) {
+          _state.tempo = '2';
+        }
       } else if (event.campo == 'tentativa') {
         _state.tentativa = event.texto;
+        int a;
+        try {
+          a = int.parse(_state.tentativa);
+        } catch (e) {
+          _state.tentativa = '3';
+          a = 3;
+        }
+        if (a <= 0) {
+          _state.tentativa = '3';
+        }
       } else if (event.campo == 'erroRelativo') {
         _state.erroRelativo = event.texto;
+        int a;
+        try {
+          a = int.parse(_state.erroRelativo);
+        } catch (e) {
+          _state.erroRelativo = '10';
+          a = 10;
+        }
+        if (a <= 0) {
+          _state.erroRelativo = '10';
+        }
       } else if (event.campo == 'avaliacaoNota') {
         _state.avaliacaoNota = event.texto;
       } else if (event.campo == 'questaoNota') {
@@ -215,7 +245,7 @@ class TarefaCRUDBloc {
         fim: _state.fimAvaliacao,
         tempo: int.parse(_state.tempo),
         tentativa: int.parse(_state.tentativa),
-        erroRelativo: _state.erroRelativo,
+        erroRelativo: int.parse(_state.erroRelativo),
         avaliacaoNota: _state.avaliacaoNota,
         questaoNota: _state.questaoNota,
         modificado: DateTime.now(),

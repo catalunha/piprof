@@ -67,9 +67,9 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
                         children: <Widget>[
                           ListTile(
                             trailing: Text(
-                                'Qts: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
+                                'Questões: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
                             title: Text('''
-Instit.: ${turma.instituicao}
+Inst.: ${turma.instituicao}
 Comp.: ${turma.componente}
 Turma: ${turma.nome}'''),
                             subtitle: Text('${turma?.id}'),

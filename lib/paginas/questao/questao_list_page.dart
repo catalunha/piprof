@@ -76,14 +76,14 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                             selected: questao?.aplicada != null && questao.aplicada,
                                 // ? true
                                 // : false,
-                            trailing: Text('${questao.numero}'),
+                            trailing: Text('Núm.: ${questao.numero}'),
                             title: Text('''
 Turma: ${questao.turma.nome}
 Aval.: ${questao.avaliacao.nome}
 Sit.: ${questao.situacao.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(questao.inicio)} até ${DateFormat('dd-MM HH:mm').format(questao.fim)}
 Tentativas: ${questao.tentativa} | Tempo : ${questao.tempo}h
-Nota: ${questao.nota}'''),
+Nota/Peso: ${questao.nota}'''),
 // Prof.: ${questao.professor.nome}
                             subtitle: Text('''
 id: ${questao.id}'''),

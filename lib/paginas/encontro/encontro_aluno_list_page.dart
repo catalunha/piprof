@@ -39,19 +39,18 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
           child: Icon(Icons.cloud_upload),
           onPressed: () async {
             await bloc.eventSink(SaveEvent());
-            showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                elevation: 5,
-                child: ListTile(
-                  selected: true,
-                  title: Text("Lista salva com sucesso."),
-                  onTap: (){
-                     Navigator.pop(context);
-                  },
-                ),
-              ),
-            );
+            Navigator.pop(context);
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => Dialog(
+            //     elevation: 5,
+            //     child: ListTile(
+            //       selected: true,
+            //       title: Text("Lista salva com sucesso."),
+            //       onTap: () {},
+            //     ),
+            //   ),
+            // );
           },
         ),
         body: StreamBuilder<EncontroAlunoListBlocState>(

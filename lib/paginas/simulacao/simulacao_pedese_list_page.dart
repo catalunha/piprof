@@ -35,7 +35,7 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pede-se da simulação'),
+        title: Text('Gabarito'),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

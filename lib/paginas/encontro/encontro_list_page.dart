@@ -65,8 +65,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                     title: Text('Lista de encontros em planilha'),
                     trailing: Icon(Icons.grid_on),
                     onTap: () {
-                      GenerateCsvService.csvEncontro(
-                          widget.turmaID);
+                      GenerateCsvService.csvEncontro(widget.turmaID);
                     },
                   ),
                 );
@@ -77,6 +76,8 @@ class _EncontroListPageState extends State<EncontroListPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text('${encontro.nome}'),
+                            subtitle:
+                                Text('Alunos: ${encontro?.aluno.length ?? 0}'),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(encontro?.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro?.fim)}'),
                           ),
@@ -106,7 +107,6 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                     );
                                   },
                                 ),
-                                
                               ],
                             ),
                           ),

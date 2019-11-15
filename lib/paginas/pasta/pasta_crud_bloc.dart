@@ -115,7 +115,7 @@ class PastaCRUDBloc {
         descricao: _state.descricao,
       );
       if (_state.pastaID == null) {
-        pastaModel.numero = _state.usuarioAuth.pastaNumeroAdicionado ?? 0 + 1;
+        pastaModel.numero = (_state.usuarioAuth.pastaNumeroAdicionado ?? 0) + 1;
         // +++ Atualizar usuario com mais uma pasta em seu cadastro
         final usuarioDocRef = _firestore
             .collection(UsuarioModel.collection)

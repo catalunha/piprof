@@ -250,7 +250,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Descrição:',
+                    'Detalhes:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
