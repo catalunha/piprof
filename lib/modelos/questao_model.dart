@@ -1,6 +1,6 @@
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/base_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 
@@ -12,7 +12,7 @@ class QuestaoModel extends FirestoreModel {
   UsuarioFk professor;
   TurmaFk turma;
   AvaliacaoFk avaliacao;
-  SituacaoFk situacao;
+  ProblemaFk problema;
   dynamic inicio;
   dynamic fim;
   dynamic modificado;
@@ -29,7 +29,7 @@ class QuestaoModel extends FirestoreModel {
     this.professor,
     this.turma,
     this.avaliacao,
-    this.situacao,
+    this.problema,
     this.inicio,
     this.fim,
     this.modificado,
@@ -53,8 +53,8 @@ class QuestaoModel extends FirestoreModel {
     avaliacao = map.containsKey('avaliacao') && map['avaliacao'] != null
         ? AvaliacaoFk.fromMap(map['avaliacao'])
         : null;
-    situacao = map.containsKey('situacao') && map['situacao'] != null
-        ? SituacaoFk.fromMap(map['situacao'])
+    problema = map.containsKey('problema') && map['problema'] != null
+        ? ProblemaFk.fromMap(map['problema'])
         : null;
     inicio = map.containsKey('inicio') && map['inicio'] != null
         ? DateTime.fromMillisecondsSinceEpoch(
@@ -89,8 +89,8 @@ class QuestaoModel extends FirestoreModel {
     if (this.avaliacao != null) {
       data['avaliacao'] = this.avaliacao.toMap();
     }
-    if (this.situacao != null) {
-      data['situacao'] = this.situacao.toMap();
+    if (this.problema != null) {
+      data['problema'] = this.problema.toMap();
     }
     if (inicio != null) data['inicio'] = this.inicio;
     if (fim != null) data['fim'] = this.fim;

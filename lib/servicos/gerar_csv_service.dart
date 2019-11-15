@@ -3,7 +3,7 @@ import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/encontro_model.dart';
 import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
@@ -93,7 +93,7 @@ class GenerateCsvService {
         .toList();
 
     Map<String, Variavel> variavelMap = Map<String, Variavel>();
-    Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+    Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
 
     planilha.add([
       'Avaliacao',
@@ -136,14 +136,14 @@ class GenerateCsvService {
       planilha.add([
         '${tarefa.avaliacao.nome}',
         '${tarefa.questao.numero}',
-        'situacao nome',
-        '${tarefa.situacao.nome}'
+        'problema nome',
+        '${tarefa.problema.nome}'
       ]);
       planilha.add([
         '${tarefa.avaliacao.nome}',
         '${tarefa.questao.numero}',
-        'situacao arquivo',
-        '=HYPERLINK("${tarefa.situacao.url}";"Link para o arquivo")'
+        'problema arquivo',
+        '=HYPERLINK("${tarefa.problema.url}";"Link para o arquivo")'
       ]);
       planilha.add([
         '${tarefa.avaliacao.nome}',
@@ -217,53 +217,53 @@ class GenerateCsvService {
         ]);
       }
 
-      var dicPedese = Dictionary.fromMap(tarefa.pedese);
-      var pedeseOrderBy = dicPedese
+      var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
+      var gabaritoOrderBy = dicGabarito
           .orderBy((kv) => kv.value.ordem)
           .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-      pedeseMap.clear();
-      pedeseMap = pedeseOrderBy.toMap();
+      gabaritoMap.clear();
+      gabaritoMap = gabaritoOrderBy.toMap();
       String nota = '=';
-      for (var pedese in pedeseMap.entries) {
-        // print(pedese.key);
+      for (var gabarito in gabaritoMap.entries) {
+        // print(gabarito.key);
 
-        nota = nota + '+${pedese.value.nota}';
+        nota = nota + '+${gabarito.value.nota}';
         planilha.add([
           '${tarefa.avaliacao.nome}',
           '${tarefa.questao.numero}',
-          'pedese nome',
-          '${pedese.value.nome}'
+          'gabarito nome',
+          '${gabarito.value.nome}'
         ]);
-        if (pedese.value.tipo == 'numero' ||
-            pedese.value.tipo == 'palavra' ||
-            pedese.value.tipo == 'texto') {
+        if (gabarito.value.tipo == 'numero' ||
+            gabarito.value.tipo == 'palavra' ||
+            gabarito.value.tipo == 'texto') {
           planilha.add([
             '${tarefa.avaliacao.nome}',
             '${tarefa.questao.numero}',
-            'pedese resposta',
-            '${pedese.value.resposta}'
+            'gabarito resposta',
+            '${gabarito.value.resposta}'
           ]);
-        } else if (pedese.value.tipo == 'imagem') {
+        } else if (gabarito.value.tipo == 'imagem') {
           planilha.add([
             '${tarefa.avaliacao.nome}',
             '${tarefa.questao.numero}',
-            'pedese resposta',
-            '=IMAGE("${pedese.value.resposta}")',
+            'gabarito resposta',
+            '=IMAGE("${gabarito.value.resposta}")',
           ]);
-        } else if (pedese.value.tipo == 'arquivo' ||
-            pedese.value.tipo == 'url') {
+        } else if (gabarito.value.tipo == 'arquivo' ||
+            gabarito.value.tipo == 'url') {
           planilha.add([
             '${tarefa.avaliacao.nome}',
             '${tarefa.questao.numero}',
-            'pedese resposta',
-            '=HYPERLINK("${pedese.value.resposta}","Link para o arquivo")'
+            'gabarito resposta',
+            '=HYPERLINK("${gabarito.value.resposta}","Link para o arquivo")'
           ]);
         }
         planilha.add([
           '${tarefa.avaliacao.nome}',
           '${tarefa.questao.numero}',
-          'pedese nota',
-          '${pedese.value.nota}'
+          'gabarito nota',
+          '${gabarito.value.nota}'
         ]);
       }
       planilha.add([
@@ -376,13 +376,13 @@ class GenerateCsvService {
         .toList();
 
     // Map<String, Variavel> variavelMap = Map<String, Variavel>();
-    Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+    Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
 
     planilha.add([
       'avaliacao',
       'questao',
-      'situacao_nome',
-      'situacao_url',
+      'problema_nome',
+      'problema_url',
       'simulacao',
       'aluno_nome',
       'aluno_foto',
@@ -397,8 +397,8 @@ class GenerateCsvService {
       var base = [
         '${tarefa.avaliacao.nome}',
         '${tarefa.questao.numero}',
-        '${tarefa.situacao.nome}',
-        '=HYPERLINK("${tarefa.situacao.url}";"Link para a situacao")',
+        '${tarefa.problema.nome}',
+        '=HYPERLINK("${tarefa.problema.url}";"Link para a problema")',
         '${tarefa.simulacao}',
         '${tarefa.aluno.nome}',
         '=IMAGE("${tarefa.aluno.foto}")',
@@ -428,57 +428,57 @@ class GenerateCsvService {
       //   ]);
       // }
 
-      var dicPedese = Dictionary.fromMap(tarefa.pedese);
-      var pedeseOrderBy = dicPedese
+      var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
+      var gabaritoOrderBy = dicGabarito
           .orderBy((kv) => kv.value.ordem)
           .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-      pedeseMap.clear();
-      pedeseMap = pedeseOrderBy.toMap();
+      gabaritoMap.clear();
+      gabaritoMap = gabaritoOrderBy.toMap();
       String nota = '=';
-      for (var pedese in pedeseMap.entries) {
-        // print(pedese.key);
-        nota = nota + '+${pedese.value.nota}';
+      for (var gabarito in gabaritoMap.entries) {
+        // print(gabarito.key);
+        nota = nota + '+${gabarito.value.nota}';
         // planilha.add([
         //   '${tarefa.avaliacao.nome}',
         //   '${tarefa.questao.numero}',
-        //   'pedese nome',
-        //   '${pedese.value.nome}'
+        //   'gabarito nome',
+        //   '${gabarito.value.nome}'
         // ]);
-        // if (pedese.value.tipo == 'numero' ||
-        //     pedese.value.tipo == 'palavra' ||
-        //     pedese.value.tipo == 'texto') {
+        // if (gabarito.value.tipo == 'numero' ||
+        //     gabarito.value.tipo == 'palavra' ||
+        //     gabarito.value.tipo == 'texto') {
         //   planilha.add([
         //     '${tarefa.avaliacao.nome}',
         //     '${tarefa.questao.numero}',
-        //     'pedese resposta',
-        //     '${pedese.value.resposta}'
+        //     'gabarito resposta',
+        //     '${gabarito.value.resposta}'
         //   ]);
-        // } else if (pedese.value.tipo == 'imagem') {
+        // } else if (gabarito.value.tipo == 'imagem') {
         //   planilha.add([
         //     '${tarefa.avaliacao.nome}',
         //     '${tarefa.questao.numero}',
-        //     'pedese resposta',
-        //     '=IMAGE("${pedese.value.resposta}")',
+        //     'gabarito resposta',
+        //     '=IMAGE("${gabarito.value.resposta}")',
         //   ]);
-        // } else if (pedese.value.tipo == 'arquivo' ||
-        //     pedese.value.tipo == 'url') {
+        // } else if (gabarito.value.tipo == 'arquivo' ||
+        //     gabarito.value.tipo == 'url') {
         //   planilha.add([
         //     '${tarefa.avaliacao.nome}',
         //     '${tarefa.questao.numero}',
-        //     'pedese resposta',
-        //     '=HYPERLINK("${pedese.value.resposta}","Link para o arquivo")'
+        //     'gabarito resposta',
+        //     '=HYPERLINK("${gabarito.value.resposta}","Link para o arquivo")'
         //   ]);
         // }
         // planilha.add([
         //   '${tarefa.avaliacao.nome}',
         //   '${tarefa.questao.numero}',
-        //   'pedese nota',
-        //   '${pedese.value.nota}'
+        //   'gabarito nota',
+        //   '${gabarito.value.nota}'
         // ]);
       }
       planilha.add([
         ...base,
-        'pedese_nota',
+        'gabarito_nota',
         '$nota',
       ]);
 
@@ -545,46 +545,46 @@ class GenerateCsvService {
     _saveFileAndOpen(csvData);
   }
 
-  static csvPastaListaSituacao(List<PastaModel> pastaList) async {
+  static csvPastaListaProblema(List<PastaModel> pastaList) async {
     List<List<dynamic>> planilha = List<List<dynamic>>();
 
     planilha.add([
       'pasta_nome',
       'pasta_descricao',
-      'situacao_nome',
-      'situacao_descricao',
-      'situacao_uso',
-      'situacao_algoritmo',
-      'situacao_url',
+      'problema_nome',
+      'problema_descricao',
+      'problema_uso',
+      'problema_algoritmo',
+      'problema_url',
     ]);
     for (var pasta in pastaList) {
       final futureQuerySnapshot = await Bootstrap.instance.firestore
-          .collection(SituacaoModel.collection)
+          .collection(ProblemaModel.collection)
           .where("pasta.id", isEqualTo: pasta.id)
           .getDocuments();
 
-      List<SituacaoModel> situacaoList = futureQuerySnapshot.documents
-          .map((doc) => SituacaoModel(id: doc.documentID).fromMap(doc.data))
+      List<ProblemaModel> problemaList = futureQuerySnapshot.documents
+          .map((doc) => ProblemaModel(id: doc.documentID).fromMap(doc.data))
           .toList();
       var base = [
         '${pasta.nome}',
         '${pasta.descricao}',
       ];
       int usoTotal = 0;
-      for (var situacao in situacaoList) {
+      for (var problema in problemaList) {
         usoTotal = 0;
-        if (situacao?.uso != null) {
-          for (var uso in situacao.uso?.entries) {
+        if (problema?.uso != null) {
+          for (var uso in problema.uso?.entries) {
             usoTotal = usoTotal + uso.value;
           }
         }
         planilha.add([
           ...base,
-          '${situacao.nome}',
-          '${situacao.descricao}',
+          '${problema.nome}',
+          '${problema.descricao}',
           '$usoTotal',
-          '${situacao.precisaAlgoritmoPSimulacao}',
-          '=HYPERLINK("${situacao.url}";"Link para a situacao")',
+          '${problema.precisaAlgoritmoPSimulacao}',
+          '=HYPERLINK("${problema.url}";"Link para a problema")',
         ]);
       }
     }
@@ -596,12 +596,12 @@ class GenerateCsvService {
     _saveFileAndOpen(csvData);
   }
 
-  static csvSituacaoListaSimulacao(SituacaoModel situacao) async {
+  static csvProblemaListaSimulacao(ProblemaModel problema) async {
     List<List<dynamic>> planilha = List<List<dynamic>>();
 
     final futureQuerySnapshot = await Bootstrap.instance.firestore
         .collection(SimulacaoModel.collection)
-        .where("situacao.id", isEqualTo: situacao.id)
+        .where("problema.id", isEqualTo: problema.id)
         .getDocuments();
 
     List<SimulacaoModel> simulacaoList = futureQuerySnapshot.documents
@@ -609,9 +609,9 @@ class GenerateCsvService {
         .toList();
     planilha.add([
       'pasta_nome',
-      'situacao_nome',
-      'situacao_descricao',
-      'situacao_url',
+      'problema_nome',
+      'problema_descricao',
+      'problema_url',
       'simulacao_nome',
       'simulacao_descricao',
       'simulacao_url',
@@ -620,13 +620,13 @@ class GenerateCsvService {
     ]);
 
     var base1 = [
-      '${situacao.pasta.nome}',
-      '${situacao.nome}',
-      '${situacao.descricao}',
-      '=HYPERLINK("${situacao.url}";"Link para a situacao")',
+      '${problema.pasta.nome}',
+      '${problema.nome}',
+      '${problema.descricao}',
+      '=HYPERLINK("${problema.url}";"Link para a problema")',
     ];
     Map<String, Variavel> variavelMap = Map<String, Variavel>();
-    Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+    Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
     for (var simulacao in simulacaoList) {
       var base2 = [
         '${simulacao.nome}',
@@ -675,46 +675,46 @@ class GenerateCsvService {
           ]);
         }
       }
-      var dicPedese = Dictionary.fromMap(simulacao.pedese);
-      var pedeseOrderBy = dicPedese
+      var dicGabarito = Dictionary.fromMap(simulacao.gabarito);
+      var gabaritoOrderBy = dicGabarito
           .orderBy((kv) => kv.value.ordem)
           .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-      pedeseMap.clear();
-      pedeseMap = pedeseOrderBy.toMap();
+      gabaritoMap.clear();
+      gabaritoMap = gabaritoOrderBy.toMap();
       String nota = '=';
-      for (var pedese in pedeseMap.entries) {
+      for (var gabarito in gabaritoMap.entries) {
          planilha.add([
           ...base1,
           ...base2,
-          'pedese_nome',
-              '${pedese.value.nome}',
+          'gabarito_nome',
+              '${gabarito.value.nome}',
         ]);
         planilha.add([
           ...base1,
           ...base2,
-          'pedese_tipo',
-              '${pedese.value.tipo}',
+          'gabarito_tipo',
+              '${gabarito.value.tipo}',
         ]);
-        if (pedese.value.tipo == 'url'||pedese.value.tipo == 'arquivo') {
+        if (gabarito.value.tipo == 'url'||gabarito.value.tipo == 'arquivo') {
           planilha.add([
             ...base1,
             ...base2,
-            'pedese_gabarito',
-                '=HYPERLINK("${pedese.value.gabarito}";"Link para a pedese")',
+            'gabarito_valor',
+                '=HYPERLINK("${gabarito.value.valor}";"Link para a gabarito")',
           ]);
-        } else if (pedese.value.tipo == 'urlimagem'||pedese.value.tipo == 'imagem') {
+        } else if (gabarito.value.tipo == 'urlimagem'||gabarito.value.tipo == 'imagem') {
           planilha.add([
             ...base1,
             ...base2,
-            'pedese_gabarito',
-                '=IMAGE("${pedese.value.gabarito}")',
+            'gabarito_valor',
+                '=IMAGE("${gabarito.value.valor}")',
           ]);
         } else {
           planilha.add([
             ...base1,
             ...base2,
-            'pedese_gabarito',
-                '${pedese.value.gabarito}',
+            'gabarito_valor',
+                '${gabarito.value.valor}',
           ]);
         }
       }

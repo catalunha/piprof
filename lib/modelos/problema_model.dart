@@ -2,8 +2,8 @@ import 'package:piprof/modelos/base_model.dart';
 import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 
-class SituacaoModel extends FirestoreModel {
-  static final String collection = "Situacao";
+class ProblemaModel extends FirestoreModel {
+  static final String collection = "Problema";
   bool ativo;
   dynamic modificado;
   int numero;
@@ -13,11 +13,11 @@ class SituacaoModel extends FirestoreModel {
   PastaFk pasta;
   String url;
   bool precisaAlgoritmoPSimulacao;
-  String urlPDFSituacaoSemAlgoritmo;
+  String urlPDFProblemaSemAlgoritmo;
   bool ativadoAlgoritmoPSimulacao;
   int simulacaoNumero;
   Map<String, dynamic> uso;
-  SituacaoModel({
+  ProblemaModel({
     String id,
     this.ativo,
     this.modificado,
@@ -28,14 +28,14 @@ class SituacaoModel extends FirestoreModel {
     this.pasta,
     this.url,
     this.precisaAlgoritmoPSimulacao,
-    this.urlPDFSituacaoSemAlgoritmo,
+    this.urlPDFProblemaSemAlgoritmo,
     this.ativadoAlgoritmoPSimulacao,
     this.simulacaoNumero,
     this.uso,
   }) : super(id);
 
   @override
-  SituacaoModel fromMap(Map<String, dynamic> map) {
+  ProblemaModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('ativo')) ativo = map['ativo'];
     modificado = map.containsKey('modificado') && map['modificado'] != null
         ? DateTime.fromMillisecondsSinceEpoch(
@@ -53,8 +53,8 @@ class SituacaoModel extends FirestoreModel {
         : null;
     if (map.containsKey('precisaAlgoritmoPSimulacao'))
       precisaAlgoritmoPSimulacao = map['precisaAlgoritmoPSimulacao'];
-    if (map.containsKey('urlPDFSituacaoSemAlgoritmo'))
-      urlPDFSituacaoSemAlgoritmo = map['urlPDFSituacaoSemAlgoritmo'];
+    if (map.containsKey('urlPDFProblemaSemAlgoritmo'))
+      urlPDFProblemaSemAlgoritmo = map['urlPDFProblemaSemAlgoritmo'];
     if (map.containsKey('ativadoAlgoritmoPSimulacao'))
       ativadoAlgoritmoPSimulacao = map['ativadoAlgoritmoPSimulacao'];
     if (map.containsKey('simulacaoNumero'))
@@ -83,8 +83,8 @@ class SituacaoModel extends FirestoreModel {
     }
     if (precisaAlgoritmoPSimulacao != null)
       data['precisaAlgoritmoPSimulacao'] = this.precisaAlgoritmoPSimulacao;
-    if (urlPDFSituacaoSemAlgoritmo != null)
-      data['urlPDFSituacaoSemAlgoritmo'] = this.urlPDFSituacaoSemAlgoritmo;
+    if (urlPDFProblemaSemAlgoritmo != null)
+      data['urlPDFProblemaSemAlgoritmo'] = this.urlPDFProblemaSemAlgoritmo;
     if (ativadoAlgoritmoPSimulacao != null)
       data['ativadoAlgoritmoPSimulacao'] = this.ativadoAlgoritmoPSimulacao;
     if (simulacaoNumero != null)
@@ -94,14 +94,14 @@ class SituacaoModel extends FirestoreModel {
   }
 }
 
-class SituacaoFk {
+class ProblemaFk {
   String id;
   String nome;
   String url;
 
-  SituacaoFk({this.id, this.nome, this.url});
+  ProblemaFk({this.id, this.nome, this.url});
 
-  SituacaoFk.fromMap(Map<dynamic, dynamic> map) {
+  ProblemaFk.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('url')) url = map['url'];

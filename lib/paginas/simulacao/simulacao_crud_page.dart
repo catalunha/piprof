@@ -6,10 +6,10 @@ import 'package:piprof/paginas/simulacao/simulacao_crud_bloc.dart';
 
 class SimulacaoCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
-  final String situacaoID;
+  final String problemaID;
   final String simulacaoID;
 
-  const SimulacaoCRUDPage({this.authBloc, this.situacaoID, this.simulacaoID});
+  const SimulacaoCRUDPage({this.authBloc, this.problemaID, this.simulacaoID});
 
   @override
   _SimulacaoCRUDPageState createState() => _SimulacaoCRUDPageState();
@@ -24,8 +24,8 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
-    if (widget.situacaoID != null)
-      bloc.eventSink(GetSituacaoEvent(widget.situacaoID));
+    if (widget.problemaID != null)
+      bloc.eventSink(GetProblemaEvent(widget.problemaID));
     if (widget.simulacaoID != null)
       bloc.eventSink(GetSimulacaoEvent(widget.simulacaoID));
   }
@@ -40,7 +40,7 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar simulação'),
+        title: Text('Editar simulação'),
       ),
       floatingActionButton: StreamBuilder<SimulacaoCRUDBlocState>(
           stream: bloc.stateStream,

@@ -52,17 +52,17 @@ class _TarefaListPageState extends State<TarefaListPage> {
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
                 String notas = '';
-                Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+                Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
 
                 for (var tarefa in snapshot.data.tarefaList) {
-                  pedeseMap.clear();
-                  var dicPedese = Dictionary.fromMap(tarefa.pedese);
-                  var pedeseOrderBy =
-                      dicPedese.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
-                  pedeseMap = pedeseOrderBy.toMap();
+                  gabaritoMap.clear();
+                  var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
+                  var gabaritoOrderBy =
+                      dicGabarito.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                  gabaritoMap = gabaritoOrderBy.toMap();
                   notas = '';
-                  for (var pedese in pedeseMap.entries) {
-                    notas += '${pedese.value.nome}=${pedese.value.nota ?? "?"} ';
+                  for (var gabarito in gabaritoMap.entries) {
+                    notas += '${gabarito.value.nome}=${gabarito.value.nota ?? "?"} ';
                   }
                   listaWidget.add(
                     Card(
@@ -103,7 +103,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                         tooltip: 'Ver situação da questão',
                                         icon: Icon(Icons.picture_as_pdf),
                                         onPressed: () {
-                                          launch(tarefa.situacao.url);
+                                          launch(tarefa.problema.url);
                                         },
                                       ),
                                       IconButton(

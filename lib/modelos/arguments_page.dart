@@ -19,18 +19,18 @@ class QuestaoCRUDPageArguments {
   QuestaoCRUDPageArguments({this.avaliacaoID, this.questaoID});
 }
 
-class SituacaoCRUDPageArguments {
+class ProblemaCRUDPageArguments {
   final String pastaID;
-  final String situacaoID;
+  final String problemaID;
 
-  SituacaoCRUDPageArguments({this.pastaID, this.situacaoID});
+  ProblemaCRUDPageArguments({this.pastaID, this.problemaID});
 }
 
 class SimulacaoCRUDPageArguments {
-  final String situacaoID;
+  final String problemaID;
   final String simulacaoID;
 
-  SimulacaoCRUDPageArguments({this.situacaoID, this.simulacaoID});
+  SimulacaoCRUDPageArguments({this.problemaID, this.simulacaoID});
 }
 
 class SimulacaoVariavelCRUDPageArguments {
@@ -39,9 +39,9 @@ class SimulacaoVariavelCRUDPageArguments {
 
   SimulacaoVariavelCRUDPageArguments({this.simulacaoID, this.variavelKey});
 }
-class SimulacaoPedeseCRUDPageArguments {
+class SimulacaoGabaritoCRUDPageArguments {
   final String simulacaoID;
-  final String pedeseKey;
+  final String gabaritoKey;
 
-  SimulacaoPedeseCRUDPageArguments({this.simulacaoID, this.pedeseKey});
+  SimulacaoGabaritoCRUDPageArguments({this.simulacaoID, this.gabaritoKey});
 }

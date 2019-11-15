@@ -12,40 +12,40 @@ class GetTarefaEvent extends TarefaCorrigirBlocEvent {
   GetTarefaEvent(this.tarefaID);
 }
 
-class UpdatePedeseNotaEvent extends TarefaCorrigirBlocEvent {
+class UpdateGabaritoNotaEvent extends TarefaCorrigirBlocEvent {
   final String key;
 
-  UpdatePedeseNotaEvent(this.key);
+  UpdateGabaritoNotaEvent(this.key);
 }
 
 class SaveEvent extends TarefaCorrigirBlocEvent {}
 
-//TODO: retirar esta estrutura de PedeseInfo e usar o padrao pedese verificando o null e 0 no page
-class PedeseInfo {
-  final Pedese pedese;
+//TODO: retirar esta estrutura de GabaritoInfo e usar o padrao gabarito verificando o null e 0 no page
+class GabaritoInfo {
+  final Gabarito gabarito;
   bool nota;
-  PedeseInfo({this.pedese, this.nota});
+  GabaritoInfo({this.gabarito, this.nota});
 }
 
 class TarefaCorrigirBlocState {
   bool isDataValid = false;
   TarefaModel tarefa = TarefaModel();
-  Map<String, PedeseInfo> pedeseInfoMap = Map<String, PedeseInfo>();
+  Map<String, GabaritoInfo> gabaritoInfoMap = Map<String, GabaritoInfo>();
   void updateState() {
     // bool nota;
-    for (var pedese in tarefa.pedese.entries) {
+    for (var gabarito in tarefa.gabarito.entries) {
       // nota = false;
-      pedeseInfoMap[pedese.key] = PedeseInfo(
-        pedese: pedese.value,
+      gabaritoInfoMap[gabarito.key] = GabaritoInfo(
+        gabarito: gabarito.value,
         nota:
-            pedese.value.nota == null || pedese.value.nota == 0 ? false : true,
+            gabarito.value.nota == null || gabarito.value.nota == 0 ? false : true,
       );
     }
-    var dic = Dictionary.fromMap(pedeseInfoMap);
+    var dic = Dictionary.fromMap(gabaritoInfoMap);
     var dicOrderBy = dic
-        .orderBy((kv) => kv.value.pedese.ordem)
+        .orderBy((kv) => kv.value.gabarito.ordem)
         .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-    pedeseInfoMap = dicOrderBy.toMap();
+    gabaritoInfoMap = dicOrderBy.toMap();
   }
 }
 
@@ -94,13 +94,13 @@ class TarefaCorrigirBloc {
         }
       }
     }
-    if (event is UpdatePedeseNotaEvent) {
-      _state.pedeseInfoMap[event.key].nota =
-          !_state.pedeseInfoMap[event.key].nota;
-      if (_state.pedeseInfoMap[event.key].nota) {
-        _state.pedeseInfoMap[event.key].pedese.nota = 1;
+    if (event is UpdateGabaritoNotaEvent) {
+      _state.gabaritoInfoMap[event.key].nota =
+          !_state.gabaritoInfoMap[event.key].nota;
+      if (_state.gabaritoInfoMap[event.key].nota) {
+        _state.gabaritoInfoMap[event.key].gabarito.nota = 1;
       } else {
-        _state.pedeseInfoMap[event.key].pedese.nota = 0;
+        _state.gabaritoInfoMap[event.key].gabarito.nota = 0;
       }
     }
 
@@ -108,12 +108,12 @@ class TarefaCorrigirBloc {
       final docRef = _firestore
           .collection(TarefaModel.collection)
           .document(_state.tarefa.id);
-      Map<String, Pedese> pedese = Map<String, Pedese>();
-      for (var pedeseInfoMap in _state.pedeseInfoMap.entries) {
-        pedese[pedeseInfoMap.key] = pedeseInfoMap.value.pedese;
+      Map<String, Gabarito> gabarito = Map<String, Gabarito>();
+      for (var gabaritoInfoMap in _state.gabaritoInfoMap.entries) {
+        gabarito[gabaritoInfoMap.key] = gabaritoInfoMap.value.gabarito;
       }
       TarefaModel tarefaUpdate = TarefaModel(
-        pedese: pedese,
+        gabarito: gabarito,
       );
       await docRef.setData(tarefaUpdate.toMap(), merge: true);
     }

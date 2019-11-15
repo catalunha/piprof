@@ -3,23 +3,23 @@ import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
-import 'package:piprof/paginas/simulacao/simulacao_pedese_list_bloc.dart';
+import 'package:piprof/paginas/simulacao/simulacao_gabarito_list_bloc.dart';
 
-class SimulacaoPedeseListPage extends StatefulWidget {
+class SimulacaoGabaritoListPage extends StatefulWidget {
   final String simulacaoID;
 
-  const SimulacaoPedeseListPage(this.simulacaoID);
+  const SimulacaoGabaritoListPage(this.simulacaoID);
   @override
-  _SimulacaoPedeseListPageState createState() =>
-      _SimulacaoPedeseListPageState();
+  _SimulacaoGabaritoListPageState createState() =>
+      _SimulacaoGabaritoListPageState();
 }
 
-class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
-  SimulacaoPedeseListBloc bloc;
+class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
+  SimulacaoGabaritoListBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = SimulacaoPedeseListBloc(
+    bloc = SimulacaoGabaritoListBloc(
       Bootstrap.instance.firestore,
     );
     bloc.eventSink(GetSimulacaoEvent(widget.simulacaoID));
@@ -42,16 +42,16 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            "/simulacao/pedese/crud",
-            arguments: SimulacaoPedeseCRUDPageArguments(
+            "/simulacao/gabarito/crud",
+            arguments: SimulacaoGabaritoCRUDPageArguments(
                 simulacaoID: widget.simulacaoID),
           );
         },
       ),
-      body: StreamBuilder<SimulacaoPedeseListBlocState>(
+      body: StreamBuilder<SimulacaoGabaritoListBlocState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
-            AsyncSnapshot<SimulacaoPedeseListBlocState> snapshot) {
+            AsyncSnapshot<SimulacaoGabaritoListBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -61,46 +61,46 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
 
-            int lengthTurma = snapshot.data.pedeseMap.length;
+            int lengthTurma = snapshot.data.gabaritoMap.length;
             int ordemLocal = 1;
             Widget icone;
-            for (var pedese in snapshot.data.pedeseMap.entries) {
-              if (pedese.value.tipo == 'numero') {
+            for (var gabarito in snapshot.data.gabaritoMap.entries) {
+              if (gabarito.value.tipo == 'numero') {
                 icone = Icon(Icons.looks_one);
-              } else if (pedese.value.tipo == 'palavra') {
+              } else if (gabarito.value.tipo == 'palavra') {
                 icone = Icon(Icons.text_format);
-              } else if (pedese.value.tipo == 'texto') {
+              } else if (gabarito.value.tipo == 'texto') {
                 icone = Icon(Icons.text_fields);
-              } else if (pedese.value.tipo == 'url') {
+              } else if (gabarito.value.tipo == 'url') {
                 icone = IconButton(
                   tooltip: 'Um link ao um site ou arquivo',
                   icon: Icon(Icons.link),
                   onPressed: () {
-                    launch(pedese.value.gabarito);
+                    launch(gabarito.value.valor);
                   },
                 );
-              } else if (pedese.value.tipo == 'urlimagem') {
+              } else if (gabarito.value.tipo == 'urlimagem') {
                 icone = IconButton(
                   tooltip: 'Um link ao uma imagem',
                   icon: Icon(Icons.image),
                   onPressed: () {
-                    launch(pedese.value.gabarito);
+                    launch(gabarito.value.valor);
                   },
                 );
-              } else if (pedese.value.tipo == 'arquivo') {
+              } else if (gabarito.value.tipo == 'arquivo') {
                 icone = IconButton(
                   tooltip: 'Um arquivo anexado',
                   icon: Icon(Icons.description),
                   onPressed: () {
-                    launch(pedese.value.gabarito);
+                    launch(gabarito.value.valor);
                   },
                 );
-              } else if (pedese.value.tipo == 'imagem') {
+              } else if (gabarito.value.tipo == 'imagem') {
                 icone = IconButton(
                   tooltip: 'Uma imagem anexada',
                   icon: Icon(Icons.add_photo_alternate),
                   onPressed: () {
-                    launch(pedese.value.gabarito);
+                    launch(gabarito.value.valor);
                   },
                 );
               }
@@ -110,8 +110,8 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        title: Text('${pedese.value.nome}'),
-                        subtitle: Text('${pedese.value.gabarito}'),
+                        title: Text('${gabarito.value.nome}'),
+                        subtitle: Text('${gabarito.value.valor}'),
                         trailing: icone,
                       ),
                       Center(
@@ -123,10 +123,10 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
-                                  "/simulacao/pedese/crud",
-                                  arguments: SimulacaoPedeseCRUDPageArguments(
+                                  "/simulacao/gabarito/crud",
+                                  arguments: SimulacaoGabaritoCRUDPageArguments(
                                       simulacaoID: snapshot.data.simulacao.id,
-                                      pedeseKey: pedese.key),
+                                      gabaritoKey: gabarito.key),
                                 );
                               },
                             ),
@@ -136,7 +136,7 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
                               onPressed: (ordemLocal) < lengthTurma
                                   ? () {
                                       bloc.eventSink(
-                                          OrdenarInMapEvent(pedese.key, false));
+                                          OrdenarInMapEvent(gabarito.key, false));
                                     }
                                   : null,
                             ),
@@ -146,7 +146,7 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
                               onPressed: ordemLocal > 1
                                   ? () {
                                       bloc.eventSink(
-                                          OrdenarInMapEvent(pedese.key, true));
+                                          OrdenarInMapEvent(gabarito.key, true));
                                     }
                                   : null,
                             ),
@@ -168,7 +168,7 @@ class _SimulacaoPedeseListPageState extends State<SimulacaoPedeseListPage> {
             );
           } else {
             return Center(
-              child: Text('Sem pedese para listar.'),
+              child: Text('Sem gabarito para listar.'),
             );
           }
         },

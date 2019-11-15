@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
-import 'package:piprof/paginas/simulacao/simulacao_pedese_crud_bloc.dart';
+import 'package:piprof/paginas/simulacao/simulacao_gabarito_crud_bloc.dart';
 
-class PedeseCRUDPage extends StatefulWidget {
+class GabaritoCRUDPage extends StatefulWidget {
   final String simulacaoID;
-  final String pedeseKey;
+  final String gabaritoKey;
 
-  const PedeseCRUDPage({this.simulacaoID, this.pedeseKey});
+  const GabaritoCRUDPage({this.simulacaoID, this.gabaritoKey});
 
   @override
-  PpedeseCRUDPageState createState() => PpedeseCRUDPageState();
+  PgabaritoCRUDPageState createState() => PgabaritoCRUDPageState();
 }
 
-class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
-  SimulacaoPedeseCRUDBloc bloc;
+class PgabaritoCRUDPageState extends State<GabaritoCRUDPage> {
+  SimulacaoGabaritoCRUDBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = SimulacaoPedeseCRUDBloc(
+    bloc = SimulacaoGabaritoCRUDBloc(
       Bootstrap.instance.firestore,
     );
     bloc.eventSink(GetSimulacaoEvent(
       simulacaoID: widget.simulacaoID,
-      pedeseKey: widget.pedeseKey,
+      gabaritoKey: widget.gabaritoKey,
     ));
   }
 
@@ -39,7 +39,7 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
       appBar: AppBar(
         title: Text('Editar gabarito'),
       ),
-      floatingActionButton: StreamBuilder<SimulacaoPedeseCRUDBlocState>(
+      floatingActionButton: StreamBuilder<SimulacaoGabaritoCRUDBlocState>(
           stream: bloc.stateStream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) return Container();
@@ -55,10 +55,9 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
                   snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
-      body: StreamBuilder<SimulacaoPedeseCRUDBlocState>(
+      body: StreamBuilder<SimulacaoGabaritoCRUDBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<SimulacaoPedeseCRUDBlocState> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -113,7 +112,7 @@ class PpedeseCRUDPageState extends State<PedeseCRUDPage> {
 }
 
 class _TextFieldMultiplo extends StatefulWidget {
-  final SimulacaoPedeseCRUDBloc bloc;
+  final SimulacaoGabaritoCRUDBloc bloc;
   final String campo;
   _TextFieldMultiplo(
     this.bloc,
@@ -130,7 +129,7 @@ class _TextFieldMultiplo extends StatefulWidget {
 
 class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
-  final SimulacaoPedeseCRUDBloc bloc;
+  final SimulacaoGabaritoCRUDBloc bloc;
   final String campo;
   _TextFieldMultiploState(
     this.bloc,
@@ -138,15 +137,15 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   );
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<SimulacaoPedeseCRUDBlocState>(
+    return StreamBuilder<SimulacaoGabaritoCRUDBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<SimulacaoPedeseCRUDBlocState> snapshot) {
+          AsyncSnapshot<SimulacaoGabaritoCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           if (campo == 'nome') {
             _textFieldController.text = snapshot.data?.nome;
           } else if (campo == 'gabarito') {
-            _textFieldController.text = snapshot.data?.gabarito;
+            _textFieldController.text = snapshot.data?.valor;
           }
         }
         return TextField(
@@ -166,7 +165,7 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
 }
 
 class PainelTipo extends StatefulWidget {
-  final SimulacaoPedeseCRUDBloc bloc;
+  final SimulacaoGabaritoCRUDBloc bloc;
   PainelTipo(this.bloc);
   @override
   PainelTipoState createState() {
@@ -175,14 +174,14 @@ class PainelTipo extends StatefulWidget {
 }
 
 class PainelTipoState extends State<PainelTipo> {
-  final SimulacaoPedeseCRUDBloc bloc;
+  final SimulacaoGabaritoCRUDBloc bloc;
   PainelTipoState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<SimulacaoPedeseCRUDBlocState>(
+    return StreamBuilder<SimulacaoGabaritoCRUDBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<SimulacaoPedeseCRUDBlocState> snapshot) {
+          AsyncSnapshot<SimulacaoGabaritoCRUDBlocState> snapshot) {
         return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

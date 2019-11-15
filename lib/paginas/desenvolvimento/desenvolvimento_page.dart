@@ -10,7 +10,7 @@ import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/tarefa_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:piprof/modelos/upload_model.dart';
@@ -140,12 +140,12 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               ),
             ),
             ListTile(
-              title: Text('Inserir Situacao'),
+              title: Text('Inserir Problema'),
               trailing: IconButton(
                 icon: Icon(Icons.folder),
                 onPressed: () async {
-                  await incluirSituacao01();
-                  await incluirSituacao02();
+                  await incluirProblema01();
+                  await incluirProblema02();
                 },
               ),
             ),
@@ -341,7 +341,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       turmaNumeroAdicionado: 0,
       pastaNumeroAdicionado: 0,
-      situacaoNumeroAdicionado: 0,
+      problemaNumeroAdicionado: 0,
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
@@ -369,7 +369,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       turmaNumeroAdicionado: 0,
       pastaNumeroAdicionado: 0,
-      situacaoNumeroAdicionado: 0,
+      problemaNumeroAdicionado: 0,
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
@@ -400,7 +400,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         avaliacaoNota: '1',
         questaoNota: '1',
         aberta: true,
-        situacao: SituacaoFk(
+        problema: ProblemaFk(
           id: '548KCdtFN8Vr1j1U2WvZ',
           nome: 'sit02',
           url:
@@ -439,14 +439,14 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
             tipo: 'urlimagem',
           )
         },
-        pedese: {
-          'pedese01': Pedese(nome: 'a', ordem: 1, nota:0, tipo: 'numero', gabarito: '20', resposta:'20'),
-          'pedese02': Pedese(nome: 'b', ordem: 2, nota:0, tipo: 'palavra', gabarito: 'sim', resposta:'sim'),
-          'pedese03': Pedese(nome: 'c', ordem: 3, nota:0, tipo: 'texto', gabarito: 'sim ou nao', resposta:'sim ou nao'),
-          'pedese04': Pedese(nome: 'd', ordem: 4, nota:0, tipo: 'url', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a'),
-          'pedese05': Pedese(nome: 'e', ordem: 5, nota:0, tipo: 'urlimagem', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086'),
-          'pedese06': Pedese(nome: 'f', ordem: 6, nota:0, tipo: 'arquivo', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a'),
-          'pedese07': Pedese(nome: 'g', ordem: 7, nota:0, tipo: 'imagem', gabarito: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086'),
+        gabarito: {
+          'valor01': Gabarito(nome: 'a', ordem: 1, nota:0, tipo: 'numero', valor: '20', resposta:'20'),
+          'valor02': Gabarito(nome: 'b', ordem: 2, nota:0, tipo: 'palavra', valor: 'sim', resposta:'sim'),
+          'valor03': Gabarito(nome: 'c', ordem: 3, nota:0, tipo: 'texto', valor: 'sim ou nao', resposta:'sim ou nao'),
+          'valor04': Gabarito(nome: 'd', ordem: 4, nota:0, tipo: 'url', valor: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a'),
+          'valor05': Gabarito(nome: 'e', ordem: 5, nota:0, tipo: 'urlimagem', valor: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086'),
+          'valor06': Gabarito(nome: 'f', ordem: 6, nota:0, tipo: 'arquivo', valor: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a'),
+          'valor07': Gabarito(nome: 'g', ordem: 7, nota:0, tipo: 'imagem', valor: 'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086', resposta:'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/50d5473f-6a8d-4f3a-830b-5b87d02dc57d?alt=media&token=ffc4ab3b-4aab-45fc-8ded-3c8957184086'),
         });
 
     // print('=>>>>>>>> ${tarefaModel.aberta}');
@@ -477,7 +477,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         // tentou: 0,
         tempo: 1,
         aberta: true,
-        situacao: SituacaoFk(
+        problema: ProblemaFk(
           id: '548KCdtFN8Vr1j1U2WvZ',
           nome: 'sit02',
           url:
@@ -496,13 +496,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
             valor: '2',
           )
         },
-        pedese: {
-          'pedese01': Pedese(nome: 'a', ordem: 0, tipo: 'numero', gabarito: '20'),
-          'pedese02': Pedese(nome: 'b', ordem: 1, tipo: 'palavra', gabarito: 'sim'),
-          'pedese03': Pedese(nome: 'c', ordem: 2, tipo: 'texto', gabarito: 'sim'),
-          'pedese04': Pedese(nome: 'd', ordem: 3, tipo: 'url', gabarito: 'sim'),
-          'pedese05': Pedese(nome: 'e', ordem: 4, tipo: 'arquivo', gabarito: 'sim'),
-          'pedese06': Pedese(nome: 'f', ordem: 5, tipo: 'imagem', gabarito: 'sim'),
+        gabarito: {
+          'valor01': Gabarito(nome: 'a', ordem: 0, tipo: 'numero', valor: '20'),
+          'valor02': Gabarito(nome: 'b', ordem: 1, tipo: 'palavra', valor: 'sim'),
+          'valor03': Gabarito(nome: 'c', ordem: 2, tipo: 'texto', valor: 'sim'),
+          'valor04': Gabarito(nome: 'd', ordem: 3, tipo: 'url', valor: 'sim'),
+          'valor05': Gabarito(nome: 'e', ordem: 4, tipo: 'arquivo', valor: 'sim'),
+          'valor06': Gabarito(nome: 'f', ordem: 5, tipo: 'imagem', valor: 'sim'),
         });
 
     // print('=>>>>>>>> ${tarefaModel.aberta}');
@@ -580,9 +580,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       professor: UsuarioFk(id: '0Prof01', nome: 'prof01'),
       turma: TurmaFk(id: '0Turma01', nome: 'turma01'),
       avaliacao: AvaliacaoFk(id: '0Avaliacao01', nome: 'avaliacao01'),
-      situacao: SituacaoFk(
-        id: '0situacao01',
-        nome: 'situacao01',
+      problema: ProblemaFk(
+        id: '0problema01',
+        nome: 'problema01',
         url:
             'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a',
       ),
@@ -627,27 +627,27 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(pastaModel.toMap(), merge: true);
   }
 
-  Future incluirSituacao01() async {
-    final docRef = _firestore.collection(SituacaoModel.collection).document();
-    SituacaoModel situacaoModel = SituacaoModel(
+  Future incluirProblema01() async {
+    final docRef = _firestore.collection(ProblemaModel.collection).document();
+    ProblemaModel problemaModel = ProblemaModel(
       ativo: true,
       numero: 1,
       nome: 'Sit01',
       professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'prof01'),
       pasta: PastaFk(id: '0Pasta01', nome: 'pasta01'),
     );
-    await docRef.setData(situacaoModel.toMap(), merge: true);
+    await docRef.setData(problemaModel.toMap(), merge: true);
   }
 
-  Future incluirSituacao02() async {
-    final docRef = _firestore.collection(SituacaoModel.collection).document();
-    SituacaoModel situacaoModel = SituacaoModel(
+  Future incluirProblema02() async {
+    final docRef = _firestore.collection(ProblemaModel.collection).document();
+    ProblemaModel problemaModel = ProblemaModel(
       ativo: true,
       numero: 2,
       nome: 'Sit02',
       professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'prof01'),
       pasta: PastaFk(id: '0Pasta01', nome: 'pasta01'),
     );
-    await docRef.setData(situacaoModel.toMap(), merge: true);
+    await docRef.setData(problemaModel.toMap(), merge: true);
   }
 }

@@ -4,72 +4,72 @@ import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:uuid/uuid.dart' as uuid;
 
-class SimulacaoPedeseCRUDBlocEvent {}
+class SimulacaoGabaritoCRUDBlocEvent {}
 
-class GetSimulacaoEvent extends SimulacaoPedeseCRUDBlocEvent {
+class GetSimulacaoEvent extends SimulacaoGabaritoCRUDBlocEvent {
   final String simulacaoID;
-  final String pedeseKey;
+  final String gabaritoKey;
 
-  GetSimulacaoEvent({this.simulacaoID, this.pedeseKey});
+  GetSimulacaoEvent({this.simulacaoID, this.gabaritoKey});
 }
 
-class GetPedeseEvent extends SimulacaoPedeseCRUDBlocEvent {
-  final String pedeseKey;
+class GetGabaritoEvent extends SimulacaoGabaritoCRUDBlocEvent {
+  final String gabaritoKey;
 
-  GetPedeseEvent(this.pedeseKey);
+  GetGabaritoEvent(this.gabaritoKey);
 }
 
-class UpdateTextFieldEvent extends SimulacaoPedeseCRUDBlocEvent {
+class UpdateTextFieldEvent extends SimulacaoGabaritoCRUDBlocEvent {
   final String campo;
   final String texto;
   UpdateTextFieldEvent(this.campo, this.texto);
 }
 
-class UpdateTipoEvent extends SimulacaoPedeseCRUDBlocEvent {
+class UpdateTipoEvent extends SimulacaoGabaritoCRUDBlocEvent {
   final String tipo;
   UpdateTipoEvent(this.tipo);
 }
 
-class SaveEvent extends SimulacaoPedeseCRUDBlocEvent {}
+class SaveEvent extends SimulacaoGabaritoCRUDBlocEvent {}
 
-class DeleteDocumentEvent extends SimulacaoPedeseCRUDBlocEvent {}
+class DeleteDocumentEvent extends SimulacaoGabaritoCRUDBlocEvent {}
 
-class SimulacaoPedeseCRUDBlocState {
+class SimulacaoGabaritoCRUDBlocState {
   bool isDataValid = false;
-  String pedeseKey;
+  String gabaritoKey;
   SimulacaoModel simulacao = SimulacaoModel();
-  Pedese pedese = Pedese();
+  Gabarito gabarito = Gabarito();
 
   String nome;
-  String gabarito;
+  String valor;
   String tipo;
 
   void updateState() {
-    nome = pedese.nome;
-    gabarito = pedese.gabarito;
-    tipo = pedese.tipo;
+    nome = gabarito.nome;
+    valor = gabarito.valor;
+    tipo = gabarito.tipo;
   }
 }
 
-class SimulacaoPedeseCRUDBloc {
+class SimulacaoGabaritoCRUDBloc {
   /// Firestore
   final fsw.Firestore _firestore;
 
   /// Eventos
-  final _eventController = BehaviorSubject<SimulacaoPedeseCRUDBlocEvent>();
-  Stream<SimulacaoPedeseCRUDBlocEvent> get eventStream =>
+  final _eventController = BehaviorSubject<SimulacaoGabaritoCRUDBlocEvent>();
+  Stream<SimulacaoGabaritoCRUDBlocEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   /// Estados
-  final SimulacaoPedeseCRUDBlocState _state = SimulacaoPedeseCRUDBlocState();
-  final _stateController = BehaviorSubject<SimulacaoPedeseCRUDBlocState>();
-  Stream<SimulacaoPedeseCRUDBlocState> get stateStream =>
+  final SimulacaoGabaritoCRUDBlocState _state = SimulacaoGabaritoCRUDBlocState();
+  final _stateController = BehaviorSubject<SimulacaoGabaritoCRUDBlocState>();
+  Stream<SimulacaoGabaritoCRUDBlocState> get stateStream =>
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
-  SimulacaoPedeseCRUDBloc(this._firestore) {
+  SimulacaoGabaritoCRUDBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
 
@@ -90,7 +90,7 @@ class SimulacaoPedeseCRUDBloc {
     }
   }
 
-  _mapEventToState(SimulacaoPedeseCRUDBlocEvent event) async {
+  _mapEventToState(SimulacaoGabaritoCRUDBlocEvent event) async {
     if (event is GetSimulacaoEvent) {
       final docRef = _firestore
           .collection(SimulacaoModel.collection)
@@ -99,19 +99,19 @@ class SimulacaoPedeseCRUDBloc {
       if (snap.exists) {
         _state.simulacao =
             SimulacaoModel(id: snap.documentID).fromMap(snap.data);
-        if (event.pedeseKey != null) eventSink(GetPedeseEvent(event.pedeseKey));
+        if (event.gabaritoKey != null) eventSink(GetGabaritoEvent(event.gabaritoKey));
       }
     }
-    if (event is GetPedeseEvent) {
-      _state.pedeseKey = event.pedeseKey;
-      _state.pedese = _state.simulacao.pedese[event.pedeseKey];
+    if (event is GetGabaritoEvent) {
+      _state.gabaritoKey = event.gabaritoKey;
+      _state.gabarito = _state.simulacao.gabarito[event.gabaritoKey];
       _state.updateState();
     }
     if (event is UpdateTextFieldEvent) {
       if (event.campo == 'nome') {
         _state.nome = event.texto;
       } else if (event.campo == 'gabarito') {
-        _state.gabarito = event.texto;
+        _state.valor = event.texto;
       }
     }
     if (event is UpdateTipoEvent) {
@@ -122,19 +122,19 @@ class SimulacaoPedeseCRUDBloc {
           .collection(SimulacaoModel.collection)
           .document(_state.simulacao.id);
 
-      Pedese pedeseUpdate = Pedese(
+      Gabarito gabaritoUpdate = Gabarito(
         nome: _state.nome,
-        gabarito: _state.gabarito,
+        valor: _state.valor,
         tipo: _state.tipo,
       );
-      if (_state.pedeseKey == null) {
+      if (_state.gabaritoKey == null) {
         final uuidG = uuid.Uuid();
-        pedeseUpdate.ordem = _state.simulacao.ordem ?? 1;
+        gabaritoUpdate.ordem = _state.simulacao.ordem ?? 1;
         print(uuidG.v4());
-        _state.simulacao.pedese = {uuidG.v4(): pedeseUpdate};
+        _state.simulacao.gabarito = {uuidG.v4(): gabaritoUpdate};
         _state.simulacao.ordem = _state.simulacao.ordem + 1;
       } else {
-        _state.simulacao.pedese[_state.pedeseKey] = pedeseUpdate;
+        _state.simulacao.gabarito[_state.gabaritoKey] = gabaritoUpdate;
       }
       await docRef.setData(_state.simulacao.toMap(), merge: true);
     }
@@ -144,8 +144,8 @@ class SimulacaoPedeseCRUDBloc {
           .collection(SimulacaoModel.collection)
           .document(_state.simulacao.id);
       await docRef.setData({
-        "pedese": {
-          "${_state.pedeseKey}": Bootstrap.instance.fieldValue.delete()
+        "gabarito": {
+          "${_state.gabaritoKey}": Bootstrap.instance.fieldValue.delete()
         }
       }, merge: true);
     }
@@ -153,6 +153,6 @@ class SimulacaoPedeseCRUDBloc {
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
-        'event.runtimeType em SimulacaoPedeseCRUDBloc  = ${event.runtimeType}');
+        'event.runtimeType em SimulacaoGabaritoCRUDBloc  = ${event.runtimeType}');
   }
 }

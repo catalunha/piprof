@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/paginas/questao/questao_crud_bloc.dart';
-import 'package:piprof/paginas/situacao/situacao_selecionar_page.dart';
+import 'package:piprof/paginas/problema/problema_selecionar_page.dart';
 
 class QuestaoCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -191,7 +191,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar Questão'),
+        title: Text('Editar Questão'),
       ),
       floatingActionButton: StreamBuilder<QuestaoCRUDBlocState>(
           stream: bloc.stateStream,
@@ -295,17 +295,17 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                   : Padding(
                       padding: EdgeInsets.all(5.0),
                       child: ListTile(
-                        title: snapshot.data.situacaoFk == null
+                        title: snapshot.data.problemaFk == null
                             ? Text('Aguardado seleção')
-                            : Text('${snapshot.data.situacaoFk.nome}'),
+                            : Text('${snapshot.data.problemaFk.nome}'),
                         trailing: Icon(Icons.search),
                         onTap: () async {
-                          SituacaoFk situacaoFk = await Navigator.push(context,
+                          ProblemaFk problemaFk = await Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return SituacaoSelecionarPage(widget.authBloc);
+                            return ProblemaSelecionarPage(widget.authBloc);
                           }));
-                          if (situacaoFk != null) {
-                            bloc.eventSink(SelecionarSituacaoEvent(situacaoFk));
+                          if (problemaFk != null) {
+                            bloc.eventSink(SelecionarProblemaEvent(problemaFk));
                           }
                         },
                       ),

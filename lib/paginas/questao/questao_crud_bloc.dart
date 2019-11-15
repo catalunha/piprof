@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
@@ -54,10 +54,10 @@ class UpdateNumberFieldEvent extends QuestaoCRUDBlocEvent {
   UpdateNumberFieldEvent(this.campo, this.texto);
 }
 
-class SelecionarSituacaoEvent extends QuestaoCRUDBlocEvent {
-  final SituacaoFk situacaoFk;
+class SelecionarProblemaEvent extends QuestaoCRUDBlocEvent {
+  final ProblemaFk problemaFk;
 
-  SelecionarSituacaoEvent(this.situacaoFk);
+  SelecionarProblemaEvent(this.problemaFk);
 }
 
 class SaveEvent extends QuestaoCRUDBlocEvent {}
@@ -71,8 +71,8 @@ class QuestaoCRUDBlocState {
   TurmaModel turma = TurmaModel();
   AvaliacaoModel avaliacao = AvaliacaoModel();
   QuestaoModel questao = QuestaoModel();
-  SituacaoFk situacaoFk;
-  // SituacaoModel situacao;
+  ProblemaFk problemaFk;
+  // ProblemaModel problema;
   // dynamic data;
   String tempo;
   String tentativa;
@@ -91,7 +91,7 @@ class QuestaoCRUDBlocState {
     tentativa = questao.tentativa.toString() ?? '3';
     erroRelativo = questao.erroRelativo.toString() ?? '10';
     nota = questao.nota;
-    situacaoFk = questao.situacao;
+    problemaFk = questao.problema;
     questao.aplicada = questao.aplicada == null ? false : questao.aplicada;
   }
 
@@ -153,7 +153,7 @@ class QuestaoCRUDBloc {
     if (_state.nota == null || _state.nota.isEmpty) {
       _state.isDataValid = false;
     }
-    if (_state.situacaoFk == null) {
+    if (_state.problemaFk == null) {
       _state.isDataValid = false;
     }
   }
@@ -303,8 +303,8 @@ class QuestaoCRUDBloc {
       }
     }
 
-    if (event is SelecionarSituacaoEvent) {
-      _state.situacaoFk = event.situacaoFk;
+    if (event is SelecionarProblemaEvent) {
+      _state.problemaFk = event.problemaFk;
     }
     if (event is SaveEvent) {
       final docRef = _firestore
@@ -319,10 +319,10 @@ class QuestaoCRUDBloc {
         erroRelativo: int.parse(_state.erroRelativo),
         nota: _state.nota,
         modificado: DateTime.now(),
-        situacao: SituacaoFk(
-          id: _state.situacaoFk.id,
-          nome: _state.situacaoFk.nome,
-          url: _state.situacaoFk.url,
+        problema: ProblemaFk(
+          id: _state.problemaFk.id,
+          nome: _state.problemaFk.nome,
+          url: _state.problemaFk.url,
         ),
       );
       if (_state.questaoID == null) {

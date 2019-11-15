@@ -61,7 +61,7 @@ class _PastaListPageState extends State<PastaListPage> {
                 title: Text('Lista de pastas em situações em planilha'),
                 trailing: Icon(Icons.grid_on),
                 onTap: () {
-                  GenerateCsvService.csvPastaListaSituacao(snapshot.data.pastaList);
+                  GenerateCsvService.csvPastaListaProblema(snapshot.data.pastaList);
                 },
               ),
             );
@@ -124,7 +124,7 @@ class _PastaListPageState extends State<PastaListPage> {
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
-                                  "/situacao/list",
+                                  "/problema/list",
                                   arguments: pasta.id,
                                 );
                               },

@@ -14,7 +14,7 @@ class UsuarioModel extends FirestoreModel {
   List<dynamic> rota;
   int turmaNumeroAdicionado;
   int pastaNumeroAdicionado;
-  int situacaoNumeroAdicionado;
+  int problemaNumeroAdicionado;
   // String tokenFCM;
   List<dynamic> turma;
 
@@ -31,7 +31,7 @@ class UsuarioModel extends FirestoreModel {
       this.foto,
       this.turmaNumeroAdicionado,
       this.pastaNumeroAdicionado,
-      this.situacaoNumeroAdicionado,
+      this.problemaNumeroAdicionado,
       this.rota,
       this.turma})
       : super(id);
@@ -48,8 +48,8 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('professor')) professor = map['professor'];
     if (map.containsKey('pastaNumeroAdicionado'))
       pastaNumeroAdicionado = map['pastaNumeroAdicionado'];
-    if (map.containsKey('situacaoNumeroAdicionado'))
-      situacaoNumeroAdicionado = map['situacaoNumeroAdicionado'];
+    if (map.containsKey('problemaNumeroAdicionado'))
+      problemaNumeroAdicionado = map['problemaNumeroAdicionado'];
     if (map.containsKey('turmaNumeroAdicionado'))
       turmaNumeroAdicionado = map['turmaNumeroAdicionado'];
     if (map.containsKey('foto')) {
@@ -75,8 +75,8 @@ class UsuarioModel extends FirestoreModel {
     if (professor != null) data['professor'] = this.professor;
     if (pastaNumeroAdicionado != null)
       data['pastaNumeroAdicionado'] = this.pastaNumeroAdicionado;
-    if (situacaoNumeroAdicionado != null)
-      data['situacaoNumeroAdicionado'] = this.situacaoNumeroAdicionado;
+    if (problemaNumeroAdicionado != null)
+      data['problemaNumeroAdicionado'] = this.problemaNumeroAdicionado;
     if (turmaNumeroAdicionado != null)
       data['turmaNumeroAdicionado'] = this.turmaNumeroAdicionado;
     if (this.foto != null) {

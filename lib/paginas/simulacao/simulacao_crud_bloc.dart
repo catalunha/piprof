@@ -1,7 +1,7 @@
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:rxdart/rxdart.dart';
@@ -20,10 +20,10 @@ class GetSimulacaoEvent extends SimulacaoCRUDBlocEvent {
   GetSimulacaoEvent(this.simulacaoID);
 }
 
-class GetSituacaoEvent extends SimulacaoCRUDBlocEvent {
-  final String situacaoID;
+class GetProblemaEvent extends SimulacaoCRUDBlocEvent {
+  final String problemaID;
 
-  GetSituacaoEvent(this.situacaoID);
+  GetProblemaEvent(this.problemaID);
 }
 
 class UpdateTextFieldEvent extends SimulacaoCRUDBlocEvent {
@@ -41,7 +41,7 @@ class SimulacaoCRUDBlocState {
   UsuarioModel usuarioAuth;
   String simulacaoID;
   SimulacaoModel simulacao = SimulacaoModel();
-  SituacaoModel situacao = SituacaoModel();
+  ProblemaModel problema = ProblemaModel();
 
   String nome;
   String descricao;
@@ -110,13 +110,13 @@ class SimulacaoCRUDBloc {
         _state.updateState();
       }
     }
-    if (event is GetSituacaoEvent) {
+    if (event is GetProblemaEvent) {
       final docRef = _firestore
-          .collection(SituacaoModel.collection)
-          .document(event.situacaoID);
+          .collection(ProblemaModel.collection)
+          .document(event.problemaID);
       final snap = await docRef.get();
       if (snap.exists) {
-        _state.situacao = SituacaoModel(id: snap.documentID).fromMap(snap.data);
+        _state.problema = ProblemaModel(id: snap.documentID).fromMap(snap.data);
       }
     }
     if (event is UpdateTextFieldEvent) {
@@ -141,11 +141,11 @@ class SimulacaoCRUDBloc {
       );
       if (_state.simulacaoID == null) {
                simulacaoModel.numero =
-            (_state.situacao.simulacaoNumero ?? 0) + 1;
-        //+++ Atualizar situacao com mais uma em seu cadastro
+            (_state.problema.simulacaoNumero ?? 0) + 1;
+        //+++ Atualizar problema com mais uma em seu cadastro
         final usuarioDocRef = _firestore
-            .collection(SituacaoModel.collection)
-            .document(_state.situacao.id);
+            .collection(ProblemaModel.collection)
+            .document(_state.problema.id);
         await usuarioDocRef.setData({
           'simulacaoNumero':
               Bootstrap.instance.fieldValue.increment(1),
@@ -156,8 +156,8 @@ class SimulacaoCRUDBloc {
         simulacaoModel.algoritmoDoProfessor = false;
         simulacaoModel.professor =
             UsuarioFk(id: _state.usuarioAuth.id, nome: _state.usuarioAuth.nome);
-        simulacaoModel.situacao =
-            SituacaoFk(id: _state.situacao.id, nome: _state.situacao.nome);
+        simulacaoModel.problema =
+            ProblemaFk(id: _state.problema.id, nome: _state.problema.nome);
       }
       await docRef.setData(simulacaoModel.toMap(), merge: true);
 
@@ -169,10 +169,10 @@ class SimulacaoCRUDBloc {
           .collection(SimulacaoModel.collection)
           .document(_state.simulacao.id)
           .delete();
-          //+++ Atualizar situacao com menos uma em seu cadastro
+          //+++ Atualizar problema com menos uma em seu cadastro
         final docRef = _firestore
-            .collection(SituacaoModel.collection)
-            .document(_state.situacao.id);
+            .collection(ProblemaModel.collection)
+            .document(_state.problema.id);
         await docRef.setData({
           'simulacaoNumero':
               Bootstrap.instance.fieldValue.increment(-1),

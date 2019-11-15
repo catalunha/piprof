@@ -190,7 +190,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar avaliação'),
+        title: Text('Editar avaliação'),
       ),
       floatingActionButton: StreamBuilder<AvaliacaoCRUDBlocState>(
           stream: bloc.stateStream,

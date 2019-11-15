@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/naosuportato/naosuportado.dart';
-import 'package:piprof/paginas/situacao/situacao_list_bloc.dart';
+import 'package:piprof/paginas/problema/problema_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 
-class SituacaoListPage extends StatefulWidget {
+class ProblemaListPage extends StatefulWidget {
   final String pastaID;
 
-  const SituacaoListPage(this.pastaID);
+  const ProblemaListPage(this.pastaID);
   @override
-  _SituacaoListPageState createState() => _SituacaoListPageState();
+  _ProblemaListPageState createState() => _ProblemaListPageState();
 }
 
-class _SituacaoListPageState extends State<SituacaoListPage> {
-  SituacaoListBloc bloc;
+class _ProblemaListPageState extends State<ProblemaListPage> {
+  ProblemaListBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = SituacaoListBloc(
+    bloc = ProblemaListBloc(
       Bootstrap.instance.firestore,
     );
-    bloc.eventSink(GetSituacaoListEvent(widget.pastaID));
+    bloc.eventSink(GetProblemaListEvent(widget.pastaID));
   }
 
   @override
@@ -41,17 +41,17 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
           onPressed: () {
             Navigator.pushNamed(
               context,
-              "/situacao/crud",
-              arguments: SituacaoCRUDPageArguments(
+              "/problema/crud",
+              arguments: ProblemaCRUDPageArguments(
                 pastaID: widget.pastaID,
               ),
             );
           },
         ),
-        body: StreamBuilder<SituacaoListBlocState>(
+        body: StreamBuilder<ProblemaListBlocState>(
             stream: bloc.stateStream,
             builder: (BuildContext context,
-                AsyncSnapshot<SituacaoListBlocState> snapshot) {
+                AsyncSnapshot<ProblemaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -61,24 +61,24 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
 
-                int lengthTurma = snapshot.data.situacaoList.length;
+                int lengthTurma = snapshot.data.problemaList.length;
                 int ordemLocal = 1;
-                for (var situacao in snapshot.data.situacaoList) {
+                for (var problema in snapshot.data.problemaList) {
                   listaWidget.add(
                     Card(
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            leading: situacao.ativo
+                            leading: problema.ativo
                                 ? null
                                 : Icon(Icons.airplanemode_inactive),
                             trailing:
-                                situacao.precisaAlgoritmoPSimulacao == true
+                                problema.precisaAlgoritmoPSimulacao == true
                                     ? Icon(Icons.code)
                                     : null,
-                            title: Text('${situacao.nome}'),
+                            title: Text('${problema.nome}'),
                             subtitle:
-                                Text('Simulações: ${situacao.simulacaoNumero??0}\n${situacao.id}'),
+                                Text('Simulações: ${problema.simulacaoNumero??0}\n${problema.id}'),
                           ),
                           Center(
                             child: Wrap(
@@ -89,9 +89,9 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                   onPressed: () {
                                     Navigator.pushNamed(
                                       context,
-                                      "/situacao/crud",
-                                      arguments: SituacaoCRUDPageArguments(
-                                          situacaoID: situacao.id),
+                                      "/problema/crud",
+                                      arguments: ProblemaCRUDPageArguments(
+                                          problemaID: problema.id),
                                     );
                                   },
                                 ),
@@ -101,7 +101,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                   onPressed: (ordemLocal) < lengthTurma
                                       ? () {
                                           bloc.eventSink(
-                                              OrdenarEvent(situacao, false));
+                                              OrdenarEvent(problema, false));
                                         }
                                       : null,
                                 ),
@@ -111,24 +111,24 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                   onPressed: ordemLocal > 1
                                       ? () {
                                           bloc.eventSink(
-                                              OrdenarEvent(situacao, true));
+                                              OrdenarEvent(problema, true));
                                         }
                                       : null,
                                 ),
-                                if (situacao.url != null)
+                                if (problema.url != null)
                                   IconButton(
                                     tooltip: 'Ver pdf da situação',
                                     icon: Icon(Icons.picture_as_pdf),
                                     onPressed: () {
-                                      launch(situacao.url);
+                                      launch(problema.url);
                                     },
                                   ),
                                 IconButton(
                                   tooltip: 'Listar de situação e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    GenerateCsvService.csvSituacaoListaSimulacao(
-                                        situacao);
+                                    GenerateCsvService.csvProblemaListaSimulacao(
+                                        problema);
                                   },
                                 ),
                                 IconButton(
@@ -138,7 +138,7 @@ class _SituacaoListPageState extends State<SituacaoListPage> {
                                       Navigator.pushNamed(
                                         context,
                                         "/simulacao/list",
-                                        arguments: situacao.id,
+                                        arguments: problema.id,
                                       );
                                     }),
                               ],

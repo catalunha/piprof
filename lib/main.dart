@@ -17,13 +17,13 @@ import 'package:piprof/paginas/questao/questao_crud_page.dart';
 import 'package:piprof/paginas/questao/questao_list_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_crud_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_list_page.dart';
-import 'package:piprof/paginas/simulacao/simulacao_pedese_crud_page.dart';
-import 'package:piprof/paginas/simulacao/simulacao_pedese_list_page.dart';
+import 'package:piprof/paginas/simulacao/simulacao_gabarito_crud_page.dart';
+import 'package:piprof/paginas/simulacao/simulacao_gabarito_list_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_variavel_crud_page.dart';
 import 'package:piprof/paginas/simulacao/simulacao_variavel_list_page.dart';
-import 'package:piprof/paginas/situacao/situacao_crud_page.dart';
-import 'package:piprof/paginas/situacao/situacao_list_page.dart';
-import 'package:piprof/paginas/situacao/situacao_selecionar_page.dart';
+import 'package:piprof/paginas/problema/problema_crud_page.dart';
+import 'package:piprof/paginas/problema/problema_list_page.dart';
+import 'package:piprof/paginas/problema/problema_selecionar_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_crud_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
@@ -139,19 +139,19 @@ class MyApp extends StatelessWidget {
           return PastaCRUDPage(authBloc: authBloc, pastaID: settings.arguments);
         },
 
-        //situacao
-        "/situacao/selecionar": (context) => SituacaoSelecionarPage(authBloc),
-        "/situacao/list": (context) {
+        //problema
+        "/problema/selecionar": (context) => ProblemaSelecionarPage(authBloc),
+        "/problema/list": (context) {
           final settings = ModalRoute.of(context).settings;
-          return SituacaoListPage(settings.arguments);
+          return ProblemaListPage(settings.arguments);
         },
-        "/situacao/crud": (context) {
+        "/problema/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          final SituacaoCRUDPageArguments args = settings.arguments;
-          return SituacaoCRUDPage(
+          final ProblemaCRUDPageArguments args = settings.arguments;
+          return ProblemaCRUDPage(
             authBloc: authBloc,
             pastaID: args.pastaID,
-            situacaoID: args.situacaoID,
+            problemaID: args.problemaID,
           );
         },
 
@@ -165,7 +165,7 @@ class MyApp extends StatelessWidget {
           final SimulacaoCRUDPageArguments args = settings.arguments;
           return SimulacaoCRUDPage(
             authBloc: authBloc,
-            situacaoID: args.situacaoID,
+            problemaID: args.problemaID,
             simulacaoID: args.simulacaoID,
           );
         },
@@ -181,16 +181,16 @@ class MyApp extends StatelessWidget {
             variavelKey: args.variavelKey,
           );
         },
-       "/simulacao/pedese/list": (context) {
+       "/simulacao/gabarito/list": (context) {
           final settings = ModalRoute.of(context).settings;
-          return SimulacaoPedeseListPage(settings.arguments);
+          return SimulacaoGabaritoListPage(settings.arguments);
         },
-        "/simulacao/pedese/crud": (context) {
+        "/simulacao/gabarito/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          final SimulacaoPedeseCRUDPageArguments args = settings.arguments;
-          return PedeseCRUDPage(
+          final SimulacaoGabaritoCRUDPageArguments args = settings.arguments;
+          return GabaritoCRUDPage(
             simulacaoID: args.simulacaoID,
-            pedeseKey: args.pedeseKey,
+            gabaritoKey: args.gabaritoKey,
           );
         },
 

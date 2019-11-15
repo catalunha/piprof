@@ -3,26 +3,26 @@ import 'package:intl/intl.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/pasta_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
-import 'package:piprof/paginas/situacao/situacao_selecionar_bloc.dart';
+import 'package:piprof/paginas/problema/problema_selecionar_bloc.dart';
 
-class SituacaoSelecionarPage extends StatefulWidget {
+class ProblemaSelecionarPage extends StatefulWidget {
   final AuthBloc authBloc;
 
-  const SituacaoSelecionarPage(this.authBloc);
+  const ProblemaSelecionarPage(this.authBloc);
 
   @override
-  _SituacaoSelecionarPageState createState() => _SituacaoSelecionarPageState();
+  _ProblemaSelecionarPageState createState() => _ProblemaSelecionarPageState();
 }
 
-class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
-  SituacaoSelecionarBloc bloc;
+class _ProblemaSelecionarPageState extends State<ProblemaSelecionarPage> {
+  ProblemaSelecionarBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = SituacaoSelecionarBloc(
+    bloc = ProblemaSelecionarBloc(
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
@@ -40,10 +40,10 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
       appBar: AppBar(
         title: Text('Selecione um problema'),
       ),
-      body: StreamBuilder<SituacaoSelecionarBlocState>(
+      body: StreamBuilder<ProblemaSelecionarBlocState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
-            AsyncSnapshot<SituacaoSelecionarBlocState> snapshot) {
+            AsyncSnapshot<ProblemaSelecionarBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -69,43 +69,43 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
             ]);
           }
 
-          List<Widget> widgetSituacaoList = List<Widget>();
+          List<Widget> widgetProblemaList = List<Widget>();
 
-          for (var situacao in snapshot.data.situacaoList) {
-            SituacaoFk situacaoFk = SituacaoFk(
-                id: situacao.id, nome: situacao.nome, url: situacao.url);
-            if (situacao.simulacaoNumero == null ||
-                situacao.simulacaoNumero <= 0) {
-              widgetSituacaoList.add(
+          for (var problema in snapshot.data.problemaList) {
+            ProblemaFk problemaFk = ProblemaFk(
+                id: problema.id, nome: problema.nome, url: problema.url);
+            if (problema.simulacaoNumero == null ||
+                problema.simulacaoNumero <= 0) {
+              widgetProblemaList.add(
                 Card(
                   child: ListTile(
                     selected: true,
-                    title: Text('${situacao.nome}'),
+                    title: Text('${problema.nome}'),
                     subtitle: Text('SITUAÇÃO SEM SIMULAÇÕES ! FAVOR CORRIGIR.'),
                     onLongPress: () {
-                      launch(situacao.url);
+                      launch(problema.url);
                     },
                   ),
                 ),
               );
             } else {
-              widgetSituacaoList.add(
+              widgetProblemaList.add(
                 Card(
                   child: ListTile(
-                    title: Text('${situacao.nome}'),
+                    title: Text('${problema.nome}'),
                     trailing: Icon(Icons.question_answer),
                     leading: IconButton(
                       icon: Icon(Icons.picture_as_pdf),
                       onPressed: () {
-                        launch(situacao.url);
+                        launch(problema.url);
                       },
                     ),
                     onLongPress: () {
-                      launch(situacao.url);
+                      launch(problema.url);
                     },
                     onTap: () {
-                      // bloc.eventSink(SelecionarSituacaoEvent(situacao));
-                      Navigator.pop(context, situacaoFk);
+                      // bloc.eventSink(SelecionarProblemaEvent(problema));
+                      Navigator.pop(context, problemaFk);
                     },
                   ),
                 ),
@@ -120,7 +120,7 @@ class _SituacaoSelecionarPageState extends State<SituacaoSelecionarPage> {
                   bloc.eventSink(RemoverPastaEvent());
                 },
               ),
-              ...widgetSituacaoList,
+              ...widgetProblemaList,
               Container(
                 padding: EdgeInsets.only(top: 80),
               ),

@@ -36,7 +36,7 @@ class _PastaCRUDPageState extends State<PastaCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar pasta'),
+        title: Text('Editar pasta'),
       ),
       floatingActionButton: StreamBuilder<PastaCRUDBlocState>(
           stream: bloc.stateStream,

@@ -3,7 +3,7 @@ import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/base_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
-import 'package:piprof/modelos/situacao_model.dart';
+import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 
@@ -27,10 +27,10 @@ class TarefaModel extends FirestoreModel {
   String avaliacaoNota;
   String questaoNota;
   bool aberta;
-  SituacaoFk situacao;
+  ProblemaFk problema;
   String simulacao;
   Map<String, Variavel> variavel;
-  Map<String, Pedese> pedese;
+  Map<String, Gabarito> gabarito;
 
   // dynamic responderAte;
   // dynamic _tempoPResponder;
@@ -55,10 +55,10 @@ class TarefaModel extends FirestoreModel {
     this.avaliacaoNota,
     this.questaoNota,
     this.aberta,
-    this.situacao,
+    this.problema,
     this.simulacao,
     this.variavel,
-    this.pedese,
+    this.gabarito,
   }) : super(id);
 
   @override
@@ -107,8 +107,8 @@ class TarefaModel extends FirestoreModel {
     if (map.containsKey('questaoNota')) questaoNota = map['questaoNota'];
 
     if (map.containsKey('aberta')) aberta = map['aberta'];
-    situacao = map.containsKey('situacao') && map['situacao'] != null
-        ? SituacaoFk.fromMap(map['situacao'])
+    problema = map.containsKey('problema') && map['problema'] != null
+        ? ProblemaFk.fromMap(map['problema'])
         : null;
     if (map.containsKey('simulacao')) simulacao = map['simulacao'];
 
@@ -118,10 +118,10 @@ class TarefaModel extends FirestoreModel {
         variavel[item.key] = Variavel.fromMap(item.value);
       }
     }
-    if (map["pedese"] is Map) {
-      pedese = Map<String, Pedese>();
-      for (var item in map["pedese"].entries) {
-        pedese[item.key] = Pedese.fromMap(item.value);
+    if (map["gabarito"] is Map) {
+      gabarito = Map<String, Gabarito>();
+      for (var item in map["gabarito"].entries) {
+        gabarito[item.key] = Gabarito.fromMap(item.value);
       }
     }
     // _updateAll();
@@ -161,8 +161,8 @@ class TarefaModel extends FirestoreModel {
     if (questaoNota != null) data['questaoNota'] = this.questaoNota;
     if (aberta != null) data['aberta'] = aberta;
 
-    if (this.situacao != null) {
-      data['situacao'] = this.situacao.toMap();
+    if (this.problema != null) {
+      data['problema'] = this.problema.toMap();
     }
 
     if (simulacao != null) data['simulacao'] = this.simulacao;
@@ -173,10 +173,10 @@ class TarefaModel extends FirestoreModel {
         data["variavel"][item.key] = item.value.toMap();
       }
     }
-    if (pedese != null && pedese is Map) {
-      data["pedese"] = Map<String, dynamic>();
-      for (var item in pedese.entries) {
-        data["pedese"][item.key] = item.value.toMap();
+    if (gabarito != null && gabarito is Map) {
+      data["gabarito"] = Map<String, dynamic>();
+      for (var item in gabarito.entries) {
+        data["gabarito"][item.key] = item.value.toMap();
       }
     }
     return data;
@@ -261,7 +261,7 @@ class TarefaModel extends FirestoreModel {
 //   }
 // }
 
-// class Pedese {
+// class Gabarito {
 //   String nome;
 //   int ordem;
 //   String tipo;
@@ -272,7 +272,7 @@ class TarefaModel extends FirestoreModel {
 //   String respostaUploadID;
 //   String respostaPath;
 
-//   Pedese({
+//   Gabarito({
 //     this.nome,
 //     this.ordem,
 //     this.tipo,
@@ -284,7 +284,7 @@ class TarefaModel extends FirestoreModel {
 //     this.respostaUploadID,
 //   });
 
-//   Pedese.fromMap(Map<dynamic, dynamic> map) {
+//   Gabarito.fromMap(Map<dynamic, dynamic> map) {
 //     if (map.containsKey('nome')) nome = map['nome'];
 //     if (map.containsKey('ordem')) ordem = map['ordem'];
 //     if (map.containsKey('tipo')) tipo = map['tipo'];

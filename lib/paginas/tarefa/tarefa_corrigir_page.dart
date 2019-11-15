@@ -70,17 +70,17 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                     .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 variavelMap = dicOrderBy.toMap();
 
-                Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+                Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
 
-                pedeseMap.clear();
-                var dicPedese = Dictionary.fromMap(tarefa.pedese);
-                var pedeseOrderBy = dicPedese
+                gabaritoMap.clear();
+                var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
+                var gabaritoOrderBy = dicGabarito
                     .orderBy((kv) => kv.value.ordem)
                     .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-                pedeseMap = pedeseOrderBy.toMap();
+                gabaritoMap = gabaritoOrderBy.toMap();
                 notas = '';
-                for (var pedese in pedeseMap.entries) {
-                  notas += '${pedese.value.nome}=${pedese.value.nota ?? ""} ';
+                for (var gabarito in gabaritoMap.entries) {
+                  notas += '${gabarito.value.nome}=${gabarito.value.nota ?? ""} ';
                 }
                 listaWidget.add(
                   Card(
@@ -166,16 +166,16 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                 }
                 listaWidget.add(Divider());
 
-                for (var pedeseInfoMap in snapshot.data.pedeseInfoMap.entries) {
+                for (var gabaritoInfoMap in snapshot.data.gabaritoInfoMap.entries) {
 
-                  if (pedeseInfoMap.value.pedese.tipo=='numero') {
+                  if (gabaritoInfoMap.value.gabarito.tipo=='numero') {
                     listaWidget.add(
                       Card(
                         child: ListTile(
-                          title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                          title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                           subtitle: Text(
-                              'Tipo:${pedeseInfoMap.value.pedese.tipo}\nGab.:${pedeseInfoMap.value.pedese.gabarito}\nResp.:${pedeseInfoMap.value.pedese.resposta}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                          trailing: pedeseInfoMap.value.nota
+                              'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nGab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                          trailing: gabaritoInfoMap.value.nota
                               ? Icon(
                                   Icons.looks_one,
                                   color: Colors.green,
@@ -186,20 +186,20 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                 ),
                           onTap: () {
                             bloc.eventSink(
-                                UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
                     );
                   }
-                  if (pedeseInfoMap.value.pedese.tipo=='palavra') {
+                  if (gabaritoInfoMap.value.gabarito.tipo=='palavra') {
                     listaWidget.add(
                       Card(
                         child: ListTile(
-                          title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                          title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                           subtitle: Text(
-                              'Tipo:${pedeseInfoMap.value.pedese.tipo}\nGab.:${pedeseInfoMap.value.pedese.gabarito}\nResp.:${pedeseInfoMap.value.pedese.resposta}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                          trailing: pedeseInfoMap.value.nota
+                              'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nGab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                          trailing: gabaritoInfoMap.value.nota
                               ? Icon(
                                   Icons.text_format,
                                   color: Colors.green,
@@ -210,20 +210,20 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                 ),
                           onTap: () {
                             bloc.eventSink(
-                                UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
                     );
                   }
-                  if (pedeseInfoMap.value.pedese.tipo=='texto') {
+                  if (gabaritoInfoMap.value.gabarito.tipo=='texto') {
                     listaWidget.add(
                       Card(
                         child: ListTile(
-                          title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                          title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                           subtitle: Text(
-                              'Tipo:${pedeseInfoMap.value.pedese.tipo}\nGab.:${pedeseInfoMap.value.pedese.gabarito}\nResp.:${pedeseInfoMap.value.pedese.resposta}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                          trailing: pedeseInfoMap.value.nota
+                              'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nGab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                          trailing: gabaritoInfoMap.value.nota
                               ? Icon(
                                   Icons.text_fields,
                                   color: Colors.green,
@@ -234,7 +234,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                 ),
                           onTap: () {
                             bloc.eventSink(
-                                UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -242,16 +242,16 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                   }
 
 
-                  if (pedeseInfoMap.value.pedese.tipo == 'url') {
+                  if (gabaritoInfoMap.value.gabarito.tipo == 'url') {
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               subtitle: Text(
-                                  'Tipo:${pedeseInfoMap.value.pedese.tipo}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                              trailing: pedeseInfoMap.value.nota
+                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.link,
                                       color: Colors.green,
@@ -262,12 +262,12 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                     ),
                               onTap: () {
                                 bloc.eventSink(
-                                    UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                    UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Wrap(
                               children: <Widget>[
-                                pedeseInfoMap.value.pedese.gabarito == null
+                                gabaritoInfoMap.value.gabarito.valor == null
                                     ? IconButton(
                                         tooltip: 'url do gabarito não anexada',
                                         icon: Icon(Icons.link_off),
@@ -278,11 +278,11 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                             'Clique para ver a url do gabarito',
                                         icon: Icon(Icons.link),
                                         onPressed: () {
-                                          launch(pedeseInfoMap
-                                              .value.pedese.gabarito);
+                                          launch(gabaritoInfoMap
+                                              .value.gabarito.valor);
                                         },
                                       ),
-                                pedeseInfoMap.value.pedese.resposta == null
+                                gabaritoInfoMap.value.gabarito.resposta == null
                                     ? IconButton(
                                         tooltip: 'url da resposta não anexada',
                                         icon: Icon(Icons.link_off),
@@ -293,8 +293,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                             'Clique para ver a url da resposta',
                                         icon: Icon(Icons.link),
                                         onPressed: () {
-                                          launch(pedeseInfoMap
-                                              .value.pedese.resposta);
+                                          launch(gabaritoInfoMap
+                                              .value.gabarito.resposta);
                                         },
                                       ),
                               ],
@@ -305,16 +305,16 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                     );
                   }
 
-                  if (pedeseInfoMap.value.pedese.tipo == 'urlimagem') {
+                  if (gabaritoInfoMap.value.gabarito.tipo == 'urlimagem') {
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               subtitle: Text(
-                                  'Tipo:${pedeseInfoMap.value.pedese.tipo}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                              trailing: pedeseInfoMap.value.nota
+                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.image,
                                       color: Colors.green,
@@ -325,7 +325,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                     ),
                               onTap: () {
                                 bloc.eventSink(
-                                    UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                    UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Row(
@@ -334,14 +334,14 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   flex: 2,
                                   child: _ImagemUnica(
                                       url:
-                                          pedeseInfoMap.value.pedese.gabarito ??
+                                          gabaritoInfoMap.value.gabarito.valor ??
                                               null),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
                                       url:
-                                          pedeseInfoMap.value.pedese.resposta ??
+                                          gabaritoInfoMap.value.gabarito.resposta ??
                                               null),
                                 ),
                               ],
@@ -353,16 +353,16 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                   }
 
 
-                  if (pedeseInfoMap.value.pedese.tipo == 'arquivo') {
+                  if (gabaritoInfoMap.value.gabarito.tipo == 'arquivo') {
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               subtitle: Text(
-                                  'Tipo:${pedeseInfoMap.value.pedese.tipo}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                              trailing: pedeseInfoMap.value.nota
+                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.description,
                                       color: Colors.green,
@@ -373,12 +373,12 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                     ),
                               onTap: () {
                                 bloc.eventSink(
-                                    UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                    UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Wrap(
                               children: <Widget>[
-                                pedeseInfoMap.value.pedese.gabarito == null
+                                gabaritoInfoMap.value.gabarito.valor == null
                                     ? IconButton(
                                         tooltip: 'url do gabarito não anexada',
                                         icon: Icon(Icons.link_off),
@@ -389,11 +389,11 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                             'Clique para ver a url do gabarito',
                                         icon: Icon(Icons.link),
                                         onPressed: () {
-                                          launch(pedeseInfoMap
-                                              .value.pedese.gabarito);
+                                          launch(gabaritoInfoMap
+                                              .value.gabarito.valor);
                                         },
                                       ),
-                                pedeseInfoMap.value.pedese.resposta == null
+                                gabaritoInfoMap.value.gabarito.resposta == null
                                     ? IconButton(
                                         tooltip: 'url da resposta não anexada',
                                         icon: Icon(Icons.link_off),
@@ -404,8 +404,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                             'Clique para ver a url da resposta',
                                         icon: Icon(Icons.link),
                                         onPressed: () {
-                                          launch(pedeseInfoMap
-                                              .value.pedese.resposta);
+                                          launch(gabaritoInfoMap
+                                              .value.gabarito.resposta);
                                         },
                                       ),
                               ],
@@ -417,16 +417,16 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                   }
 
 
-                  if (pedeseInfoMap.value.pedese.tipo == 'imagem') {
+                  if (gabaritoInfoMap.value.gabarito.tipo == 'imagem') {
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${pedeseInfoMap.value.pedese.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               subtitle: Text(
-                                  'Tipo:${pedeseInfoMap.value.pedese.tipo}\nNota:${pedeseInfoMap.value.pedese.nota}'),
-                              trailing: pedeseInfoMap.value.nota
+                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.add_photo_alternate,
                                       color: Colors.green,
@@ -437,7 +437,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                     ),
                               onTap: () {
                                 bloc.eventSink(
-                                    UpdatePedeseNotaEvent(pedeseInfoMap.key));
+                                    UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Row(
@@ -446,14 +446,14 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   flex: 2,
                                   child: _ImagemUnica(
                                       url:
-                                          pedeseInfoMap.value.pedese.gabarito ??
+                                          gabaritoInfoMap.value.gabarito.valor ??
                                               null),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
                                       url:
-                                          pedeseInfoMap.value.pedese.resposta ??
+                                          gabaritoInfoMap.value.gabarito.resposta ??
                                               null),
                                 ),
                               ],

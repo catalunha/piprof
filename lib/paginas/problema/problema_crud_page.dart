@@ -4,36 +4,36 @@ import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
 import 'package:piprof/modelos/pasta_model.dart';
-import 'package:piprof/paginas/situacao/situacao_crud_bloc.dart';
+import 'package:piprof/paginas/problema/problema_crud_bloc.dart';
 
-class SituacaoCRUDPage extends StatefulWidget {
+class ProblemaCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
   final String pastaID;
-  final String situacaoID;
+  final String problemaID;
 
-  const SituacaoCRUDPage({
+  const ProblemaCRUDPage({
     this.authBloc,
     this.pastaID,
-    this.situacaoID,
+    this.problemaID,
   });
 
   @override
-  _SituacaoCRUDPageState createState() => _SituacaoCRUDPageState();
+  _ProblemaCRUDPageState createState() => _ProblemaCRUDPageState();
 }
 
-class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
-  SituacaoCRUDBloc bloc;
+class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
+  ProblemaCRUDBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = SituacaoCRUDBloc(
+    bloc = ProblemaCRUDBloc(
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
     if (widget.pastaID != null) bloc.eventSink(GetPastaEvent(widget.pastaID));
-    if (widget.situacaoID != null)
-      bloc.eventSink(GetSituacaoEvent(widget.situacaoID));
+    if (widget.problemaID != null)
+      bloc.eventSink(GetProblemaEvent(widget.problemaID));
   }
 
   @override
@@ -46,9 +46,9 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar ou Editar situação'),
+        title: Text('Editar situação'),
       ),
-      floatingActionButton: StreamBuilder<SituacaoCRUDBlocState>(
+      floatingActionButton: StreamBuilder<ProblemaCRUDBlocState>(
           stream: bloc.stateStream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) return Container();
@@ -64,10 +64,10 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
                   snapshot.data.isDataValid ? Colors.blue : Colors.grey,
             );
           }),
-      body: StreamBuilder<SituacaoCRUDBlocState>(
+      body: StreamBuilder<ProblemaCRUDBlocState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
-            AsyncSnapshot<SituacaoCRUDBlocState> snapshot) {
+            AsyncSnapshot<ProblemaCRUDBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -130,7 +130,7 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
                 Padding(
                     padding: EdgeInsets.all(5.0),
                     child:
-                        _TextFieldMultiplo(bloc, 'urlPDFSituacaoSemAlgoritmo')),
+                        _TextFieldMultiplo(bloc, 'urlPDFProblemaSemAlgoritmo')),
                Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -158,7 +158,7 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
   }
 
   _pasta(context) {
-    return StreamBuilder<SituacaoCRUDBlocState>(
+    return StreamBuilder<ProblemaCRUDBlocState>(
         stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -188,7 +188,7 @@ class _SituacaoCRUDPageState extends State<SituacaoCRUDPage> {
 }
 
 class _TextFieldMultiplo extends StatefulWidget {
-  final SituacaoCRUDBloc bloc;
+  final ProblemaCRUDBloc bloc;
   final String campo;
   _TextFieldMultiplo(
     this.bloc,
@@ -205,7 +205,7 @@ class _TextFieldMultiplo extends StatefulWidget {
 
 class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   final _textFieldController = TextEditingController();
-  final SituacaoCRUDBloc bloc;
+  final ProblemaCRUDBloc bloc;
   final String campo;
   _TextFieldMultiploState(
     this.bloc,
@@ -213,18 +213,18 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   );
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<SituacaoCRUDBlocState>(
+    return StreamBuilder<ProblemaCRUDBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<SituacaoCRUDBlocState> snapshot) {
+          AsyncSnapshot<ProblemaCRUDBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           if (campo == 'nome') {
             _textFieldController.text = snapshot.data?.nome;
           } else if (campo == 'descricao') {
             _textFieldController.text = snapshot.data?.descricao;
-          } else if (campo == 'urlPDFSituacaoSemAlgoritmo') {
+          } else if (campo == 'urlPDFProblemaSemAlgoritmo') {
             _textFieldController.text =
-                snapshot.data?.urlPDFSituacaoSemAlgoritmo;
+                snapshot.data?.urlPDFProblemaSemAlgoritmo;
           }
         }
         return TextField(
@@ -245,7 +245,7 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
 
 /// Selecao de usuario que vao receber alerta
 class UsuarioListaModalSelect extends StatefulWidget {
-  final SituacaoCRUDBloc bloc;
+  final ProblemaCRUDBloc bloc;
 
   const UsuarioListaModalSelect(this.bloc);
 
@@ -255,15 +255,15 @@ class UsuarioListaModalSelect extends StatefulWidget {
 }
 
 class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
-  final SituacaoCRUDBloc bloc;
+  final ProblemaCRUDBloc bloc;
 
   _UsuarioListaModalSelectState(this.bloc);
 
   Widget _listarPasta() {
-    return StreamBuilder<SituacaoCRUDBlocState>(
+    return StreamBuilder<ProblemaCRUDBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<SituacaoCRUDBlocState> snapshot) {
+          AsyncSnapshot<ProblemaCRUDBlocState> snapshot) {
         if (snapshot.hasError)
           return Center(
             child: Text("Erro. Informe ao administrador do aplicativo"),

@@ -8,9 +8,9 @@ class SimulacaoListBlocEvent {}
 
 
 class GetSimulacaoEvent extends SimulacaoListBlocEvent {
-  final String situacaoID;
+  final String problemaID;
 
-  GetSimulacaoEvent(this.situacaoID);
+  GetSimulacaoEvent(this.problemaID);
 
 }
 
@@ -63,7 +63,7 @@ class SimulacaoListBloc {
 
       final streamDocsRemetente = _firestore
           .collection(SimulacaoModel.collection)
-          .where("situacao.id", isEqualTo: event.situacaoID)
+          .where("problema.id", isEqualTo: event.problemaID)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs

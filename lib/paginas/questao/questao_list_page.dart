@@ -80,7 +80,7 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                             title: Text('''
 Turma: ${questao.turma.nome}
 Aval.: ${questao.avaliacao.nome}
-Sit.: ${questao.situacao.nome}
+Sit.: ${questao.problema.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(questao.inicio)} até ${DateFormat('dd-MM HH:mm').format(questao.fim)}
 Tentativas: ${questao.tentativa} | Tempo : ${questao.tempo}h
 Nota/Peso: ${questao.nota}'''),
@@ -129,7 +129,7 @@ id: ${questao.id}'''),
                                   tooltip: 'Ver pdf da situação',
                                   icon: Icon(Icons.picture_as_pdf),
                                   onPressed: () {
-                                    launch(questao.situacao.url);
+                                    launch(questao.problema.url);
                                   },
                                 ),
                                 if(questao.aplicada!=null && questao.aplicada)

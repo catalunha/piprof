@@ -6,9 +6,9 @@ import 'package:piprof/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class SimulacaoListPage extends StatefulWidget {
-  final String situacaoID;
+  final String problemaID;
 
-  const SimulacaoListPage(this.situacaoID);
+  const SimulacaoListPage(this.problemaID);
   @override
   _SimulacaoListPageState createState() => _SimulacaoListPageState();
 }
@@ -21,7 +21,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
     bloc = SimulacaoListBloc(
       Bootstrap.instance.firestore,
     );
-    bloc.eventSink(GetSimulacaoEvent(widget.situacaoID));
+    bloc.eventSink(GetSimulacaoEvent(widget.problemaID));
   }
 
   @override
@@ -43,7 +43,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
             context,
             "/simulacao/crud",
             arguments: SimulacaoCRUDPageArguments(
-              situacaoID: widget.situacaoID,
+              problemaID: widget.problemaID,
             ),
           );
         },
@@ -67,13 +67,13 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        selected: simulacao?.pedese?.length == null ||
-                                simulacao?.pedese?.length == 0
+                        selected: simulacao?.gabarito?.length == null ||
+                                simulacao?.gabarito?.length == 0
                             ? true
                             : false,
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                          'Variaveis: ${simulacao?.variavel?.length ?? 0} | Gabarito: ${simulacao?.pedese?.length == null || simulacao?.pedese?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.pedese?.length}\nid:${simulacao.id}',
+                          'Variaveis: ${simulacao?.variavel?.length ?? 0} | Gabarito: ${simulacao?.gabarito?.length == null || simulacao?.gabarito?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.gabarito?.length}\nid:${simulacao.id}',
                         ),
                         trailing: IconButton(
                           tooltip: 'Um link ao um site ou arquivo',
@@ -97,7 +97,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                   "/simulacao/crud",
                                   arguments: SimulacaoCRUDPageArguments(
                                     simulacaoID: simulacao.id,
-                                    situacaoID: widget.situacaoID,
+                                    problemaID: widget.problemaID,
                                   ),
                                 );
                               },
@@ -120,7 +120,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
-                                  "/simulacao/pedese/list",
+                                  "/simulacao/gabarito/list",
                                   arguments: simulacao.id,
                                 );
                               },

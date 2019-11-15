@@ -3,56 +3,56 @@ import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:queries/collections.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SimulacaoPedeseListBlocEvent {}
+class SimulacaoGabaritoListBlocEvent {}
 
-class GetSimulacaoEvent extends SimulacaoPedeseListBlocEvent {
+class GetSimulacaoEvent extends SimulacaoGabaritoListBlocEvent {
   final String simulacaoID;
 
   GetSimulacaoEvent(this.simulacaoID);
 }
 
-class OrdenarInMapEvent extends SimulacaoPedeseListBlocEvent {
+class OrdenarInMapEvent extends SimulacaoGabaritoListBlocEvent {
   final String key;
   final bool up;
 
   OrdenarInMapEvent(this.key, this.up);
 }
 
-class SimulacaoPedeseListBlocState {
+class SimulacaoGabaritoListBlocState {
   bool isDataValid = false;
   SimulacaoModel simulacao = SimulacaoModel();
-  Map<String, Pedese> pedeseMap = Map<String, Pedese>();
+  Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
   void updateState() {
-    if (simulacao.pedese != null) {
-      pedeseMap.clear();
-      var dic = Dictionary.fromMap(simulacao.pedese);
+    if (simulacao.gabarito != null) {
+      gabaritoMap.clear();
+      var dic = Dictionary.fromMap(simulacao.gabarito);
       var dicOrderBy = dic
           .orderBy((kv) => kv.value.ordem)
           .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-      pedeseMap = dicOrderBy.toMap();
+      gabaritoMap = dicOrderBy.toMap();
     }
   }
 }
 
-class SimulacaoPedeseListBloc {
+class SimulacaoGabaritoListBloc {
   /// Firestore
   final fsw.Firestore _firestore;
 
   /// Eventos
-  final _eventController = BehaviorSubject<SimulacaoPedeseListBlocEvent>();
-  Stream<SimulacaoPedeseListBlocEvent> get eventStream =>
+  final _eventController = BehaviorSubject<SimulacaoGabaritoListBlocEvent>();
+  Stream<SimulacaoGabaritoListBlocEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   /// Estados
-  final SimulacaoPedeseListBlocState _state = SimulacaoPedeseListBlocState();
-  final _stateController = BehaviorSubject<SimulacaoPedeseListBlocState>();
-  Stream<SimulacaoPedeseListBlocState> get stateStream =>
+  final SimulacaoGabaritoListBlocState _state = SimulacaoGabaritoListBlocState();
+  final _stateController = BehaviorSubject<SimulacaoGabaritoListBlocState>();
+  Stream<SimulacaoGabaritoListBlocState> get stateStream =>
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
-  SimulacaoPedeseListBloc(
+  SimulacaoGabaritoListBloc(
     this._firestore,
   ) {
     eventStream.listen(_mapEventToState);
@@ -67,12 +67,12 @@ class SimulacaoPedeseListBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.simulacao.pedese == null) {
+    if (_state.simulacao.gabarito == null) {
       _state.isDataValid = false;
     }
   }
 
-  _mapEventToState(SimulacaoPedeseListBlocEvent event) async {
+  _mapEventToState(SimulacaoGabaritoListBlocEvent event) async {
     if (event is GetSimulacaoEvent) {
       final streamDocsRemetente = _firestore
           .collection(SimulacaoModel.collection)
@@ -90,13 +90,13 @@ class SimulacaoPedeseListBloc {
       });
     }
     if (event is OrdenarInMapEvent) {
-      List<Pedese> valuesList = _state.pedeseMap.values.toList();
-      List<String> keysList = _state.pedeseMap.keys.toList();
+      List<Gabarito> valuesList = _state.gabaritoMap.values.toList();
+      List<String> keysList = _state.gabaritoMap.keys.toList();
       final ordemOrigem = keysList.indexOf(event.key);
       final ordemDestino = event.up ? ordemOrigem - 1 : ordemOrigem + 1;
 
-      Pedese objOrigem = valuesList[ordemOrigem];
-      Pedese objDestino = valuesList[ordemDestino];
+      Gabarito objOrigem = valuesList[ordemOrigem];
+      Gabarito objDestino = valuesList[ordemDestino];
       String keyOrigem = keysList[ordemOrigem];
       String keyDestino = keysList[ordemDestino];
 
@@ -105,13 +105,13 @@ class SimulacaoPedeseListBloc {
           .document(_state.simulacao.id);
 
       docRef.setData({
-        "pedese": {
+        "gabarito": {
           "$keyOrigem": {"ordem": objDestino.ordem}
         }
       }, merge: true);
 
       docRef.setData({
-        "pedese": {
+        "gabarito": {
           "$keyDestino": {"ordem": objOrigem.ordem}
         }
       }, merge: true);
@@ -119,6 +119,6 @@ class SimulacaoPedeseListBloc {
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
-        'event.runtimeType em SimulacaoPedeseListBloc  = ${event.runtimeType}');
+        'event.runtimeType em SimulacaoGabaritoListBloc  = ${event.runtimeType}');
   }
 }
