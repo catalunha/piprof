@@ -4,6 +4,8 @@ import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class EncontroListPage extends StatefulWidget {
   final String turmaID;
@@ -77,7 +79,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                           ListTile(
                             title: Text('${encontro.nome}'),
                             subtitle:
-                                Text('Alunos: ${encontro?.aluno.length ?? 0}'),
+                                Text('Alunos: ${encontro?.aluno?.length ?? 0}'),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(encontro?.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro?.fim)}'),
                           ),
@@ -96,6 +98,14 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                     );
                                   },
                                 ),
+                                if (encontro.url != null)
+                                  IconButton(
+                                    tooltip: 'Ver pdf da encontro',
+                                    icon: Icon(Icons.picture_as_pdf),
+                                    onPressed: () {
+                                      launch(encontro.url);
+                                    },
+                                  ),
                                 IconButton(
                                   tooltip: 'Marcar presença de alunos',
                                   icon: Icon(Icons.person_add),

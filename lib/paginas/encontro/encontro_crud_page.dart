@@ -256,6 +256,15 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Link para arquivo:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'url')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -311,6 +320,8 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
             _textFieldController.text = snapshot.data?.nome;
           } else if (campo == 'descricao') {
             _textFieldController.text = snapshot.data?.descricao;
+          } else if (campo == 'url') {
+            _textFieldController.text = snapshot.data?.url;
           }
         }
         return TextField(

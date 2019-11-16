@@ -33,7 +33,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
       Bootstrap.instance.firestore,
       widget.authBloc,
     );
-    bloc.eventSink(GetAvalicaoEvent(widget.avaliacaoID));
+    bloc.eventSink(GetAvaliacaoEvent(widget.avaliacaoID));
     bloc.eventSink(GetQuestaoEvent(widget.questaoID));
   }
 
@@ -291,7 +291,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                   )),
               snapshot.data?.questao?.aplicada != null &&
                       snapshot.data?.questao?.aplicada == true
-                  ? Text('Questão já aplicada não pode alterar situação.')
+                  ? Text('Questão já aplicada não pode alterar problema.')
                   : Padding(
                       padding: EdgeInsets.all(5.0),
                       child: ListTile(

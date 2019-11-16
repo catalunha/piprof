@@ -60,6 +60,7 @@ class EncontroCRUDBlocState {
   // dynamic data;
   String nome;
   String descricao;
+  String url;
   DateTime inicioEncontro;
   DateTime fimEncontro;
   DateTime dataInicio;
@@ -71,6 +72,7 @@ class EncontroCRUDBlocState {
     fimEncontro = encontro.fim;
     nome = encontro.nome;
     descricao = encontro.descricao;
+    url = encontro.url;
   }
 }
 
@@ -117,9 +119,7 @@ class EncontroCRUDBloc {
     if (_state.nome == null) {
       _state.isDataValid = false;
     }
-    if (_state.descricao == null) {
-      _state.isDataValid = false;
-    }
+
   }
 
   _mapEventToState(EncontroCRUDBlocEvent event) async {
@@ -214,6 +214,8 @@ class EncontroCRUDBloc {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
+      } else if (event.campo == 'url') {
+        _state.url = event.texto;
       }
     }
 
@@ -227,6 +229,7 @@ class EncontroCRUDBloc {
         fim: _state.fimEncontro,
         nome: _state.nome,
         descricao: _state.descricao,
+        url: _state.url,
         modificado: DateTime.now(),
       );
       if (_state.encontroID == null) {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
-import 'package:piprof/naosuportato/naosuportado.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/paginas/problema/problema_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 
@@ -84,7 +85,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                             child: Wrap(
                               children: <Widget>[
                                 IconButton(
-                                  tooltip: 'Editar esta situação',
+                                  tooltip: 'Editar esta problema',
                                   icon: Icon(Icons.edit),
                                   onPressed: () {
                                     Navigator.pushNamed(
@@ -117,14 +118,14 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                 ),
                                 if (problema.url != null)
                                   IconButton(
-                                    tooltip: 'Ver pdf da situação',
+                                    tooltip: 'Ver pdf da problema',
                                     icon: Icon(Icons.picture_as_pdf),
                                     onPressed: () {
                                       launch(problema.url);
                                     },
                                   ),
                                 IconButton(
-                                  tooltip: 'Listar de situação e simulações em planilha',
+                                  tooltip: 'Listar de problema e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
                                     GenerateCsvService.csvProblemaListaSimulacao(

@@ -46,7 +46,7 @@
     ],
     "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero.",
     "pastaNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
-    "situacaoNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
+    "problemaNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
   },
   "UsuarioNovo": {
     "comment": "após cadastro tem q atualizar a turma respectiva com o ID do usuario."
@@ -88,13 +88,13 @@
       "nome": ""
     }
   },
-  "Situacao": {
+  "Problema": {
     "comment": "",
-    "#onCreate": "numero=Pasta.situacaoNumeroAdicionado+1. Pasta.situacaoNumeroAdicionado++",
+    "#onCreate": "numero=Pasta.problemaNumeroAdicionado+1. Pasta.problemaNumeroAdicionado++",
     "#onRead": "Se ativo=false desativar todas as tarefas ja criadas. nao aparece na listagem de situacoes para serem alocadas a questao. Se ativo=true reativa as tarefas que foram ativadas.",
     "#onUpdate": "",
     "#onDelete": "Apagar as tarefas das turmas ativas que contem esta situação.",
-    "ativo": "true: aparece na listagens de situacaos disponiveis. false: !true ",
+    "ativo": "true: aparece na listagens de problemas disponiveis. false: !true ",
     "modificado": "data da modificação deste documento",
     "numero": "",
     "nome": "",
@@ -111,21 +111,21 @@
       "turmaID": 0
     },
     "simulacaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
-    "url": "url definitiva para a situacao com base nos dados a seguir",
+    "url": "url definitiva para a problema com base nos dados a seguir",
     "precisaAlgoritmoPSimulacao": "true/false",
-    "urlPDFSituacaoSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da situacao e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
+    "urlPDFProblemaSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da problema e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
     "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
     "urlCodigoFonteAlgoritmo": "detalhes do atendimento e desenvolvimento do codigo",
-    "AtivadoAlgoritmoPSimulacao": "true: ativo=true e url=urlPDFSituacaoComAlgoritmo. false: ativo=false e url indefinida",
-    "urlPDFSituacaoComAlgoritmo": "pdf com estrutura para usar proposta com simulação"
+    "AtivadoAlgoritmoPSimulacao": "true: ativo=true e url=urlPDFProblemaComAlgoritmo. false: ativo=false e url indefinida",
+    "urlPDFProblemaComAlgoritmo": "pdf com estrutura para usar proposta com simulação"
   },
   "Simulacao": {
     "comment": "",
-    "#onCreate": "Nao pode criar simulação via widget se Situacao.precisaAlgoritmoSimulacao=true",
+    "#onCreate": "Nao pode criar simulação via widget se Problema.precisaAlgoritmoSimulacao=true",
     "#onRead": "",
     "#onUpdate": "",
     "#onDelete": "",
-    "ativo": "true: aparece na listagens de situacaos disponiveis. false: !true ",
+    "ativo": "true: aparece na listagens de problemas disponiveis. false: !true ",
     "modificado": "data da modificação deste documento",
     "numero": "",
     "nome": "",
@@ -137,8 +137,8 @@
       "id": "documentID",
       "nome": ""
     },
-    "situacao": {
-      "id": "Situacao/situacaoID",
+    "problema": {
+      "id": "Problema/problemaID",
       "nome": ""
     },
     "ordem": 0,
@@ -258,8 +258,8 @@
     "comment": "",
     "#onCreate": "numero=Turma.questaoNumeroAdicionado + 1. Turma.questaoNumeroAdicionado++",
     "#onRead": "",
-    "#onUpdate": "Se Avaliacao.aplicada=true nao pode alterar Questao.numero. Se Avaliacao.aplicada=true nao alterar Avaliacao.situacao atual. Se Avaliacao.aplicada=true e editar inicio/fim/tentativas/tempo alterar em todas as tarefas relacionadas.",
-    "#onDelete": "Turma.questaoNumeroExcluido++. Situacao/situacaoID.uso.turmaID--. Se Avaliacao.aplicada=true apagar tarefas com esta questão. ",
+    "#onUpdate": "Se Avaliacao.aplicada=true nao pode alterar Questao.numero. Se Avaliacao.aplicada=true nao alterar Avaliacao.problema atual. Se Avaliacao.aplicada=true e editar inicio/fim/tentativas/tempo alterar em todas as tarefas relacionadas.",
+    "#onDelete": "Turma.questaoNumeroExcluido++. Problema/problemaID.uso.turmaID--. Se Avaliacao.aplicada=true apagar tarefas com esta questão. ",
     "ativo": "true: aparece na listagens. false: !true ",
     "numero": "numero. usado para referenciar a questao e ordenar.",
     "professor": {
@@ -274,10 +274,10 @@
       "id": "Avaliacao/avaliacaoID",
       "nome": ""
     },
-    "situacao": {
-      "id": "Situacao/situacaoID",
-      "nome": "Situacao/situacaoID.nome",
-      "url": "Situacao/situacaoID"
+    "problema": {
+      "id": "Problema/problemaID",
+      "nome": "Problema/problemaID.nome",
+      "url": "Problema/problemaID"
     },
     "inicio": "copia da avaliacao",
     "fim": "copia da avaliacao",
@@ -285,7 +285,7 @@
     "tempo": "numero: 2. representa quando horas tem para resolver o problema.",
     "erroRelativo": "numero: 10. valor para calculo do erro relativo.",
     "nota": "string",
-    "aplicada": "true/false. quando uma questao foi aplicada pela function marca pra ela nao ser editada em outra situacao."
+    "aplicada": "true/false. quando uma questao foi aplicada pela function marca pra ela nao ser editada em outra problema."
   },
   "Tarefa": {
     "comment": "",
@@ -312,10 +312,10 @@
       "id": "Questao/questaoID",
       "numero": 1
     },
-    "situacao": {
+    "problema": {
       "id": "",
       "nome": "",
-      "url": "url igual a Situacao/urlPropostaSimulada"
+      "url": "url igual a Problema/urlPropostaSimulada"
     },
     "simulacao": "Simulacao/simulacaoID",
     "variavel": {

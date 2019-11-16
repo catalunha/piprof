@@ -22,10 +22,10 @@ class GetTurmaEvent extends QuestaoCRUDBlocEvent {
   GetTurmaEvent(this.turmaID);
 }
 
-class GetAvalicaoEvent extends QuestaoCRUDBlocEvent {
+class GetAvaliacaoEvent extends QuestaoCRUDBlocEvent {
   final String avaliacaoID;
 
-  GetAvalicaoEvent(this.avaliacaoID);
+  GetAvaliacaoEvent(this.avaliacaoID);
 }
 
 class GetQuestaoEvent extends QuestaoCRUDBlocEvent {
@@ -171,7 +171,7 @@ class QuestaoCRUDBloc {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
       }
     }
-    if (event is GetAvalicaoEvent) {
+    if (event is GetAvaliacaoEvent) {
       if (event.avaliacaoID != null) {
         final docRef = _firestore
             .collection(AvaliacaoModel.collection)

@@ -100,7 +100,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   Wrap(
                                     children: <Widget>[
                                       IconButton(
-                                        tooltip: 'Ver situação da questão',
+                                        tooltip: 'Ver problema da questão',
                                         icon: Icon(Icons.picture_as_pdf),
                                         onPressed: () {
                                           launch(tarefa.problema.url);

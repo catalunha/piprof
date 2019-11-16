@@ -73,7 +73,7 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            selected: questao?.aplicada != null && questao.aplicada,
+                            selected: questao?.aplicada != null && !questao.aplicada,
                                 // ? true
                                 // : false,
                             trailing: Text('Núm.: ${questao.numero}'),
@@ -126,7 +126,7 @@ id: ${questao.id}'''),
                                       : null,
                                 ),
                                 IconButton(
-                                  tooltip: 'Ver pdf da situação',
+                                  tooltip: 'Ver pdf da problema',
                                   icon: Icon(Icons.picture_as_pdf),
                                   onPressed: () {
                                     launch(questao.problema.url);

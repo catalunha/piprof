@@ -68,14 +68,17 @@ class TurmaAlunoBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.listaDeAlunos == null || _state.listaDeAlunos.isEmpty || _state.listaDeAlunos.length == 0) {
+    if (_state.listaDeAlunos == null ||
+        _state.listaDeAlunos.isEmpty ||
+        _state.listaDeAlunos.length == 0) {
       _state.isDataValid = false;
     }
   }
 
   _mapEventToState(TurmaAlunoBlocEvent event) async {
     if (event is GetTurmaEvent) {
-      final docRef = _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final docRef =
+          _firestore.collection(TurmaModel.collection).document(event.turmaID);
       final snap = await docRef.get();
       if (snap.exists) {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
@@ -138,7 +141,9 @@ class TurmaAlunoBloc {
     }
 
     if (event is CadastrarAlunoEvent) {
-      if (_state.listaDeAlunos != null && _state.listaDeAlunos.isNotEmpty && _state.listaDeAlunos.length > 0) {
+      if (_state.listaDeAlunos != null &&
+          _state.listaDeAlunos.isNotEmpty &&
+          _state.listaDeAlunos.length > 0) {
         String matricula;
         String email;
         String nome;
@@ -158,7 +163,8 @@ class TurmaAlunoBloc {
             turma: _state.turma.id,
           );
 
-          final docRef = _firestore.collection(UsuarioNovoModel.collection).document();
+          final docRef =
+              _firestore.collection(UsuarioNovoModel.collection).document();
           await docRef.setData(usuarioNovo.toMap(), merge: true);
         }
       }

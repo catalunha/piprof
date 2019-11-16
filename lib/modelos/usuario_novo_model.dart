@@ -1,4 +1,5 @@
 import 'package:piprof/modelos/base_model.dart';
+import 'package:piprof/modelos/upload_model.dart';
 
 class UsuarioNovoModel extends FirestoreModel {
   static final String collection = "UsuarioNovo";
@@ -36,6 +37,7 @@ class UsuarioNovoModel extends FirestoreModel {
         ? DateTime.fromMillisecondsSinceEpoch(
             map['cadastrado'].millisecondsSinceEpoch)
         : null;
+
     return this;
   }
 
@@ -50,7 +52,7 @@ class UsuarioNovoModel extends FirestoreModel {
     if (rota != null) data['rota'] = this.rota;
     if (turma != null) data['turma'] = this.turma;
     if (cadastrado != null) data['cadastrado'] = this.cadastrado;
-
+    data['foto'] = null;
     return data;
   }
 }

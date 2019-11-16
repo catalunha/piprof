@@ -49,7 +49,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  await cadastrarProfCatalunha();
+                  // await cadastrarProfCatalunha();
                   await cadastrarProfRicelly();
                 },
               ),
@@ -61,7 +61,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 onPressed: () async {
                   // await cadastrarAlunoCatalunha();
                   // await cadastrarAlunoLucas();
-                  await usuarioNovoAlunoDaniel();
+                  // await usuarioNovoAlunoDaniel();
                 },
               ),
             ),
@@ -80,7 +80,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  await cadastrarTarefa01();
+                  // await cadastrarTarefa01();
                   // await cadastrarTarefa02();
                 },
               ),
@@ -90,7 +90,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  await cadastrarTurma01();
+                  // await cadastrarTurma01();
                 },
               ),
             ),
@@ -99,7 +99,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  await cadastrarAvaliacao('0Avaliacao01');
+                  // await cadastrarAvaliacao('0Avaliacao01');
                 },
               ),
             ),
@@ -108,7 +108,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () async {
-                  await cadastrarQuestao('0Questao01');
+                  // await cadastrarQuestao('0Questao01');
                 },
               ),
             ),
@@ -126,16 +126,16 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.folder),
                 onPressed: () async {
-                  await incluirPasta(
-                    pastaID: '0Pasta01',
-                    nome: 'pasta01',
-                    professorID: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1',
-                  );
-                  await incluirPasta(
-                    pastaID: '0Pasta02',
-                    nome: 'pasta02',
-                    professorID: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1',
-                  );
+                  // await incluirPasta(
+                  //   pastaID: '0Pasta01',
+                  //   nome: 'pasta01',
+                  //   professorID: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1',
+                  // );
+                  // await incluirPasta(
+                  //   pastaID: '0Pasta02',
+                  //   nome: 'pasta02',
+                  //   professorID: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1',
+                  // );
                 },
               ),
             ),
@@ -144,8 +144,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               trailing: IconButton(
                 icon: Icon(Icons.folder),
                 onPressed: () async {
-                  await incluirProblema01();
-                  await incluirProblema02();
+                  // await incluirProblema01();
+                  // await incluirProblema02();
                 },
               ),
             ),
@@ -347,25 +347,26 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future cadastrarProfRicelly() async {
-    String userId = 'profRicelly';
+    String userId = 'KTLy0I7crCRzQFVEI0mMOBk3VwE2';
     final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.delete();
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
       professor: true,
       ativo: true,
-      celular: '456',
-      cracha: 'Ricelly',
+      celular: '7070',
+      cracha: 'vó',
       email: 'ricelly.catalunha@gmail.com',
-      matricula: '006',
+      matricula: '007',
       nome: 'Ricelly MLS Catalunha',
       rota: [
         '/',
         '/perfil',
         '/upload',
         '/versao',
-        '/desenvolvimento',
         '/turma/ativa/list',
+        '/pasta/list',
+        '/turma/inativa/list',
       ],
       turmaNumeroAdicionado: 0,
       pastaNumeroAdicionado: 0,

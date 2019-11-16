@@ -1,11 +1,23 @@
 # usuarios
 
+Fis
 001;aluno1@gmail.com;aluno1
 002;aluno2@gmail.com;aluno2
 003;aluno3@gmail.com;aluno3
 004;aluno4@gmail.com;aluno4
 005;aluno5@gmail.com;aluno5
 006;aluno6@gmail.com;aluno6
+
+
+Mat
+0011;aluno11@gmail.com;aluno11
+0021;aluno21@gmail.com;aluno21
+0031;aluno31@gmail.com;aluno31
+0041;aluno41@gmail.com;aluno41
+005;aluno5@gmail.com;aluno5
+006;aluno6@gmail.com;aluno6
+
+
 
 
 

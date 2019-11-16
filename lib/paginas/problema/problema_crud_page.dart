@@ -46,7 +46,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar situação'),
+        title: Text('Editar problema'),
       ),
       floatingActionButton: StreamBuilder<ProblemaCRUDBlocState>(
           stream: bloc.stateStream,
@@ -122,7 +122,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
                 Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Text(
-                      'Link para PDF da situação:',
+                      'Link para PDF da problema:',
                       style: TextStyle(fontSize: 15, color: Colors.blue),
                     )),
               if (snapshot.data?.precisaAlgoritmoPSimulacao != null &&
@@ -134,7 +134,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
                Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Pasta desta situação:',
+                    'Pasta desta problema:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
                   _pasta(context),
