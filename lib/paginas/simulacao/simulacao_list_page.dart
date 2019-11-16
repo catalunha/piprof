@@ -75,15 +75,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                         subtitle: Text(
                           'Variaveis: ${simulacao?.variavel?.length ?? 0} | Gabarito: ${simulacao?.gabarito?.length == null || simulacao?.gabarito?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.gabarito?.length}\nid:${simulacao.id}',
                         ),
-                        trailing: IconButton(
-                          tooltip: 'Um link ao um site ou arquivo',
-                          icon: Icon(Icons.link),
-                          onPressed: simulacao.url != null
-                              ? () {
-                                  launch(simulacao.url);
-                                }
-                              : null,
-                        ),
+                      
                       ),
                       Center(
                         child: Wrap(
@@ -102,6 +94,14 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                 );
                               },
                             ),
+                             if (simulacao.url != null)
+                                  IconButton(
+                                    tooltip: 'Ver arquivo da simulacao',
+                                    icon: Icon(Icons.local_library),
+                                    onPressed: () {
+                                      launch(simulacao.url);
+                                    },
+                                  ),
                             IconButton(
                               tooltip: 'Gerenciar valores',
                               icon: Icon(Icons.sort_by_alpha),

@@ -89,7 +89,8 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   // Text("Turma: ${tarefa.turma.nome}"),
                                   Text("Aluno: ${tarefa.aluno.nome}"),
                                   Text("Avaliação: ${tarefa.avaliacao.nome}"),
-                                  Text("Prob.:${tarefa.problema.nome}. Questão: ${tarefa.questao.numero}"),
+                                  Text("Questão: ${tarefa.questao.numero}. Prob.:${tarefa.problema.nome}"),
+                                  Text("Simulacao: ${tarefa.simulacao}"),
                                   Text(
                                       "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
                                   Text(
@@ -101,7 +102,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                     children: <Widget>[
                                       IconButton(
                                         tooltip: 'Ver problema da questão',
-                                        icon: Icon(Icons.picture_as_pdf),
+                                        icon: Icon(Icons.local_library),
                                         onPressed: () {
                                           launch(tarefa.problema.url);
                                         },

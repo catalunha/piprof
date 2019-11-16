@@ -82,9 +82,6 @@ class _ProblemaSelecionarPageState extends State<ProblemaSelecionarPage> {
                     selected: true,
                     title: Text('${problema.nome}'),
                     subtitle: Text('SITUAÇÃO SEM SIMULAÇÕES ! FAVOR CORRIGIR.'),
-                    onLongPress: () {
-                      launch(problema.url);
-                    },
                   ),
                 ),
               );
@@ -95,14 +92,11 @@ class _ProblemaSelecionarPageState extends State<ProblemaSelecionarPage> {
                     title: Text('${problema.nome}'),
                     trailing: Icon(Icons.question_answer),
                     leading: IconButton(
-                      icon: Icon(Icons.picture_as_pdf),
+                      icon: Icon(Icons.local_library),
                       onPressed: () {
                         launch(problema.url);
                       },
                     ),
-                    onLongPress: () {
-                      launch(problema.url);
-                    },
                     onTap: () {
                       // bloc.eventSink(SelecionarProblemaEvent(problema));
                       Navigator.pop(context, problemaFk);

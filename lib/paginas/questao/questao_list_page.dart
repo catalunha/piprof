@@ -127,7 +127,7 @@ id: ${questao.id}'''),
                                 ),
                                 IconButton(
                                   tooltip: 'Ver pdf da problema',
-                                  icon: Icon(Icons.picture_as_pdf),
+                                  icon: Icon(Icons.local_library),
                                   onPressed: () {
                                     launch(questao.problema.url);
                                   },

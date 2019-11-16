@@ -101,7 +101,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                 if (encontro.url != null)
                                   IconButton(
                                     tooltip: 'Ver pdf da encontro',
-                                    icon: Icon(Icons.picture_as_pdf),
+                                    icon: Icon(Icons.local_library),
                                     onPressed: () {
                                       launch(encontro.url);
                                     },

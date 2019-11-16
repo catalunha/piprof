@@ -119,7 +119,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                 if (problema.url != null)
                                   IconButton(
                                     tooltip: 'Ver pdf da problema',
-                                    icon: Icon(Icons.picture_as_pdf),
+                                    icon: Icon(Icons.local_library),
                                     onPressed: () {
                                       launch(problema.url);
                                     },
