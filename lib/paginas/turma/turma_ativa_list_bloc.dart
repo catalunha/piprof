@@ -69,8 +69,6 @@ class TurmaAtivaListBloc {
     }
 
     if (event is UpdateTurmaAtivaListEvent) {
-      _state.turmaList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(TurmaModel.collection)
           .where("ativo", isEqualTo: true)
@@ -83,11 +81,11 @@ class TurmaAtivaListBloc {
           .toList());
 
       snapListRemetente.listen((List<TurmaModel> turmaList) {
-                if (turmaList.length > 1) {
-          turmaList
-              .sort((a, b) => a.numero.compareTo(b.numero));
+        if (turmaList.length > 1) {
+          turmaList.sort((a, b) => a.numero.compareTo(b.numero));
         }
 
+        _state.turmaList.clear();
         _state.turmaList = turmaList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

@@ -83,8 +83,6 @@ class QuestaoListBloc {
       }
     }
     if (event is UpdateQuestaoListEvent) {
-      _state.questaoList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(QuestaoModel.collection)
           .where("ativo", isEqualTo: true)
@@ -100,6 +98,7 @@ class QuestaoListBloc {
         if (questaoList.length > 1) {
           questaoList.sort((a, b) => a.numero.compareTo(b.numero));
         }
+        _state.questaoList.clear();
         _state.questaoList = questaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

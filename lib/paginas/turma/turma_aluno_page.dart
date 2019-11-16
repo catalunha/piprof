@@ -116,6 +116,10 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
                   );
                 },
               ),
+               Container(
+                  padding: EdgeInsets.only(top: 70),
+                ),
+
             ],
           );
         },

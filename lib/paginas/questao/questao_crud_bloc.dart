@@ -87,9 +87,9 @@ class QuestaoCRUDBlocState {
   void updateState() {
     inicioAvaliacao = questao.inicio;
     fimAvaliacao = questao.fim;
-    tempo = questao.tempo.toString() ?? '2';
-    tentativa = questao.tentativa.toString() ?? '3';
-    erroRelativo = questao.erroRelativo.toString() ?? '10';
+    tempo = questao.tempo.toString();
+    tentativa = questao.tentativa.toString();
+    erroRelativo = questao.erroRelativo.toString();
     nota = questao.nota;
     problemaFk = questao.problema;
     questao.aplicada = questao.aplicada == null ? false : questao.aplicada;
@@ -98,6 +98,10 @@ class QuestaoCRUDBlocState {
   void updateStateComAvaliacao() {
     inicioAvaliacao = avaliacao.inicio;
     fimAvaliacao = avaliacao.fim;
+    tempo = '2';
+    tentativa = '3';
+    erroRelativo = '10';
+    nota = '1';
   }
 }
 

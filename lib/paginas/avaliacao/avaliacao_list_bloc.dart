@@ -64,11 +64,7 @@ class AvaliacaoListBloc {
   }
 
   _mapEventToState(AvaliacaoListBlocEvent event) async {
-
-
     if (event is UpdateAvaliacaoListEvent) {
-      _state.avaliacaoList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(AvaliacaoModel.collection)
           .where("turma.id", isEqualTo: event.turmaID)
@@ -82,6 +78,7 @@ class AvaliacaoListBloc {
       snapListRemetente.listen((List<AvaliacaoModel> avaliacaoList) {
         avaliacaoList.sort((a, b) => a.inicio.compareTo(b.inicio));
 
+        _state.avaliacaoList.clear();
         _state.avaliacaoList = avaliacaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

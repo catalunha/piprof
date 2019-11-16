@@ -9,6 +9,7 @@ class GetProblemaListEvent extends ProblemaListBlocEvent {
 
   GetProblemaListEvent(this.pastaID);
 }
+
 class OrdenarEvent extends ProblemaListBlocEvent {
   final ProblemaModel obj;
   final bool up;
@@ -55,23 +56,24 @@ class ProblemaListBloc {
 
   _mapEventToState(ProblemaListBlocEvent event) async {
     if (event is GetProblemaListEvent) {
+      final streamDocsRemetente = _firestore
+          .collection(ProblemaModel.collection)
+          .where("pasta.id", isEqualTo: event.pastaID)
+          .snapshots();
+
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => ProblemaModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<ProblemaModel> problemaList) {
+        problemaList.sort((a, b) => a.numero.compareTo(b.numero));
         _state.problemaList.clear();
-
-        final streamDocsRemetente = _firestore
-            .collection(ProblemaModel.collection)
-            .where("pasta.id", isEqualTo: event.pastaID)
-            .snapshots();
-
-        final snapListRemetente = streamDocsRemetente.map(
-            (snapDocs) => snapDocs.documents.map((doc) => ProblemaModel(id: doc.documentID).fromMap(doc.data)).toList());
-
-        snapListRemetente.listen((List<ProblemaModel> problemaList) {
-          problemaList.sort((a, b) => a.numero.compareTo(b.numero));
-          _state.problemaList = problemaList;
-          if (!_stateController.isClosed) _stateController.add(_state);
-        });
+        _state.problemaList = problemaList;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
     }
-        if (event is OrdenarEvent) {
+    if (event is OrdenarEvent) {
       final ordemOrigem = _state.problemaList.indexOf(event.obj);
       final ordemDestino = event.up ? ordemOrigem - 1 : ordemOrigem + 1;
       ProblemaModel docOrigem = _state.problemaList[ordemOrigem];

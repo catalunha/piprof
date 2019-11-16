@@ -78,9 +78,9 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                                 // : false,
                             trailing: Text('Núm.: ${questao.numero}'),
                             title: Text('''
+Prob.: ${questao.problema.nome}
 Turma: ${questao.turma.nome}
 Aval.: ${questao.avaliacao.nome}
-Sit.: ${questao.problema.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(questao.inicio)} até ${DateFormat('dd-MM HH:mm').format(questao.fim)}
 Tentativas: ${questao.tentativa} | Tempo : ${questao.tempo}h
 Nota/Peso: ${questao.nota}'''),
@@ -100,7 +100,7 @@ id: ${questao.id}'''),
                                       "/questao/crud",
                                       arguments: QuestaoCRUDPageArguments(
                                         questaoID: questao.id,
-                                        avaliacaoID: widget.avaliacaoID,
+                                        // avaliacaoID: widget.avaliacaoID,
                                       ),
                                     );
                                   },

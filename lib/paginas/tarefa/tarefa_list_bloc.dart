@@ -55,8 +55,6 @@ class TarefaListBloc {
 
   _mapEventToState(TarefaListBlocEvent event) async {
     if (event is GetTarefaListPorQuestaoEvent) {
-      _state.tarefaList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(TarefaModel.collection)
           .where("questao.id", isEqualTo: event.questaoID)
@@ -69,6 +67,7 @@ class TarefaListBloc {
 
       snapListRemetente.listen((List<TarefaModel> tarefaList) {
         tarefaList.sort((a, b) => a.aluno.nome.compareTo(b.aluno.nome));
+        _state.tarefaList.clear();
         _state.tarefaList = tarefaList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

@@ -68,22 +68,23 @@ class TurmaInativaListBloc {
     }
 
     if (event is UpdateTurmaInativaListEvent) {
-      _state.turmaList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(TurmaModel.collection)
           .where("ativo", isEqualTo: false)
           .where("professor.id", isEqualTo: _state?.usuarioAuth?.id)
           .snapshots();
 
-      final snapListRemetente = streamDocsRemetente.map(
-          (snapDocs) => snapDocs.documents.map((doc) => TurmaModel(id: doc.documentID).fromMap(doc.data)).toList());
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => TurmaModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
 
       snapListRemetente.listen((List<TurmaModel> turmaList) {
         if (turmaList.length > 1) {
           turmaList.sort((a, b) => a.numero.compareTo(b.numero));
         }
 
+        _state.turmaList.clear();
         _state.turmaList = turmaList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
@@ -91,7 +92,8 @@ class TurmaInativaListBloc {
 
     if (event is AtivarTurmaEvent) {
       print(event.turmaID);
-      final docRef = _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final docRef =
+          _firestore.collection(TurmaModel.collection).document(event.turmaID);
       await docRef.setData({"ativo": true}, merge: true);
     }
 

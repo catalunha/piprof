@@ -18,24 +18,27 @@ class UpdateProblemaListEvent extends ProblemaSelecionarBlocEvent {
 
   UpdateProblemaListEvent(this.pastaID);
 }
+
 class SelecionarPastaEvent extends ProblemaSelecionarBlocEvent {
   final PastaModel pasta;
 
   SelecionarPastaEvent(this.pasta);
 }
+
 class SelecionarProblemaEvent extends ProblemaSelecionarBlocEvent {
   final ProblemaModel problema;
 
   SelecionarProblemaEvent(this.problema);
 }
+
 class RemoverPastaEvent extends ProblemaSelecionarBlocEvent {}
 
 class ProblemaSelecionarBlocState {
   bool isDataValid = false;
   UsuarioModel usuarioAuth;
 
-PastaModel pasta;
-ProblemaModel problema;
+  PastaModel pasta;
+  ProblemaModel problema;
   List<PastaModel> pastaList = List<PastaModel>();
   List<ProblemaModel> problemaList = List<ProblemaModel>();
 }
@@ -47,13 +50,15 @@ class ProblemaSelecionarBloc {
 
   /// Eventos
   final _eventController = BehaviorSubject<ProblemaSelecionarBlocEvent>();
-  Stream<ProblemaSelecionarBlocEvent> get eventStream => _eventController.stream;
+  Stream<ProblemaSelecionarBlocEvent> get eventStream =>
+      _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   /// Estados
   final ProblemaSelecionarBlocState _state = ProblemaSelecionarBlocState();
   final _stateController = BehaviorSubject<ProblemaSelecionarBlocState>();
-  Stream<ProblemaSelecionarBlocState> get stateStream => _stateController.stream;
+  Stream<ProblemaSelecionarBlocState> get stateStream =>
+      _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
@@ -83,8 +88,6 @@ class ProblemaSelecionarBloc {
     }
 
     if (event is UpdatePastaListEvent) {
-      _state.pastaList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(PastaModel.collection)
           .where("professor.id", isEqualTo: _state.usuarioAuth.id)
@@ -98,6 +101,7 @@ class ProblemaSelecionarBloc {
       snapListRemetente.listen((List<PastaModel> pastaList) {
         pastaList.sort((a, b) => a.numero.compareTo(b.numero));
 
+        _state.pastaList.clear();
         _state.pastaList = pastaList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
@@ -138,6 +142,7 @@ class ProblemaSelecionarBloc {
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em ProblemaSelecionarBloc  = ${event.runtimeType}');
+    print(
+        'event.runtimeType em ProblemaSelecionarBloc  = ${event.runtimeType}');
   }
 }

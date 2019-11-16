@@ -71,23 +71,25 @@ class TurmaAlunoListBloc {
 
   _mapEventToState(TurmaAlunoListBlocEvent event) async {
     if (event is GetTurmaAlunoListEvent) {
-      final docRef = _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final docRef =
+          _firestore.collection(TurmaModel.collection).document(event.turmaID);
       final snap = await docRef.get();
       if (snap.exists) {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
-
-        _state.turmaAlunoList.clear();
 
         final streamDocsRemetente = _firestore
             .collection(UsuarioModel.collection)
             .where("turma", arrayContains: _state.turma.id)
             .snapshots();
 
-        final snapListRemetente = streamDocsRemetente.map(
-            (snapDocs) => snapDocs.documents.map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data)).toList());
+        final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+            .documents
+            .map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data))
+            .toList());
 
         snapListRemetente.listen((List<UsuarioModel> usuarioList) {
           usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
+          _state.turmaAlunoList.clear();
           _state.turmaAlunoList = usuarioList;
           if (!_stateController.isClosed) _stateController.add(_state);
         });
@@ -104,7 +106,9 @@ class TurmaAlunoListBloc {
           statusAtual = aluno.ativo;
         }
       }
-      final docRef = _firestore.collection(UsuarioModel.collection).document(event.alunoID);
+      final docRef = _firestore
+          .collection(UsuarioModel.collection)
+          .document(event.alunoID);
       await docRef.setData({'ativo': !statusAtual}, merge: true);
     }
     if (event is DeleteAlunoEvent) {
@@ -114,7 +118,9 @@ class TurmaAlunoListBloc {
           statusAtual = aluno.ativo;
         }
       }
-      final docRef = _firestore.collection(UsuarioModel.collection).document(event.alunoID);
+      final docRef = _firestore
+          .collection(UsuarioModel.collection)
+          .document(event.alunoID);
       await docRef.delete();
     }
     if (event is SaveEvent) {}

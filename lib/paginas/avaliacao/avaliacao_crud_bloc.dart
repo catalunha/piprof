@@ -247,11 +247,6 @@ class AvaliacaoCRUDBloc {
     }
 
     if (event is SaveEvent) {
-      print('inicio');
-      print(_state.inicioEncontro);
-      print(_state.avaliacao.inicio);
-      print(_state.avaliacao.inicio != _state.inicioEncontro);
-
       final docRef = _firestore
           .collection(AvaliacaoModel.collection)
           .document(_state.avaliacaoID);
@@ -264,6 +259,8 @@ class AvaliacaoCRUDBloc {
         nota: _state.nota,
         aplicar: _state.aplicar,
         modificado: DateTime.now(),
+        aplicadaPAlunoFunction: _state.avaliacao.aplicadaPAlunoFunction,
+        questaoAplicadaFunction: _state.avaliacao.questaoAplicadaFunction,
       );
 
       if (_state.avaliacaoID == null) {

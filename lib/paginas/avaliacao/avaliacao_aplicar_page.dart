@@ -119,6 +119,7 @@ class _AvaliacaoMarcarPageState extends State<AvaliacaoMarcarPage> {
                                 Text("Crachá: ${aluno.cracha}"),
                                 Text("Celular: ${aluno.celular}"),
                                 Text("email: ${aluno.email}"),
+                                Text("id: ${aluno.id}"),
                                 // Text("id: ${aluno.id}"),
                                 aplicada
                                     ? Text('\n*** Aluno selecionado ***')

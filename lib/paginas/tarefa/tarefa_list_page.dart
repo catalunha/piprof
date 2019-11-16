@@ -87,16 +87,16 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                 children: <Widget>[
                                   Text("id: ${tarefa.id}"),
                                   // Text("Turma: ${tarefa.turma.nome}"),
-                                  Text("Avaliação: ${tarefa.avaliacao.nome}"),
-                                  Text("Questão: ${tarefa.questao.numero}"),
                                   Text("Aluno: ${tarefa.aluno.nome}"),
+                                  Text("Avaliação: ${tarefa.avaliacao.nome}"),
+                                  Text("Prob.:${tarefa.problema.nome}. Questão: ${tarefa.questao.numero}"),
                                   Text(
                                       "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
                                   Text(
                                       "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
                                   Text(
                                       "Tempo: ${tarefa.tempo} | Tentativas: ${tarefa.tentativa} | Tentou: ${tarefa.tentou}"),
-                                  Text("Notas: $notas"),
+                                  Text("Sit.: $notas"),
                                   Wrap(
                                     children: <Widget>[
                                       IconButton(

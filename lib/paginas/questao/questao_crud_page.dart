@@ -250,7 +250,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Quanto tempo para resolução em horas:',
+                    'Quanto horas para resolução (valor inteiro):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -268,7 +268,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Qual o erro relativo na correção em %:',
+                    'Qual o erro relativo na correção numérica. (de 1 a 100):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

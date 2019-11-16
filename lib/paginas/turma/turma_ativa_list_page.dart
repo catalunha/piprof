@@ -108,23 +108,23 @@ Turma: ${turma.nome}'''),
                                     : null,
                               ),
                               IconButton(
-                                tooltip: 'Gerenciar alunos',
-                                icon: Icon(Icons.people),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    "/turma/aluno",
-                                    arguments: turma.id,
-                                  );
-                                },
-                              ),
-                              IconButton(
                                 tooltip: 'Agenda de encontros da turma',
                                 icon: Icon(Icons.today),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                     context,
                                     "/turma/encontro/list",
+                                    arguments: turma.id,
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                tooltip: 'Gerenciar alunos',
+                                icon: Icon(Icons.people),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    "/turma/aluno",
                                     arguments: turma.id,
                                   );
                                 },

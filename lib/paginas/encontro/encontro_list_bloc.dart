@@ -49,21 +49,22 @@ class EncontroListBloc {
 
   _mapEventToState(EncontroListBlocEvent event) async {
     if (event is GetTurmaEncontroListEvent) {
+      final streamDocsRemetente = _firestore
+          .collection(EncontroModel.collection)
+          .where("turma.id", isEqualTo: event.turmaID)
+          .snapshots();
+
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => EncontroModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<EncontroModel> encontroList) {
+        encontroList.sort((a, b) => a.inicio.compareTo(b.inicio));
         _state.encontroList.clear();
-
-        final streamDocsRemetente = _firestore
-            .collection(EncontroModel.collection)
-            .where("turma.id", isEqualTo: event.turmaID)
-            .snapshots();
-
-        final snapListRemetente = streamDocsRemetente.map(
-            (snapDocs) => snapDocs.documents.map((doc) => EncontroModel(id: doc.documentID).fromMap(doc.data)).toList());
-
-        snapListRemetente.listen((List<EncontroModel> encontroList) {
-          encontroList.sort((a, b) => a.inicio.compareTo(b.inicio));
-          _state.encontroList = encontroList;
-          if (!_stateController.isClosed) _stateController.add(_state);
-        });
+        _state.encontroList = encontroList;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
     }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);

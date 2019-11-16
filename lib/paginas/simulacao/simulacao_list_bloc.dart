@@ -6,12 +6,10 @@ import 'package:rxdart/rxdart.dart';
 
 class SimulacaoListBlocEvent {}
 
-
 class GetSimulacaoEvent extends SimulacaoListBlocEvent {
   final String problemaID;
 
   GetSimulacaoEvent(this.problemaID);
-
 }
 
 class SimulacaoListBlocState {
@@ -42,7 +40,6 @@ class SimulacaoListBloc {
     // this._authBloc,
   ) {
     eventStream.listen(_mapEventToState);
- 
   }
 
   void dispose() async {
@@ -57,10 +54,7 @@ class SimulacaoListBloc {
   }
 
   _mapEventToState(SimulacaoListBlocEvent event) async {
-
     if (event is GetSimulacaoEvent) {
-      _state.simulacaoList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(SimulacaoModel.collection)
           .where("problema.id", isEqualTo: event.problemaID)
@@ -72,6 +66,7 @@ class SimulacaoListBloc {
           .toList());
 
       snapListRemetente.listen((List<SimulacaoModel> simulacaoList) {
+        _state.simulacaoList.clear();
         _state.simulacaoList = simulacaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

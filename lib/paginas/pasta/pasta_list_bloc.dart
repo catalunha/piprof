@@ -72,8 +72,6 @@ class PastaListBloc {
     }
 
     if (event is GetPastaEvent) {
-      _state.pastaList.clear();
-
       final streamDocsRemetente = _firestore
           .collection(PastaModel.collection)
           .where("professor.id", isEqualTo: _state.usuarioAuth.id)
@@ -86,8 +84,8 @@ class PastaListBloc {
 
       snapListRemetente.listen((List<PastaModel> pastaList) {
         pastaList.sort((a, b) => a.numero.compareTo(b.numero));
+        _state.pastaList.clear();
         _state.pastaList = pastaList;
-        // print(_state.pastaList);
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }

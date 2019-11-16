@@ -52,7 +52,7 @@ class UsuarioNovoModel extends FirestoreModel {
     if (rota != null) data['rota'] = this.rota;
     if (turma != null) data['turma'] = this.turma;
     if (cadastrado != null) data['cadastrado'] = this.cadastrado;
-    data['foto'] = null;
+    data['foto'] = {'url': null};
     return data;
   }
 }
