@@ -1,5 +1,4 @@
 import 'package:piprof/modelos/base_model.dart';
-import 'package:piprof/modelos/upload_model.dart';
 
 class UsuarioNovoModel extends FirestoreModel {
   static final String collection = "UsuarioNovo";

@@ -78,6 +78,7 @@ class TarefaListBloc {
           .document(event.tarefaID);
 
       await docRef.setData({
+        'aberta': true,
         'tentou': 0,
         'iniciou': null,
         'enviou': null,

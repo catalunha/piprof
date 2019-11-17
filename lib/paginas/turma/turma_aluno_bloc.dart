@@ -159,7 +159,14 @@ class TurmaAlunoBloc {
             email: email,
             matricula: matricula,
             nome: nome,
-            rota: ['/', '/perfil', '/upload', '/versao', '/turma/list'],
+            rota: [
+              '/',
+              '/tarefa/aberta',
+              '/turma/list',
+              '/upload',
+              '/perfil',
+              '/versao',
+            ],
             turma: _state.turma.id,
           );
 

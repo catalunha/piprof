@@ -7,7 +7,8 @@ import 'package:piprof/naosuportato/naosuportado.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 import 'package:queries/collections.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TarefaListPage extends StatefulWidget {
   final String tarefaID;
@@ -42,7 +43,8 @@ class _TarefaListPageState extends State<TarefaListPage> {
         ),
         body: StreamBuilder<TarefaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TarefaListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TarefaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -57,12 +59,14 @@ class _TarefaListPageState extends State<TarefaListPage> {
                 for (var tarefa in snapshot.data.tarefaList) {
                   gabaritoMap.clear();
                   var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
-                  var gabaritoOrderBy =
-                      dicGabarito.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                  var gabaritoOrderBy = dicGabarito
+                      .orderBy((kv) => kv.value.ordem)
+                      .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                   gabaritoMap = gabaritoOrderBy.toMap();
                   notas = '';
                   for (var gabarito in gabaritoMap.entries) {
-                    notas += '${gabarito.value.nome}=${gabarito.value.nota ?? "?"} ';
+                    notas +=
+                        '${gabarito.value.nome}=${gabarito.value.nota ?? "?"} ';
                   }
                   listaWidget.add(
                     Card(
@@ -89,14 +93,15 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   // Text("Turma: ${tarefa.turma.nome}"),
                                   Text("Aluno: ${tarefa.aluno.nome}"),
                                   Text("Avaliação: ${tarefa.avaliacao.nome}"),
-                                  Text("Questão: ${tarefa.questao.numero}. Prob.:${tarefa.problema.nome}"),
+                                  Text(
+                                      "Questão: ${tarefa.questao.numero}. Prob.:${tarefa.problema.nome}"),
                                   Text("Simulacao: ${tarefa.simulacao}"),
                                   Text(
                                       "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
                                   Text(
                                       "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
                                   Text(
-                                      "Tempo: ${tarefa.tempo} | Tentativas: ${tarefa.tentativa} | Tentou: ${tarefa.tentou}"),
+                                      "Tempo: ${tarefa.tempo} h | Tentou: ${tarefa.tentou ?? 0} em ${tarefa.tentativa} tentativa(s)."),
                                   Text("Sit.: $notas"),
                                   Wrap(
                                     children: <Widget>[
@@ -111,7 +116,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                         tooltip: 'Corrigir tarefa',
                                         icon: Icon(Icons.playlist_add_check),
                                         onPressed: () {
-                                           Navigator.pushNamed(
+                                          Navigator.pushNamed(
                                             context,
                                             "/tarefa/corrigir",
                                             arguments: tarefa.id,
@@ -123,17 +128,18 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                       //   icon: Icon(Icons.grid_on),
                                       //   onPressed: () {},
                                       // ),
-                                 IconButton(
-                                  tooltip: 'Reset tempo e tentativa',
-                                  icon: Icon(Icons.child_care),
-                                  onPressed: () {
-                                    bloc.eventSink(
-                                              ResetTempoTentativaTarefaEvent(tarefa.id));
-                                    
-                                  },
-                                ),
                                       IconButton(
-                                        tooltip: 'Editar tarefa para este aluno',
+                                        tooltip: 'Reset tempo e tentativa',
+                                        icon: Icon(Icons.child_care),
+                                        onPressed: () {
+                                          bloc.eventSink(
+                                              ResetTempoTentativaTarefaEvent(
+                                                  tarefa.id));
+                                        },
+                                      ),
+                                      IconButton(
+                                        tooltip:
+                                            'Editar tarefa para este aluno',
                                         icon: Icon(Icons.edit),
                                         onPressed: () {
                                           Navigator.pushNamed(

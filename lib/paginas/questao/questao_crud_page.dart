@@ -375,7 +375,7 @@ class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
           keyboardType: TextInputType.numberWithOptions(decimal: false),
           maxLines: null,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            // border: OutlineInputBorder(),
           ),
           controller: _textFieldController,
           onChanged: (texto) {
