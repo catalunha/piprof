@@ -66,6 +66,7 @@ class EncontroAlunoListBloc {
 
   _mapEventToState(EncontroAlunoListBlocEvent event) async {
     if (event is GetAlunoListEvent) {
+      print('lisntando alunos');
       final encontroFutureDocSnapshot = await _firestore
           .collection(EncontroModel.collection)
           .document(event.encontroID)
@@ -87,6 +88,7 @@ class EncontroAlunoListBloc {
           .toList();
 
       usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
+      print('lisntando alunos ${usuarioList.length}');
 
       bool presente;
       for (var usuario in usuarioList) {
