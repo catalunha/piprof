@@ -37,8 +37,9 @@ class TarefaCorrigirBlocState {
       // nota = false;
       gabaritoInfoMap[gabarito.key] = GabaritoInfo(
         gabarito: gabarito.value,
-        nota:
-            gabarito.value.nota == null || gabarito.value.nota == 0 ? false : true,
+        nota: gabarito.value.nota == null || gabarito.value.nota == 0
+            ? false
+            : true,
       );
     }
     var dic = Dictionary.fromMap(gabaritoInfoMap);
@@ -84,14 +85,28 @@ class TarefaCorrigirBloc {
   _mapEventToState(TarefaCorrigirBlocEvent event) async {
     if (event is GetTarefaEvent) {
       if (event.tarefaID != null) {
-        final docRef = _firestore
+        // final docRef = _firestore
+        //     .collection(TarefaModel.collection)
+        //     .document(event.tarefaID);
+        // final snap = await docRef.get();
+        // if (snap.exists) {
+        //   _state.tarefa = TarefaModel(id: snap.documentID).fromMap(snap.data);
+        //   _state.updateState();
+        // }
+
+        final streamDocsRemetente = _firestore
             .collection(TarefaModel.collection)
-            .document(event.tarefaID);
-        final snap = await docRef.get();
-        if (snap.exists) {
-          _state.tarefa = TarefaModel(id: snap.documentID).fromMap(snap.data);
+            .document(event.tarefaID)
+            .snapshots();
+
+        final snapListRemetente = streamDocsRemetente
+            .map((doc) => TarefaModel(id: doc.documentID).fromMap(doc.data));
+
+        snapListRemetente.listen((TarefaModel tarefa) {
+          _state.tarefa = tarefa;
+          if (!_stateController.isClosed) _stateController.add(_state);
           _state.updateState();
-        }
+        });
       }
     }
     if (event is UpdateGabaritoNotaEvent) {

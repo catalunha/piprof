@@ -179,22 +179,8 @@ class FotoUsuario extends StatelessWidget {
                     await _selecionarNovoArquivo().then((arq) {
                       localPath = arq;
                     });
-                    print('localPath: $localPath');
                     bloc.eventSink(UpdateFotoEvent(localPath));
-                    // if (localPath != null) {
-                    //   showDialog(
-                    //     context: context,
-                    //     builder: (context) => Dialog(
-                    //       elevation: 5,
-                    //       child: ListTile(
-                    //         selected: true,
-                    //         title: Text(
-                    //             "Você apenas selecionou a foto.\nApós salvar este perfil é necessário enviar a foto em upload de arquivos."),
-                    //         onTap: () {},
-                    //       ),
-                    //     ),
-                    //   );
-                    // }
+
                   },
                 ),
               ]),
@@ -254,7 +240,7 @@ class _ImagemPerfilUpload extends StatelessWidget {
         );
       }
       msg = Text(
-          'Esta foto precisa ser enviada. Salve este edição de perfil e acesse o menu upload de arquivos.');
+          'Esta foto precisa ser enviada. Salve esta edição de perfil e depois acesse o menu upload de arquivos para enviar esta imagem.');
     }
     if (url != null && uploadID != null) {
       try {

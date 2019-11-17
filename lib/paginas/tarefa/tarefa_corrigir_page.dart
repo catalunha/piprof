@@ -293,38 +293,79 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                     gabaritoInfoMap.key));
                               },
                             ),
-                            Wrap(
+                            Row(
                               children: <Widget>[
-                                gabaritoInfoMap.value.gabarito.valor == null
-                                    ? IconButton(
-                                        tooltip: 'url do gabarito não anexada',
-                                        icon: Icon(Icons.link_off),
-                                        onPressed: null,
-                                      )
-                                    : IconButton(
-                                        tooltip:
-                                            'Clique para ver a url do gabarito',
-                                        icon: Icon(Icons.link),
-                                        onPressed: () {
-                                          launch(gabaritoInfoMap
-                                              .value.gabarito.valor);
-                                        },
-                                      ),
-                                gabaritoInfoMap.value.gabarito.resposta == null
-                                    ? IconButton(
-                                        tooltip: 'url da resposta não anexada',
-                                        icon: Icon(Icons.link_off),
-                                        onPressed: null,
-                                      )
-                                    : IconButton(
-                                        tooltip:
-                                            'Clique para ver a url da resposta',
-                                        icon: Icon(Icons.link),
-                                        onPressed: () {
-                                          launch(gabaritoInfoMap
-                                              .value.gabarito.resposta);
-                                        },
-                                      ),
+                                Expanded(
+                                  flex: 2,
+                                  child: gabaritoInfoMap.value.gabarito.valor ==
+                                          null
+                                      ? ListTile(
+                                          title: Text(
+                                              'Link do gabarito não anexado'),
+                                          trailing: Icon(Icons.link_off),
+                                        )
+                                      : ListTile(
+                                          title: Text(
+                                              'Clique para ver a link do gabarito'),
+                                          trailing: Icon(Icons.link),
+                                          onTap: () {
+                                            launch(gabaritoInfoMap
+                                                .value.gabarito.valor);
+                                          },
+                                        ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child:
+                                      gabaritoInfoMap.value.gabarito.resposta ==
+                                              null
+                                          ? ListTile(
+                                              title: Text(
+                                                  'Link da resposta não anexado'),
+                                              trailing: Icon(Icons.link_off),
+                                            )
+                                          : ListTile(
+                                              title: Text(
+                                                  'Clique para ver o link da resposta'),
+                                              trailing: Icon(Icons.link),
+                                              onTap: () {
+                                                launch(gabaritoInfoMap
+                                                    .value.gabarito.resposta);
+                                              },
+                                            ),
+                                ),
+
+                              
+                                // gabaritoInfoMap.value.gabarito.valor == null
+                                //     ? IconButton(
+                                //         tooltip: 'url do gabarito não anexada',
+                                //         icon: Icon(Icons.link_off),
+                                //         onPressed: null,
+                                //       )
+                                //     : IconButton(
+                                //         tooltip:
+                                //             'Clique para ver a url do gabarito',
+                                //         icon: Icon(Icons.link),
+                                //         onPressed: () {
+                                //           launch(gabaritoInfoMap
+                                //               .value.gabarito.valor);
+                                //         },
+                                //       ),
+                                // gabaritoInfoMap.value.gabarito.resposta == null
+                                //     ? IconButton(
+                                //         tooltip: 'url da resposta não anexada',
+                                //         icon: Icon(Icons.link_off),
+                                //         onPressed: null,
+                                //       )
+                                //     : IconButton(
+                                //         tooltip:
+                                //             'Clique para ver a url da resposta',
+                                //         icon: Icon(Icons.link),
+                                //         onPressed: () {
+                                //           launch(gabaritoInfoMap
+                                //               .value.gabarito.resposta);
+                                //         },
+                                //       ),
                               ],
                             ),
                           ],
@@ -432,38 +473,49 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                     gabaritoInfoMap.key));
                               },
                             ),
-                            Wrap(
+                            Row(
                               children: <Widget>[
-                                gabaritoInfoMap.value.gabarito.valor == null
-                                    ? IconButton(
-                                        tooltip: 'url do gabarito não anexada',
-                                        icon: Icon(Icons.link_off),
-                                        onPressed: null,
-                                      )
-                                    : IconButton(
-                                        tooltip:
-                                            'Clique para ver a url do gabarito',
-                                        icon: Icon(Icons.link),
-                                        onPressed: () {
-                                          launch(gabaritoInfoMap
-                                              .value.gabarito.valor);
-                                        },
-                                      ),
-                                gabaritoInfoMap.value.gabarito.resposta == null
-                                    ? IconButton(
-                                        tooltip: 'url da resposta não anexada',
-                                        icon: Icon(Icons.link_off),
-                                        onPressed: null,
-                                      )
-                                    : IconButton(
-                                        tooltip:
-                                            'Clique para ver a url da resposta',
-                                        icon: Icon(Icons.link),
-                                        onPressed: () {
-                                          launch(gabaritoInfoMap
-                                              .value.gabarito.resposta);
-                                        },
-                                      ),
+                                Expanded(
+                                  flex: 2,
+                                  child: gabaritoInfoMap.value.gabarito.valor ==
+                                          null
+                                      ? ListTile(
+                                          title: Text(
+                                              'Arquivo do gabarito não anexado'),
+                                          trailing: Icon(Icons.link_off),
+                                        )
+                                      : ListTile(
+                                          title: Text(
+                                              'Clique para ver a arquivo do gabarito'),
+                                          trailing: Icon(Icons.link),
+                                          onTap: () {
+                                            launch(gabaritoInfoMap
+                                                .value.gabarito.valor);
+                                          },
+                                        ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child:
+                                      gabaritoInfoMap.value.gabarito.resposta ==
+                                              null
+                                          ? ListTile(
+                                              title: Text(
+                                                  'Arquivo da resposta não anexado'),
+                                              trailing: Icon(Icons.link_off),
+                                            )
+                                          : ListTile(
+                                              title: Text(
+                                                  'Clique para ver o arquivo da resposta'),
+                                              trailing: Icon(Icons.link),
+                                              onTap: () {
+                                                launch(gabaritoInfoMap
+                                                    .value.gabarito.resposta);
+                                              },
+                                            ),
+                                ),
+
+                              
                               ],
                             ),
                           ],
