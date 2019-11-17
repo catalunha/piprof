@@ -1,6 +1,5 @@
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
-import 'package:piprof/modelos/encontro_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';

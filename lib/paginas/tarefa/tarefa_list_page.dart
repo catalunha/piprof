@@ -83,7 +83,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                               child: _ImagemUnica(url: tarefa.aluno?.foto),
                             ),
                             Expanded(
-                              flex: 4,
+                              flex: 5,
                               // child: Container(
                               // padding: EdgeInsets.only(left: 6),
                               child: Column(
@@ -101,7 +101,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   Text(
                                       "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
                                   Text(
-                                      "Tempo: ${tarefa.tempo} h | Tentou: ${tarefa.tentou ?? 0} em ${tarefa.tentativa} tentativa(s)."),
+                                      "Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} tentativas."),
                                   Text("Sit.: $notas"),
                                   Wrap(
                                     children: <Widget>[
@@ -198,7 +198,7 @@ class _ImagemUnica extends StatelessWidget {
           flex: 1,
         ),
         Expanded(
-          flex: 14,
+          flex: 12,
           child: foto,
         ),
         Spacer(

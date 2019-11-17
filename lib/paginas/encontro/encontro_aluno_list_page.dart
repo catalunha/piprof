@@ -71,10 +71,10 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                   var presente = item.value.presente;
                   listaWidget.add(Card(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 2,
-                      ),
+                      // padding: EdgeInsets.symmetric(
+                      //   vertical: 2,
+                      //   horizontal: 2,
+                      // ),
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -154,11 +154,11 @@ class _ImagemUnica extends StatelessWidget {
     }
     return Row(
       children: <Widget>[
-        // Spacer(
-        //   flex: 1,
-        // ),
+        Spacer(
+          flex: 1,
+        ),
         Expanded(
-          flex: 4,
+          flex: 8,
           child: foto,
         ),
         Spacer(

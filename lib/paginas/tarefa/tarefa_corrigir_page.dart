@@ -107,14 +107,15 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                 Text("id: ${tarefa.id}"),
                                 Text("Turma: ${tarefa.turma.nome}"),
                                 Text("Avaliação: ${tarefa.avaliacao.nome}"),
-                                Text("Questão: ${tarefa.questao.numero}"),
+                               Text(
+                                      "Questão: ${tarefa.questao.numero}. Prob.: ${tarefa.problema.nome}"),
                                 Text("Aluno: ${tarefa.aluno.nome}"),
                                 Text(
                                     "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
                                 Text(
-                                    "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
+                                    "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)}. Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
                                 Text(
-                                    "Tempo: ${tarefa.tempo} | Tentativas: ${tarefa.tentativa} | Tentou: ${tarefa.tentou}"),
+                                    "Tempo: ${tarefa.tempo}h. Usou ${tarefa.tentou} das ${tarefa.tentativa} tentativas."),
                                 Text("Notas: $notas"),
                               ],
                             ),
@@ -202,7 +203,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                         child: ListTile(
                           title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                           subtitle: Text(
-                              'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nGab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              'Gab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}'),
                           trailing: gabaritoInfoMap.value.nota
                               ? Icon(
                                   Icons.looks_one,
@@ -226,7 +227,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                         child: ListTile(
                           title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                           subtitle: Text(
-                              'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nGab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              'Gab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}'),
                           trailing: gabaritoInfoMap.value.nota
                               ? Icon(
                                   Icons.text_format,
@@ -250,7 +251,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                         child: ListTile(
                           title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                           subtitle: Text(
-                              'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nGab.:${gabaritoInfoMap.value.gabarito.valor}\nResp.:${gabaritoInfoMap.value.gabarito.resposta}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              'Gabarito:\n${gabaritoInfoMap.value.gabarito.valor}\nResposta:\n${gabaritoInfoMap.value.gabarito.resposta}'),
                           trailing: gabaritoInfoMap.value.nota
                               ? Icon(
                                   Icons.text_fields,
@@ -277,8 +278,6 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                             ListTile(
                               title: Text(
                                   '${gabaritoInfoMap.value.gabarito.nome}'),
-                              subtitle: Text(
-                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.link,
@@ -302,12 +301,13 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                       ? ListTile(
                                           title: Text(
                                               'Link do gabarito não anexado'),
-                                          trailing: Icon(Icons.link_off),
+                                          trailing: Icon(Icons.launch),
+                                          onTap: null,
                                         )
                                       : ListTile(
                                           title: Text(
                                               'Clique para ver a link do gabarito'),
-                                          trailing: Icon(Icons.link),
+                                          trailing: Icon(Icons.launch),
                                           onTap: () {
                                             launch(gabaritoInfoMap
                                                 .value.gabarito.valor);
@@ -322,50 +322,19 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                           ? ListTile(
                                               title: Text(
                                                   'Link da resposta não anexado'),
-                                              trailing: Icon(Icons.link_off),
+                                              trailing: Icon(Icons.launch),
+                                              onTap: null,
                                             )
                                           : ListTile(
                                               title: Text(
                                                   'Clique para ver o link da resposta'),
-                                              trailing: Icon(Icons.link),
+                                              trailing: Icon(Icons.launch),
                                               onTap: () {
                                                 launch(gabaritoInfoMap
                                                     .value.gabarito.resposta);
                                               },
                                             ),
                                 ),
-
-                              
-                                // gabaritoInfoMap.value.gabarito.valor == null
-                                //     ? IconButton(
-                                //         tooltip: 'url do gabarito não anexada',
-                                //         icon: Icon(Icons.link_off),
-                                //         onPressed: null,
-                                //       )
-                                //     : IconButton(
-                                //         tooltip:
-                                //             'Clique para ver a url do gabarito',
-                                //         icon: Icon(Icons.link),
-                                //         onPressed: () {
-                                //           launch(gabaritoInfoMap
-                                //               .value.gabarito.valor);
-                                //         },
-                                //       ),
-                                // gabaritoInfoMap.value.gabarito.resposta == null
-                                //     ? IconButton(
-                                //         tooltip: 'url da resposta não anexada',
-                                //         icon: Icon(Icons.link_off),
-                                //         onPressed: null,
-                                //       )
-                                //     : IconButton(
-                                //         tooltip:
-                                //             'Clique para ver a url da resposta',
-                                //         icon: Icon(Icons.link),
-                                //         onPressed: () {
-                                //           launch(gabaritoInfoMap
-                                //               .value.gabarito.resposta);
-                                //         },
-                                //       ),
                               ],
                             ),
                           ],
@@ -406,8 +375,6 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                             ListTile(
                               title: Text(
                                   '${gabaritoInfoMap.value.gabarito.nome}'),
-                              subtitle: Text(
-                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.image,
@@ -456,9 +423,6 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                             ListTile(
                               title: Text(
                                   '${gabaritoInfoMap.value.gabarito.nome}'),
-                              subtitle: Text(
-                                'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}',
-                              ),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.description,
@@ -482,12 +446,13 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                       ? ListTile(
                                           title: Text(
                                               'Arquivo do gabarito não anexado'),
-                                          trailing: Icon(Icons.link_off),
+                                          trailing: Icon(Icons.launch),
+                                          onTap: null,
                                         )
                                       : ListTile(
                                           title: Text(
                                               'Clique para ver a arquivo do gabarito'),
-                                          trailing: Icon(Icons.link),
+                                          trailing: Icon(Icons.launch),
                                           onTap: () {
                                             launch(gabaritoInfoMap
                                                 .value.gabarito.valor);
@@ -502,20 +467,19 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                           ? ListTile(
                                               title: Text(
                                                   'Arquivo da resposta não anexado'),
-                                              trailing: Icon(Icons.link_off),
+                                              trailing: Icon(Icons.launch),
+                                              onTap: null,
                                             )
                                           : ListTile(
                                               title: Text(
                                                   'Clique para ver o arquivo da resposta'),
-                                              trailing: Icon(Icons.link),
+                                              trailing: Icon(Icons.launch),
                                               onTap: () {
                                                 launch(gabaritoInfoMap
                                                     .value.gabarito.resposta);
                                               },
                                             ),
                                 ),
-
-                              
                               ],
                             ),
                           ],
@@ -544,8 +508,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                             ListTile(
                               title: Text(
                                   '${gabaritoInfoMap.value.gabarito.nome}'),
-                              subtitle: Text(
-                                  'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
+                              // subtitle: Text(
+                              //     'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.add_photo_alternate,
@@ -619,6 +583,7 @@ class _ImagemUnica extends StatelessWidget {
       if (urlOriginal != null) {
         link = ListTile(
           title: Text('Se não visualizar a imagem click aqui para ir ao link.'),
+          trailing: Icon(Icons.launch),
           onTap: () {
             launch(urlOriginal);
           },

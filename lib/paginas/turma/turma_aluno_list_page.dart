@@ -79,25 +79,26 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                                 Wrap(
                                   children: <Widget>[
                                     IconButton(
-                                      tooltip: 'Apagar aluno permanentemente',
+                                      tooltip: 'Retirar aluno desta turma',
                                       icon: Icon(Icons.delete_forever),
                                       onPressed: () {
                                         bloc.eventSink(
                                             DeleteAlunoEvent(aluno.id));
                                       },
                                     ),
-                                    IconButton(
-                                        tooltip: 'Desativar aluno',
-                                        icon: aluno.ativo
-                                            ? Icon(Icons.lock_open)
-                                            : Icon(
-                                                Icons.lock_outline,
-                                                color: Colors.red,
-                                              ),
-                                        onPressed: () {
-                                          bloc.eventSink(
-                                              DesativarAlunoEvent(aluno.id));
-                                        }),
+                                    // IconButton(
+                                    //     tooltip: 'Desativar aluno',
+                                    //     icon: aluno.ativo
+                                    //         ? Icon(Icons.lock_open)
+                                    //         : Icon(
+                                    //             Icons.lock_outline,
+                                    //             color: Colors.red,
+                                    //           ),
+                                    //     onPressed: () {
+                                    //       bloc.eventSink(
+                                    //           DesativarAlunoEvent(aluno.id));
+                                    //     }),
+                                    Text('                 '),
                                     IconButton(
                                       tooltip: 'Gerar notas deste aluno',
                                       icon: Icon(Icons.grid_on),
@@ -151,11 +152,11 @@ class _ImagemUnica extends StatelessWidget {
     }
     return Row(
       children: <Widget>[
-        // Spacer(
-        //   flex: 1,
-        // ),
+        Spacer(
+          flex: 1,
+        ),
         Expanded(
-          flex: 4,
+          flex: 14,
           child: foto,
         ),
         Spacer(

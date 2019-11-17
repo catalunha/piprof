@@ -36,12 +36,11 @@ class GenerateCsvService {
     final futureQuerySnapshot = await Bootstrap.instance.firestore
         .collection(UsuarioModel.collection)
         // .where("ativo", isEqualTo: true)
-        .where("turmaList", arrayContains: turma.id)
+        .where("turma", arrayContains: turma.id)
         .getDocuments();
     List<UsuarioModel> usuarioList = futureQuerySnapshot.documents
         .map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data))
         .toList();
-
 
     planilha.add([
       'foto',
@@ -52,7 +51,6 @@ class GenerateCsvService {
       'cracha',
     ]);
     for (var usuario in usuarioList) {
-      
       planilha.add([
         '=IMAGE("${usuario.foto.url}")',
         '${usuario.nome}',
@@ -67,7 +65,7 @@ class GenerateCsvService {
     String csvData =
         ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
     // print('+++ generateCsvFromUsuarioListDaTurma\n$csvData\n--- generateCsvFromUsuarioListDaTurma');
-    // _saveFileAndOpen(csvData);
+    _saveFileAndOpen(csvData);
   }
 
   static csvAlunoListaNota(UsuarioModel usuario) async {
@@ -81,7 +79,6 @@ class GenerateCsvService {
     planilha.add(['cracha', '${usuario.cracha}']);
     planilha.add(['celular', '${usuario.celular}']);
     planilha.add(['foto', '=IMAGE("${usuario.foto.url}")']);
-
 
     final futureQuerySnapshot = await Bootstrap.instance.firestore
         .collection(TarefaModel.collection)
@@ -102,7 +99,6 @@ class GenerateCsvService {
       'Valor',
     ]);
     for (var tarefa in tarefaList) {
-
       planilha.add([
         '${tarefa.avaliacao.nome}',
         '${tarefa.questao.numero}',
@@ -276,7 +272,7 @@ class GenerateCsvService {
     String csvData =
         ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
     // print('+++ generateCsvFromUsuarioModel\n$csvData\n--- generateCsvFromUsuarioModel');
-    // _saveFileAndOpen(csvData);
+    _saveFileAndOpen(csvData);
   }
 
   static csvEncontro(String turmaID) async {
@@ -305,12 +301,13 @@ class GenerateCsvService {
     }
 
     planilha.add([
+      'turma',
       'inicio',
       'fim',
       'modificado',
       'nome',
       'descricao',
-      'turma',
+      'url',
       'aluno',
       'foto',
       'celular',
@@ -318,12 +315,17 @@ class GenerateCsvService {
       'email',
     ]);
     for (var encontro in encontroList) {
-      planilha.add([
+      var base = [
+        '${encontro.turma.nome}',
         '${encontro.inicio}',
         '${encontro.fim}',
         '${encontro.modificado}',
         '${encontro.nome}',
         '${encontro.descricao}',
+        '=HYPERLINK("${encontro.url}","Link para o arquivo")'
+      ];
+      planilha.add([
+        ...base,
         '-',
         '-',
         '-',
@@ -332,11 +334,7 @@ class GenerateCsvService {
       ]);
       for (var aluno in encontro.aluno) {
         planilha.add([
-          '${encontro.inicio}',
-          '${encontro.fim}',
-          '${encontro.modificado}',
-          '${encontro.nome}',
-          '${encontro.descricao}',
+          ...base,
           '${alunoMap[aluno].nome}',
           '=IMAGE("${alunoMap[aluno].foto.url}")',
           '${alunoMap[aluno].celular}',
@@ -348,7 +346,7 @@ class GenerateCsvService {
 
     String csvData =
         ListToCsvConverter().convert(planilha, fieldDelimiter: ';');
-    print('+++ generateCsvFromEncontro\n$csvData\n--- generateCsvFromEncontro');
+    // print('+++ generateCsvFromEncontro\n$csvData\n--- generateCsvFromEncontro');
     _saveFileAndOpen(csvData);
   }
 
@@ -644,34 +642,34 @@ class GenerateCsvService {
           ...base1,
           ...base2,
           'variavel_nome',
-              '${variavel.value.nome}',
+          '${variavel.value.nome}',
         ]);
         planilha.add([
           ...base1,
           ...base2,
           'variavel_tipo',
-              '${variavel.value.tipo}',
+          '${variavel.value.tipo}',
         ]);
         if (variavel.value.tipo == 'url') {
           planilha.add([
             ...base1,
             ...base2,
             'variavel_valor',
-                '=HYPERLINK("${variavel.value.valor}";"Link para a variavel")',
+            '=HYPERLINK("${variavel.value.valor}";"Link para a variavel")',
           ]);
         } else if (variavel.value.tipo == 'urlimagem') {
           planilha.add([
             ...base1,
             ...base2,
             'variavel_valor',
-                '=IMAGE("${variavel.value.valor}")',
+            '=IMAGE("${variavel.value.valor}")',
           ]);
         } else {
           planilha.add([
             ...base1,
             ...base2,
             'variavel_valor',
-                '${variavel.value.valor}',
+            '${variavel.value.valor}',
           ]);
         }
       }
@@ -683,38 +681,39 @@ class GenerateCsvService {
       gabaritoMap = gabaritoOrderBy.toMap();
       String nota = '=';
       for (var gabarito in gabaritoMap.entries) {
-         planilha.add([
+        planilha.add([
           ...base1,
           ...base2,
           'gabarito_nome',
-              '${gabarito.value.nome}',
+          '${gabarito.value.nome}',
         ]);
         planilha.add([
           ...base1,
           ...base2,
           'gabarito_tipo',
-              '${gabarito.value.tipo}',
+          '${gabarito.value.tipo}',
         ]);
-        if (gabarito.value.tipo == 'url'||gabarito.value.tipo == 'arquivo') {
+        if (gabarito.value.tipo == 'url' || gabarito.value.tipo == 'arquivo') {
           planilha.add([
             ...base1,
             ...base2,
             'gabarito_valor',
-                '=HYPERLINK("${gabarito.value.valor}";"Link para a gabarito")',
+            '=HYPERLINK("${gabarito.value.valor}";"Link para a gabarito")',
           ]);
-        } else if (gabarito.value.tipo == 'urlimagem'||gabarito.value.tipo == 'imagem') {
+        } else if (gabarito.value.tipo == 'urlimagem' ||
+            gabarito.value.tipo == 'imagem') {
           planilha.add([
             ...base1,
             ...base2,
             'gabarito_valor',
-                '=IMAGE("${gabarito.value.valor}")',
+            '=IMAGE("${gabarito.value.valor}")',
           ]);
         } else {
           planilha.add([
             ...base1,
             ...base2,
             'gabarito_valor',
-                '${gabarito.value.valor}',
+            '${gabarito.value.valor}',
           ]);
         }
       }
@@ -749,11 +748,12 @@ class GenerateCsvService {
     await OpenFile.open(
       fileDirectory + filename,
     );
+
     // await OpenFile.open(fileDirectory + filename,
     //     type:
     //         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    // await OpenFile.open(fileDirectory + filename,
-    //     type:
-    //         "application/vnd.ms-excel");
+  //   await OpenFile.open(fileDirectory + filename,
+  //       type:
+  //           "application/vnd.ms-excel");
   }
 }

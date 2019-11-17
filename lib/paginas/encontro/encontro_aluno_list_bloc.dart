@@ -1,5 +1,4 @@
 import 'package:piprof/modelos/encontro_model.dart';
-import 'package:piprof/modelos/turma_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -106,7 +105,7 @@ class EncontroAlunoListBloc {
     }
 
     if (event is SaveEvent) {
-      var docRef = await _firestore
+      var docRef = _firestore
           .collection(EncontroModel.collection)
           .document(_state.encontro.id);
       List<dynamic> aluno = List<dynamic>();

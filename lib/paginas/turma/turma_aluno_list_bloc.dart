@@ -1,3 +1,4 @@
+import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
@@ -100,28 +101,31 @@ class TurmaAlunoListBloc {
       print('Gerando csv com notas deste alunoID: ${event.alunoID}');
     }
     if (event is DesativarAlunoEvent) {
-      bool statusAtual;
-      for (var aluno in _state.turmaAlunoList) {
-        if (aluno.id == event.alunoID) {
-          statusAtual = aluno.ativo;
-        }
-      }
-      final docRef = _firestore
-          .collection(UsuarioModel.collection)
-          .document(event.alunoID);
-      await docRef.setData({'ativo': !statusAtual}, merge: true);
+      // bool statusAtual;
+      // for (var aluno in _state.turmaAlunoList) {
+      //   if (aluno.id == event.alunoID) {
+      //     statusAtual = aluno.ativo;
+      //   }
+      // }
+      // final docRef = _firestore
+      //     .collection(UsuarioModel.collection)
+      //     .document(event.alunoID);
+      // await docRef.setData({'ativo': !statusAtual}, merge: true);
     }
     if (event is DeleteAlunoEvent) {
-      bool statusAtual;
-      for (var aluno in _state.turmaAlunoList) {
-        if (aluno.id == event.alunoID) {
-          statusAtual = aluno.ativo;
-        }
-      }
-      final docRef = _firestore
-          .collection(UsuarioModel.collection)
-          .document(event.alunoID);
-      await docRef.delete();
+     
+      // final docRef = _firestore
+      //     .collection(UsuarioModel.collection)
+      //     .document(event.alunoID);
+      // await docRef.delete();
+
+     var docRef = _firestore
+            .collection(UsuarioModel.collection)
+            .document(event.alunoID);
+        await docRef.setData({
+          "turma": Bootstrap.instance.fieldValue.arrayRemove([_state.turma.id]),
+        }, merge: true);
+
     }
     if (event is SaveEvent) {}
 

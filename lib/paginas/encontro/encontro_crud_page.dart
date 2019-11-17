@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/delete_documento.dart';
@@ -274,7 +273,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Link para arquivo:',
+                    'Link para arquivo com detalhes deste encontro:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

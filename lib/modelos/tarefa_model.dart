@@ -1,4 +1,3 @@
-import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/base_model.dart';
 import 'package:piprof/modelos/questao_model.dart';

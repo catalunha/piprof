@@ -108,7 +108,7 @@ class _AvaliacaoMarcarPageState extends State<AvaliacaoMarcarPage> {
                             child: _ImagemUnica(url: aluno?.foto?.url),
                           ),
                           Expanded(
-                            flex: 4,
+                            flex: 5,
                             // child: Container(
                             // padding: EdgeInsets.only(left: 6),
                             child: Column(
@@ -183,11 +183,11 @@ class _ImagemUnica extends StatelessWidget {
     }
     return Row(
       children: <Widget>[
-        // Spacer(
-        //   flex: 1,
-        // ),
+        Spacer(
+          flex: 1,
+        ),
         Expanded(
-          flex: 4,
+          flex: 14,
           child: foto,
         ),
         Spacer(
