@@ -218,6 +218,20 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
+          Widget msgData = Text('');
+          if (snapshot.data.inicioEncontro != null &&
+              snapshot.data.fimEncontro != null &&
+              snapshot.data.inicioEncontro.isAfter(snapshot.data.fimEncontro)) {
+            msgData = Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Center(
+                child: Text(
+                  'Data e hora final deve ser após a inicial.',
+                  style: TextStyle(fontSize: 15, color: Colors.red),
+                ),
+              ),
+            );
+          }
           return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
@@ -238,6 +252,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
                   )),
               Padding(
                   padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
+              msgData,
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(

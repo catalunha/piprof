@@ -271,7 +271,7 @@ class PainelTipoState extends State<PainelTipo> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Radio(
-                      value: 'imagem',
+                      value: 'urlimagem',
                       groupValue: snapshot.data?.tipo,
                       onChanged: (radioValue) {
                         bloc.eventSink(UpdateTipoEvent(radioValue));

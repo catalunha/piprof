@@ -119,6 +119,7 @@ class QuestaoListBloc {
           final tarefaDocRef =
               _firestore.collection(TarefaModel.collection).document(tarefa.id);
           await tarefaDocRef.setData({
+            'aberta': true,
             'tentou': 0,
             'iniciou': null,
             'enviou': null,

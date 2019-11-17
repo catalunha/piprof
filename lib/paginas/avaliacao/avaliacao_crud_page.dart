@@ -91,8 +91,8 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (snapshot.data.inicioEncontro != null) {
-                return Text('${snapshot.data.inicioEncontro}');
+              if (snapshot.data.inicioAvaliacao != null) {
+                return Text('${snapshot.data.inicioAvaliacao}');
               } else {
                 return Text('?');
               }
@@ -163,8 +163,8 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (snapshot.data.fimEncontro != null) {
-                return Text('${snapshot.data.fimEncontro}');
+              if (snapshot.data.fimAvaliacao != null) {
+                return Text('${snapshot.data.fimAvaliacao}');
               } else {
                 return Text('?');
               }
@@ -218,6 +218,20 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
+          Widget msgData = Text('');
+          if (snapshot.data.inicioAvaliacao != null &&
+              snapshot.data.fimAvaliacao != null &&
+              snapshot.data.inicioAvaliacao.isAfter(snapshot.data.fimAvaliacao)) {
+            msgData = Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Center(
+                child: Text(
+                  'Data e hora final deve ser após a inicial.',
+                  style: TextStyle(fontSize: 15, color: Colors.red),
+                ),
+              ),
+            );
+          }
           return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
@@ -238,6 +252,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                   )),
               Padding(
                   padding: EdgeInsets.all(1.0), child: _fimEncontro(context)),
+              msgData,
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -284,7 +299,8 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
                         elevation: 5,
                         child: ListTile(
                           selected: true,
-                          title: Text("Você ainda não pode aplicar esta avaliação pois faltam alunos ou questões !"),
+                          title: Text(
+                              "Você ainda não pode aplicar esta avaliação pois faltam alunos ou questões !"),
                           onTap: () {},
                         ),
                       ),

@@ -95,7 +95,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                   Text("Avaliação: ${tarefa.avaliacao.nome}"),
                                   Text(
                                       "Questão: ${tarefa.questao.numero}. Prob.:${tarefa.problema.nome}"),
-                                  Text("Simulacao: ${tarefa.simulacao}"),
+                                  Text("Simulacao: ${tarefa.simulacao.nome}"),
                                   Text(
                                       "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
                                   Text(
@@ -181,7 +181,6 @@ class _ImagemUnica extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('_ImagemUnica: $url');
     Widget foto;
     if (url == null) {
       foto = Center(child: Text('Sem imagem.'));

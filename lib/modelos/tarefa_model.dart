@@ -28,7 +28,7 @@ class TarefaModel extends FirestoreModel {
   String questaoNota;
   bool aberta;
   ProblemaFk problema;
-  String simulacao;
+  SimulacaoFk simulacao;
   Map<String, Variavel> variavel;
   Map<String, Gabarito> gabarito;
 
@@ -79,6 +79,9 @@ class TarefaModel extends FirestoreModel {
     aluno = map.containsKey('aluno') && map['aluno'] != null
         ? UsuarioFk.fromMap(map['aluno'])
         : null;
+    simulacao = map.containsKey('simulacao') && map['simulacao'] != null
+        ? SimulacaoFk.fromMap(map['simulacao'])
+        : null;
 
     modificado = map.containsKey('modificado') && map['modificado'] != null
         ? DateTime.fromMillisecondsSinceEpoch(
@@ -110,7 +113,6 @@ class TarefaModel extends FirestoreModel {
     problema = map.containsKey('problema') && map['problema'] != null
         ? ProblemaFk.fromMap(map['problema'])
         : null;
-    if (map.containsKey('simulacao')) simulacao = map['simulacao'];
 
     if (map["variavel"] is Map) {
       variavel = Map<String, Variavel>();
@@ -164,8 +166,9 @@ class TarefaModel extends FirestoreModel {
     if (this.problema != null) {
       data['problema'] = this.problema.toMap();
     }
-
-    if (simulacao != null) data['simulacao'] = this.simulacao;
+    if (this.simulacao != null) {
+      data['simulacao'] = this.simulacao.toMap();
+    }
 
     if (variavel != null && variavel is Map) {
       data["variavel"] = Map<String, dynamic>();

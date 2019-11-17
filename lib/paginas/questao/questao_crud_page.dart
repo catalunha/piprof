@@ -92,8 +92,8 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (snapshot.data.inicioAvaliacao != null) {
-                return Text('${snapshot.data.inicioAvaliacao}');
+              if (snapshot.data.inicioQuestao != null) {
+                return Text('${snapshot.data.inicioQuestao}');
               } else {
                 return Text('?');
               }
@@ -164,8 +164,8 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (snapshot.data.fimAvaliacao != null) {
-                return Text('${snapshot.data.fimAvaliacao}');
+              if (snapshot.data.fimQuestao != null) {
+                return Text('${snapshot.data.fimQuestao}');
               } else {
                 return Text('?');
               }
@@ -219,6 +219,21 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
+          Widget msgData = Text('');
+          if (snapshot.data.inicioQuestao != null &&
+              snapshot.data.fimQuestao != null && snapshot.data.inicioQuestao
+                .isAfter(snapshot.data.fimQuestao)) {
+              msgData = Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Center(
+                  child: Text(
+                    'Data e hora final deve ser após a inicial.',
+                    style: TextStyle(fontSize: 15, color: Colors.red),
+                  ),
+                ),
+              );
+            
+          }
           return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
@@ -246,6 +261,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
                   )),
               Padding(
                   padding: EdgeInsets.all(1.0), child: _fimAvaliacao(context)),
+              msgData,
               Divider(),
               Padding(
                   padding: EdgeInsets.all(5.0),
@@ -375,8 +391,8 @@ class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
           keyboardType: TextInputType.numberWithOptions(decimal: false),
           maxLines: null,
           decoration: InputDecoration(
-            // border: OutlineInputBorder(),
-          ),
+              // border: OutlineInputBorder(),
+              ),
           controller: _textFieldController,
           onChanged: (texto) {
             bloc.eventSink(UpdateNumberFieldEvent(campo, texto));

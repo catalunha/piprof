@@ -36,7 +36,8 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
         ),
         body: StreamBuilder<TurmaAlunoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -57,11 +58,13 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
-                            flex: 2,
-                            child: _ImagemUnica(url: aluno?.foto?.url),
-                          ),
+                              flex: 2,
+                              child: Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: _ImagemUnica(url: aluno?.foto?.url),
+                              )),
                           Expanded(
-                            flex: 4,
+                            flex: 5,
                             // child: Container(
                             // padding: EdgeInsets.only(left: 6),
                             child: Column(
@@ -69,8 +72,8 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                               children: <Widget>[
                                 Text("Nome: ${aluno.nome}"),
                                 Text("matricula: ${aluno.matricula}"),
-                                Text("Crachá: ${aluno.cracha??'?'}"),
-                                Text("Celular: ${aluno.celular??'?'}"),
+                                Text("Crachá: ${aluno.cracha ?? '?'}"),
+                                Text("Celular: ${aluno.celular ?? '?'}"),
                                 Text("email: ${aluno.email}"),
                                 Text("id: ${aluno.id}"),
                                 Wrap(
@@ -79,7 +82,8 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                                       tooltip: 'Apagar aluno permanentemente',
                                       icon: Icon(Icons.delete_forever),
                                       onPressed: () {
-                                        bloc.eventSink(DeleteAlunoEvent(aluno.id));
+                                        bloc.eventSink(
+                                            DeleteAlunoEvent(aluno.id));
                                       },
                                     ),
                                     IconButton(
@@ -91,13 +95,15 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                                                 color: Colors.red,
                                               ),
                                         onPressed: () {
-                                          bloc.eventSink(DesativarAlunoEvent(aluno.id));
+                                          bloc.eventSink(
+                                              DesativarAlunoEvent(aluno.id));
                                         }),
                                     IconButton(
                                       tooltip: 'Gerar notas deste aluno',
                                       icon: Icon(Icons.grid_on),
                                       onPressed: () {
-                                        GenerateCsvService.csvAlunoListaNota(aluno);
+                                        GenerateCsvService.csvAlunoListaNota(
+                                            aluno);
                                       },
                                     ),
                                   ],

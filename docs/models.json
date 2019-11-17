@@ -9,11 +9,10 @@
     "hash": "gerado pelo dart na leitura local do arquivo",
     "path": "path local do arquivo no celular do usuario.",
     "storagePath": "obtida do storage após upload",
-    "updateCollection": {
+    "update": {
       "collection": "collectionX",
       "document": "documentIDID. Id do documento nesta coleção",
-      "field": "campo nesta coleção",
-      "observacao": "para atualizacao deste campo"
+      "field": "campo nesta coleção"
     },
     "upload": "true: function já pode iniciar upload e atualiza os dados de updateCollection no destino. false: functions nao fez upload aguardando pedido do usuario",
     "url": "obtida do storage após upload",
@@ -174,48 +173,48 @@
         "valor": ""
       }
     },
-    "pedese": {
+    "gabarito": {
       "uid1": {
         "ordem": 1,
         "nome": "a",
         "tipo": "numero",
-        "gabarito": ""
+        "valor": ""
       },
       "uid2": {
         "ordem": 2,
         "nome": "b",
         "tipo": "palavra",
-        "gabarito": ""
+        "valor": ""
       },
       "uid3": {
         "ordem": 3,
         "nome": "c",
         "tipo": "texto",
-        "gabarito": ""
+        "valor": ""
       },
       "uid4": {
         "ordem": 4,
         "nome": "d",
         "tipo": "url",
-        "gabarito": ""
+        "valor": ""
       },
       "uid5": {
         "ordem": 5,
         "nome": "f",
         "tipo": "urlimagem",
-        "gabarito": ""
+        "valor": ""
       },
       "uid6": {
         "ordem": 6,
         "nome": "e",
         "tipo": "arquivo",
-        "gabarito": ""
+        "valor": ""
       },
       "uid7": {
         "ordem": 7,
         "nome": "e",
         "tipo": "imagem",
-        "gabarito": ""
+        "valor": ""
       }
     }
   },
@@ -350,12 +349,12 @@
         "valor": ""
       }
     },
-    "pedese": {
+    "gabarito": {
       "uid1": {
         "nome": "a",
         "ordem": 1,
         "tipo": "numero",
-        "gabarito": "valor",
+        "valor": "valor",
         "resposta": "valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
@@ -363,7 +362,7 @@
         "nome": "b",
         "ordem": 2,
         "tipo": "palavra",
-        "gabarito": "valor",
+        "valor": "valor",
         "resposta": "valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
@@ -371,7 +370,7 @@
         "nome": "c",
         "ordem": 3,
         "tipo": "texto",
-        "gabarito": "valor",
+        "valor": "valor",
         "resposta": "valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
@@ -379,7 +378,7 @@
         "nome": "d",
         "ordem": 4,
         "tipo": "url",
-        "gabarito": "url valor",
+        "valor": "url valor",
         "resposta": "url null || valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
@@ -387,7 +386,7 @@
         "nome": "d",
         "ordem": 5,
         "tipo": "urlimagem",
-        "gabarito": "url valor",
+        "valor": "url valor",
         "resposta": "url null || valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado."
       },
@@ -395,20 +394,20 @@
         "nome": "e",
         "ordem": 6,
         "tipo": "arquivo",
-        "gabarito": "url valor",
+        "valor": "url valor",
         "resposta": "url null || valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
-        "gabaritoUploadID": "Upload/uploadID",
+        "valorUploadID": "Upload/uploadID",
         "respostaUploadID": "Upload/uploadID"
       },
       "uid7": {
         "nome": "f",
         "ordem": 7,
         "tipo": "imagem",
-        "gabarito": "url valor",
+        "valor": "url valor",
         "resposta": "url null || valor",
         "nota": "numero. null= nao corrigido. 1=corrigido como aceitavel ou certo. 0=corrigido e não aceitavel ou errado.",
-        "gabaritoUploadID": "Upload/uploadID",
+        "valorUploadID": "Upload/uploadID",
         "respostaUploadID": "Upload/uploadID"
       }
     },

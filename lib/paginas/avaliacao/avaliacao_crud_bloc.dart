@@ -72,15 +72,15 @@ class AvaliacaoCRUDBlocState {
   String descricao;
   String nota;
   bool aplicar;
-  DateTime inicioEncontro;
-  DateTime fimEncontro;
+  DateTime inicioAvaliacao;
+  DateTime fimAvaliacao;
   DateTime dataInicio;
   TimeOfDay horaInicio;
   DateTime dataFim;
   TimeOfDay horaFim;
   void updateState() {
-    inicioEncontro = avaliacao.inicio;
-    fimEncontro = avaliacao.fim;
+    inicioAvaliacao = avaliacao.inicio;
+    fimAvaliacao = avaliacao.fim;
     nome = avaliacao.nome;
     descricao = avaliacao.descricao;
     nota = avaliacao.nota;
@@ -122,12 +122,17 @@ class AvaliacaoCRUDBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.inicioEncontro == null) {
+    if (_state.inicioAvaliacao == null) {
       _state.isDataValid = false;
     }
-    if (_state.fimEncontro == null) {
+    if (_state.fimAvaliacao == null) {
       _state.isDataValid = false;
     }
+    if (_state.inicioAvaliacao != null &&
+        _state.fimAvaliacao != null && _state.inicioAvaliacao.isAfter(_state.fimAvaliacao)) {
+      _state.isDataValid = false;
+    }
+
     if (_state.nome == null) {
       _state.isDataValid = false;
     }
@@ -169,29 +174,29 @@ class AvaliacaoCRUDBloc {
       if (event.hora != null) {
         _state.horaInicio = event.hora;
       }
-      if (_state.inicioEncontro == null && event.data != null) {
+      if (_state.inicioAvaliacao == null && event.data != null) {
         _state.horaInicio = TimeOfDay.now();
       }
-      if (_state.inicioEncontro == null && event.hora != null) {
+      if (_state.inicioAvaliacao == null && event.hora != null) {
         _state.dataInicio = DateTime.now();
       }
       final newDate = DateTime(
           _state.dataInicio != null
               ? _state.dataInicio.year
-              : _state.inicioEncontro.year,
+              : _state.inicioAvaliacao.year,
           _state.dataInicio != null
               ? _state.dataInicio.month
-              : _state.inicioEncontro.month,
+              : _state.inicioAvaliacao.month,
           _state.dataInicio != null
               ? _state.dataInicio.day
-              : _state.inicioEncontro.day,
+              : _state.inicioAvaliacao.day,
           _state.horaInicio != null
               ? _state.horaInicio.hour
-              : _state.inicioEncontro.hour,
+              : _state.inicioAvaliacao.hour,
           _state.horaInicio != null
               ? _state.horaInicio.minute
-              : _state.inicioEncontro.minute);
-      _state.inicioEncontro = newDate;
+              : _state.inicioAvaliacao.minute);
+      _state.inicioAvaliacao = newDate;
     }
 
     if (event is UpdateDataFimEvent) {
@@ -201,27 +206,27 @@ class AvaliacaoCRUDBloc {
       if (event.hora != null) {
         _state.horaFim = event.hora;
       }
-      if (_state.fimEncontro == null && event.data != null) {
+      if (_state.fimAvaliacao == null && event.data != null) {
         _state.horaFim = TimeOfDay.now();
       }
-      if (_state.fimEncontro == null && event.hora != null) {
+      if (_state.fimAvaliacao == null && event.hora != null) {
         _state.dataFim = DateTime.now();
       }
       final newDate = DateTime(
           _state.dataFim != null
               ? _state.dataFim.year
-              : _state.fimEncontro.year,
+              : _state.fimAvaliacao.year,
           _state.dataFim != null
               ? _state.dataFim.month
-              : _state.fimEncontro.month,
-          _state.dataFim != null ? _state.dataFim.day : _state.fimEncontro.day,
+              : _state.fimAvaliacao.month,
+          _state.dataFim != null ? _state.dataFim.day : _state.fimAvaliacao.day,
           _state.horaFim != null
               ? _state.horaFim.hour
-              : _state.fimEncontro.hour,
+              : _state.fimAvaliacao.hour,
           _state.horaFim != null
               ? _state.horaFim.minute
-              : _state.fimEncontro.minute);
-      _state.fimEncontro = newDate;
+              : _state.fimAvaliacao.minute);
+      _state.fimAvaliacao = newDate;
     }
 
     if (event is UpdateTextFieldEvent) {
@@ -252,8 +257,8 @@ class AvaliacaoCRUDBloc {
           .document(_state.avaliacaoID);
 
       AvaliacaoModel avaliacaoUpdate = AvaliacaoModel(
-        inicio: _state.inicioEncontro,
-        fim: _state.fimEncontro,
+        inicio: _state.inicioAvaliacao,
+        fim: _state.fimAvaliacao,
         nome: _state.nome,
         descricao: _state.descricao,
         nota: _state.nota,

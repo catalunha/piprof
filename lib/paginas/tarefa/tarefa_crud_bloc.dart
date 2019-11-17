@@ -98,6 +98,11 @@ class TarefaCRUDBloc {
     if (_state.fimAvaliacao == null) {
       _state.isDataValid = false;
     }
+    if (_state.inicioAvaliacao != null &&
+        _state.fimAvaliacao != null && _state.inicioAvaliacao.isAfter(_state.fimAvaliacao)) {
+      _state.isDataValid = false;
+    }
+
     if (_state.tempo == null || _state.tempo.isEmpty) {
       _state.isDataValid = false;
     }

@@ -407,7 +407,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           url:
               'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a',
         ),
-        simulacao: 'simulacao01',
+        // simulacao: 'simulacao01',
         variavel: {
           'var01': Variavel(
             nome: 'v1',
@@ -484,7 +484,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           url:
               'https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/texto_base.pdf?alt=media&token=617247d1-e4ae-452f-b79a-16a964a6745a',
         ),
-        simulacao: 'simulacao01',
+        // simulacao: 'simulacao01',
         variavel: {
           'var01': Variavel(
             nome: 'N1',

@@ -116,10 +116,15 @@ class EncontroCRUDBloc {
     if (_state.fimEncontro == null) {
       _state.isDataValid = false;
     }
-    if (_state.nome == null) {
+    if (_state.inicioEncontro != null &&
+        _state.fimEncontro != null &&
+        _state.inicioEncontro.isAfter(_state.fimEncontro)) {
       _state.isDataValid = false;
     }
 
+    if (_state.nome == null) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(EncontroCRUDBlocEvent event) async {

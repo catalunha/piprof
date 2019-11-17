@@ -181,27 +181,27 @@ class FotoUsuario extends StatelessWidget {
                     });
                     print('localPath: $localPath');
                     bloc.eventSink(UpdateFotoEvent(localPath));
-                    if (localPath != null) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                          elevation: 5,
-                          child: ListTile(
-                            selected: true,
-                            title: Text(
-                                "Você apenas selecionou a foto.\nApós salvar este perfil é necessário enviar a foto em upload de arquivos."),
-                            onTap: () {},
-                          ),
-                        ),
-                      );
-                    }
+                    // if (localPath != null) {
+                    //   showDialog(
+                    //     context: context,
+                    //     builder: (context) => Dialog(
+                    //       elevation: 5,
+                    //       child: ListTile(
+                    //         selected: true,
+                    //         title: Text(
+                    //             "Você apenas selecionou a foto.\nApós salvar este perfil é necessário enviar a foto em upload de arquivos."),
+                    //         onTap: () {},
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
                   },
                 ),
               ]),
-            _ImagemUnica(
-                fotoUploadID: snapshot.data?.fotoUploadID,
-                fotoUrl: snapshot.data?.fotoUrl,
-                localPath: snapshot.data?.localPath),
+            _ImagemPerfilUpload(
+                uploadID: snapshot.data?.fotoUploadID,
+                url: snapshot.data?.fotoUrl,
+                path: snapshot.data?.localPath),
           ],
         );
       },
@@ -221,60 +221,74 @@ class FotoUsuario extends StatelessWidget {
   }
 }
 
-class _ImagemUnica extends StatelessWidget {
-  final String fotoUploadID;
-  final String fotoUrl;
-  final String localPath;
+class _ImagemPerfilUpload extends StatelessWidget {
+  final String uploadID;
+  final String url;
+  final String path;
 
-  const _ImagemUnica({this.fotoUploadID, this.fotoUrl, this.localPath});
+  const _ImagemPerfilUpload({this.uploadID, this.url, this.path});
 
   @override
   Widget build(BuildContext context) {
-    print('localPath: $localPath');
-    Widget foto;
-    Widget enviar = Text('');
-    if (fotoUploadID != null && fotoUrl == null) {
-      // enviar = Center(child: Text('Você não enviou a última imagem selecionada. Vá para o menu Upload de Arquivos.'));
-      enviar = Container(
-          child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Center(
-          child: Text(
-              'Você não enviou esta última imagem selecionada. Vá para o menu Upload de Arquivos após salvar este perfil.'),
-        ),
-      ));
-    }
-    if (fotoUrl == null && localPath == null) {
-      foto = Center(child: Text('Sem imagem selecionada.'));
-    } else if (fotoUrl != null) {
-      foto = Container(
-          child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Image.network(fotoUrl),
-      ));
-    } else {
-      foto = Container(
-          // color: Colors.yellow,
-          child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Image.asset(localPath),
-      ));
-    }
+    Widget foto = Text('?');
+    Widget msg = Text('');
 
+    if (path == null && url == null) {
+      foto = Text('Você ainda não enviou uma foto de perfil.');
+    }
+    if (path != null && url == null) {
+      try {
+        foto = Container(
+            // color: Colors.yellow,
+            child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Image.asset(path),
+        ));
+      } on Exception {
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      } catch (e) {
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      }
+      msg = Text(
+          'Esta foto precisa ser enviada. Salve este edição de perfil e acesse o menu upload de arquivos.');
+    }
+    if (url != null && uploadID != null) {
+      try {
+        foto = Container(
+            child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Image.network(url),
+        ));
+      } on Exception {
+        print('Exception');
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      } catch (e) {
+        print('catch');
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      }
+    }
     return Column(
       children: <Widget>[
-        enviar,
+        msg,
         Row(
           children: <Widget>[
             Spacer(
-              flex: 3,
+              flex: 1,
             ),
             Expanded(
-              flex: 4,
+              flex: 8,
               child: foto,
             ),
             Spacer(
-              flex: 3,
+              flex: 1,
             ),
           ],
         ),

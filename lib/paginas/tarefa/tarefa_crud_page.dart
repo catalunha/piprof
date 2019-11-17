@@ -228,6 +228,20 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               child: CircularProgressIndicator(),
             );
           }
+                    Widget msgData = Text('');
+          if (snapshot.data.inicioAvaliacao != null &&
+              snapshot.data.fimAvaliacao != null &&
+              snapshot.data.inicioAvaliacao.isAfter(snapshot.data.fimAvaliacao)) {
+            msgData = Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Center(
+                child: Text(
+                  'Data e hora final deve ser após a inicial.',
+                  style: TextStyle(fontSize: 15, color: Colors.red),
+                ),
+              ),
+            );
+          }
           return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
@@ -260,6 +274,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
                 padding: EdgeInsets.all(1.0),
                 child: _fimAvaliacao(context),
               ),
+              msgData,
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(

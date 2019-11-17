@@ -78,15 +78,15 @@ class QuestaoCRUDBlocState {
   String tentativa;
   String erroRelativo;
   String nota;
-  DateTime inicioAvaliacao;
-  DateTime fimAvaliacao;
+  DateTime inicioQuestao;
+  DateTime fimQuestao;
   DateTime dataInicio;
   TimeOfDay horaInicio;
   DateTime dataFim;
   TimeOfDay horaFim;
   void updateState() {
-    inicioAvaliacao = questao.inicio;
-    fimAvaliacao = questao.fim;
+    inicioQuestao = questao.inicio;
+    fimQuestao = questao.fim;
     tempo = questao.tempo.toString();
     tentativa = questao.tentativa.toString();
     erroRelativo = questao.erroRelativo.toString();
@@ -96,8 +96,8 @@ class QuestaoCRUDBlocState {
   }
 
   void updateStateComAvaliacao() {
-    inicioAvaliacao = avaliacao.inicio;
-    fimAvaliacao = avaliacao.fim;
+    inicioQuestao = avaliacao.inicio;
+    fimQuestao = avaliacao.fim;
     tempo = '2';
     tentativa = '3';
     erroRelativo = '10';
@@ -139,12 +139,18 @@ class QuestaoCRUDBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.inicioAvaliacao == null) {
+    if (_state.inicioQuestao == null) {
       _state.isDataValid = false;
     }
-    if (_state.fimAvaliacao == null) {
+    if (_state.fimQuestao == null) {
       _state.isDataValid = false;
     }
+    if (_state.inicioQuestao != null &&
+        _state.fimQuestao != null &&
+        _state.inicioQuestao.isAfter(_state.fimQuestao)) {
+      _state.isDataValid = false;
+    }
+
     if (_state.tempo == null || _state.tempo.isEmpty) {
       _state.isDataValid = false;
     }
@@ -210,29 +216,29 @@ class QuestaoCRUDBloc {
       if (event.hora != null) {
         _state.horaInicio = event.hora;
       }
-      if (_state.inicioAvaliacao == null && event.data != null) {
+      if (_state.inicioQuestao == null && event.data != null) {
         _state.horaInicio = TimeOfDay.now();
       }
-      if (_state.inicioAvaliacao == null && event.hora != null) {
+      if (_state.inicioQuestao == null && event.hora != null) {
         _state.dataInicio = DateTime.now();
       }
       final newDate = DateTime(
           _state.dataInicio != null
               ? _state.dataInicio.year
-              : _state.inicioAvaliacao.year,
+              : _state.inicioQuestao.year,
           _state.dataInicio != null
               ? _state.dataInicio.month
-              : _state.inicioAvaliacao.month,
+              : _state.inicioQuestao.month,
           _state.dataInicio != null
               ? _state.dataInicio.day
-              : _state.inicioAvaliacao.day,
+              : _state.inicioQuestao.day,
           _state.horaInicio != null
               ? _state.horaInicio.hour
-              : _state.inicioAvaliacao.hour,
+              : _state.inicioQuestao.hour,
           _state.horaInicio != null
               ? _state.horaInicio.minute
-              : _state.inicioAvaliacao.minute);
-      _state.inicioAvaliacao = newDate;
+              : _state.inicioQuestao.minute);
+      _state.inicioQuestao = newDate;
     }
 
     if (event is UpdateDataFimEvent) {
@@ -242,27 +248,23 @@ class QuestaoCRUDBloc {
       if (event.hora != null) {
         _state.horaFim = event.hora;
       }
-      if (_state.fimAvaliacao == null && event.data != null) {
+      if (_state.fimQuestao == null && event.data != null) {
         _state.horaFim = TimeOfDay.now();
       }
-      if (_state.fimAvaliacao == null && event.hora != null) {
+      if (_state.fimQuestao == null && event.hora != null) {
         _state.dataFim = DateTime.now();
       }
       final newDate = DateTime(
-          _state.dataFim != null
-              ? _state.dataFim.year
-              : _state.fimAvaliacao.year,
+          _state.dataFim != null ? _state.dataFim.year : _state.fimQuestao.year,
           _state.dataFim != null
               ? _state.dataFim.month
-              : _state.fimAvaliacao.month,
-          _state.dataFim != null ? _state.dataFim.day : _state.fimAvaliacao.day,
-          _state.horaFim != null
-              ? _state.horaFim.hour
-              : _state.fimAvaliacao.hour,
+              : _state.fimQuestao.month,
+          _state.dataFim != null ? _state.dataFim.day : _state.fimQuestao.day,
+          _state.horaFim != null ? _state.horaFim.hour : _state.fimQuestao.hour,
           _state.horaFim != null
               ? _state.horaFim.minute
-              : _state.fimAvaliacao.minute);
-      _state.fimAvaliacao = newDate;
+              : _state.fimQuestao.minute);
+      _state.fimQuestao = newDate;
     }
 
     if (event is UpdateNumberFieldEvent) {
@@ -316,8 +318,8 @@ class QuestaoCRUDBloc {
           .document(_state.questaoID);
 
       QuestaoModel questaoUpdate = QuestaoModel(
-        inicio: _state.inicioAvaliacao,
-        fim: _state.fimAvaliacao,
+        inicio: _state.inicioQuestao,
+        fim: _state.fimQuestao,
         tempo: int.parse(_state.tempo),
         tentativa: int.parse(_state.tentativa),
         erroRelativo: int.parse(_state.erroRelativo),

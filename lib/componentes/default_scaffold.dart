@@ -174,11 +174,24 @@ class _ImagemUnica extends StatelessWidget {
     if (fotoUrl == null && fotoUploadID != null) {
       foto = Center(child: Text('Enviar imagem em upload de arquivos.'));
     } else if (fotoUrl != null) {
+      try {
+
       foto = CircleAvatar(
         minRadius: 40,
         maxRadius: 50,
         backgroundImage: NetworkImage(fotoUrl),
       );
+      } on Exception catch (_) {
+        print('Exception');
+        foto = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      } catch (e) {
+        print('catch');
+        foto = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      }
     } else {
       foto = Center(child: Text('Falta foto.'));
     }
