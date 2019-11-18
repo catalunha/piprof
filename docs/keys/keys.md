@@ -1,23 +1,33 @@
-~~~
-catalunha@nb:~/projetos-flutter/pi_aluno$ keytool -exportcert -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android -keypass android
-Nome do alias: androiddebugkey
-Data de criação: 05/08/2019
-Tipo de entrada: PrivateKeyEntry
-Comprimento da cadeia de certificados: 1
-Certificado[1]:
-Proprietário: C=US, O=Android, CN=Android Debug
-Emissor: C=US, O=Android, CN=Android Debug
-Número de série: 1
-Válido de Mon Aug 05 15:18:10 BRT 2019 até Wed Jul 28 15:18:10 BRT 2049
-Fingerprints do certificado:
-	 MD5:  11:A3:9D:AD:A8:13:33:3C:81:74:F2:2D:EA:79:DC:A1
-	 SHA1: 99:B6:F5:76:68:C1:F5:A5:C8:72:AE:5D:66:61:F1:45:08:1D:96:C0
-	 SHA256: 82:73:C9:39:1E:AB:0B:C8:2D:51:D9:C2:4E:FE:F5:85:17:37:F7:1A:D6:A9:89:00:CF:87:A2:98:CD:6E:19:C5
-Nome do algoritmo de assinatura: SHA1withRSA
-Algoritmo de Chave Pública do Assunto: Chave RSA de 1024 bits
-Versão: 1
+keytool -genkey -v -keystore piprofbrintec.keystore -alias piprofbrintec -keyalg RSA -keysize 2048 -validity 10000
+senha: piprofbrintecappkey
+alias: piprofbrintec
+path:/home/catalunha/projetos-flutter/piprof/docs/keys/piprofbrintec.keystore
+
+catalunha@nb:~/projetos-flutter/piprof$ keytool -genkey -v -keystore piprofbrintec.keystore -alias piprofbrintec -keyalg RSA -keysize 2048 -validity 10000
+Informe a senha da área de armazenamento de chaves:  
+Informe novamente a nova senha: 
+Qual é o seu nome e o seu sobrenome?
+  [Unknown]:  brintec
+Qual é o nome da sua unidade organizacional?
+  [Unknown]:  brintec
+Qual é o nome da sua empresa?
+  [Unknown]:  brintec
+Qual é o nome da sua Cidade ou Localidade?
+  [Unknown]:  palmas
+Qual é o nome do seu Estado ou Município?
+  [Unknown]:  to
+Quais são as duas letras do código do país desta unidade?
+  [Unknown]:  br
+CN=brintec, OU=brintec, O=brintec, L=palmas, ST=to, C=br Está correto?
+  [não]:  sim
+
+Gerando o par de chaves RSA de 2.048 bit e o certificado autoassinado (SHA256withRSA) com uma validade de 10.000 dias
+        para: CN=brintec, OU=brintec, O=brintec, L=palmas, ST=to, C=br
+Informar a senha da chave de <piprofbrintec>
+        (RETURN se for igual à senha da área do armazenamento de chaves):  
+[Armazenando piprofbrintec.keystore]
 
 Warning:
-O armazenamento de chaves JKS usa um formato proprietário. É recomendada a migração para PKCS12, que é um formato de padrão industrial que usa "keytool -importkeystore -srckeystore /home/catalunha/.android/debug.keystore -destkeystore /home/catalunha/.android/debug.keystore -deststoretype pkcs12".
-catalunha@nb:~/projetos-flutter/pi_aluno$ 
-~~~
+O armazenamento de chaves JKS usa um formato proprietário. É recomendada a migração para PKCS12, que é um formato de padrão industrial que usa "keytool -importkeystore -srckeystore piprofbrintec.keystore -destkeystore piprofbrintec.keystore -deststoretype pkcs12".
+
+
