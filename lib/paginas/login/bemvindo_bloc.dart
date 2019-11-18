@@ -55,9 +55,9 @@ class BemvindoBloc {
   _mapEventToState(BemvindoBlocEvent event) async {
     if (event is GetUsuarioIDEvent) {
       _state.usuario = event.usuario;
-      if (!_state.usuario.professor) {
-        _authBloc.dispatch(LogoutAuthBlocEvent());
-      }
+      // if (!_state.usuario.professor) {
+      //   _authBloc.dispatch(LogoutAuthBlocEvent());
+      // }
     }
 
     _validateData();

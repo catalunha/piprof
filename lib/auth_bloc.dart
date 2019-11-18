@@ -28,7 +28,10 @@ class UpdatePasswordAuthBlocEvent extends AuthBlocEvent {
 class LoginAuthBlocEvent extends AuthBlocEvent {}
 
 class LogoutAuthBlocEvent extends AuthBlocEvent {}
+
 class ResetPassword extends AuthBlocEvent {}
+
+class EhProfessor extends AuthBlocEvent {}
 
 class AuthBlocState {
   String usuarioID;
@@ -44,8 +47,7 @@ class AuthBloc {
   final fba.FirebaseAuth _authApi;
 
   //AuthStatus
-  final _statusController =
-      BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
+  final _statusController = BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
 
   Stream<AuthStatus> get status => _statusController.stream;
 
@@ -108,11 +110,11 @@ class AuthBloc {
   void _getPerfilUsuarioFromFirebaseUser(String userId) {
     _state.usuarioID = userId;
 
-    final perfilRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final perfilRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
-    final perfilStream = perfilRef.snapshots().map((perfilSnap) =>
-        UsuarioModel(id: perfilSnap.documentID).fromMap(perfilSnap.data));
+    final perfilStream =
+        perfilRef.snapshots().map((perfilSnap) => UsuarioModel(id: perfilSnap.documentID).fromMap(perfilSnap.data));
+
     if (_perfilSubscription != null) {
       _perfilSubscription.cancel().then((_) {
         _perfilSubscription = perfilStream.listen(_pipPerfil);
@@ -126,13 +128,14 @@ class AuthBloc {
     _userId.sink.add(userId);
   }
 
-  void _pipPerfil(UsuarioModel perfil) {
-    print('professor: ${perfil.professor}');
-    if (perfil.professor) {
-      _perfilController.sink.add(perfil);
-    } else {
+  void _pipPerfil(UsuarioModel usuarioModel) {
+    _perfilController.sink.add(usuarioModel);
+    print('+++Usuario: ${usuarioModel.nome} é professor: ${usuarioModel.professor}');
+    if (!usuarioModel.professor) {
+      print('Usuario logout: ${usuarioModel.nome} é professor: ${usuarioModel.professor}');
       _authApi.logout();
     }
+    print('---Usuario: ${usuarioModel.nome} é professor: ${usuarioModel.professor}');
   }
 
   void _updateStatus(String userId) {
@@ -152,7 +155,9 @@ class AuthBloc {
       _handleLoginAuthBlocEvent();
     } else if (event is LogoutAuthBlocEvent) {
       _authApi.logout();
-    }else if (event is ResetPassword) {
+    } else if (event is ResetPassword) {
+      // _authApi.sendPasswordResetEmail(_state.email);
+    } else if (event is EhProfessor) {
       // _authApi.sendPasswordResetEmail(_state.email);
     }
   }
@@ -167,7 +172,4 @@ class AuthBloc {
       }
     });
   }
-
-
-
 }
