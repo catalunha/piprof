@@ -37,7 +37,7 @@ class _VariavelCRUDPageState extends State<VariavelCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar variável'),
+        title: Text('Editar valores'),
       ),
       floatingActionButton: StreamBuilder<SimulacaoVariavelCRUDBlocState>(
           stream: bloc.stateStream,

@@ -70,7 +70,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                           ListTile(
                             leading: problema.ativo ? null : Icon(Icons.airplanemode_inactive),
                             trailing: problema.precisaAlgoritmoPSimulacao == true ? Icon(Icons.code) : null,
-                            title: Text('${problema.nome}'),
+                            title: Text('${problema.nome}\nFonte: ${problema.descricao}'),
                             subtitle: Text('Simulações: ${problema.simulacaoNumero ?? 0}\n${problema.id}'),
 
                           ),

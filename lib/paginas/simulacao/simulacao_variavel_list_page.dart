@@ -35,7 +35,7 @@ class _SimulacaoVariavelListPageState extends State<SimulacaoVariavelListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Variáveis'),
+        title: Text('Valores'),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
