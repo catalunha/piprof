@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/default_scaffold.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/paginas/turma/turma_ativa_list_bloc.dart';
 
 class TurmaAtivaListPage extends StatefulWidget {
@@ -47,8 +49,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
         ),
         body: StreamBuilder<TurmaAtivaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<TurmaAtivaListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<TurmaAtivaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -92,8 +93,7 @@ Turma: ${turma.nome}'''),
                                 icon: Icon(Icons.arrow_downward),
                                 onPressed: (ordemLocal) < lengthTurma
                                     ? () {
-                                        bloc.eventSink(
-                                            OrdenarEvent(turma, false));
+                                        bloc.eventSink(OrdenarEvent(turma, false));
                                       }
                                     : null,
                               ),
@@ -102,10 +102,18 @@ Turma: ${turma.nome}'''),
                                 icon: Icon(Icons.arrow_upward),
                                 onPressed: ordemLocal > 1
                                     ? () {
-                                        bloc.eventSink(
-                                            OrdenarEvent(turma, true));
+                                        bloc.eventSink(OrdenarEvent(turma, true));
                                       }
                                     : null,
+                              ),
+                              IconButton(
+                                tooltip: 'Ver programa',
+                                icon: Icon(Icons.local_library),
+                                onPressed: () {
+                                  try {
+                                    launch(turma.programa);
+                                  } catch (_) {}
+                                },
                               ),
                               IconButton(
                                 tooltip: 'Agenda de encontros da turma',

@@ -4,15 +4,15 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AvaliacaoAplicarBlocEvent {}
+class AvaliacaoSelecionarAlunoBlocEvent {}
 
-class GetAlunoListEvent extends AvaliacaoAplicarBlocEvent {
+class GetAlunoListEvent extends AvaliacaoSelecionarAlunoBlocEvent {
   final String avaliacaoID;
 
   GetAlunoListEvent(this.avaliacaoID);
 }
 
-class MarcarAlunoEvent extends AvaliacaoAplicarBlocEvent {
+class MarcarAlunoEvent extends AvaliacaoSelecionarAlunoBlocEvent {
   final String alunoID;
 
   MarcarAlunoEvent(this.alunoID);
@@ -29,36 +29,36 @@ class AlunoInfo {
   });
 }
 
-class MarcarTodosEvent extends AvaliacaoAplicarBlocEvent {}
+class MarcarTodosEvent extends AvaliacaoSelecionarAlunoBlocEvent {}
 
-class DesmarcarTodosEvent extends AvaliacaoAplicarBlocEvent {}
+class DesmarcarTodosEvent extends AvaliacaoSelecionarAlunoBlocEvent {}
 
-class SaveEvent extends AvaliacaoAplicarBlocEvent {}
+class SaveEvent extends AvaliacaoSelecionarAlunoBlocEvent {}
 
-class AvaliacaoAplicarBlocState {
+class AvaliacaoSelecionarAlunoBlocState {
   bool isDataValid = false;
   AvaliacaoModel avaliacao = AvaliacaoModel();
   Map<String, AlunoInfo> alunoInfoMap = Map<String, AlunoInfo>();
 }
 
-class AvaliacaoAplicarBloc {
+class AvaliacaoSelecionarAlunoBloc {
   /// Firestore
   final fsw.Firestore _firestore;
   // final _authBloc;
 
   /// Eventos
-  final _eventController = BehaviorSubject<AvaliacaoAplicarBlocEvent>();
-  Stream<AvaliacaoAplicarBlocEvent> get eventStream => _eventController.stream;
+  final _eventController = BehaviorSubject<AvaliacaoSelecionarAlunoBlocEvent>();
+  Stream<AvaliacaoSelecionarAlunoBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   /// Estados
-  final AvaliacaoAplicarBlocState _state = AvaliacaoAplicarBlocState();
-  final _stateController = BehaviorSubject<AvaliacaoAplicarBlocState>();
-  Stream<AvaliacaoAplicarBlocState> get stateStream => _stateController.stream;
+  final AvaliacaoSelecionarAlunoBlocState _state = AvaliacaoSelecionarAlunoBlocState();
+  final _stateController = BehaviorSubject<AvaliacaoSelecionarAlunoBlocState>();
+  Stream<AvaliacaoSelecionarAlunoBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   /// Bloc
-  AvaliacaoAplicarBloc(this._firestore) {
+  AvaliacaoSelecionarAlunoBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
 
@@ -73,7 +73,7 @@ class AvaliacaoAplicarBloc {
     _state.isDataValid = true;
   }
 
-  _mapEventToState(AvaliacaoAplicarBlocEvent event) async {
+  _mapEventToState(AvaliacaoSelecionarAlunoBlocEvent event) async {
     if (event is GetAlunoListEvent) {
       final avaliacaoFutureDocSnapshot = await _firestore
           .collection(AvaliacaoModel.collection)
@@ -150,6 +150,6 @@ class AvaliacaoAplicarBloc {
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em AvaliacaoAplicarBloc  = ${event.runtimeType}');
+    print('event.runtimeType em AvaliacaoSelecionarAlunoBloc  = ${event.runtimeType}');
   }
 }

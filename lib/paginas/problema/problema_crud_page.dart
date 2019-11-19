@@ -130,7 +130,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
                 Padding(
                     padding: EdgeInsets.all(5.0),
                     child:
-                        _TextFieldMultiplo(bloc, 'urlPDFProblemaSemAlgoritmo')),
+                        _TextFieldMultiplo(bloc, 'urlSemAlgoritmo')),
                Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -222,9 +222,9 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
             _textFieldController.text = snapshot.data?.nome;
           } else if (campo == 'descricao') {
             _textFieldController.text = snapshot.data?.descricao;
-          } else if (campo == 'urlPDFProblemaSemAlgoritmo') {
+          } else if (campo == 'urlSemAlgoritmo') {
             _textFieldController.text =
-                snapshot.data?.urlPDFProblemaSemAlgoritmo;
+                snapshot.data?.urlSemAlgoritmo;
           }
         }
         return TextField(

@@ -61,6 +61,7 @@
     "instituicao": "",
     "componente": "",
     "nome": "",
+    "programa": "link de um arquivo/site com o programa desta turma",
     "descricao": "",
     "professor": {
       "id": "documentID",
@@ -109,14 +110,15 @@
     "uso": {
       "turmaID": 0
     },
-    "simulacaoNumero": "numero. inicia com 0. Quando criar uma simulacao acrescenta este numero.",
-    "url": "url definitiva para a problema com base nos dados a seguir",
-    "precisaAlgoritmoPSimulacao": "true/false",
-    "urlPDFProblemaSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da problema e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
-    "urlGDocsPAlgoritmo": "anexa gdocs com proposta e compartilhar no email do suporte.",
-    "urlCodigoFonteAlgoritmo": "detalhes do atendimento e desenvolvimento do codigo",
-    "AtivadoAlgoritmoPSimulacao": "true: ativo=true e url=urlPDFProblemaComAlgoritmo. false: ativo=false e url indefinida",
-    "urlPDFProblemaComAlgoritmo": "pdf com estrutura para usar proposta com simulação"
+    "simulacaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
+    "url": "url definitiva para a problema com base nas condições a seguir",
+    "precisaAlgoritmoPSimulacao": "true entao desliga urlSemAlgoritmo e desativa problema até q algoritmoPSimulacaoAtivado=true. false entao usa urlSemAlgoritmo",
+    "urlSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : doc com proposta da problema e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
+    "urlGDocsPAlgoritmo": "suporte cria um doc e compartilha com professor para planejar algoritmo",
+    "urlCodigoFonteAlgoritmo": "suporte cria um doc restrito com detalhes do atendimento e desenvolvimento do codigo",
+    "algoritmoPSimulacaoAtivado": "true: ativo=true entao url=urlComAlgoritmo. false: ativo=false entao url=urlSemAlgoritmo",
+    "urlComAlgoritmo": "doc com estrutura para usar proposta com simulação via algoritmo"
+
   },
   "Simulacao": {
     "comment": "",

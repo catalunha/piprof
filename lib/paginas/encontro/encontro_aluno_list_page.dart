@@ -55,8 +55,7 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
         ),
         body: StreamBuilder<EncontroAlunoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<EncontroAlunoListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<EncontroAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -69,56 +68,86 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                 for (var item in snapshot.data.alunoInfoMap.entries) {
                   var aluno = item.value.usuario;
                   var presente = item.value.presente;
-                  listaWidget.add(Card(
-                    child: Container(
-                      // padding: EdgeInsets.symmetric(
-                      //   vertical: 2,
-                      //   horizontal: 2,
-                      // ),
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
+                  listaWidget.add(
+                    Card(
+                      child: Column(
                         children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: _ImagemUnica(url: aluno?.foto?.url),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            // child: Container(
-                            // padding: EdgeInsets.only(left: 6),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Nome: ${aluno.nome}"),
-                                Text("Crachá: ${aluno.cracha}"),
-                                Text("Celular: ${aluno.celular}"),
-                                Text("matricula: ${aluno.matricula}"),
-                                Text("email: ${aluno.email}"),
-                                Text("id: ${aluno.id}"),
-                                Wrap(
-                                  children: <Widget>[
-                                    IconButton(
-                                        tooltip: 'Aluno presente',
-                                        icon: presente
-                                            ? Icon(Icons.check)
-                                            : Icon(
-                                                Icons.flight_takeoff,
-                                                color: Colors.red,
-                                              ),
-                                        onPressed: () {
-                                          bloc.eventSink(
-                                              MarcarAlunoEvent(aluno.id));
-                                        }),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            // ),
-                          ),
+                          ListTile(
+                              leading: aluno.foto.url == null
+                                  ? Text('')
+                                  : CircleAvatar(
+                                      minRadius: 25,
+                                      maxRadius: 25,
+                                      backgroundImage: NetworkImage(aluno.foto.url),
+                                    ),
+                              title: Text('${aluno.nome}'),
+                              trailing: item.value.presente
+                                  ? Icon(Icons.check)
+                                  : Icon(
+                                      Icons.flight_takeoff,
+                                      color: Colors.red,
+                                    ),
+                              onTap: () {
+                                bloc.eventSink(MarcarAlunoEvent(aluno.id));
+                              }),
                         ],
                       ),
                     ),
-                  ));
+                  );
+                  // Container(
+                  //   // padding: EdgeInsets.symmetric(
+                  //   //   vertical: 2,
+                  //   //   horizontal: 2,
+                  //   // ),
+                  //   child: Row(
+                  //     // crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: <Widget>[
+                  //       Expanded(
+                  //         flex: 2,
+                  //         child: _ImagemUnica(url: aluno?.foto?.url),
+                  //       ),
+                  //       Expanded(
+                  //         flex: 4,
+                  //         // child: Container(
+                  //         // padding: EdgeInsets.only(left: 6),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: <Widget>[
+                  //             ListTile(
+                  //               leading: aluno.foto.url==null ? Text('nada.') : Image.network(aluno.foto.url),
+                  //               title: Text('asda adada as dads'),
+                  //             ),
+                  //             Text("Nome: ${aluno.nome}"),
+                  //             Text("Crachá: ${aluno.cracha}"),
+                  //             Text("Celular: ${aluno.celular}"),
+                  //             Text("matricula: ${aluno.matricula}"),
+                  //             Text("email: ${aluno.email}"),
+                  //             Text("id: ${aluno.id}"),
+                  //             Wrap(
+                  //               children: <Widget>[
+                  //                 IconButton(
+                  //                     tooltip: 'Aluno presente',
+                  //                     icon: presente
+                  //                         ? Icon(Icons.check)
+                  //                         : Icon(
+                  //                             Icons.flight_takeoff,
+                  //                             color: Colors.red,
+                  //                           ),
+                  //                     onPressed: () {
+                  //                       bloc.eventSink(
+                  //                           MarcarAlunoEvent(aluno.id));
+                  //                     }),
+                  //               ],
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         // ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // ),
+                  // );
                 }
                 listaWidget.add(Container(
                   padding: EdgeInsets.only(top: 70),

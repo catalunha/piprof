@@ -18,7 +18,9 @@ class Versao extends StatelessWidget {
             title: Text('Tutorial'),
             trailing: Icon(Icons.help),
             onTap: () {
-              launch('https://drive.google.com/open?id=142J7T2l_Ae8cT-NYL3rrWIVGAX03HfX7QO7VWk2NpEM');
+              try {
+                launch('https://drive.google.com/open?id=142J7T2l_Ae8cT-NYL3rrWIVGAX03HfX7QO7VWk2NpEM');
+              } catch (e) {}
             },
           ),
         ],

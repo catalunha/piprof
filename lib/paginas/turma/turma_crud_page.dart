@@ -114,6 +114,15 @@ class _TurmaCRUDPageState extends State<TurmaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Programa:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'programa')),
               Divider(),
               // Padding(
               //   padding: EdgeInsets.all(5.0),
@@ -178,6 +187,8 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
           } else if (campo == 'nome') {
             _textFieldController.text = snapshot.data?.nome;
           } else if (campo == 'descricao') {
+            _textFieldController.text = snapshot.data?.descricao;
+          } else if (campo == 'programa') {
             _textFieldController.text = snapshot.data?.descricao;
           }
         }
