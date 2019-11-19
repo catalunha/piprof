@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
-import 'package:piprof/modelos/tarefa_model.dart';
-import 'package:piprof/naosuportato/naosuportado.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_bloc.dart';
-import 'package:piprof/servicos/gerar_csv_service.dart';
 import 'package:queries/collections.dart';
-import 'package:piprof/naosuportato/url_launcher.dart'
-    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TarefaCorrigirPage extends StatefulWidget {
   final String tarefaID;
@@ -50,8 +46,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
         ),
         body: StreamBuilder<TarefaCorrigirBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<TarefaCorrigirBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<TarefaCorrigirBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -65,67 +60,53 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
 
                 Map<String, Variavel> variavelMap;
                 var dic = Dictionary.fromMap(tarefa.variavel);
-                var dicOrderBy = dic
-                    .orderBy((kv) => kv.value.ordem)
-                    .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                var dicOrderBy = dic.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 variavelMap = dicOrderBy.toMap();
 
                 Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
 
                 gabaritoMap.clear();
                 var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
-                var gabaritoOrderBy = dicGabarito
-                    .orderBy((kv) => kv.value.ordem)
-                    .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                var gabaritoOrderBy =
+                    dicGabarito.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 gabaritoMap = gabaritoOrderBy.toMap();
                 notas = '';
                 for (var gabarito in gabaritoMap.entries) {
-                  notas +=
-                      '${gabarito.value.nome}=${gabarito.value.nota ?? ""} ';
+                  notas += '${gabarito.value.nome}=${gabarito.value.nota ?? ""} ';
                 }
                 listaWidget.add(
                   Card(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 2,
-                      ),
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: _ImagemPerfil(url: tarefa.aluno.foto),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            // child: Container(
-                            // padding: EdgeInsets.only(left: 6),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("id: ${tarefa.id}"),
-                                Text("Turma: ${tarefa.turma.nome}"),
-                                Text("Avaliação: ${tarefa.avaliacao.nome}"),
-                               Text(
-                                      "Questão: ${tarefa.questao.numero}. Prob.: ${tarefa.problema.nome}"),
-                                Text("Aluno: ${tarefa.aluno.nome}"),
-                                Text(
-                                    "Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}"),
-                                Text(
-                                    "Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)}. Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}"),
-                                Text(
-                                    "Tempo: ${tarefa.tempo}h. Usou ${tarefa.tentou} das ${tarefa.tentativa} tentativas."),
-                                Text("Notas: $notas"),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: tarefa.aluno?.foto == null
+                              ? Text('')
+                              : CircleAvatar(
+                                  minRadius: 25,
+                                  maxRadius: 25,
+                                  backgroundImage: NetworkImage(tarefa.aluno.foto),
+                                ),
+                          title: Text('${tarefa.aluno.nome}'),
+                          subtitle: Text('Sit.: $notas'),
+                        ),
+                        ListTile(
+                          title: Text('''Avaliação: ${tarefa.avaliacao.nome}
+Questão: ${tarefa.questao.numero}. Prob.: ${tarefa.problema.nome}
+Simulacao: ${tarefa.simulacao.nome}
+Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}
+Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}
+Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} tentativas.'''),
+                        ),
+                      ],
                     ),
                   ),
                 );
                 listaWidget.add(Divider());
+                listaWidget.add(ListTile(
+                  selected: true,
+                  title: Text('Variáveis'),
+                  trailing: Icon(Icons.sort_by_alpha),
+                ));
                 Widget icone;
 
                 for (var variavel in variavelMap.entries) {
@@ -149,11 +130,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
 
                   if (variavel.value.tipo == 'urlimagem') {
                     String linkValorModificado;
-                    if (variavel?.value?.valor != null &&
-                        variavel.value.valor
-                            .contains('drive.google.com/open')) {
-                      linkValorModificado =
-                          variavel.value.valor.replaceFirst('open', 'uc');
+                    if (variavel?.value?.valor != null && variavel.value.valor.contains('drive.google.com/open')) {
+                      linkValorModificado = variavel.value.valor.replaceFirst('open', 'uc');
                     } else {
                       linkValorModificado = variavel.value.valor;
                     }
@@ -170,7 +148,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: _ImagemUnica(
+                                  child: _ImagemUnicaVariavel(
                                     urlModificada: linkValorModificado,
                                     urlOriginal: variavel.value.valor,
                                   ),
@@ -194,9 +172,13 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                   }
                 }
                 listaWidget.add(Divider());
+                listaWidget.add(ListTile(
+                  selected: true,
+                  title: Text('Gabarito e respostas'),
+                  trailing: Icon(Icons.question_answer),
+                ));
 
-                for (var gabaritoInfoMap
-                    in snapshot.data.gabaritoInfoMap.entries) {
+                for (var gabaritoInfoMap in snapshot.data.gabaritoInfoMap.entries) {
                   if (gabaritoInfoMap.value.gabarito.tipo == 'numero') {
                     listaWidget.add(
                       Card(
@@ -214,8 +196,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(
-                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                            bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -238,8 +219,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(
-                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                            bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -262,8 +242,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(
-                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                            bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -276,8 +255,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(
-                                  '${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.link,
@@ -288,52 +266,42 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(
-                                    gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Row(
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: gabaritoInfoMap.value.gabarito.valor ==
-                                          null
+                                  child: gabaritoInfoMap.value.gabarito.valor == null
                                       ? ListTile(
-                                          title: Text(
-                                              'Link do gabarito não anexado'),
+                                          subtitle: Text('Link do gabarito não anexado'),
                                           trailing: Icon(Icons.launch),
                                           onTap: null,
                                         )
                                       : ListTile(
-                                          title: Text(
-                                              'Clique para ver a link do gabarito'),
+                                          subtitle: Text('Clique para ver o link do gabarito'),
                                           trailing: Icon(Icons.launch),
                                           onTap: () {
-                                            launch(gabaritoInfoMap
-                                                .value.gabarito.valor);
+                                            launch(gabaritoInfoMap.value.gabarito.valor);
                                           },
                                         ),
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child:
-                                      gabaritoInfoMap.value.gabarito.resposta ==
-                                              null
-                                          ? ListTile(
-                                              title: Text(
-                                                  'Link da resposta não anexado'),
-                                              trailing: Icon(Icons.launch),
-                                              onTap: null,
-                                            )
-                                          : ListTile(
-                                              title: Text(
-                                                  'Clique para ver o link da resposta'),
-                                              trailing: Icon(Icons.launch),
-                                              onTap: () {
-                                                launch(gabaritoInfoMap
-                                                    .value.gabarito.resposta);
-                                              },
-                                            ),
+                                  child: gabaritoInfoMap.value.gabarito.resposta == null
+                                      ? ListTile(
+                                          subtitle: Text('Link da resposta não anexado'),
+                                          trailing: Icon(Icons.launch),
+                                          onTap: null,
+                                        )
+                                      : ListTile(
+                                          subtitle: Text('Clique para ver o link da resposta'),
+                                          trailing: Icon(Icons.launch),
+                                          onTap: () {
+                                            launch(gabaritoInfoMap.value.gabarito.resposta);
+                                          },
+                                        ),
                                 ),
                               ],
                             ),
@@ -346,35 +314,26 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                   if (gabaritoInfoMap.value.gabarito.tipo == 'urlimagem') {
                     String linkValorModificado;
                     if (gabaritoInfoMap.value.gabarito?.valor != null &&
-                        gabaritoInfoMap.value.gabarito.valor
-                            .contains('drive.google.com/open')) {
-                      String linkOriginal =
-                          gabaritoInfoMap.value.gabarito.valor;
-                      linkValorModificado =
-                          linkOriginal.replaceFirst('open', 'uc');
+                        gabaritoInfoMap.value.gabarito.valor.contains('drive.google.com/open')) {
+                      String linkOriginal = gabaritoInfoMap.value.gabarito.valor;
+                      linkValorModificado = linkOriginal.replaceFirst('open', 'uc');
                     } else {
-                      linkValorModificado =
-                          gabaritoInfoMap.value.gabarito.valor;
+                      linkValorModificado = gabaritoInfoMap.value.gabarito.valor;
                     }
                     String linkRespostaModificado;
                     if (gabaritoInfoMap.value.gabarito?.resposta != null &&
-                        gabaritoInfoMap.value.gabarito.resposta
-                            .contains('drive.google.com/open')) {
-                      String linkOriginal =
-                          gabaritoInfoMap.value.gabarito.resposta;
-                      linkRespostaModificado =
-                          linkOriginal.replaceFirst('open', 'uc');
+                        gabaritoInfoMap.value.gabarito.resposta.contains('drive.google.com/open')) {
+                      String linkOriginal = gabaritoInfoMap.value.gabarito.resposta;
+                      linkRespostaModificado = linkOriginal.replaceFirst('open', 'uc');
                     } else {
-                      linkRespostaModificado =
-                          gabaritoInfoMap.value.gabarito.resposta;
+                      linkRespostaModificado = gabaritoInfoMap.value.gabarito.resposta;
                     }
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(
-                                  '${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.image,
@@ -385,8 +344,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(
-                                    gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Row(
@@ -395,16 +353,14 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   flex: 2,
                                   child: _ImagemUnica(
                                     urlModificada: linkValorModificado,
-                                    urlOriginal:
-                                        gabaritoInfoMap.value.gabarito.valor,
+                                    urlOriginal: gabaritoInfoMap.value.gabarito.valor,
                                   ),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
                                     urlModificada: linkRespostaModificado,
-                                    urlOriginal:
-                                        gabaritoInfoMap.value.gabarito.resposta,
+                                    urlOriginal: gabaritoInfoMap.value.gabarito.resposta,
                                   ),
                                 ),
                               ],
@@ -421,8 +377,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(
-                                  '${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.description,
@@ -433,52 +388,42 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(
-                                    gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Row(
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: gabaritoInfoMap.value.gabarito.valor ==
-                                          null
+                                  child: gabaritoInfoMap.value.gabarito.valor == null
                                       ? ListTile(
-                                          title: Text(
-                                              'Arquivo do gabarito não anexado'),
+                                          subtitle: Text('Arquivo do gabarito não anexado'),
                                           trailing: Icon(Icons.launch),
                                           onTap: null,
                                         )
                                       : ListTile(
-                                          title: Text(
-                                              'Clique para ver a arquivo do gabarito'),
+                                          subtitle: Text('Clique para ver o arquivo do gabarito'),
                                           trailing: Icon(Icons.launch),
                                           onTap: () {
-                                            launch(gabaritoInfoMap
-                                                .value.gabarito.valor);
+                                            launch(gabaritoInfoMap.value.gabarito.valor);
                                           },
                                         ),
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child:
-                                      gabaritoInfoMap.value.gabarito.resposta ==
-                                              null
-                                          ? ListTile(
-                                              title: Text(
-                                                  'Arquivo da resposta não anexado'),
-                                              trailing: Icon(Icons.launch),
-                                              onTap: null,
-                                            )
-                                          : ListTile(
-                                              title: Text(
-                                                  'Clique para ver o arquivo da resposta'),
-                                              trailing: Icon(Icons.launch),
-                                              onTap: () {
-                                                launch(gabaritoInfoMap
-                                                    .value.gabarito.resposta);
-                                              },
-                                            ),
+                                  child: gabaritoInfoMap.value.gabarito.resposta == null
+                                      ? ListTile(
+                                          subtitle: Text('Arquivo da resposta não anexado'),
+                                          trailing: Icon(Icons.launch),
+                                          onTap: null,
+                                        )
+                                      : ListTile(
+                                          subtitle: Text('Clique para ver o arquivo da resposta'),
+                                          trailing: Icon(Icons.launch),
+                                          onTap: () {
+                                            launch(gabaritoInfoMap.value.gabarito.resposta);
+                                          },
+                                        ),
                                 ),
                               ],
                             ),
@@ -491,23 +436,18 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                   if (gabaritoInfoMap.value.gabarito.tipo == 'imagem') {
                     String linkValorModificado;
                     if (gabaritoInfoMap.value.gabarito?.valor != null &&
-                        gabaritoInfoMap.value.gabarito.valor
-                            .contains('drive.google.com/open')) {
-                      String linkOriginal =
-                          gabaritoInfoMap.value.gabarito.valor;
-                      linkValorModificado =
-                          linkOriginal.replaceFirst('open', 'uc');
+                        gabaritoInfoMap.value.gabarito.valor.contains('drive.google.com/open')) {
+                      String linkOriginal = gabaritoInfoMap.value.gabarito.valor;
+                      linkValorModificado = linkOriginal.replaceFirst('open', 'uc');
                     } else {
-                      linkValorModificado =
-                          gabaritoInfoMap.value.gabarito.valor;
+                      linkValorModificado = gabaritoInfoMap.value.gabarito.valor;
                     }
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(
-                                  '${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
                               // subtitle: Text(
                               //     'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
                               trailing: gabaritoInfoMap.value.nota
@@ -520,8 +460,7 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(
-                                    gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                               },
                             ),
                             Row(
@@ -530,16 +469,13 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                                   flex: 2,
                                   child: _ImagemUnica(
                                       urlModificada: linkValorModificado,
-                                      urlOriginal:
-                                          gabaritoInfoMap.value.gabarito.valor),
+                                      urlOriginal: gabaritoInfoMap.value.gabarito.valor),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
-                                    urlModificada:
-                                        gabaritoInfoMap.value.gabarito.resposta,
-                                    urlOriginal:
-                                        gabaritoInfoMap.value.gabarito.resposta,
+                                    urlModificada: gabaritoInfoMap.value.gabarito.resposta,
+                                    urlOriginal: gabaritoInfoMap.value.gabarito.resposta,
                                   ),
                                 ),
                               ],
@@ -565,6 +501,69 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
   }
 }
 
+class _ImagemUnicaVariavel extends StatelessWidget {
+  final String urlModificada;
+  final String urlOriginal;
+
+  const _ImagemUnicaVariavel({this.urlModificada, this.urlOriginal});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget url;
+    Widget link;
+
+    link = Center(child: ListTile(subtitle: Text('')));
+    if (urlModificada == null) {
+      url = Center(child: ListTile(subtitle: Text('Sem imagem nesta resposta.')));
+    } else {
+      if (urlOriginal != null) {
+        link = ListTile(
+          subtitle: Text('Se não visualizar a imagem, click aqui.'),
+          trailing: Icon(Icons.launch),
+          onTap: () {
+            launch(urlOriginal);
+          },
+        );
+      }
+      try {
+        url = Container(
+          child: Image.network(urlModificada),
+        );
+      } on Exception {
+        url = ListTile(
+          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
+        );
+      } catch (e) {
+        url = ListTile(
+          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
+        );
+      }
+    }
+
+    return Container(
+      padding: EdgeInsets.only(left: 25, bottom: 10),
+      child: Row(
+        children: <Widget>[
+          // Spacer(
+          //   flex: 1,
+          // ),
+          Expanded(
+            flex: 2,
+            child: url,
+          ),
+          // Spacer(
+          //   flex: 2,
+          // ),
+          Expanded(
+            flex: 2,
+            child: link,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ImagemUnica extends StatelessWidget {
   final String urlModificada;
   final String urlOriginal;
@@ -576,13 +575,13 @@ class _ImagemUnica extends StatelessWidget {
     Widget url;
     Widget link;
 
-    link = Center(child: Text('Sem link para imagem.'));
+    link = Center(child: ListTile(subtitle: Text('')));
     if (urlModificada == null) {
-      url = Center(child: Text('Sem imagem nesta resposta.'));
+      url = Center(child: ListTile(subtitle: Text('Sem imagem nesta resposta.')));
     } else {
       if (urlOriginal != null) {
         link = ListTile(
-          title: Text('Se não visualizar a imagem click aqui para ir ao link.'),
+          subtitle: Text('Se não visualizar a imagem, click aqui.'),
           trailing: Icon(Icons.launch),
           onTap: () {
             launch(urlOriginal);
@@ -596,11 +595,11 @@ class _ImagemUnica extends StatelessWidget {
         );
       } on Exception {
         url = ListTile(
-          title: Text('Não consegui abrir este link como imagem. Use o link.'),
+          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
         );
       } catch (e) {
         url = ListTile(
-          title: Text('Não consegui abrir este link como imagem. Use o link.'),
+          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
         );
       }
     }
@@ -622,54 +621,6 @@ class _ImagemUnica extends StatelessWidget {
           ],
         ),
         link,
-      ],
-    );
-  }
-}
-
-class _ImagemPerfil extends StatelessWidget {
-  final String url;
-
-  const _ImagemPerfil({this.url});
-
-  @override
-  Widget build(BuildContext context) {
-    Widget foto;
-
-    if (url == null) {
-      foto = Center(child: Text('Sem imagem'));
-    } else {
-      try {
-        foto = Container(
-          child: Image.network(url),
-        );
-      } on Exception {
-        foto = ListTile(
-          title: Text('Não consegui abrir a imagem.'),
-        );
-      } catch (e) {
-        foto = ListTile(
-          title: Text('Não consegui abrir a imagem.'),
-        );
-      }
-    }
-
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Spacer(
-              flex: 1,
-            ),
-            Expanded(
-              flex: 16,
-              child: foto,
-            ),
-            Spacer(
-              flex: 1,
-            ),
-          ],
-        ),
       ],
     );
   }

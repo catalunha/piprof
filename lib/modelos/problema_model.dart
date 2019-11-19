@@ -13,8 +13,8 @@ class ProblemaModel extends FirestoreModel {
   PastaFk pasta;
   String url;
   bool precisaAlgoritmoPSimulacao;
-  String urlPDFProblemaSemAlgoritmo;
-  bool ativadoAlgoritmoPSimulacao;
+  String urlSemAlgoritmo;
+  bool algoritmoPSimulacaoAtivado;
   int simulacaoNumero;
   Map<String, dynamic> uso;
   ProblemaModel({
@@ -28,8 +28,8 @@ class ProblemaModel extends FirestoreModel {
     this.pasta,
     this.url,
     this.precisaAlgoritmoPSimulacao,
-    this.urlPDFProblemaSemAlgoritmo,
-    this.ativadoAlgoritmoPSimulacao,
+    this.urlSemAlgoritmo,
+    this.algoritmoPSimulacaoAtivado,
     this.simulacaoNumero,
     this.uso,
   }) : super(id);
@@ -53,10 +53,10 @@ class ProblemaModel extends FirestoreModel {
         : null;
     if (map.containsKey('precisaAlgoritmoPSimulacao'))
       precisaAlgoritmoPSimulacao = map['precisaAlgoritmoPSimulacao'];
-    if (map.containsKey('urlPDFProblemaSemAlgoritmo'))
-      urlPDFProblemaSemAlgoritmo = map['urlPDFProblemaSemAlgoritmo'];
-    if (map.containsKey('ativadoAlgoritmoPSimulacao'))
-      ativadoAlgoritmoPSimulacao = map['ativadoAlgoritmoPSimulacao'];
+    if (map.containsKey('urlProblemaSemAlgoritmo'))
+      urlSemAlgoritmo = map['urlProblemaSemAlgoritmo'];
+    if (map.containsKey('algoritmoPSimulacaoAtivado'))
+      algoritmoPSimulacaoAtivado = map['algoritmoPSimulacaoAtivado'];
     if (map.containsKey('simulacaoNumero'))
       simulacaoNumero = map['simulacaoNumero'];
     if (map.containsKey('uso')) uso = map['uso'];
@@ -83,10 +83,10 @@ class ProblemaModel extends FirestoreModel {
     }
     if (precisaAlgoritmoPSimulacao != null)
       data['precisaAlgoritmoPSimulacao'] = this.precisaAlgoritmoPSimulacao;
-    if (urlPDFProblemaSemAlgoritmo != null)
-      data['urlPDFProblemaSemAlgoritmo'] = this.urlPDFProblemaSemAlgoritmo;
-    if (ativadoAlgoritmoPSimulacao != null)
-      data['ativadoAlgoritmoPSimulacao'] = this.ativadoAlgoritmoPSimulacao;
+    if (urlSemAlgoritmo != null)
+      data['urlProblemaSemAlgoritmo'] = this.urlSemAlgoritmo;
+    if (algoritmoPSimulacaoAtivado != null)
+      data['algoritmoPSimulacaoAtivado'] = this.algoritmoPSimulacaoAtivado;
     if (simulacaoNumero != null)
       data['simulacaoNumero'] = this.simulacaoNumero;
 

@@ -44,6 +44,7 @@ class TurmaCRUDBlocState {
   String componente;
   String nome;
   String descricao;
+  String programa;
 
   void updateState() {
     ativo = turma.ativo;
@@ -51,6 +52,7 @@ class TurmaCRUDBlocState {
     componente = turma.componente;
     nome = turma.nome;
     descricao = turma.descricao;
+    programa = turma.programa;
   }
 }
 
@@ -127,6 +129,8 @@ class TurmaCRUDBloc {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
+      } else if (event.campo == 'programa') {
+        _state.programa = event.texto;
       }
     }
     if (event is SaveEvent) {
@@ -139,6 +143,7 @@ class TurmaCRUDBloc {
         componente: _state.componente,
         nome: _state.nome,
         descricao: _state.descricao,
+        programa: _state.programa,
       );
       if (_state.turmaID == null) {
         turmaModel.questaoNumeroAdicionado = 0;

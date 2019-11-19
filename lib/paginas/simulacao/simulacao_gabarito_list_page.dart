@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
-import 'package:piprof/naosuportato/url_launcher.dart'
-    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/paginas/simulacao/simulacao_gabarito_list_bloc.dart';
 
 class SimulacaoGabaritoListPage extends StatefulWidget {
@@ -10,8 +9,7 @@ class SimulacaoGabaritoListPage extends StatefulWidget {
 
   const SimulacaoGabaritoListPage(this.simulacaoID);
   @override
-  _SimulacaoGabaritoListPageState createState() =>
-      _SimulacaoGabaritoListPageState();
+  _SimulacaoGabaritoListPageState createState() => _SimulacaoGabaritoListPageState();
 }
 
 class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
@@ -43,15 +41,13 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
           Navigator.pushNamed(
             context,
             "/simulacao/gabarito/crud",
-            arguments: SimulacaoGabaritoCRUDPageArguments(
-                simulacaoID: widget.simulacaoID),
+            arguments: SimulacaoGabaritoCRUDPageArguments(simulacaoID: widget.simulacaoID),
           );
         },
       ),
       body: StreamBuilder<SimulacaoGabaritoListBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<SimulacaoGabaritoListBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<SimulacaoGabaritoListBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -76,7 +72,9 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
                   tooltip: 'Um link ao um site ou arquivo',
                   icon: Icon(Icons.link),
                   onPressed: () {
-                    launch(gabarito.value.valor);
+                    try {
+                      launch(gabarito.value.valor);
+                    } catch (e) {}
                   },
                 );
               } else if (gabarito.value.tipo == 'urlimagem') {
@@ -84,7 +82,11 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
                   tooltip: 'Um link ao uma imagem',
                   icon: Icon(Icons.image),
                   onPressed: () {
+                    try {
+                      
                     launch(gabarito.value.valor);
+                    } catch (e) {
+                    }
                   },
                 );
               } else if (gabarito.value.tipo == 'arquivo') {
@@ -125,8 +127,7 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
                                   context,
                                   "/simulacao/gabarito/crud",
                                   arguments: SimulacaoGabaritoCRUDPageArguments(
-                                      simulacaoID: snapshot.data.simulacao.id,
-                                      gabaritoKey: gabarito.key),
+                                      simulacaoID: snapshot.data.simulacao.id, gabaritoKey: gabarito.key),
                                 );
                               },
                             ),
@@ -135,8 +136,7 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
                               icon: Icon(Icons.arrow_downward),
                               onPressed: (ordemLocal) < lengthTurma
                                   ? () {
-                                      bloc.eventSink(
-                                          OrdenarInMapEvent(gabarito.key, false));
+                                      bloc.eventSink(OrdenarInMapEvent(gabarito.key, false));
                                     }
                                   : null,
                             ),
@@ -145,8 +145,7 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
                               icon: Icon(Icons.arrow_upward),
                               onPressed: ordemLocal > 1
                                   ? () {
-                                      bloc.eventSink(
-                                          OrdenarInMapEvent(gabarito.key, true));
+                                      bloc.eventSink(OrdenarInMapEvent(gabarito.key, true));
                                     }
                                   : null,
                             ),

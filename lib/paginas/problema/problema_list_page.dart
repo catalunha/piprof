@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
-import 'package:piprof/naosuportato/url_launcher.dart'
-    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/paginas/problema/problema_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
 
@@ -51,8 +50,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
         ),
         body: StreamBuilder<ProblemaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<ProblemaListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<ProblemaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -70,16 +68,10 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            leading: problema.ativo
-                                ? null
-                                : Icon(Icons.airplanemode_inactive),
-                            trailing:
-                                problema.precisaAlgoritmoPSimulacao == true
-                                    ? Icon(Icons.code)
-                                    : null,
+                            leading: problema.ativo ? null : Icon(Icons.airplanemode_inactive),
+                            trailing: problema.precisaAlgoritmoPSimulacao == true ? Icon(Icons.code) : null,
                             title: Text('${problema.nome}'),
-                            subtitle:
-                                Text('Simulações: ${problema.simulacaoNumero??0}\n${problema.id}'),
+                            subtitle: Text('Simulações: ${problema.simulacaoNumero ?? 0}\n${problema.id}'),
                           ),
                           Center(
                             child: Wrap(
@@ -91,8 +83,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                     Navigator.pushNamed(
                                       context,
                                       "/problema/crud",
-                                      arguments: ProblemaCRUDPageArguments(
-                                          problemaID: problema.id),
+                                      arguments: ProblemaCRUDPageArguments(problemaID: problema.id),
                                     );
                                   },
                                 ),
@@ -101,8 +92,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                   icon: Icon(Icons.arrow_downward),
                                   onPressed: (ordemLocal) < lengthTurma
                                       ? () {
-                                          bloc.eventSink(
-                                              OrdenarEvent(problema, false));
+                                          bloc.eventSink(OrdenarEvent(problema, false));
                                         }
                                       : null,
                                 ),
@@ -111,25 +101,25 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: ordemLocal > 1
                                       ? () {
-                                          bloc.eventSink(
-                                              OrdenarEvent(problema, true));
+                                          bloc.eventSink(OrdenarEvent(problema, true));
                                         }
                                       : null,
                                 ),
                                 if (problema.url != null)
                                   IconButton(
-                                    tooltip: 'Ver pdf da problema',
+                                    tooltip: 'Ver doc do problema',
                                     icon: Icon(Icons.local_library),
                                     onPressed: () {
-                                      launch(problema.url);
+                                      try {
+                                        launch(problema.url);
+                                      } catch (e) {}
                                     },
                                   ),
                                 IconButton(
                                   tooltip: 'Listar de problema e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    GenerateCsvService.csvProblemaListaSimulacao(
-                                        problema);
+                                    GenerateCsvService.csvProblemaListaSimulacao(problema);
                                   },
                                 ),
                                 IconButton(

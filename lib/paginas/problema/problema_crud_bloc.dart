@@ -68,8 +68,8 @@ class ProblemaCRUDBlocState {
   String descricao;
   bool ativo = true;
   bool precisaAlgoritmoPSimulacao = false;
-  String urlPDFProblemaSemAlgoritmo;
-  bool ativadoAlgoritmoPSimulacao;
+  String urlSemAlgoritmo;
+  bool algoritmoPSimulacaoAtivado;
   PastaFk pastaDestino;
 
   void updateState() {
@@ -77,14 +77,14 @@ class ProblemaCRUDBlocState {
     nome = problema.nome;
     descricao = problema.descricao;
     precisaAlgoritmoPSimulacao = problema.precisaAlgoritmoPSimulacao;
-    urlPDFProblemaSemAlgoritmo = problema.urlPDFProblemaSemAlgoritmo;
-    ativadoAlgoritmoPSimulacao = problema.ativadoAlgoritmoPSimulacao;
+    urlSemAlgoritmo = problema.urlSemAlgoritmo;
+    algoritmoPSimulacaoAtivado = problema.algoritmoPSimulacaoAtivado;
     pastaDestino = problema?.pasta;
   }
 
   bool liberaAtivo() {
     if (precisaAlgoritmoPSimulacao == true &&
-        problema.ativadoAlgoritmoPSimulacao == false) {
+        problema.algoritmoPSimulacaoAtivado == false) {
       return false;
     } else {
       return true;
@@ -131,11 +131,11 @@ class ProblemaCRUDBloc {
       _state.isDataValid = false;
     }
     if (_state.precisaAlgoritmoPSimulacao == false &&
-        _state.urlPDFProblemaSemAlgoritmo == null) {
+        _state.urlSemAlgoritmo == null) {
       _state.isDataValid = false;
     }
-    if (_state.urlPDFProblemaSemAlgoritmo != null &&
-        _state.urlPDFProblemaSemAlgoritmo.isEmpty) {
+    if (_state.urlSemAlgoritmo != null &&
+        _state.urlSemAlgoritmo.isEmpty) {
       _state.isDataValid = false;
     }
   }
@@ -194,14 +194,14 @@ class ProblemaCRUDBloc {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
-      } else if (event.campo == 'urlPDFProblemaSemAlgoritmo') {
-        _state.urlPDFProblemaSemAlgoritmo = event.texto;
+      } else if (event.campo == 'urlSemAlgoritmo') {
+        _state.urlSemAlgoritmo = event.texto;
       }
     }
 
     if (event is UpdatePrecisaAlgoritmoPSimulacaoEvent) {
       _state.precisaAlgoritmoPSimulacao = event.precisa;
-      _state.ativadoAlgoritmoPSimulacao = false;
+      _state.algoritmoPSimulacaoAtivado = false;
     }
 
     if (event is SelectPastaIDEvent) {
@@ -215,21 +215,21 @@ class ProblemaCRUDBloc {
 
       ProblemaModel problemaUpdate = ProblemaModel(
         ativo: _state.precisaAlgoritmoPSimulacao &&
-                _state.problema.ativadoAlgoritmoPSimulacao == false
+                _state.problema.algoritmoPSimulacaoAtivado == false
             ? false
             : _state.ativo,
         nome: _state.nome,
         descricao: _state.descricao,
         precisaAlgoritmoPSimulacao: _state.precisaAlgoritmoPSimulacao,
-        urlPDFProblemaSemAlgoritmo: _state.urlPDFProblemaSemAlgoritmo,
-        ativadoAlgoritmoPSimulacao: _state.ativadoAlgoritmoPSimulacao,
+        urlSemAlgoritmo: _state.urlSemAlgoritmo,
+        algoritmoPSimulacaoAtivado: _state.algoritmoPSimulacaoAtivado,
         modificado: DateTime.now(),
         pasta: _state.pastaDestino,
       );
       if (_state.precisaAlgoritmoPSimulacao) {
         problemaUpdate.url = null;
       } else {
-        problemaUpdate.url = _state.urlPDFProblemaSemAlgoritmo;
+        problemaUpdate.url = _state.urlSemAlgoritmo;
       }
       if (_state.problemaID == null) {
         problemaUpdate.numero =
