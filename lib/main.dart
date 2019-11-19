@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'PI - Prof',
       theme: ThemeData.dark(),
-      // initialRoute: "/tarefa/aberta",
       initialRoute: "/",
       routes: {
         //homePage

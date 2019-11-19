@@ -74,7 +74,7 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
 Turma: ${avaliacao.turma.nome}
 Avaliação: ${avaliacao.nome}
 Alunos: ${avaliacao.aplicadaPAluno?.length ?? 0} | Questões: ${avaliacao.questaoAplicada?.length ?? 0}
-Nota: ${avaliacao.nota}'''),
+Nota/Peso: ${avaliacao.nota}'''),
                             subtitle: Text('''
 id: ${avaliacao.id}'''),
                             trailing: Text(

@@ -90,6 +90,7 @@ class _ProblemaSelecionarPageState extends State<ProblemaSelecionarPage> {
                 Card(
                   child: ListTile(
                     title: Text('${problema.nome}'),
+                    subtitle: Text('Fonte: ${problema.descricao}\nSimulações: ${problema.simulacaoNumero}'),
                     trailing: Icon(Icons.check),
                     leading: IconButton(
                       icon: Icon(Icons.local_library),

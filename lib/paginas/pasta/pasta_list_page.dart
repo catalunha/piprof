@@ -58,7 +58,7 @@ class _PastaListPageState extends State<PastaListPage> {
             List<Widget> listaWidget = List<Widget>();
             listaWidget.add(
               ListTile(
-                title: Text('Lista de pastas em situações em planilha'),
+                title: Text('Lista de pastas e conteúdo em planilha'),
                 trailing: Icon(Icons.grid_on),
                 onTap: () {
                   GenerateCsvService.csvPastaListaProblema(snapshot.data.pastaList);

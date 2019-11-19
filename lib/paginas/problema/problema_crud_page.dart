@@ -101,7 +101,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Detalhes:',
+                    'Fonte (livro, página, letra, etc ou site):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -134,7 +134,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
                Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Pasta desta problema:',
+                    'Pasta deste problema:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
                   _pasta(context),

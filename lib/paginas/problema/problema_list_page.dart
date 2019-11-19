@@ -72,14 +72,14 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                           ListTile(
                             leading: problema.ativo
                                 ? null
-                                : Icon(Icons.airplanemode_inactive),
+                                : Icon(Icons.thumb_down),
                             trailing:
                                 problema.precisaAlgoritmoPSimulacao == true
                                     ? Icon(Icons.code)
                                     : null,
                             title: Text('${problema.nome}'),
-                            subtitle:
-                                Text('Simulações: ${problema.simulacaoNumero??0}\n${problema.id}'),
+                            subtitle: Text(
+                                'Fonte: ${problema.descricao}\nSimulações: ${problema.simulacaoNumero ?? 0}\n${problema.id}'),
                           ),
                           Center(
                             child: Wrap(
@@ -125,11 +125,12 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                     },
                                   ),
                                 IconButton(
-                                  tooltip: 'Listar de problema e simulações em planilha',
+                                  tooltip:
+                                      'Listar de problema e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    GenerateCsvService.csvProblemaListaSimulacao(
-                                        problema);
+                                    GenerateCsvService
+                                        .csvProblemaListaSimulacao(problema);
                                   },
                                 ),
                                 IconButton(

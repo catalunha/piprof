@@ -109,7 +109,7 @@
     "uso": {
       "turmaID": 0
     },
-    "simulacaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
+    "simulacaoNumero": "numero. inicia com 0. Quando criar uma simulacao acrescenta este numero.",
     "url": "url definitiva para a problema com base nos dados a seguir",
     "precisaAlgoritmoPSimulacao": "true/false",
     "urlPDFProblemaSemAlgoritmo": "se precisaAlgoritmoSimulacao=false : pdf com proposta da problema e professor gera as simulações. precisaAlgoritmoSimulacao=true este campo nulo e defini logo abaixo",
@@ -126,7 +126,7 @@
     "#onDelete": "",
     "ativo": "true: aparece na listagens de problemas disponiveis. false: !true ",
     "modificado": "data da modificação deste documento",
-    "numero": "",
+    "numero": "simulacao.simulacaoNumero+1. depois atualizar simulacaoNumero com +1",
     "nome": "",
     "descricao": "",
     "url": "url para um doc descrevendo a simulacao",
