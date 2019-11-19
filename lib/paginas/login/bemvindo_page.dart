@@ -3,7 +3,6 @@ import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/componentes/default_scaffold.dart';
 import 'package:piprof/paginas/login/bemvindo_bloc.dart';
 
-
 class BemVindoPage extends StatefulWidget {
   final AuthBloc authBloc;
 
@@ -50,7 +49,12 @@ class _BemVindoPageState extends State<BemVindoPage> {
       //   ),
       body: Center(
         child: Text(
-            "Seja bem vindo(a)\nao Aplicativo PI, versão para professor.\nAqui você aplica de forma simples\nsuas tarefas de escola, curso ou faculdade.\nUma Proposta Individual para cada aluno."),
+            "Seja bem vindo(a)\nAo Aplicativo PI, versão para professor.\nAqui você cria e distribui de forma simples\nsuas tarefas aos alunos da escola, curso ou faculdade.\nCom um valores individuais para cada aluno.",
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 22.0,
+            ),
+            textAlign: TextAlign.center),
       ),
     );
   }

@@ -118,6 +118,7 @@
     "urlCodigoFonteAlgoritmo": "suporte cria um doc restrito com detalhes do atendimento e desenvolvimento do codigo",
     "algoritmoPSimulacaoAtivado": "true: ativo=true entao url=urlComAlgoritmo. false: ativo=false entao url=urlSemAlgoritmo",
     "urlComAlgoritmo": "doc com estrutura para usar proposta com simulação via algoritmo"
+
   },
   "Simulacao": {
     "comment": "",
@@ -127,7 +128,7 @@
     "#onDelete": "",
     "ativo": "true: aparece na listagens de problemas disponiveis. false: !true ",
     "modificado": "data da modificação deste documento",
-    "numero": "",
+    "numero": "simulacao.simulacaoNumero+1. depois atualizar simulacaoNumero com +1",
     "nome": "",
     "descricao": "",
     "url": "url para um doc descrevendo a simulacao",
