@@ -70,7 +70,7 @@ class PgabaritoCRUDPageState extends State<GabaritoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Letra:',
+                    '* Letra ou Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -79,14 +79,14 @@ class PgabaritoCRUDPageState extends State<GabaritoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Tipo:',
+                    '* Tipo:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(padding: EdgeInsets.all(5.0), child: PainelTipo(bloc)),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Gabarito:',
+                    '* Valor do gabarito:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

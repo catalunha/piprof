@@ -339,9 +339,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/desenvolvimento',
         '/turma/ativa/list',
       ],
-      turmaNumeroAdicionado: 0,
-      pastaNumeroAdicionado: 0,
-      problemaNumeroAdicionado: 0,
+      turmaNumero: 0,
+      pastaNumero: 0,
+      problemaNumero: 0,
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
@@ -368,9 +368,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/pasta/list',
         '/turma/inativa/list',
       ],
-      turmaNumeroAdicionado: 0,
-      pastaNumeroAdicionado: 0,
-      problemaNumeroAdicionado: 0,
+      turmaNumero: 0,
+      pastaNumero: 0,
+      problemaNumero: 0,
     );
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
@@ -525,8 +525,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         nome: 'cn2020.1',
         descricao: 'turma legal',
         professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
-        questaoNumeroAdicionado: 0,
-        questaoNumeroExcluido: 0);
+        questaoNumero: 0,
+        );
 
     await docRef.setData(turmaModel.toMap(), merge: true);
   }
@@ -545,8 +545,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         nome: 'cn2020.1',
         descricao: 'turma legal',
         professor: UsuarioFk(id: 'hZyF8tQoXDWPNgUQSof5K3TnS7h1', nome: 'Catalunha, MJ'),
-        questaoNumeroAdicionado: 0,
-        questaoNumeroExcluido: 0);
+        questaoNumero: 0,
+       );
 
     await docRef.setData(turmaModel.toMap(), merge: true);
   }

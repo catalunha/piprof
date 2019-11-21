@@ -45,12 +45,6 @@ class UpdateTextFieldEvent extends AvaliacaoCRUDBlocEvent {
   UpdateTextFieldEvent(this.campo, this.texto);
 }
 
-class UpdateNumberFieldEvent extends AvaliacaoCRUDBlocEvent {
-  final String campo;
-  final String texto;
-  UpdateNumberFieldEvent(this.campo, this.texto);
-}
-
 class UpdateAplicarEvent extends AvaliacaoCRUDBlocEvent {
   final bool aplicar;
   UpdateAplicarEvent(this.aplicar);
@@ -234,13 +228,11 @@ class AvaliacaoCRUDBloc {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
-      }
-    }
-    if (event is UpdateNumberFieldEvent) {
-      if (event.campo == 'nota') {
+      } else if (event.campo == 'nota') {
         _state.nota = event.texto;
       }
     }
+
     if (event is UpdateAplicarEvent) {
       _state.aplicar = event.aplicar;
       if (_state.avaliacao.aplicadaPAluno?.length == null ||

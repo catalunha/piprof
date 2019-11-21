@@ -237,7 +237,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data e hora do início:',
+                    '* Data e hora do início:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -246,7 +246,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data e hora do fim:',
+                    '* Data e hora do fim:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -255,7 +255,7 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nome:',
+                    '* Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -264,12 +264,12 @@ class _AvaliacaoCRUDPageState extends State<AvaliacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nota ou Peso:',
+                    '* Nota ou Peso:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
                   padding: EdgeInsets.all(5.0),
-                  child: _NumberFieldMultiplo(bloc, 'nota')),
+                  child: _TextFieldMultiplo(bloc, 'nota')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -363,7 +363,9 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
         if (_textFieldController.text.isEmpty) {
           if (campo == 'nome') {
             _textFieldController.text = snapshot.data?.nome;
-          } else if (campo == 'descricao') {
+          } else if (campo == 'nota') {
+            _textFieldController.text = snapshot.data?.nota;
+          }else if (campo == 'descricao') {
             _textFieldController.text = snapshot.data?.descricao;
           }
         }
@@ -383,53 +385,3 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
   }
 }
 
-class _NumberFieldMultiplo extends StatefulWidget {
-  final AvaliacaoCRUDBloc bloc;
-  final String campo;
-  _NumberFieldMultiplo(
-    this.bloc,
-    this.campo,
-  );
-  @override
-  _NumberFieldMultiploState createState() {
-    return _NumberFieldMultiploState(
-      bloc,
-      campo,
-    );
-  }
-}
-
-class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
-  final _textFieldController = TextEditingController();
-  final AvaliacaoCRUDBloc bloc;
-  final String campo;
-  _NumberFieldMultiploState(
-    this.bloc,
-    this.campo,
-  );
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<AvaliacaoCRUDBlocState>(
-      stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<AvaliacaoCRUDBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          if (campo == 'nota') {
-            _textFieldController.text = snapshot.data?.nota;
-          }
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (texto) {
-            bloc.eventSink(UpdateNumberFieldEvent(campo, texto));
-          },
-        );
-      },
-    );
-  }
-}

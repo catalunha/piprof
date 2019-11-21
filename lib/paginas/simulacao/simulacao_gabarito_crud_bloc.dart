@@ -41,13 +41,13 @@ class SimulacaoGabaritoCRUDBlocState {
   Gabarito gabarito = Gabarito();
 
   String nome;
-  String valor;
   String tipo;
+  String valor;
 
   void updateState() {
     nome = gabarito.nome;
-    valor = gabarito.valor;
     tipo = gabarito.tipo;
+    valor = gabarito.valor;
   }
 }
 
@@ -86,6 +86,9 @@ class SimulacaoGabaritoCRUDBloc {
       _state.isDataValid = false;
     }
     if (_state.tipo == null) {
+      _state.isDataValid = false;
+    }
+    if (_state.valor == null) {
       _state.isDataValid = false;
     }
   }

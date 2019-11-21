@@ -36,7 +36,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-        title: Text('Turmas ativas'),
+        title: Text('Turmas'),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
@@ -49,7 +49,8 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
         ),
         body: StreamBuilder<TurmaAtivaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TurmaAtivaListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TurmaAtivaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -67,8 +68,15 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            trailing: Text(
-                                'Questões: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
+                            trailing: IconButton(
+                              tooltip: 'Ver programa',
+                              icon: Icon(Icons.local_library),
+                              onPressed: () {
+                                try {
+                                  launch(turma.programa);
+                                } catch (_) {}
+                              },
+                            ),
                             title: Text('''
 Inst.: ${turma.instituicao}
 Comp.: ${turma.componente}
@@ -93,7 +101,8 @@ Turma: ${turma.nome}'''),
                                 icon: Icon(Icons.arrow_downward),
                                 onPressed: (ordemLocal) < lengthTurma
                                     ? () {
-                                        bloc.eventSink(OrdenarEvent(turma, false));
+                                        bloc.eventSink(
+                                            OrdenarEvent(turma, false));
                                       }
                                     : null,
                               ),
@@ -102,18 +111,10 @@ Turma: ${turma.nome}'''),
                                 icon: Icon(Icons.arrow_upward),
                                 onPressed: ordemLocal > 1
                                     ? () {
-                                        bloc.eventSink(OrdenarEvent(turma, true));
+                                        bloc.eventSink(
+                                            OrdenarEvent(turma, true));
                                       }
                                     : null,
-                              ),
-                              IconButton(
-                                tooltip: 'Ver programa',
-                                icon: Icon(Icons.local_library),
-                                onPressed: () {
-                                  try {
-                                    launch(turma.programa);
-                                  } catch (_) {}
-                                },
                               ),
                               IconButton(
                                 tooltip: 'Agenda de encontros da turma',

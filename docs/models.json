@@ -43,16 +43,16 @@
     "matriculadoNTurma": [
       "Turma/turmaID"
     ],
-    "turmaNumeroAdicionado": "numero. Quando criar uma turma acrescenta este numero.",
-    "pastaNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
-    "problemaNumeroAdicionado": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
+    "turmaNumero": "numero. Quando criar uma turma acrescenta este numero.",
+    "pastaNumero": "numero. Quando criar uma questao de qq avalicao acrescenta este numero.",
+    "problemaNumero": "numero. Quando criar uma questao de qq avalicao acrescenta este numero."
   },
   "UsuarioNovo": {
     "comment": "após cadastro tem q atualizar a turma respectiva com o ID do usuario."
   },
   "Turma": {
     "comment": "",
-    "#onCreate": "numero=Usuario.turmaNumeroAdicionado+1. Usuario.turmaNumeroAdicionado++",
+    "#onCreate": "numero=Usuario.turmaNumero+1. Usuario.turmaNumero++",
     "#onRead": "",
     "#onUpdate": "Turma.alunoPCadastro se atualizada FBFunction cria user e Usuario atualizando Turma.aluno",
     "#onDelete": "Atualizar Usuario.turma mas nao apaga usuario. Apagar tarefas com esta turma",
@@ -70,8 +70,7 @@
     "alunoList": [
       "alunoID"
     ],
-    "questaoNumeroAdicionado": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
-    "questaoNumeroExcluido": "numero. inicia com 0. Quando excluir uma questao de qq avalicao acrescenta este numero."
+    "questaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
   },
   "Pasta": {
     "comment": "Os situacões de um professor estao agrupados neste pasta",
@@ -90,7 +89,7 @@
   },
   "Problema": {
     "comment": "",
-    "#onCreate": "numero=Pasta.problemaNumeroAdicionado+1. Pasta.problemaNumeroAdicionado++",
+    "#onCreate": "numero=Pasta.problemaNumero+1. Pasta.problemaNumero++",
     "#onRead": "Se ativo=false desativar todas as tarefas ja criadas. nao aparece na listagem de situacoes para serem alocadas a questao. Se ativo=true reativa as tarefas que foram ativadas.",
     "#onUpdate": "",
     "#onDelete": "Apagar as tarefas das turmas ativas que contem esta situação.",
@@ -99,6 +98,7 @@
     "numero": "",
     "nome": "",
     "descricao": "",
+    "solucao": "url para um doc descrevendo a solucao e simulações",
     "professor": {
       "id": "usuarioID",
       "nome": "usuarioID.nome"
@@ -257,7 +257,7 @@
   },
   "Questao": {
     "comment": "",
-    "#onCreate": "numero=Turma.questaoNumeroAdicionado + 1. Turma.questaoNumeroAdicionado++",
+    "#onCreate": "numero=Turma.questaoNumero + 1. Turma.questaoNumero++",
     "#onRead": "",
     "#onUpdate": "Se Avaliacao.aplicada=true nao pode alterar Questao.numero. Se Avaliacao.aplicada=true nao alterar Avaliacao.problema atual. Se Avaliacao.aplicada=true e editar inicio/fim/tentativas/tempo alterar em todas as tarefas relacionadas.",
     "#onDelete": "Turma.questaoNumeroExcluido++. Problema/problemaID.uso.turmaID--. Se Avaliacao.aplicada=true apagar tarefas com esta questão. ",

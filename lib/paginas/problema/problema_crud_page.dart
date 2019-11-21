@@ -92,7 +92,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nome:',
+                    '* Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -101,12 +101,21 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Fonte (livro, página, letra, etc ou site):',
+                    '* Fonte (livro, página, letra, etc ou site):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Link para o arquivo de solução e simulações:',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: _TextFieldMultiplo(bloc, 'solucao')),
               SwitchListTile(
                 title: Text(
                   'Precisa de algoritmo para simulação ? ',
@@ -122,7 +131,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
                 Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Text(
-                      'Link para o problema (arquivo/imagem):',
+                      '* Link para o arquivo do problema, que será visto pelo aluno:',
                       style: TextStyle(fontSize: 15, color: Colors.blue),
                     )),
               if (snapshot.data?.precisaAlgoritmoPSimulacao != null &&
@@ -222,6 +231,8 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
             _textFieldController.text = snapshot.data?.nome;
           } else if (campo == 'descricao') {
             _textFieldController.text = snapshot.data?.descricao;
+          } else if (campo == 'solucao') {
+            _textFieldController.text = snapshot.data?.solucao;
           } else if (campo == 'urlSemAlgoritmo') {
             _textFieldController.text =
                 snapshot.data?.urlSemAlgoritmo;

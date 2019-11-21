@@ -237,7 +237,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data e hora do início:',
+                    '* Data e hora do início:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -246,7 +246,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data e hora do fim:',
+                    '* Data e hora do fim:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -255,7 +255,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nome:',
+                    '* Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -273,7 +273,7 @@ class _EncontroCRUDPageState extends State<EncontroCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Link para arquivo com detalhes deste encontro:',
+                    'Link para arquivo com detalhes deste encontro. Oculto aos alunos:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

@@ -55,8 +55,6 @@ class _TurmaInativaListPageState extends State<TurmaInativaListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            trailing:
-                                Text('Qts: ${turma.questaoNumeroAdicionado ?? 0 - turma.questaoNumeroExcluido ?? 0}'),
                             title: Text('''
 Instit.: ${turma.instituicao}
 Comp.: ${turma.componente}

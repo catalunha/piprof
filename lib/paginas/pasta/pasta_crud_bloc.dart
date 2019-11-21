@@ -115,19 +115,24 @@ class PastaCRUDBloc {
         descricao: _state.descricao,
       );
       if (_state.pastaID == null) {
-        pastaModel.numero = (_state.usuarioAuth.pastaNumeroAdicionado ?? 0) + 1;
-        // +++ Atualizar usuario com mais uma pasta em seu cadastro
-        final usuarioDocRef = _firestore
-            .collection(UsuarioModel.collection)
-            .document(_state.usuarioAuth.id);
-        await usuarioDocRef.setData({
-          'pastaNumeroAdicionado': Bootstrap.instance.fieldValue.increment(1),
-        }, merge: true);
-        // ---
+        pastaModel.numero = (_state.usuarioAuth.pastaNumero ?? 0) + 1;
+
         pastaModel.professor =
             UsuarioFk(id: _state.usuarioAuth.id, nome: _state.usuarioAuth.nome);
       }
-      await docRef.setData(pastaModel.toMap(), merge: true);
+      await docRef.setData(pastaModel.toMap(), merge: true).then((_) async {
+        if (_state.pastaID == null) {
+          // +++ Atualizar usuario com mais uma pasta em seu cadastro
+          final usuarioDocRef = _firestore
+              .collection(UsuarioModel.collection)
+              .document(_state.usuarioAuth.id);
+          await usuarioDocRef.setData({
+            'pastaNumero': Bootstrap.instance.fieldValue.increment(1),
+          }, merge: true);
+          // ---
+
+        }
+      });
     }
     if (event is DeleteDocumentEvent) {
       _firestore

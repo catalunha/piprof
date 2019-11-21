@@ -278,7 +278,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  'Quanto tempo para resolução em horas:',
+                    '* Horas para resolução (>=1):',
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
               ),
@@ -289,7 +289,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  'Quantas tentativas/erros ele pode usar/ter:',
+                    '* Tentativas de resposta ele pode usar (>=1):',
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
               ),
@@ -300,7 +300,7 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  'Qual o erro relativo na correção:',
+                    '* Erro relativo na correção numérica. (>=1 e <100):',
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
               ),
@@ -311,24 +311,24 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  'Qual a nota desta avaliação:',
+                    '* Nota ou peso da avaliação:',
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: _NumberFieldMultiplo(bloc, 'avaliacaoNota'),
+                child: _TextFieldMultiplo(bloc, 'avaliacaoNota'),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  'Qual a nota desta questão:',
+                    '* Nota ou peso da questão:',
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: _NumberFieldMultiplo(bloc, 'questaoNota'),
+                child: _TextFieldMultiplo(bloc, 'questaoNota'),
               ),
               Divider(),
               Padding(
@@ -350,6 +350,59 @@ class _TarefaCRUDPageState extends State<TarefaCRUDPage> {
           );
         },
       ),
+    );
+  }
+}
+
+class _TextFieldMultiplo extends StatefulWidget {
+  final TarefaCRUDBloc bloc;
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
+  @override
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
+    );
+  }
+}
+
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
+  final _textFieldController = TextEditingController();
+  final TarefaCRUDBloc bloc;
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<TarefaCRUDBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<TarefaCRUDBlocState> snapshot) {
+        if (_textFieldController.text.isEmpty) {
+          if (campo == 'avaliacaoNota') {
+            _textFieldController.text = snapshot.data?.avaliacaoNota;
+          } else if (campo == 'questaoNota') {
+            _textFieldController.text = snapshot.data?.questaoNota;
+          }
+        }
+        return TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          controller: _textFieldController,
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
+          },
+        );
+      },
     );
   }
 }
@@ -391,19 +444,15 @@ class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
             _textFieldController.text = snapshot.data?.tentativa;
           } else if (campo == 'erroRelativo') {
             _textFieldController.text = snapshot.data?.erroRelativo;
-          } else if (campo == 'avaliacaoNota') {
-            _textFieldController.text = snapshot.data?.avaliacaoNota;
-          } else if (campo == 'questaoNota') {
-            _textFieldController.text = snapshot.data?.questaoNota;
           }
         }
         return TextField(
           keyboardType:
               TextInputType.numberWithOptions(decimal: false, signed: false),
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
+          // maxLines: null,
+          // decoration: InputDecoration(
+          //   border: OutlineInputBorder(),
+          // ),
           controller: _textFieldController,
           onChanged: (texto) {
             bloc.eventSink(UpdateNumberFieldEvent(campo, texto));

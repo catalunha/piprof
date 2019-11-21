@@ -247,7 +247,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data e hora do início:',
+                    '* Data e hora do início:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -256,7 +256,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Data e hora do fim:',
+                    '* Data e hora do fim:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -266,7 +266,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Quanto horas para resolução (valor inteiro):',
+                    '* Horas para resolução (>=1):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -275,7 +275,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Quantas tentativas/erros ele pode usar/ter:',
+                    '* Tentativas de resposta ele pode usar (>=1):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -284,7 +284,7 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Qual o erro relativo na correção numérica. (de 1 a 100):',
+                    '* Erro relativo na correção numérica. (>=1 a <100):',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -293,16 +293,16 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Qual a nota desta questão:',
+                    '* Nota ou peso:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
                   padding: EdgeInsets.all(5.0),
-                  child: _NumberFieldMultiplo(bloc, 'nota')),
+                  child: _TextFieldMultiplo(bloc, 'nota')),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Selectione um problema:',
+                    '* Selectione um problema:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               snapshot.data?.questao?.aplicada != null &&
@@ -346,6 +346,61 @@ class _QuestaoCRUDPageState extends State<QuestaoCRUDPage> {
   }
 }
 
+
+
+
+class _TextFieldMultiplo extends StatefulWidget {
+  final QuestaoCRUDBloc bloc;
+  final String campo;
+  _TextFieldMultiplo(
+    this.bloc,
+    this.campo,
+  );
+  @override
+  _TextFieldMultiploState createState() {
+    return _TextFieldMultiploState(
+      bloc,
+      campo,
+    );
+  }
+}
+
+class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
+  final _textFieldController = TextEditingController();
+  final QuestaoCRUDBloc bloc;
+  final String campo;
+  _TextFieldMultiploState(
+    this.bloc,
+    this.campo,
+  );
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuestaoCRUDBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<QuestaoCRUDBlocState> snapshot) {
+        if (_textFieldController.text.isEmpty) {
+          if (campo == 'nota') {
+            _textFieldController.text = snapshot.data?.nota;
+          } 
+        }
+        return TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          controller: _textFieldController,
+          onChanged: (texto) {
+            bloc.eventSink(UpdateTextFieldEvent(campo, texto));
+          },
+        );
+      },
+    );
+  }
+}
+
+
 class _NumberFieldMultiplo extends StatefulWidget {
   final QuestaoCRUDBloc bloc;
   final String campo;
@@ -383,16 +438,14 @@ class _NumberFieldMultiploState extends State<_NumberFieldMultiplo> {
             _textFieldController.text = snapshot.data?.tentativa;
           } else if (campo == 'erroRelativo') {
             _textFieldController.text = snapshot.data?.erroRelativo;
-          } else if (campo == 'nota') {
-            _textFieldController.text = snapshot.data?.nota;
           }
         }
         return TextField(
           keyboardType: TextInputType.numberWithOptions(decimal: false),
-          maxLines: null,
-          decoration: InputDecoration(
-              // border: OutlineInputBorder(),
-              ),
+          // maxLines: null,
+          // decoration: InputDecoration(
+          //     // border: OutlineInputBorder(),
+          //     ),
           controller: _textFieldController,
           onChanged: (texto) {
             bloc.eventSink(UpdateNumberFieldEvent(campo, texto));

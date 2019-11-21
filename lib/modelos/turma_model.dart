@@ -11,8 +11,7 @@ class TurmaModel extends FirestoreModel {
   String descricao;
   String programa;
   UsuarioFk professor;
-  dynamic questaoNumeroAdicionado;
-  dynamic questaoNumeroExcluido;
+  dynamic questaoNumero;
 
   TurmaModel({
     String id,
@@ -24,8 +23,7 @@ class TurmaModel extends FirestoreModel {
     this.descricao,
     this.programa,
     this.professor,
-    this.questaoNumeroAdicionado,
-    this.questaoNumeroExcluido,
+    this.questaoNumero,
   }) : super(id);
 
   @override
@@ -40,10 +38,8 @@ class TurmaModel extends FirestoreModel {
     professor = map.containsKey('professor') && map['professor'] != null
         ? UsuarioFk.fromMap(map['professor'])
         : null;
-    if (map.containsKey('questaoNumeroAdicionado'))
-      questaoNumeroAdicionado = map['questaoNumeroAdicionado'];
-    if (map.containsKey('questaoNumeroExcluido'))
-      questaoNumeroExcluido = map['questaoNumeroExcluido'];
+    if (map.containsKey('questaoNumero'))
+      questaoNumero = map['questaoNumero'];
     return this;
   }
 
@@ -61,10 +57,8 @@ class TurmaModel extends FirestoreModel {
     if (this.professor != null) {
       data['professor'] = this.professor.toMap();
     }
-    if (questaoNumeroAdicionado != null)
-      data['questaoNumeroAdicionado'] = this.questaoNumeroAdicionado;
-    if (questaoNumeroExcluido != null)
-      data['questaoNumeroExcluido'] = this.questaoNumeroExcluido;
+    if (questaoNumero != null)
+      data['questaoNumero'] = this.questaoNumero;
     return data;
   }
 }

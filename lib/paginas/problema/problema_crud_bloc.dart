@@ -66,6 +66,7 @@ class ProblemaCRUDBlocState {
   // dynamic data;
   String nome;
   String descricao;
+  String solucao;
   bool ativo = true;
   bool precisaAlgoritmoPSimulacao = false;
   String urlSemAlgoritmo;
@@ -76,6 +77,7 @@ class ProblemaCRUDBlocState {
     ativo = problema.ativo;
     nome = problema.nome;
     descricao = problema.descricao;
+    solucao = problema.solucao;
     precisaAlgoritmoPSimulacao = problema.precisaAlgoritmoPSimulacao;
     urlSemAlgoritmo = problema.urlSemAlgoritmo;
     algoritmoPSimulacaoAtivado = problema.algoritmoPSimulacaoAtivado;
@@ -130,12 +132,11 @@ class ProblemaCRUDBloc {
     if (_state.nome == null) {
       _state.isDataValid = false;
     }
-    if (_state.precisaAlgoritmoPSimulacao == false &&
-        _state.urlSemAlgoritmo == null) {
+    if (_state.descricao == null) {
       _state.isDataValid = false;
     }
-    if (_state.urlSemAlgoritmo != null &&
-        _state.urlSemAlgoritmo.isEmpty) {
+    if (_state.precisaAlgoritmoPSimulacao == false &&
+        _state.urlSemAlgoritmo == null) {
       _state.isDataValid = false;
     }
   }
@@ -194,6 +195,8 @@ class ProblemaCRUDBloc {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
+      } else if (event.campo == 'solucao') {
+        _state.solucao = event.texto;
       } else if (event.campo == 'urlSemAlgoritmo') {
         _state.urlSemAlgoritmo = event.texto;
       }
@@ -220,6 +223,7 @@ class ProblemaCRUDBloc {
             : _state.ativo,
         nome: _state.nome,
         descricao: _state.descricao,
+        solucao: _state.solucao,
         precisaAlgoritmoPSimulacao: _state.precisaAlgoritmoPSimulacao,
         urlSemAlgoritmo: _state.urlSemAlgoritmo,
         algoritmoPSimulacaoAtivado: _state.algoritmoPSimulacaoAtivado,
@@ -232,24 +236,26 @@ class ProblemaCRUDBloc {
         problemaUpdate.url = _state.urlSemAlgoritmo;
       }
       if (_state.problemaID == null) {
-        problemaUpdate.numero =
-            (_state.usuarioAuth.problemaNumeroAdicionado ?? 0) + 1;
-        //+++ Atualizar usuario com mais uma pasta em seu cadastro
-        final usuarioDocRef = _firestore
-            .collection(UsuarioModel.collection)
-            .document(_state.usuarioAuth.id);
-        await usuarioDocRef.setData({
-          'problemaNumeroAdicionado':
-              Bootstrap.instance.fieldValue.increment(1),
-        }, merge: true);
-        //---
+        problemaUpdate.numero = (_state.usuarioAuth.problemaNumero ?? 0) + 1;
         problemaUpdate.professor = UsuarioFk(
           id: _state.usuarioAuth.id,
           nome: _state.usuarioAuth.nome,
         );
       }
 
-      await docRef.setData(problemaUpdate.toMap(), merge: true);
+      await docRef.setData(problemaUpdate.toMap(), merge: true).then((_) async {
+        if (_state.problemaID == null) {
+          //+++ Atualizar usuario com mais uma pasta em seu cadastro
+          final usuarioDocRef = _firestore
+              .collection(UsuarioModel.collection)
+              .document(_state.usuarioAuth.id);
+          await usuarioDocRef.setData({
+            'problemaNumero': Bootstrap.instance.fieldValue.increment(1),
+          }, merge: true);
+          //---
+
+        }
+      });
     }
     if (event is DeleteDocumentEvent) {
       _firestore

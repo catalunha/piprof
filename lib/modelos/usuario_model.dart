@@ -12,9 +12,9 @@ class UsuarioModel extends FirestoreModel {
   String matricula;
   String nome;
   List<dynamic> rota;
-  int turmaNumeroAdicionado;
-  int pastaNumeroAdicionado;
-  int problemaNumeroAdicionado;
+  int turmaNumero;
+  int pastaNumero;
+  int problemaNumero;
   // String tokenFCM;
   List<dynamic> turma;
 
@@ -29,9 +29,9 @@ class UsuarioModel extends FirestoreModel {
       this.ativo,
       this.professor,
       this.foto,
-      this.turmaNumeroAdicionado,
-      this.pastaNumeroAdicionado,
-      this.problemaNumeroAdicionado,
+      this.turmaNumero,
+      this.pastaNumero,
+      this.problemaNumero,
       this.rota,
       this.turma})
       : super(id);
@@ -46,12 +46,10 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
     if (map.containsKey('professor')) professor = map['professor'];
-    if (map.containsKey('pastaNumeroAdicionado'))
-      pastaNumeroAdicionado = map['pastaNumeroAdicionado'];
-    if (map.containsKey('problemaNumeroAdicionado'))
-      problemaNumeroAdicionado = map['problemaNumeroAdicionado'];
-    if (map.containsKey('turmaNumeroAdicionado'))
-      turmaNumeroAdicionado = map['turmaNumeroAdicionado'];
+    if (map.containsKey('pastaNumero')) pastaNumero = map['pastaNumero'];
+    if (map.containsKey('problemaNumero'))
+      problemaNumero = map['problemaNumero'];
+    if (map.containsKey('turmaNumero')) turmaNumero = map['turmaNumero'];
     if (map.containsKey('foto')) {
       foto = map['foto'] != null ? new UploadFk.fromMap(map['foto']) : null;
     }
@@ -73,12 +71,10 @@ class UsuarioModel extends FirestoreModel {
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
     if (professor != null) data['professor'] = this.professor;
-    if (pastaNumeroAdicionado != null)
-      data['pastaNumeroAdicionado'] = this.pastaNumeroAdicionado;
-    if (problemaNumeroAdicionado != null)
-      data['problemaNumeroAdicionado'] = this.problemaNumeroAdicionado;
-    if (turmaNumeroAdicionado != null)
-      data['turmaNumeroAdicionado'] = this.turmaNumeroAdicionado;
+    if (pastaNumero != null) data['pastaNumero'] = this.pastaNumero;
+    if (problemaNumero != null)
+      data['problemaNumero'] = this.problemaNumero;
+    if (turmaNumero != null) data['turmaNumero'] = this.turmaNumero;
     if (this.foto != null) {
       data['foto'] = this.foto.toMap();
     }

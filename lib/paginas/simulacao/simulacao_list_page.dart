@@ -73,7 +73,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                             : false,
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                          'Variaveis: ${simulacao?.variavel?.length ?? 0} | Gabarito: ${simulacao?.gabarito?.length == null || simulacao?.gabarito?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.gabarito?.length}\nid:${simulacao.id}',
+                          'Valores  : ${simulacao?.variavel?.length ?? 0}\nGabarito: ${simulacao?.gabarito?.length == null || simulacao?.gabarito?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.gabarito?.length}\nid:${simulacao.id}',
                         ),
                       
                       ),

@@ -70,7 +70,7 @@ class _PastaCRUDPageState extends State<PastaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nome:',
+                    '* Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               // Padding(padding: EdgeInsets.all(5.0), child: PastaNome(bloc)),

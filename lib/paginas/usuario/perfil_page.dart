@@ -96,7 +96,10 @@ class AtualizarNumeroCelularState extends State<AtualizarCelular> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Atualizar número do celular"),
+              Text(
+                "Atualizar número do celular",
+                style: TextStyle(fontSize: 15, color: Colors.blue),
+              ),
               TextField(
                 controller: _controller,
                 onChanged: (celular) {
@@ -138,7 +141,10 @@ class AtualizarNomeNoProjetoState extends State<AtualizarCracha> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Atualizar nome curto para crachá"),
+              Text(
+                "Atualizar nome curto para crachá",
+                style: TextStyle(fontSize: 15, color: Colors.blue),
+              ),
               TextField(
                 controller: _controller,
                 onChanged: (cracha) {
@@ -184,12 +190,17 @@ class FotoUsuario extends StatelessWidget {
               // ),
               Wrap(children: <Widget>[
                 Text(
-                    'Atualizar foto. Destaque exclussivamente sua cabeça, evitando paisagem ao fundo e acessórios na face. Favorece reconhecimento facial.'),
+                  'Atualizar foto. Destaque exclussivamente sua cabeça, evitando paisagem ao fundo e acessórios na face. Favorece reconhecimento facial.',
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                ),
                 ListTile(
-                  title: Text('Busque no dispositivo'),
+                  title: Text(
+                    'Selecione no dispositivo',
+                  ),
                   trailing: Icon(Icons.file_download),
                   onTap: () async {
                     await _selecionarNovoArquivo().then((localPath) {
+                      print('localPath: $localPath');
                       bloc.eventSink(UpdateFotoEvent(localPath));
                     });
                   },
@@ -219,6 +230,7 @@ class FotoUsuario extends StatelessWidget {
       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {
         return arquivoPath;
+        // return File(arquivoPath).resolveSymbolicLinks();
       }
     } catch (e) {
       print("Unsupported operation" + e.toString());
@@ -242,7 +254,7 @@ class _ImagemPerfilUpload extends StatelessWidget {
     if (path == null && url == null) {
       foto = Text('Você ainda não enviou uma foto de perfil.');
     }
-    if (path != null && url == null && path.indexOf(' ')) {
+    if (path != null && url == null && path.indexOf(' ') < 0) {
       try {
         foto = Container(
             // color: Colors.yellow,
@@ -280,6 +292,15 @@ class _ImagemPerfilUpload extends StatelessWidget {
           title: Text('Não consegui abrir a imagem.'),
         );
       }
+    }
+    if (path != null && url == null && path.indexOf(' ') > 0) {
+      msg = ListTile(
+        title: Text('EXISTE ESPAÇO NO CAMINHO DO ARQUIVO: $path'),
+      );
+      foto = ListTile(
+        title: Text(
+            'FAVOR SELECIONAR IMAGEM DA CÂMERA OU OUTRO CAMINHO SEM ESPAÇO. Se necessário mova a foto para uma pasta com caminho sem espaços.'),
+      );
     }
     return Column(
       children: <Widget>[

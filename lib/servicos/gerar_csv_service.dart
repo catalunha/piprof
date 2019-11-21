@@ -28,10 +28,6 @@ class GenerateCsvService {
     planilha.add(['instituicao', '${turma.instituicao}']);
     planilha.add(['componente', '${turma.componente}']);
     planilha.add(['descricao', '${turma.descricao}']);
-    planilha.add([
-      'questoes',
-      '${turma.questaoNumeroAdicionado - turma.questaoNumeroExcluido}'
-    ]);
 
     final futureQuerySnapshot = await Bootstrap.instance.firestore
         .collection(UsuarioModel.collection)
@@ -396,8 +392,8 @@ class GenerateCsvService {
         '${tarefa.avaliacao.nome}',
         '${tarefa.questao.numero}',
         '${tarefa.problema.nome}',
-        '=HYPERLINK("${tarefa.problema.url}";"Link para a problema")',
-        '${tarefa.simulacao}',
+        '=HYPERLINK("${tarefa.problema.url}";"Link para o problema")',
+        '${tarefa.simulacao.nome}',
         '${tarefa.aluno.nome}',
         '=IMAGE("${tarefa.aluno.foto}")',
         '${tarefa.avaliacaoNota}',
@@ -582,7 +578,7 @@ class GenerateCsvService {
           '${problema.descricao}',
           '$usoTotal',
           '${problema.precisaAlgoritmoPSimulacao}',
-          '=HYPERLINK("${problema.url}";"Link para a problema")',
+          '=HYPERLINK("${problema.url}";"Link para o problema")',
         ]);
       }
     }
@@ -621,7 +617,7 @@ class GenerateCsvService {
       '${problema.pasta.nome}',
       '${problema.nome}',
       '${problema.descricao}',
-      '=HYPERLINK("${problema.url}";"Link para a problema")',
+      '=HYPERLINK("${problema.url}";"Link para o problema")',
     ];
     Map<String, Variavel> variavelMap = Map<String, Variavel>();
     Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
@@ -698,7 +694,7 @@ class GenerateCsvService {
             ...base1,
             ...base2,
             'gabarito_valor',
-            '=HYPERLINK("${gabarito.value.valor}";"Link para a gabarito")',
+            '=HYPERLINK("${gabarito.value.valor}";"Link para o gabarito")',
           ]);
         } else if (gabarito.value.tipo == 'urlimagem' ||
             gabarito.value.tipo == 'imagem') {

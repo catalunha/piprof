@@ -48,6 +48,12 @@ class UpdateDataFimEvent extends QuestaoCRUDBlocEvent {
   UpdateDataFimEvent({this.data, this.hora});
 }
 
+class UpdateTextFieldEvent extends QuestaoCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
+}
+
 class UpdateNumberFieldEvent extends QuestaoCRUDBlocEvent {
   final String campo;
   final String texto;
@@ -301,10 +307,14 @@ class QuestaoCRUDBloc {
           _state.erroRelativo = '10';
           a = 10;
         }
-        if (a <= 0) {
+        if (a <= 0 || a > 100) {
           _state.erroRelativo = '10';
         }
-      } else if (event.campo == 'nota') {
+      }
+    }
+
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'nota') {
         _state.nota = event.texto;
       }
     }
@@ -334,15 +344,7 @@ class QuestaoCRUDBloc {
       if (_state.questaoID == null) {
         questaoUpdate.ativo = true;
         questaoUpdate.aplicada = false;
-        questaoUpdate.numero = (_state.turma.questaoNumeroAdicionado ?? 0) + 1;
-        //+++ Atualizar turma com mais uma questao
-        final turmaDocRef = _firestore
-            .collection(TurmaModel.collection)
-            .document(_state.turma.id);
-        await turmaDocRef.setData({
-          'questaoNumeroAdicionado': Bootstrap.instance.fieldValue.increment(1),
-        }, merge: true);
-        //---
+        questaoUpdate.numero = (_state.turma.questaoNumero ?? 0) + 1;
         questaoUpdate.ativo = true;
         questaoUpdate.professor = UsuarioFk(
           id: _state.avaliacao.professor.id,
@@ -357,20 +359,45 @@ class QuestaoCRUDBloc {
           nome: _state.avaliacao.nome,
         );
       }
-      await docRef.setData(questaoUpdate.toMap(), merge: true);
-      if (_state.questaoID == null) {
-        //+++ Atualizando avaliacao acrescentando esta questao da lista questaoAplicada
-        var avaliacaoDocRef = _firestore
-            .collection(AvaliacaoModel.collection)
-            .document(_state.avaliacao.id);
-        await avaliacaoDocRef.setData({
-          "questaoAplicada":
-              Bootstrap.instance.fieldValue.arrayUnion([docRef.documentID]),
-          "aplicar": false,
-          "aplicada": false,
-        }, merge: true);
-        //---
-      }
+      await docRef
+          .setData(questaoUpdate.toMap(), merge: true)
+          .then((_) async {
+        if (_state.questaoID == null) {
+          //+++ Atualizar turma com mais uma questao
+          final turmaDocRef = _firestore
+              .collection(TurmaModel.collection)
+              .document(_state.turma.id);
+          await turmaDocRef.setData({
+            'questaoNumero':
+                Bootstrap.instance.fieldValue.increment(1),
+          }, merge: true);
+          //---
+          //+++ Atualizando avaliacao acrescentando esta questao da lista questaoAplicada
+          var avaliacaoDocRef = _firestore
+              .collection(AvaliacaoModel.collection)
+              .document(_state.avaliacao.id);
+          await avaliacaoDocRef.setData({
+            "questaoAplicada":
+                Bootstrap.instance.fieldValue.arrayUnion([docRef.documentID]),
+            "aplicar": false,
+            "aplicada": false,
+          }, merge: true);
+          //---
+        }
+      });
+      // if (_state.questaoID == null) {
+      //   //+++ Atualizando avaliacao acrescentando esta questao da lista questaoAplicada
+      //   var avaliacaoDocRef = _firestore
+      //       .collection(AvaliacaoModel.collection)
+      //       .document(_state.avaliacao.id);
+      //   await avaliacaoDocRef.setData({
+      //     "questaoAplicada":
+      //         Bootstrap.instance.fieldValue.arrayUnion([docRef.documentID]),
+      //     "aplicar": false,
+      //     "aplicada": false,
+      //   }, merge: true);
+      //   //---
+      // }
     }
     if (event is DeleteDocumentEvent) {
       if (_state.questaoID != null) {

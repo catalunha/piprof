@@ -26,6 +26,12 @@ class UpdateDataFimEvent extends TarefaCRUDBlocEvent {
   UpdateDataFimEvent({this.data, this.hora});
 }
 
+class UpdateTextFieldEvent extends TarefaCRUDBlocEvent {
+  final String campo;
+  final String texto;
+  UpdateTextFieldEvent(this.campo, this.texto);
+}
+
 class UpdateNumberFieldEvent extends TarefaCRUDBlocEvent {
   final String campo;
   final String texto;
@@ -99,7 +105,8 @@ class TarefaCRUDBloc {
       _state.isDataValid = false;
     }
     if (_state.inicioAvaliacao != null &&
-        _state.fimAvaliacao != null && _state.inicioAvaliacao.isAfter(_state.fimAvaliacao)) {
+        _state.fimAvaliacao != null &&
+        _state.inicioAvaliacao.isAfter(_state.fimAvaliacao)) {
       _state.isDataValid = false;
     }
 
@@ -230,16 +237,18 @@ class TarefaCRUDBloc {
           _state.erroRelativo = '10';
           a = 10;
         }
-        if (a <= 0) {
+        if (a <= 0 || a> 100) {
           _state.erroRelativo = '10';
         }
-      } else if (event.campo == 'avaliacaoNota') {
+      }
+    }
+    if (event is UpdateTextFieldEvent) {
+      if (event.campo == 'avaliacaoNota') {
         _state.avaliacaoNota = event.texto;
       } else if (event.campo == 'questaoNota') {
         _state.questaoNota = event.texto;
       }
     }
-
     if (event is SaveEvent) {
       final docRef = _firestore
           .collection(TarefaModel.collection)

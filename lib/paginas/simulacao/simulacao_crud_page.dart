@@ -74,7 +74,7 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Nome:',
+                    '* Nome:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -92,7 +92,7 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Url:',
+                    'Link para o arquivo detalhando a simulação:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

@@ -140,17 +140,8 @@ class SimulacaoCRUDBloc {
         url: _state.url,
       );
       if (_state.simulacaoID == null) {
-               simulacaoModel.numero =
-            (_state.problema.simulacaoNumero ?? 0) + 1;
-        //+++ Atualizar problema com mais uma em seu cadastro
-        final usuarioDocRef = _firestore
-            .collection(ProblemaModel.collection)
-            .document(_state.problema.id);
-        await usuarioDocRef.setData({
-          'simulacaoNumero':
-              Bootstrap.instance.fieldValue.increment(1),
-        }, merge: true);
-        //---
+        simulacaoModel.numero = (_state.problema.simulacaoNumero ?? 0) + 1;
+
         simulacaoModel.ordem = 0;
         simulacaoModel.algoritmoDoAdmin = false;
         simulacaoModel.algoritmoDoProfessor = false;
@@ -159,25 +150,32 @@ class SimulacaoCRUDBloc {
         simulacaoModel.problema =
             ProblemaFk(id: _state.problema.id, nome: _state.problema.nome);
       }
-      await docRef.setData(simulacaoModel.toMap(), merge: true);
-
-
-
+      await docRef.setData(simulacaoModel.toMap(), merge: true).then((_) async {
+        if (_state.simulacaoID == null) {
+          //+++ Atualizar problema com mais uma em seu cadastro
+          final usuarioDocRef = _firestore
+              .collection(ProblemaModel.collection)
+              .document(_state.problema.id);
+          await usuarioDocRef.setData({
+            'simulacaoNumero': Bootstrap.instance.fieldValue.increment(1),
+          }, merge: true);
+          //---
+        }
+      });
     }
     if (event is DeleteDocumentEvent) {
       _firestore
           .collection(SimulacaoModel.collection)
           .document(_state.simulacao.id)
           .delete();
-          //+++ Atualizar problema com menos uma em seu cadastro
-        final docRef = _firestore
-            .collection(ProblemaModel.collection)
-            .document(_state.problema.id);
-        await docRef.setData({
-          'simulacaoNumero':
-              Bootstrap.instance.fieldValue.increment(-1),
-        }, merge: true);
-        //---
+      //+++ Atualizar problema com menos uma em seu cadastro
+      final docRef = _firestore
+          .collection(ProblemaModel.collection)
+          .document(_state.problema.id);
+      await docRef.setData({
+        'simulacaoNumero': Bootstrap.instance.fieldValue.increment(-1),
+      }, merge: true);
+      //---
     }
 
     _validateData();
