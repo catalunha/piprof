@@ -178,16 +178,6 @@ class FotoUsuario extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (Recursos.instance.disponivel("file_picking"))
-              // ListTile(
-              //   title: Text(
-              //       'Atualizar foto. Destaque exclussivamente sua cabeça, evitando paisagem ao fundo e acessórios na face. Favorece reconhecimento facial.'),
-              //   trailing: Icon(Icons.file_download),
-              //   onTap: () async {
-              //     await _selecionarNovoArquivo().then((localPath) {
-              //       bloc.eventSink(UpdateFotoEvent(localPath));
-              //     });
-              //   },
-              // ),
               Wrap(children: <Widget>[
                 Text(
                   'Atualizar foto. Destaque exclussivamente sua cabeça, evitando paisagem ao fundo e acessórios na face. Favorece reconhecimento facial.',
@@ -200,20 +190,10 @@ class FotoUsuario extends StatelessWidget {
                   trailing: Icon(Icons.file_download),
                   onTap: () async {
                     await _selecionarNovoArquivo().then((localPath) {
-                      print('localPath: $localPath');
                       bloc.eventSink(UpdateFotoEvent(localPath));
                     });
                   },
                 ),
-                // IconButton(
-                //   icon: Icon(Icons.file_download),
-                //   onPressed: () async {
-                //     await _selecionarNovoArquivo().then((arq) {
-                //       localPath = arq;
-                //     });
-                //     bloc.eventSink(UpdateFotoEvent(localPath));
-                //   },
-                // ),
               ]),
             _ImagemPerfilUpload(
                 uploadID: snapshot.data?.fotoUploadID,

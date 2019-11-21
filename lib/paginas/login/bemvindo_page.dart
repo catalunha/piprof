@@ -49,7 +49,7 @@ class _BemVindoPageState extends State<BemVindoPage> {
       //   ),
       body: Center(
         child: Text(
-            "Seja bem vindo(a)\nAo Aplicativo PI, versão para professor.\nAqui você cria e distribui de forma simples\nsuas tarefas aos alunos da escola, curso ou faculdade.\nCom um valores individuais para cada aluno.",
+            "Seja bem vindo(a)\nAo Aplicativo PI, versão para professor.\nAqui você cria e distribui de forma simples\nsuas tarefas aos alunos da escola, curso ou faculdade.\nGerando uma questão com valores individuais por aluno.",
             style: TextStyle(
               color: Colors.green,
               fontSize: 22.0,

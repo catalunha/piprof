@@ -29,7 +29,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/pasta/list"] = Rota("Pastas", Icons.folder);
       rotas["/upload"] = Rota("Upload de arquivos", Icons.cloud_upload);
 
-      rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
+      // rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/turma/ativa/list"] = Rota("Turmas ativas", Icons.assignment);
