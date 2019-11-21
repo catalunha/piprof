@@ -83,10 +83,10 @@ class SimulacaoVariavelCRUDBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.nome == null) {
+    if (_state.nome == null || _state.nome.trim().isEmpty) {
       _state.isDataValid = false;
     }
-    if (_state.valor == null) {
+    if (_state.valor == null || _state.valor.trim().isEmpty) {
       _state.isDataValid = false;
     }
     if (_state.tipo == null) {
@@ -129,8 +129,8 @@ class SimulacaoVariavelCRUDBloc {
           .document(_state.simulacao.id);
 
       Variavel variavelUpdate = Variavel(
-        nome: _state.nome,
-        valor: _state.valor,
+        nome: _state.nome.trim(),
+        valor: _state.valor.trim(),
         tipo: _state.tipo,
       );
       if (_state.variavelKey == null) {

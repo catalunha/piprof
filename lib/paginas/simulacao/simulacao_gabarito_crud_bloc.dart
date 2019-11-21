@@ -82,13 +82,13 @@ class SimulacaoGabaritoCRUDBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.nome == null) {
+    if (_state.nome == null || _state.nome.trim().isEmpty) {
       _state.isDataValid = false;
     }
     if (_state.tipo == null) {
       _state.isDataValid = false;
     }
-    if (_state.valor == null) {
+    if (_state.valor == null || _state.valor.trim().isEmpty) {
       _state.isDataValid = false;
     }
   }
@@ -126,8 +126,8 @@ class SimulacaoGabaritoCRUDBloc {
           .document(_state.simulacao.id);
 
       Gabarito gabaritoUpdate = Gabarito(
-        nome: _state.nome,
-        valor: _state.valor,
+        nome: _state.nome.trim(),
+        valor: _state.valor.trim(),
         tipo: _state.tipo,
       );
       if (_state.gabaritoKey == null) {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
@@ -60,22 +61,125 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
+            List<String> variavelList = List<String>();
+            List<String> variavelTipoList = List<String>();
+            List<String> gabaritoList = List<String>();
+            List<String> gabaritoTipoList = List<String>();
+            if (snapshot.data.simulacaoList != null &&
+                snapshot.data.simulacaoList.length > 0) {
+              if (snapshot.data?.simulacaoList[0]?.variavel != null) {
+                for (var variavel
+                    in snapshot.data?.simulacaoList[0].variavel.entries) {
+                  variavelList.add(variavel.value.nome);
+                }
+                variavelList.sort((a, b) => a.compareTo(b));
+                for (var variavel
+                    in snapshot.data?.simulacaoList[0].variavel.entries) {
+                  variavelTipoList.add(variavel.value.tipo);
+                }
+                variavelTipoList.sort((a, b) => a.compareTo(b));
+                print('variaveis: $variavelList');
+              }
 
+              if (snapshot.data?.simulacaoList[0]?.gabarito != null) {
+                for (var gabarito
+                    in snapshot.data?.simulacaoList[0].gabarito.entries) {
+                  gabaritoList.add(gabarito.value.nome);
+                }
+                gabaritoList.sort((a, b) => a.compareTo(b));
+
+                for (var gabarito
+                    in snapshot.data?.simulacaoList[0].gabarito.entries) {
+                  gabaritoTipoList.add(gabarito.value.tipo);
+                }
+                gabaritoTipoList.sort((a, b) => a.compareTo(b));
+
+                print('gabaritos: $gabaritoList');
+              }
+            }
+            bool alerta = false;
+            String msg = '';
             for (var simulacao in snapshot.data.simulacaoList) {
+              if (simulacao?.gabarito?.length == null ||
+                  simulacao?.gabarito?.length == 0) {
+                alerta = true;
+                msg = '\n\nFALTA GABARITO. FAVOR CORRIGIR !';
+              } else {
+                alerta = false;
+                msg = '';
+              }
+
+
+
+              List<String> variavelListAtual = List<String>();
+              List<String> variavelTipoListAtual = List<String>();
+              if (simulacao.variavel != null) {
+                variavelListAtual.clear();
+                for (var variavel in simulacao.variavel.entries) {
+                  variavelListAtual.add(variavel.value.nome);
+                }
+                variavelListAtual.sort((a, b) => a.compareTo(b));
+                variavelTipoListAtual.clear();
+                for (var variavel in simulacao.variavel.entries) {
+                  variavelTipoListAtual.add(variavel.value.tipo);
+                }
+                variavelTipoListAtual.sort((a, b) => a.compareTo(b));
+              }
+              if (!listEquals(variavelList, variavelListAtual)) {
+                print('${simulacao.nome}');
+                print(variavelList);
+                print(variavelListAtual);
+                alerta = true;
+                msg = msg + '\n\nVALORES COM NOMES DIFERENTES. FAVOR CORRIGIR !';
+              }
+              if (!listEquals(variavelTipoList, variavelTipoListAtual)) {
+                print('${simulacao.nome}');
+                print(variavelList);
+                print(variavelListAtual);
+                alerta = true;
+                msg = msg + '\n\nVALORES COM TIPOS DIFERENTES. FAVOR CORRIGIR !';
+              }
+
+              List<String> gabaritoListAtual = List<String>();
+              List<String> gabaritoTipoListAtual = List<String>();
+              if (simulacao.gabarito != null) {
+                gabaritoListAtual.clear();
+                for (var gabarito in simulacao.gabarito.entries) {
+                  gabaritoListAtual.add(gabarito.value.nome);
+                }
+                gabaritoListAtual.sort((a, b) => a.compareTo(b));
+                gabaritoTipoListAtual.clear();
+                for (var gabarito in simulacao.gabarito.entries) {
+                  gabaritoTipoListAtual.add(gabarito.value.tipo);
+                }
+                gabaritoTipoListAtual.sort((a, b) => a.compareTo(b));
+              }
+              if (!listEquals(gabaritoList, gabaritoListAtual)) {
+                print('${simulacao.nome}');
+                print(gabaritoList);
+                print(gabaritoListAtual);
+                alerta = true;
+                msg = msg + '\n\nGABARITOS COM NOMES DIFERENTES. FAVOR CORRIGIR !';
+              }
+              if (!listEquals(gabaritoTipoList, gabaritoTipoListAtual)) {
+                print('${simulacao.nome}');
+                print(gabaritoList);
+                print(gabaritoListAtual);
+                alerta = true;
+                msg = msg + '\n\nGABARITOS COM TIPOS DIFERENTES. FAVOR CORRIGIR !';
+              }
+
               listaWidget.add(
                 Card(
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        selected: simulacao?.gabarito?.length == null ||
-                                simulacao?.gabarito?.length == 0
-                            ? true
-                            : false,
+                        selected: alerta,
+                        trailing: alerta ? Icon(Icons.alarm) : Text(''),
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                          'Valores  : ${simulacao?.variavel?.length ?? 0}\nGabarito: ${simulacao?.gabarito?.length == null || simulacao?.gabarito?.length == 0 ? '\n\nFALTA PEDE-SE. FAVOR CORRIGIR !\n\n' : simulacao?.gabarito?.length}\nid:${simulacao.id}',
+                          'Valores  : ${simulacao?.variavel?.length ?? 0}\nGabarito: ${simulacao?.gabarito?.length != null ? simulacao?.gabarito?.length : 0}$msg\nid:${simulacao.id}',
                         ),
-                      
                       ),
                       Center(
                         child: Wrap(
@@ -94,14 +198,14 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                 );
                               },
                             ),
-                             if (simulacao.url != null)
-                                  IconButton(
-                                    tooltip: 'Ver arquivo da simulacao',
-                                    icon: Icon(Icons.local_library),
-                                    onPressed: () {
-                                      launch(simulacao.url);
-                                    },
-                                  ),
+                            if (simulacao.url != null)
+                              IconButton(
+                                tooltip: 'Ver arquivo da simulacao',
+                                icon: Icon(Icons.local_library),
+                                onPressed: () {
+                                  launch(simulacao.url);
+                                },
+                              ),
                             IconButton(
                               tooltip: 'Gerenciar valores',
                               icon: Icon(Icons.sort_by_alpha),
@@ -113,7 +217,6 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                 );
                               },
                             ),
-                            
                             IconButton(
                               tooltip: 'Gerenciar gabarito',
                               icon: Icon(Icons.question_answer),
