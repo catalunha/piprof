@@ -210,7 +210,6 @@ class FotoUsuario extends StatelessWidget {
       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {
         return arquivoPath;
-        // return File(arquivoPath).resolveSymbolicLinks();
       }
     } catch (e) {
       print("Unsupported operation" + e.toString());
