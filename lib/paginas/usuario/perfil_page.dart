@@ -169,20 +169,40 @@ class FotoUsuario extends StatelessWidget {
           );
         }
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (Recursos.instance.disponivel("file_picking"))
-              ButtonBar(children: <Widget>[
-                Text('Atualizar foto de usuario'),
-                IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () async {
-                    await _selecionarNovoArquivo().then((arq) {
-                      localPath = arq;
+              // ListTile(
+              //   title: Text(
+              //       'Atualizar foto. Destaque exclussivamente sua cabeça, evitando paisagem ao fundo e acessórios na face. Favorece reconhecimento facial.'),
+              //   trailing: Icon(Icons.file_download),
+              //   onTap: () async {
+              //     await _selecionarNovoArquivo().then((localPath) {
+              //       bloc.eventSink(UpdateFotoEvent(localPath));
+              //     });
+              //   },
+              // ),
+              Wrap(children: <Widget>[
+                Text(
+                    'Atualizar foto. Destaque exclussivamente sua cabeça, evitando paisagem ao fundo e acessórios na face. Favorece reconhecimento facial.'),
+                ListTile(
+                  title: Text('Busque no dispositivo'),
+                  trailing: Icon(Icons.file_download),
+                  onTap: () async {
+                    await _selecionarNovoArquivo().then((localPath) {
+                      bloc.eventSink(UpdateFotoEvent(localPath));
                     });
-                    bloc.eventSink(UpdateFotoEvent(localPath));
-
                   },
                 ),
+                // IconButton(
+                //   icon: Icon(Icons.file_download),
+                //   onPressed: () async {
+                //     await _selecionarNovoArquivo().then((arq) {
+                //       localPath = arq;
+                //     });
+                //     bloc.eventSink(UpdateFotoEvent(localPath));
+                //   },
+                // ),
               ]),
             _ImagemPerfilUpload(
                 uploadID: snapshot.data?.fotoUploadID,
@@ -222,7 +242,7 @@ class _ImagemPerfilUpload extends StatelessWidget {
     if (path == null && url == null) {
       foto = Text('Você ainda não enviou uma foto de perfil.');
     }
-    if (path != null && url == null) {
+    if (path != null && url == null && path.indexOf(' ')) {
       try {
         foto = Container(
             // color: Colors.yellow,

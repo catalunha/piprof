@@ -345,7 +345,7 @@ class GenerateCsvService {
     }
 
     String csvData =
-        ListToCsvConverter().convert(planilha, fieldDelimiter: ';');
+        ListToCsvConverter().convert(planilha, fieldDelimiter: ',');
     // print('+++ generateCsvFromEncontro\n$csvData\n--- generateCsvFromEncontro');
     _saveFileAndOpen(csvData);
   }
@@ -745,15 +745,22 @@ class GenerateCsvService {
 
   static _openFileFromDirectory(String filename, String fileDirectory) async {
     // Veja https://pub.dev/packages/open_file
-    await OpenFile.open(
-      fileDirectory + filename,
-    );
+
+    // await OpenFile.open(
+    //   fileDirectory + filename,
+    // );
+
+    await OpenFile.open(fileDirectory + filename, type: "text/csv");
+
+    // await OpenFile.open(fileDirectory + filename, type: "application/vnd.google-apps.spreadsheet");
+
 
     // await OpenFile.open(fileDirectory + filename,
     //     type:
     //         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-  //   await OpenFile.open(fileDirectory + filename,
-  //       type:
-  //           "application/vnd.ms-excel");
+
+    // await OpenFile.open(fileDirectory + filename,
+    //     type:
+    //         "application/vnd.ms-excel");
   }
 }

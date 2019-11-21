@@ -36,7 +36,8 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
         ),
         body: StreamBuilder<TurmaAlunoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -47,34 +48,53 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                 List<Widget> listaWidget = List<Widget>();
 
                 for (var aluno in snapshot.data.turmaAlunoList) {
-                  listaWidget.add(Card(
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: aluno.foto.url == null
-                              ? Text('')
-                              : CircleAvatar(
-                                  minRadius: 25,
-                                  maxRadius: 25,
-                                  backgroundImage: NetworkImage(aluno.foto.url),
-                                ),
-                          title: Text('${aluno.nome}'),
-                          subtitle: Text(
-                              'matricula: ${aluno.matricula}\nCelular: ${aluno.celular ?? '?'}\nemail: ${aluno.email}\nid: ${aluno.id}'),
-                          trailing: IconButton(
-                            tooltip: 'Gerar notas deste aluno',
-                            icon: Icon(Icons.grid_on),
-                            onPressed: () {
-                              GenerateCsvService.csvAlunoListaNota(aluno);
-                            },
+                  listaWidget.add(
+                    Card(
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 2,
+                            child: aluno.foto.url == null
+                                ? Text('')
+                                : CircleAvatar(
+                                    radius: 50,
+                                    // minRadius: 35,
+                                    // maxRadius: 35,
+                                    backgroundImage:
+                                        NetworkImage(aluno.foto.url),
+                                  ),
                           ),
-                          onLongPress: () {
-                            bloc.eventSink(DeleteAlunoEvent(aluno.id));
-                          },
-                        ),
-                      ],
+                          Expanded(
+                            flex: 8,
+                            child: ListTile(
+                              // leading: aluno.foto.url == null
+                              //     ? Text('')
+                              //     : CircleAvatar(
+                              //         radius: 40,
+                              //         // minRadius: 35,
+                              //         // maxRadius: 35,
+                              //         backgroundImage:
+                              //             NetworkImage(aluno.foto.url),
+                              //       ),
+                              title: Text('${aluno.nome}'),
+                              subtitle: Text(
+                                  'matricula: ${aluno.matricula}\nCelular: ${aluno.celular ?? '?'}\nemail: ${aluno.email}'),
+                              trailing: IconButton(
+                                tooltip: 'Gerar notas deste aluno',
+                                icon: Icon(Icons.grid_on),
+                                onPressed: () {
+                                  GenerateCsvService.csvAlunoListaNota(aluno);
+                                },
+                              ),
+                              onLongPress: () {
+                                bloc.eventSink(DeleteAlunoEvent(aluno.id));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ));
+                  );
                 }
                 listaWidget.add(Container(
                   padding: EdgeInsets.only(top: 70),

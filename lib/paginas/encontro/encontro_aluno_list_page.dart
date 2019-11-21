@@ -55,7 +55,8 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
         ),
         body: StreamBuilder<EncontroAlunoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroAlunoListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<EncontroAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -70,17 +71,33 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                   var presente = item.value.presente;
                   listaWidget.add(
                     Card(
-                      child: Column(
+                      child: Row(
                         children: <Widget>[
-                          ListTile(
-                              leading: aluno.foto.url == null
-                                  ? Text('')
-                                  : CircleAvatar(
-                                      minRadius: 25,
-                                      maxRadius: 25,
-                                      backgroundImage: NetworkImage(aluno.foto.url),
-                                    ),
+                          Expanded(
+                            flex: 3,
+                            child: aluno.foto.url == null
+                                ? Text('')
+                                : CircleAvatar(
+                                    radius: 70,
+                                    // minRadius: 35,
+                                    // maxRadius: 35,
+                                    backgroundImage:
+                                        NetworkImage(aluno.foto.url),
+                                  ),
+                          ),
+                          Expanded(
+                            flex: 8,
+                            child: ListTile(
+                              // leading: aluno.foto.url == null
+                              //     ? Text('')
+                              //     : CircleAvatar(
+                              //         minRadius: 25,
+                              //         maxRadius: 25,
+                              //         backgroundImage:
+                              //             NetworkImage(aluno.foto.url),
+                              //       ),
                               title: Text('${aluno.nome}'),
+                              subtitle: Text('${aluno.cracha}\n${aluno.celular}'),
                               trailing: item.value.presente
                                   ? Icon(Icons.check)
                                   : Icon(
@@ -89,7 +106,9 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                                     ),
                               onTap: () {
                                 bloc.eventSink(MarcarAlunoEvent(aluno.id));
-                              }),
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),

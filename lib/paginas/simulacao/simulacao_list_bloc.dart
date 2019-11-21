@@ -66,6 +66,8 @@ class SimulacaoListBloc {
           .toList());
 
       snapListRemetente.listen((List<SimulacaoModel> simulacaoList) {
+              simulacaoList.sort((a, b) => a.nome.compareTo(b.nome));
+
         _state.simulacaoList.clear();
         _state.simulacaoList = simulacaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
