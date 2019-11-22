@@ -143,8 +143,6 @@ class SimulacaoCRUDBloc {
         simulacaoModel.numero = (_state.problema.simulacaoNumero ?? 0) + 1;
 
         simulacaoModel.ordem = 0;
-        simulacaoModel.algoritmoDoAdmin = false;
-        simulacaoModel.algoritmoDoProfessor = false;
         simulacaoModel.professor =
             UsuarioFk(id: _state.usuarioAuth.id, nome: _state.usuarioAuth.nome);
         simulacaoModel.problema =

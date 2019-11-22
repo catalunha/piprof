@@ -130,9 +130,7 @@ class TarefaCRUDBloc {
   _mapEventToState(TarefaCRUDBlocEvent event) async {
     if (event is GetTarefaEvent) {
       if (event.tarefaID != null) {
-        final docRef = _firestore
-            .collection(TarefaModel.collection)
-            .document(event.tarefaID);
+        final docRef = _firestore.collection(TarefaModel.collection).document(event.tarefaID);
         final snap = await docRef.get();
         if (snap.exists) {
           _state.tarefa = TarefaModel(id: snap.documentID).fromMap(snap.data);
@@ -155,21 +153,11 @@ class TarefaCRUDBloc {
         _state.dataInicio = DateTime.now();
       }
       final newDate = DateTime(
-          _state.dataInicio != null
-              ? _state.dataInicio.year
-              : _state.inicioAvaliacao.year,
-          _state.dataInicio != null
-              ? _state.dataInicio.month
-              : _state.inicioAvaliacao.month,
-          _state.dataInicio != null
-              ? _state.dataInicio.day
-              : _state.inicioAvaliacao.day,
-          _state.horaInicio != null
-              ? _state.horaInicio.hour
-              : _state.inicioAvaliacao.hour,
-          _state.horaInicio != null
-              ? _state.horaInicio.minute
-              : _state.inicioAvaliacao.minute);
+          _state.dataInicio != null ? _state.dataInicio.year : _state.inicioAvaliacao.year,
+          _state.dataInicio != null ? _state.dataInicio.month : _state.inicioAvaliacao.month,
+          _state.dataInicio != null ? _state.dataInicio.day : _state.inicioAvaliacao.day,
+          _state.horaInicio != null ? _state.horaInicio.hour : _state.inicioAvaliacao.hour,
+          _state.horaInicio != null ? _state.horaInicio.minute : _state.inicioAvaliacao.minute);
       _state.inicioAvaliacao = newDate;
     }
 
@@ -187,58 +175,62 @@ class TarefaCRUDBloc {
         _state.dataFim = DateTime.now();
       }
       final newDate = DateTime(
-          _state.dataFim != null
-              ? _state.dataFim.year
-              : _state.fimAvaliacao.year,
-          _state.dataFim != null
-              ? _state.dataFim.month
-              : _state.fimAvaliacao.month,
+          _state.dataFim != null ? _state.dataFim.year : _state.fimAvaliacao.year,
+          _state.dataFim != null ? _state.dataFim.month : _state.fimAvaliacao.month,
           _state.dataFim != null ? _state.dataFim.day : _state.fimAvaliacao.day,
-          _state.horaFim != null
-              ? _state.horaFim.hour
-              : _state.fimAvaliacao.hour,
-          _state.horaFim != null
-              ? _state.horaFim.minute
-              : _state.fimAvaliacao.minute);
+          _state.horaFim != null ? _state.horaFim.hour : _state.fimAvaliacao.hour,
+          _state.horaFim != null ? _state.horaFim.minute : _state.fimAvaliacao.minute);
       _state.fimAvaliacao = newDate;
     }
 
     if (event is UpdateNumberFieldEvent) {
       if (event.campo == 'tempo') {
-        _state.tempo = event.texto;
-        int a;
-        try {
-          a = int.parse(_state.tempo);
-        } catch (e) {
-          _state.tempo = '2';
-          a = 2;
-        }
-        if (a <= 0) {
-          _state.tempo = '2';
+        if (event.texto.isEmpty) {
+          _state.tempo = event.texto;
+        } else {
+          _state.tempo = event.texto;
+          int a;
+          try {
+            a = int.parse(_state.tempo);
+          } catch (e) {
+            _state.tempo = '2';
+            a = 2;
+          }
+          if (a <= 0) {
+            _state.tempo = '2';
+          }
         }
       } else if (event.campo == 'tentativa') {
-        _state.tentativa = event.texto;
-        int a;
-        try {
-          a = int.parse(_state.tentativa);
-        } catch (e) {
-          _state.tentativa = '3';
-          a = 3;
-        }
-        if (a <= 0) {
-          _state.tentativa = '3';
+        if (event.texto.isEmpty) {
+          _state.tentativa = event.texto;
+        } else {
+          _state.tentativa = event.texto;
+          int a;
+          try {
+            a = int.parse(_state.tentativa);
+          } catch (e) {
+            _state.tentativa = '3';
+            a = 3;
+          }
+          if (a <= 0) {
+            _state.tentativa = '3';
+          }
         }
       } else if (event.campo == 'erroRelativo') {
-        _state.erroRelativo = event.texto;
-        int a;
-        try {
-          a = int.parse(_state.erroRelativo);
-        } catch (e) {
-          _state.erroRelativo = '10';
-          a = 10;
-        }
-        if (a <= 0 || a> 100) {
-          _state.erroRelativo = '10';
+        if (event.texto.isEmpty) {
+          _state.erroRelativo = event.texto;
+        } else {
+          _state.erroRelativo = event.texto;
+          int a;
+          try {
+            a = int.parse(_state.erroRelativo);
+          } catch (e) {
+            _state.erroRelativo = '10';
+            a = 10;
+          }
+          if (a <= 0 || a > 100) {
+            _state.erroRelativo = '10';
+          }
         }
       }
     }
@@ -250,9 +242,7 @@ class TarefaCRUDBloc {
       }
     }
     if (event is SaveEvent) {
-      final docRef = _firestore
-          .collection(TarefaModel.collection)
-          .document(_state.tarefa.id);
+      final docRef = _firestore.collection(TarefaModel.collection).document(_state.tarefa.id);
 
       TarefaModel tarefaUpdate = TarefaModel(
         inicio: _state.inicioAvaliacao,
@@ -268,10 +258,7 @@ class TarefaCRUDBloc {
       await docRef.setData(tarefaUpdate.toMap(), merge: true);
     }
     if (event is DeleteDocumentEvent) {
-      _firestore
-          .collection(QuestaoModel.collection)
-          .document(_state.tarefa.id)
-          .delete();
+      _firestore.collection(QuestaoModel.collection).document(_state.tarefa.id).delete();
     }
 
     _validateData();

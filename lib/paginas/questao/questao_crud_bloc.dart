@@ -151,9 +151,7 @@ class QuestaoCRUDBloc {
     if (_state.fimQuestao == null) {
       _state.isDataValid = false;
     }
-    if (_state.inicioQuestao != null &&
-        _state.fimQuestao != null &&
-        _state.inicioQuestao.isAfter(_state.fimQuestao)) {
+    if (_state.inicioQuestao != null && _state.fimQuestao != null && _state.inicioQuestao.isAfter(_state.fimQuestao)) {
       _state.isDataValid = false;
     }
 
@@ -180,8 +178,7 @@ class QuestaoCRUDBloc {
     }
 
     if (event is GetTurmaEvent) {
-      final docRef =
-          _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final docRef = _firestore.collection(TurmaModel.collection).document(event.turmaID);
       final snap = await docRef.get();
       if (snap.exists) {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
@@ -189,13 +186,10 @@ class QuestaoCRUDBloc {
     }
     if (event is GetAvaliacaoEvent) {
       if (event.avaliacaoID != null) {
-        final docRef = _firestore
-            .collection(AvaliacaoModel.collection)
-            .document(event.avaliacaoID);
+        final docRef = _firestore.collection(AvaliacaoModel.collection).document(event.avaliacaoID);
         final snap = await docRef.get();
         if (snap.exists) {
-          _state.avaliacao =
-              AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
+          _state.avaliacao = AvaliacaoModel(id: snap.documentID).fromMap(snap.data);
           _state.updateStateComAvaliacao();
 
           eventSink(GetTurmaEvent(_state.avaliacao.turma.id));
@@ -204,9 +198,7 @@ class QuestaoCRUDBloc {
     }
     if (event is GetQuestaoEvent) {
       if (event.questaoID != null) {
-        final docRef = _firestore
-            .collection(QuestaoModel.collection)
-            .document(event.questaoID);
+        final docRef = _firestore.collection(QuestaoModel.collection).document(event.questaoID);
         _state.questaoID = event.questaoID;
         final snap = await docRef.get();
         if (snap.exists) {
@@ -229,21 +221,11 @@ class QuestaoCRUDBloc {
         _state.dataInicio = DateTime.now();
       }
       final newDate = DateTime(
-          _state.dataInicio != null
-              ? _state.dataInicio.year
-              : _state.inicioQuestao.year,
-          _state.dataInicio != null
-              ? _state.dataInicio.month
-              : _state.inicioQuestao.month,
-          _state.dataInicio != null
-              ? _state.dataInicio.day
-              : _state.inicioQuestao.day,
-          _state.horaInicio != null
-              ? _state.horaInicio.hour
-              : _state.inicioQuestao.hour,
-          _state.horaInicio != null
-              ? _state.horaInicio.minute
-              : _state.inicioQuestao.minute);
+          _state.dataInicio != null ? _state.dataInicio.year : _state.inicioQuestao.year,
+          _state.dataInicio != null ? _state.dataInicio.month : _state.inicioQuestao.month,
+          _state.dataInicio != null ? _state.dataInicio.day : _state.inicioQuestao.day,
+          _state.horaInicio != null ? _state.horaInicio.hour : _state.inicioQuestao.hour,
+          _state.horaInicio != null ? _state.horaInicio.minute : _state.inicioQuestao.minute);
       _state.inicioQuestao = newDate;
     }
 
@@ -262,53 +244,61 @@ class QuestaoCRUDBloc {
       }
       final newDate = DateTime(
           _state.dataFim != null ? _state.dataFim.year : _state.fimQuestao.year,
-          _state.dataFim != null
-              ? _state.dataFim.month
-              : _state.fimQuestao.month,
+          _state.dataFim != null ? _state.dataFim.month : _state.fimQuestao.month,
           _state.dataFim != null ? _state.dataFim.day : _state.fimQuestao.day,
           _state.horaFim != null ? _state.horaFim.hour : _state.fimQuestao.hour,
-          _state.horaFim != null
-              ? _state.horaFim.minute
-              : _state.fimQuestao.minute);
+          _state.horaFim != null ? _state.horaFim.minute : _state.fimQuestao.minute);
       _state.fimQuestao = newDate;
     }
 
     if (event is UpdateNumberFieldEvent) {
       if (event.campo == 'tempo') {
-        _state.tempo = event.texto;
-        int a;
-        try {
-          a = int.parse(_state.tempo);
-        } catch (e) {
-          _state.tempo = '2';
-          a = 2;
-        }
-        if (a <= 0) {
-          _state.tempo = '2';
+        if (event.texto.isEmpty) {
+          _state.tempo = event.texto;
+        } else {
+          _state.tempo = event.texto;
+          int a;
+          try {
+            a = int.parse(_state.tempo);
+          } catch (e) {
+            _state.tempo = '2';
+            a = 2;
+          }
+          if (a <= 0) {
+            _state.tempo = '2';
+          }
         }
       } else if (event.campo == 'tentativa') {
-        _state.tentativa = event.texto;
-        int a;
-        try {
-          a = int.parse(_state.tentativa);
-        } catch (e) {
-          _state.tentativa = '3';
-          a = 3;
-        }
-        if (a <= 0) {
-          _state.tentativa = '3';
+        if (event.texto.isEmpty) {
+          _state.tentativa = event.texto;
+        } else {
+          _state.tentativa = event.texto;
+          int a;
+          try {
+            a = int.parse(_state.tentativa);
+          } catch (e) {
+            _state.tentativa = '3';
+            a = 3;
+          }
+          if (a <= 0) {
+            _state.tentativa = '3';
+          }
         }
       } else if (event.campo == 'erroRelativo') {
-        _state.erroRelativo = event.texto;
-        int a;
-        try {
-          a = int.parse(_state.erroRelativo);
-        } catch (e) {
-          _state.erroRelativo = '10';
-          a = 10;
-        }
-        if (a <= 0 || a > 100) {
-          _state.erroRelativo = '10';
+        if (event.texto.isEmpty) {
+          _state.erroRelativo = event.texto;
+        } else {
+          _state.erroRelativo = event.texto;
+          int a;
+          try {
+            a = int.parse(_state.erroRelativo);
+          } catch (e) {
+            _state.erroRelativo = '10';
+            a = 10;
+          }
+          if (a <= 0 || a > 100) {
+            _state.erroRelativo = '10';
+          }
         }
       }
     }
@@ -323,9 +313,7 @@ class QuestaoCRUDBloc {
       _state.problemaFk = event.problemaFk;
     }
     if (event is SaveEvent) {
-      final docRef = _firestore
-          .collection(QuestaoModel.collection)
-          .document(_state.questaoID);
+      final docRef = _firestore.collection(QuestaoModel.collection).document(_state.questaoID);
 
       QuestaoModel questaoUpdate = QuestaoModel(
         inicio: _state.inicioQuestao,
@@ -359,26 +347,18 @@ class QuestaoCRUDBloc {
           nome: _state.avaliacao.nome,
         );
       }
-      await docRef
-          .setData(questaoUpdate.toMap(), merge: true)
-          .then((_) async {
+      await docRef.setData(questaoUpdate.toMap(), merge: true).then((_) async {
         if (_state.questaoID == null) {
           //+++ Atualizar turma com mais uma questao
-          final turmaDocRef = _firestore
-              .collection(TurmaModel.collection)
-              .document(_state.turma.id);
+          final turmaDocRef = _firestore.collection(TurmaModel.collection).document(_state.turma.id);
           await turmaDocRef.setData({
-            'questaoNumero':
-                Bootstrap.instance.fieldValue.increment(1),
+            'questaoNumero': Bootstrap.instance.fieldValue.increment(1),
           }, merge: true);
           //---
           //+++ Atualizando avaliacao acrescentando esta questao da lista questaoAplicada
-          var avaliacaoDocRef = _firestore
-              .collection(AvaliacaoModel.collection)
-              .document(_state.avaliacao.id);
+          var avaliacaoDocRef = _firestore.collection(AvaliacaoModel.collection).document(_state.avaliacao.id);
           await avaliacaoDocRef.setData({
-            "questaoAplicada":
-                Bootstrap.instance.fieldValue.arrayUnion([docRef.documentID]),
+            "questaoAplicada": Bootstrap.instance.fieldValue.arrayUnion([docRef.documentID]),
             "aplicar": false,
             "aplicada": false,
           }, merge: true);
@@ -401,10 +381,7 @@ class QuestaoCRUDBloc {
     }
     if (event is DeleteDocumentEvent) {
       if (_state.questaoID != null) {
-        _firestore
-            .collection(QuestaoModel.collection)
-            .document(_state.questao.id)
-            .delete();
+        _firestore.collection(QuestaoModel.collection).document(_state.questao.id).delete();
         //Function atualiza Avaliacao.questaoAplicada e Avaliacao.questaoAplicadaFunction
       }
     }

@@ -10,8 +10,6 @@ class SimulacaoModel extends FirestoreModel {
   int numero;
   UsuarioFk professor;
   ProblemaFk problema;
-  bool algoritmoDoAdmin;
-  bool algoritmoDoProfessor;
   int ordem;
 
   String nome;
@@ -27,8 +25,6 @@ class SimulacaoModel extends FirestoreModel {
     this.numero,
     this.professor,
     this.problema,
-    this.algoritmoDoAdmin,
-    this.algoritmoDoProfessor,
     this.nome,
     this.ordem,
     this.descricao,
@@ -53,10 +49,6 @@ class SimulacaoModel extends FirestoreModel {
             map['modificado'].millisecondsSinceEpoch)
         : null;
 
-    if (map.containsKey('algoritmoDoAdmin'))
-      algoritmoDoAdmin = map['algoritmoDoAdmin'];
-    if (map.containsKey('algoritmoDoProfessor'))
-      algoritmoDoProfessor = map['algoritmoDoProfessor'];
     if (map.containsKey('ordemAdicionada'))
       ordem = map['ordemAdicionada'];
     if (map.containsKey('nome')) nome = map['nome'];
@@ -92,10 +84,6 @@ class SimulacaoModel extends FirestoreModel {
     }
 
     if (modificado != null) data['modificado'] = this.modificado;
-    if (algoritmoDoAdmin != null)
-      data['algoritmoDoAdmin'] = this.algoritmoDoAdmin;
-    if (algoritmoDoProfessor != null)
-      data['algoritmoDoProfessor'] = this.algoritmoDoProfessor;
     if (ordem != null) data['ordemAdicionada'] = this.ordem;
     if (nome != null) data['nome'] = this.nome;
     if (descricao != null) data['descricao'] = this.descricao;

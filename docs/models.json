@@ -61,8 +61,8 @@
     "instituicao": "",
     "componente": "",
     "nome": "",
-    "programa": "link de um arquivo/site com o programa desta turma",
     "descricao": "",
+    "programa": "link de um arquivo/site com o programa desta turma",
     "professor": {
       "id": "documentID",
       "nome": ""
@@ -70,7 +70,7 @@
     "alunoList": [
       "alunoID"
     ],
-    "questaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero.",
+    "questaoNumero": "numero. inicia com 0. Quando criar uma questao de qq avalicao acrescenta este numero."
   },
   "Pasta": {
     "comment": "Os situacões de um professor estao agrupados neste pasta",
@@ -132,8 +132,6 @@
     "nome": "",
     "descricao": "",
     "url": "url para um doc descrevendo a simulacao",
-    "algoritmoDoAdmin": "",
-    "algoritmoDoProfessor": " ",
     "professor": {
       "id": "documentID",
       "nome": ""
