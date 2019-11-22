@@ -15,16 +15,15 @@ class Versao extends StatelessWidget {
             title: Recursos.instance.plataforma == 'android' ? Text("Versão 1.0.0") : Text("Build: 20191128"),
           ),
           ListTile(
-            title: Text("Click aqui para suporte via WhatsApp no número +55 63 984495507"),
+            title: Text("Suporte via WhatsApp pelo número +55 63 984495507"),
             trailing: Icon(Icons.phonelink_ring),
-            onTap: () {
-              try {
-                launch('https://api.whatsapp.com/send?phone=5563984495507');
-              } catch (e) {}
-            },
           ),
           ListTile(
-            title: Text('Tutorial'),
+            title: Text("Suporte via email em brintec.education@gmail.com"),
+            trailing: Icon(Icons.email),
+          ),
+          ListTile(
+            title: Text('Click aqui para ir ao tutorial'),
             trailing: Icon(Icons.help),
             onTap: () {
               try {
@@ -32,6 +31,10 @@ class Versao extends StatelessWidget {
               } catch (e) {}
             },
           ),
+          Container(
+                alignment: Alignment.center,
+                child: Image.asset('assets/imagem/logo.png'),
+              ),
         ],
       ),
     );
