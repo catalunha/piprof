@@ -227,7 +227,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
       rotas["/perfil"] = Rota("Perfil", Icons.settings);
       rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
 
-      rotas["/versao"] = Rota("Versão & Sobre", Icons.device_unknown);
+      rotas["/versao"] = Rota("Versão & Suporte", Icons.device_unknown);
       // rotas["/modooffline"] = Rota("Habilitar modo offline", Icons.save);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/perfil"] = Rota("Perfil", Icons.settings);

@@ -7,12 +7,21 @@ class Versao extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Versão & Sobre'),
+        title: Text('Versão & Suporte'),
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
             title: Recursos.instance.plataforma == 'android' ? Text("Versão 1.0.0") : Text("Build: 20191128"),
+          ),
+          ListTile(
+            title: Text("Click aqui para suporte via WhatsApp no número +55 63 984495507"),
+            trailing: Icon(Icons.phonelink_ring),
+            onTap: () {
+              try {
+                launch('https://api.whatsapp.com/send?phone=5563984495507');
+              } catch (e) {}
+            },
           ),
           ListTile(
             title: Text('Tutorial'),

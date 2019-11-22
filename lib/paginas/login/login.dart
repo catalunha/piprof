@@ -94,7 +94,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(
-                          vertical: 12,
+                          vertical: 5,
                         ),
                         child: TextFormField(
                           onSaved: (email) {
@@ -107,7 +107,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(
-                          vertical: 12,
+                          vertical: 5,
                         ),
                         child: TextFormField(
                           onSaved: (password) {
@@ -121,7 +121,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: 12,
+                          vertical: 5,
                         ),
                       ),
                       Container(
@@ -143,14 +143,14 @@ class LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 12,
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(
+                      //     vertical: 12,
+                      //   ),
+                      // ),
                       Container(
                         padding: EdgeInsets.symmetric(
-                          vertical: 12,
+                          vertical: 5,
                         ),
                         child: ListTile(
                           title: Text('Eita. Esqueci a senha!\nInforme seu email e click...',
@@ -168,10 +168,10 @@ class LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              // Container(
-              //   alignment: Alignment.center,
-              //   child: Image.asset('assets/images/logos/Splash_1024x1024.png'),
-              // ),
+              Container(
+                alignment: Alignment.center,
+                child: Image.asset('assets/imagem/logo.png'),
+              ),
             ],
           ),
         ),
