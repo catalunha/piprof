@@ -69,10 +69,23 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                         children: <Widget>[
                           ListTile(
                             leading: problema.ativo ? null : Icon(Icons.airplanemode_inactive),
-                            trailing: problema.precisaAlgoritmoPSimulacao == true ? Icon(Icons.code) : null,
+                            // trailing: problema.precisaAlgoritmoPSimulacao == true ? Icon(Icons.code) : null,
+                            trailing: problema.url != null
+                                ? IconButton(
+                                    tooltip: 'Ver doc do problema',
+                                    icon: Icon(
+                                      Icons.local_library,
+                                      color: problema.precisaAlgoritmoPSimulacao == true ? Colors.blue : null,
+                                    ),
+                                    onPressed: () {
+                                      try {
+                                        launch(problema.url);
+                                      } catch (e) {}
+                                    },
+                                  )
+                                : null,
                             title: Text('${problema.nome}\nFonte: ${problema.descricao}'),
                             subtitle: Text('Simulações: ${problema.simulacaoNumero ?? 0}\n${problema.id}'),
-
                           ),
                           Center(
                             child: Wrap(
@@ -106,24 +119,21 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                         }
                                       : null,
                                 ),
-                                if (problema.url != null)
-                                  IconButton(
-                                    tooltip: 'Ver doc do problema',
-                                    icon: Icon(Icons.local_library),
-                                    onPressed: () {
-                                      try {
-                                        launch(problema.url);
-                                      } catch (e) {}
-                                    },
-                                  ),
+                                // if (problema.url != null)
+                                //   IconButton(
+                                //     tooltip: 'Ver doc do problema',
+                                //     icon: Icon(Icons.local_library),
+                                //     onPressed: () {
+                                //       try {
+                                //         launch(problema.url);
+                                //       } catch (e) {}
+                                //     },
+                                //   ),
                                 IconButton(
-                                  tooltip:
-                                      'Listar de problema e simulações em planilha',
+                                  tooltip: 'Listar de problema e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-
                                     GenerateCsvService.csvProblemaListaSimulacao(problema);
-
                                   },
                                 ),
                                 IconButton(
