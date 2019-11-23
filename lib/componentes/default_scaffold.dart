@@ -31,8 +31,8 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       // rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
-      rotas["/turma/ativa/list"] = Rota("Turmas ativas", Icons.assignment);
-      rotas["/pasta/list"] = Rota("Pastas de situações", Icons.folder);
+      rotas["/turma/ativa/list"] = Rota("Turmas", Icons.assignment);
+      rotas["/pasta/list"] = Rota("Pastas", Icons.folder);
     }
   }
 
@@ -223,13 +223,12 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
     if (Recursos.instance.plataforma == 'android') {
       rotas["/perfil"] = Rota("Perfil", Icons.settings);
       rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
-
       rotas["/versao"] = Rota("Versão & Suporte", Icons.device_unknown);
       // rotas["/modooffline"] = Rota("Habilitar modo offline", Icons.save);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/perfil"] = Rota("Perfil", Icons.settings);
       rotas["/turma/inativa/list"] = Rota("Turmas inativas", Icons.lock);
-      rotas["/versao"] = Rota("Versão & Sobre", Icons.device_unknown);
+      rotas["/versao"] = Rota("Versão & Suporte", Icons.device_unknown);
     }
   }
 
