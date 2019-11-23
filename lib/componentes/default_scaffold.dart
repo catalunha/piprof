@@ -28,14 +28,11 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
           Rota("Turmas", Icons.supervised_user_circle);
       rotas["/pasta/list"] = Rota("Pastas", Icons.folder);
       rotas["/upload"] = Rota("Upload de arquivos", Icons.cloud_upload);
-
       // rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/turma/ativa/list"] = Rota("Turmas ativas", Icons.assignment);
       rotas["/pasta/list"] = Rota("Pastas de situações", Icons.folder);
-      rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
-      // rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     }
   }
 
