@@ -189,7 +189,7 @@ class _TextFieldMultiploState extends State<_TextFieldMultiplo> {
           } else if (campo == 'descricao') {
             _textFieldController.text = snapshot.data?.descricao;
           } else if (campo == 'programa') {
-            _textFieldController.text = snapshot.data?.descricao;
+            _textFieldController.text = snapshot.data?.programa;
           }
         }
         return TextField(

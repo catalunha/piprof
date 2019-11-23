@@ -99,6 +99,9 @@ class TurmaCRUDBloc {
     if (_state.nome == null) {
       _state.isDataValid = false;
     }
+    if (_state.programa == null) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(TurmaCRUDBlocEvent event) async {
