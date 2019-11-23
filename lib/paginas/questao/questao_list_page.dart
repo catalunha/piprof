@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/questao/questao_list_bloc.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class QuestaoListPage extends StatefulWidget {
   final String avaliacaoID;
@@ -52,7 +53,8 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
         ),
         body: StreamBuilder<QuestaoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<QuestaoListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<QuestaoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -71,7 +73,8 @@ class _QuestaoListPageState extends State<QuestaoListPage> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            selected: questao?.aplicada != null && !questao.aplicada,
+                            selected:
+                                questao?.aplicada != null && !questao.aplicada,
                             // ? true
                             // : false,
                             trailing: Text('Núm.: ${questao.numero}'),
@@ -108,7 +111,8 @@ id: ${questao.id}'''),
                                   icon: Icon(Icons.arrow_downward),
                                   onPressed: (ordemLocal) < lengthTurma
                                       ? () {
-                                          bloc.eventSink(OrdenarEvent(questao, false));
+                                          bloc.eventSink(
+                                              OrdenarEvent(questao, false));
                                         }
                                       : null,
                                 ),
@@ -117,28 +121,37 @@ id: ${questao.id}'''),
                                   icon: Icon(Icons.arrow_upward),
                                   onPressed: ordemLocal > 1
                                       ? () {
-                                          bloc.eventSink(OrdenarEvent(questao, true));
+                                          bloc.eventSink(
+                                              OrdenarEvent(questao, true));
                                         }
                                       : null,
                                 ),
                                 IconButton(
                                   tooltip: 'Ver doc do problema',
                                   icon: Icon(Icons.local_library),
-                                  onPressed: () {
-                                    try {
-                                      launch(questao.problema.url);
-                                    } catch (e) {}
-                                  },
+                                  onPressed: questao.problema.url != null &&
+                                          questao.problema.url.isNotEmpty
+                                      ? () {
+                                          try {
+                                            launch(questao.problema.url);
+                                          } catch (e) {}
+                                        }
+                                      : null,
                                 ),
-                                if (questao.aplicada != null && questao.aplicada)
+                                if (questao.aplicada != null &&
+                                    questao.aplicada)
                                   IconButton(
                                     tooltip: 'Reset tempo e tentativa',
                                     icon: Icon(Icons.child_care),
                                     onPressed: () {
-                                      bloc.eventSink(ResetTempoTentativaQuestaEvent(questao.id, questao.aplicada));
+                                      bloc.eventSink(
+                                          ResetTempoTentativaQuestaEvent(
+                                              questao.id, questao.aplicada));
                                     },
                                   ),
-                                if (snapshot.data?.avaliacao?.aplicada != null && snapshot.data?.avaliacao?.aplicada)
+                                if (snapshot.data?.avaliacao?.aplicada !=
+                                        null &&
+                                    snapshot.data?.avaliacao?.aplicada)
                                   IconButton(
                                     tooltip: 'Alunos nesta questão',
                                     icon: Icon(Icons.perm_contact_calendar),

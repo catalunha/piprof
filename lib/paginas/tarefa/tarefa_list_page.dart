@@ -4,7 +4,8 @@ import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_bloc.dart';
 import 'package:queries/collections.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TarefaListPage extends StatefulWidget {
   final String tarefaID;
@@ -39,7 +40,8 @@ class _TarefaListPageState extends State<TarefaListPage> {
         ),
         body: StreamBuilder<TarefaListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TarefaListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TarefaListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -54,12 +56,14 @@ class _TarefaListPageState extends State<TarefaListPage> {
                 for (var tarefa in snapshot.data.tarefaList) {
                   gabaritoMap.clear();
                   var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
-                  var gabaritoOrderBy =
-                      dicGabarito.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                  var gabaritoOrderBy = dicGabarito
+                      .orderBy((kv) => kv.value.ordem)
+                      .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                   gabaritoMap = gabaritoOrderBy.toMap();
                   notas = '';
                   for (var gabarito in gabaritoMap.entries) {
-                    notas += '${gabarito.value.nome}=${gabarito.value.nota ?? "?"} ';
+                    notas +=
+                        '${gabarito.value.nome}=${gabarito.value.nota ?? "?"} ';
                   }
                   listaWidget.add(
                     Card(
@@ -71,7 +75,8 @@ class _TarefaListPageState extends State<TarefaListPage> {
                                 : CircleAvatar(
                                     minRadius: 25,
                                     maxRadius: 25,
-                                    backgroundImage: NetworkImage(tarefa.aluno.foto),
+                                    backgroundImage:
+                                        NetworkImage(tarefa.aluno.foto),
                                   ),
                             title: Text('${tarefa.aluno.nome}'),
                             subtitle: Text('Sit.: $notas'),
@@ -89,9 +94,12 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                               IconButton(
                                 tooltip: 'Ver problema da questão',
                                 icon: Icon(Icons.local_library),
-                                onPressed: () {
-                                  launch(tarefa.problema.url);
-                                },
+                                onPressed: tarefa.problema.url != null &&
+                                        tarefa.problema.url.isNotEmpty
+                                    ? () {
+                                        launch(tarefa.problema.url);
+                                      }
+                                    : null,
                               ),
                               IconButton(
                                 tooltip: 'Corrigir tarefa',
@@ -108,7 +116,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                 tooltip: 'Reset tempo e tentativa',
                                 icon: Icon(Icons.child_care),
                                 onPressed: () {
-                                  bloc.eventSink(ResetTempoTentativaTarefaEvent(tarefa.id));
+                                  bloc.eventSink(ResetTempoTentativaTarefaEvent(
+                                      tarefa.id));
                                 },
                               ),
                               IconButton(

@@ -4,7 +4,8 @@ import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/encontro/encontro_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class EncontroListPage extends StatefulWidget {
   final String turmaID;
@@ -51,7 +52,8 @@ class _EncontroListPageState extends State<EncontroListPage> {
         ),
         body: StreamBuilder<EncontroListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<EncontroListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<EncontroListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -76,7 +78,8 @@ class _EncontroListPageState extends State<EncontroListPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text('${encontro.nome}'),
-                            subtitle: Text('Alunos: ${encontro?.aluno?.length ?? 0}'),
+                            subtitle:
+                                Text('Alunos: ${encontro?.aluno?.length ?? 0}'),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(encontro?.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro?.fim)}'),
                           ),
@@ -90,11 +93,13 @@ class _EncontroListPageState extends State<EncontroListPage> {
                                     Navigator.pushNamed(
                                       context,
                                       "/turma/encontro/crud",
-                                      arguments: EncontroCRUDPageArguments(encontroID: encontro.id),
+                                      arguments: EncontroCRUDPageArguments(
+                                          encontroID: encontro.id),
                                     );
                                   },
                                 ),
-                                if (encontro.url != null)
+                                if (encontro.url != null &&
+                                    encontro.url.isNotEmpty)
                                   IconButton(
                                     tooltip: 'Ver doc do encontro',
                                     icon: Icon(Icons.local_library),

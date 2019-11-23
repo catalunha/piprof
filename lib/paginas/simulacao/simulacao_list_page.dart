@@ -109,8 +109,6 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                 msg = '';
               }
 
-
-
               List<String> variavelListAtual = List<String>();
               List<String> variavelTipoListAtual = List<String>();
               if (simulacao.variavel != null) {
@@ -130,14 +128,16 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                 print(variavelList);
                 print(variavelListAtual);
                 alerta = true;
-                msg = msg + '\n\nVALORES COM NOMES DIFERENTES. FAVOR CORRIGIR !';
+                msg =
+                    msg + '\n\nVALORES COM NOMES DIFERENTES. FAVOR CORRIGIR !';
               }
               if (!listEquals(variavelTipoList, variavelTipoListAtual)) {
                 print('${simulacao.nome}');
                 print(variavelList);
                 print(variavelListAtual);
                 alerta = true;
-                msg = msg + '\n\nVALORES COM TIPOS DIFERENTES. FAVOR CORRIGIR !';
+                msg =
+                    msg + '\n\nVALORES COM TIPOS DIFERENTES. FAVOR CORRIGIR !';
               }
 
               List<String> gabaritoListAtual = List<String>();
@@ -159,14 +159,16 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                 print(gabaritoList);
                 print(gabaritoListAtual);
                 alerta = true;
-                msg = msg + '\n\nGABARITOS COM NOMES DIFERENTES. FAVOR CORRIGIR !';
+                msg = msg +
+                    '\n\nGABARITOS COM NOMES DIFERENTES. FAVOR CORRIGIR !';
               }
               if (!listEquals(gabaritoTipoList, gabaritoTipoListAtual)) {
                 print('${simulacao.nome}');
                 print(gabaritoList);
                 print(gabaritoListAtual);
                 alerta = true;
-                msg = msg + '\n\nGABARITOS COM TIPOS DIFERENTES. FAVOR CORRIGIR !';
+                msg = msg +
+                    '\n\nGABARITOS COM TIPOS DIFERENTES. FAVOR CORRIGIR !';
               }
 
               listaWidget.add(
@@ -198,7 +200,8 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                 );
                               },
                             ),
-                            if (simulacao.url != null)
+                            if (simulacao.url != null &&
+                                simulacao.url.isNotEmpty)
                               IconButton(
                                 tooltip: 'Ver arquivo da simulacao',
                                 icon: Icon(Icons.local_library),

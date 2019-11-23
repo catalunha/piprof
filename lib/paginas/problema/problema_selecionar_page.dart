@@ -90,14 +90,17 @@ class _ProblemaSelecionarPageState extends State<ProblemaSelecionarPage> {
                 Card(
                   child: ListTile(
                     title: Text('${problema.nome}'),
-                    subtitle: Text('Fonte: ${problema.descricao}\nSimulações: ${problema.simulacaoNumero}'),
+                    subtitle: Text(
+                        'Fonte: ${problema.descricao}\nSimulações: ${problema.simulacaoNumero}'),
                     trailing: Icon(Icons.check),
-                    leading: IconButton(
-                      icon: Icon(Icons.local_library),
-                      onPressed: () {
-                        launch(problema.url);
-                      },
-                    ),
+                    leading: problema.url != null && problema.url.isNotEmpty
+                        ? IconButton(
+                            icon: Icon(Icons.local_library),
+                            onPressed: () {
+                              launch(problema.url);
+                            },
+                          )
+                        : null,
                     onTap: () {
                       // bloc.eventSink(SelecionarProblemaEvent(problema));
                       Navigator.pop(context, problemaFk);

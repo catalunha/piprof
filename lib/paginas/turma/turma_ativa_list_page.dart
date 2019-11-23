@@ -71,11 +71,14 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
                             trailing: IconButton(
                               tooltip: 'Ver programa',
                               icon: Icon(Icons.local_library),
-                              onPressed: () {
-                                try {
-                                  launch(turma.programa);
-                                } catch (_) {}
-                              },
+                              onPressed: turma.programa != null &&
+                                      turma.programa.isNotEmpty
+                                  ? () {
+                                      try {
+                                        launch(turma.programa);
+                                      } catch (_) {}
+                                    }
+                                  : null,
                             ),
                             title: Text('''
 Inst.: ${turma.instituicao}
