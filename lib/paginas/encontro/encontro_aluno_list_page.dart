@@ -75,7 +75,7 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                         children: <Widget>[
                           Expanded(
                             flex: 3,
-                            child: aluno.foto.url == null
+                            child: aluno?.foto?.url == null
                                 ? Text('')
                                 : CircleAvatar(
                                     radius: 70,

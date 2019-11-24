@@ -98,7 +98,7 @@ class _AvaliacaoSelecionarAlunoPageState extends State<AvaliacaoSelecionarAlunoP
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                              leading: aluno.foto.url == null
+                              leading: aluno?.foto?.url == null
                                   ? Text('')
                                   : CircleAvatar(
                                       minRadius: 25,

@@ -54,7 +54,7 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                         children: <Widget>[
                           Expanded(
                             flex: 2,
-                            child: aluno.foto.url == null
+                            child: aluno?.foto?.url == null
                                 ? Text('')
                                 : CircleAvatar(
                                     radius: 50,
