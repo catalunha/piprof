@@ -110,7 +110,7 @@ class _ProblemaCRUDPageState extends State<ProblemaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Link para o arquivo de solução e simulações:',
+                    'Link para o arquivo de simulações:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(

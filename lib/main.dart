@@ -24,6 +24,7 @@ import 'package:piprof/paginas/simulacao/simulacao_variavel_list_page.dart';
 import 'package:piprof/paginas/problema/problema_crud_page.dart';
 import 'package:piprof/paginas/problema/problema_list_page.dart';
 import 'package:piprof/paginas/problema/problema_selecionar_page.dart';
+import 'package:piprof/paginas/tarefa/tarefa_conferir_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_crud_page.dart';
 import 'package:piprof/paginas/tarefa/tarefa_list_page.dart';
@@ -206,6 +207,10 @@ class MyApp extends StatelessWidget {
         "/tarefa/corrigir": (context) {
           final settings = ModalRoute.of(context).settings;
           return TarefaCorrigirPage(settings.arguments);
+        },
+        "/tarefa/conferir": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return TarefaConferirPage(settings.arguments);
         },
 
         //EndDrawer

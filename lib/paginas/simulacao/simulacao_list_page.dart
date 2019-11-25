@@ -231,6 +231,17 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                                 );
                               },
                             ),
+                            IconButton(
+                              tooltip: 'Visão desta simulacao na tarefa',
+                              icon: Icon(Icons.check),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/tarefa/conferir",
+                                  arguments: simulacao.id,
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),

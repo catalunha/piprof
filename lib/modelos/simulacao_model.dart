@@ -175,7 +175,8 @@ class Gabarito {
     if (tipo != null) data['tipo'] = this.tipo;
     if (valor != null) data['valor'] = this.valor;
     if (resposta != null) data['resposta'] = this.resposta;
-    data['nota'] = this.nota ?? Bootstrap.instance.fieldValue.delete();
+    if (nota != null) data['nota'] = this.nota;
+    // data['nota'] = this.nota ?? Bootstrap.instance.fieldValue.delete();
     if (respostaPath != null) data['respostaPath'] = this.respostaPath;
     if (respostaUploadID != null)
       data['respostaUploadID'] = this.respostaUploadID;

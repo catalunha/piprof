@@ -23,3 +23,5 @@ export 'package:piprof/naosuportato/path_provider.dart'
     if (dart.library.io) 'package:path_provider/path_provider.dart';
 export 'package:piprof/naosuportato/permission_handler.dart'
     if (dart.library.io) 'package:permission_handler/permission_handler.dart';
+export 'package:piprof/naosuportato/webview_flutter.dart'
+    if (dart.library.io) 'package:webview_flutter/webview_flutter.dart';
