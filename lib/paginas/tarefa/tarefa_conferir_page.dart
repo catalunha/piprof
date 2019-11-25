@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
+import 'package:piprof/componentes/clock.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/paginas/tarefa/tarefa_conferir_bloc.dart';
 import 'package:piprof/plataforma/recursos.dart';
@@ -48,7 +49,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
       length: myTabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tarefa simulada'),
+          title:  _title(),
           bottom: TabBar(
             tabs: myTabs,
           ),
@@ -390,6 +391,46 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
       flex: 1,
       child: Center(child: Text('$descricaoTab')),
     );
+  }
+  _title() {
+    return StreamBuilder<TarefaConferirBlocState>(
+        stream: bloc.stateStream,
+        builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+          if (snapshot.hasError) {
+            return Text("ERROR");
+          }
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.data.isDataValid) {
+
+            Widget contador = Container(
+              width: 100.0,
+              // padding: EdgeInsets.only(top: 3.0, right: 4.0),
+              child: CountDownTimer(
+                secondsRemaining: 2500,
+                whenTimeExpires: () {
+                  Navigator.pop(context);
+                  print('terminou clock');
+                },
+                countDownTimerStyle: TextStyle(color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
+              ),
+            );
+            Widget tentativas = Text(
+              '0 de 3',
+              style: TextStyle(color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
+            );
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                tentativas,
+                contador,
+              ],
+            );
+          } else {
+            return Text('Tarefa já fechou...');
+          }
+        });
   }
 }
 

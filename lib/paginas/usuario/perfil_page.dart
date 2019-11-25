@@ -1,10 +1,12 @@
+import 'dart:io';
+// import 'dart:io' if (dart.library.io) 'package:piprof/naosuportato/empty.dart';
+// import 'package:piprof/naosuportato/empty.dart' if (dart.library.io) 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/usuario/perfil_bloc.dart';
 import 'package:piprof/plataforma/recursos.dart';
-import 'package:piprof/naosuportato/naosuportado.dart'
-    show FilePicker, FileType;
+import 'package:piprof/naosuportato/naosuportado.dart' show FilePicker, FileType;
 
 class PerfilPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -20,8 +22,7 @@ class PerfilPage extends StatefulWidget {
 class ConfiguracaoState extends State<PerfilPage> {
   final PerfilBloc bloc;
 
-  ConfiguracaoState(AuthBloc authBloc)
-      : bloc = PerfilBloc(Bootstrap.instance.firestore, authBloc);
+  ConfiguracaoState(AuthBloc authBloc) : bloc = PerfilBloc(Bootstrap.instance.firestore, authBloc);
 
   @override
   void initState() {
@@ -190,17 +191,17 @@ class FotoUsuario extends StatelessWidget {
                   trailing: Icon(Icons.file_download),
                   onTap: () async {
                     await _selecionarNovoArquivo().then((localPath) {
-                      bloc.eventSink(UpdateFotoEvent(localPath));
+                      bloc.eventSink(
+                        UpdateFotoEvent(localPath),
+                      );
                     });
                   },
                 ),
               ]),
-            // _ImagemPerfilUpload(
-            //     uploadID: snapshot.data?.fotoUploadID,
-            //     url: snapshot.data?.fotoUrl,
-            //     path: snapshot.data?.localPath),
-                               ArquivoImagemItem('nome',localPath: snapshot.data?.localPath,url: snapshot.data?.fotoUrl,onDeleted: null,),
-
+            _ImagemFileUpload(
+              url: snapshot.data?.fotoUrl,
+              path: snapshot.data?.localPath,
+            ),
           ],
         );
       },
@@ -209,7 +210,7 @@ class FotoUsuario extends StatelessWidget {
 
   Future<String> _selecionarNovoArquivo() async {
     try {
-      var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
+      var arquivoPath = await FilePicker.getFilePath(type: FileType.IMAGE);
       if (arquivoPath != null) {
         return arquivoPath;
       }
@@ -220,74 +221,156 @@ class FotoUsuario extends StatelessWidget {
   }
 }
 
-
-
-
-class ArquivoImagemItem extends StatelessWidget {
-  final String nome;
-  final String localPath;
+class _ImagemFileUpload extends StatelessWidget {
+  // final String uploadID;
   final String url;
-  final Function() onDeleted;
+  final String path;
 
-  const ArquivoImagemItem(
-    this.nome, {
-    Key key,
-    this.onDeleted,
-    this.localPath,
-    this.url,
-  })  : assert(localPath != null || url != null),
-        super(key: key);
+  const _ImagemFileUpload({this.url, this.path});
+
+  Future<File> _getLocalFile(String filename) async {
+    File f = new File(filename);
+    return f;
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('url: $url');
-    print('localPath: $localPath');
-    return Card(
-      child: Container(
-        constraints: BoxConstraints.expand(
-          height: 150.0,
-        ),
-        padding: EdgeInsets.only(left: 16.0, bottom: 8.0, right: 16.0),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: url != null ? NetworkImage(url) : AssetImage(localPath),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
+    // print('url: $url');
+    // print('path: $path');
+    Widget foto = Text('?');
+    Widget msg = Text('');
+
+    if (path == null && url == null) {
+      foto = Text('Você ainda não enviou uma foto de perfil.');
+    }
+    if (path != null && url == null) {
+      try {
+        foto = FutureBuilder(
+            future: _getLocalFile(path),
+            builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+              return snapshot.data != null ? new Image.file(snapshot.data) : new Container();
+            });
+      } on Exception {
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      } catch (e) {
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      }
+      msg = Text(
+          'Esta foto precisa ser enviada. Salve esta edição de perfil e depois acesse o menu upload de arquivos para enviar esta imagem.');
+    }
+    if (url != null) {
+      try {
+        foto = Container(
+            child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Image.network(url),
+        ));
+      } on Exception {
+        print('Exception');
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      } catch (e) {
+        print('catch');
+        msg = ListTile(
+          title: Text('Não consegui abrir a imagem.'),
+        );
+      }
+    }
+
+    return Column(
+      children: <Widget>[
+        msg,
+        Row(
           children: <Widget>[
-            Positioned(
-              left: 0.0,
-              bottom: 0.0,
-              child: Text(nome,
-                  style: TextStyle(
-                    color: Colors.yellow,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
-                  )),
+            Spacer(
+              flex: 2,
             ),
-            Positioned(
-                right: 0.0,
-                bottom: 0.0,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40.0),
-                  child: Container(
-                    color: Colors.white,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.black,
-                      ),
-                      onPressed: onDeleted,
-                    ),
-                  ),
-                )),
+            Expanded(
+              flex: 8,
+              child: foto,
+            ),
+            Spacer(
+              flex: 2,
+            ),
           ],
         ),
-      ),
+      ],
     );
   }
 }
+
+// class ArquivoImagemItem extends StatelessWidget {
+//   final String nome;
+//   String localPath;
+//   final String url;
+//   final Function() onDeleted;
+
+//   ArquivoImagemItem(
+//     this.nome, {
+//     Key key,
+//     this.onDeleted,
+//     this.localPath,
+//     this.url,
+//   })  : assert(localPath != null || url != null),
+//         super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     print('url: $url');
+//     print('localPath: $localPath');
+//     // localPath='/storage/emulated/0/DCIM/Camera/IMG_20191120_085428.jpg';
+//     return Card(
+//       child: Container(
+//         constraints: BoxConstraints.expand(
+//           height: 150.0,
+//         ),
+//         padding: EdgeInsets.only(left: 16.0, bottom: 8.0, right: 16.0),
+//         decoration: BoxDecoration(
+//           image: DecorationImage(
+//             // image: url != null ? NetworkImage(url) : AssetImage('/storage/emulated/0/DCIM/Camera/IMG_20191120_085428.jpg'),
+//             image: url != null ? NetworkImage(url) : AssetImage(localPath),
+//             fit: BoxFit.cover,
+//           ),
+//         ),
+//         child: Stack(
+//           children: <Widget>[
+//             Positioned(
+//               left: 0.0,
+//               bottom: 0.0,
+//               child: Text(nome,
+//                   style: TextStyle(
+//                     color: Colors.yellow,
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 12.0,
+//                   )),
+//             ),
+//             Positioned(
+//                 right: 0.0,
+//                 bottom: 0.0,
+//                 child: ClipRRect(
+//                   borderRadius: BorderRadius.circular(40.0),
+//                   child: Container(
+//                     color: Colors.white,
+//                     child: IconButton(
+//                       icon: Icon(
+//                         Icons.delete,
+//                         color: Colors.black,
+//                       ),
+//                       onPressed: onDeleted,
+//                     ),
+//                   ),
+//                 )),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // class _ImagemPerfilUpload extends StatelessWidget {
 //   final String uploadID;
@@ -298,6 +381,9 @@ class ArquivoImagemItem extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
+//         print('url: $url');
+//     print('path: $path');
+
 //     Widget foto = Text('?');
 //     Widget msg = Text('');
 
