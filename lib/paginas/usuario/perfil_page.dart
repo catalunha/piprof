@@ -6,7 +6,8 @@ import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/usuario/perfil_bloc.dart';
 import 'package:piprof/plataforma/recursos.dart';
-import 'package:piprof/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:piprof/naosuportato/naosuportado.dart'
+    show FilePicker, FileType;
 
 class PerfilPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -22,7 +23,8 @@ class PerfilPage extends StatefulWidget {
 class ConfiguracaoState extends State<PerfilPage> {
   final PerfilBloc bloc;
 
-  ConfiguracaoState(AuthBloc authBloc) : bloc = PerfilBloc(Bootstrap.instance.firestore, authBloc);
+  ConfiguracaoState(AuthBloc authBloc)
+      : bloc = PerfilBloc(Bootstrap.instance.firestore, authBloc);
 
   @override
   void initState() {
@@ -198,10 +200,11 @@ class FotoUsuario extends StatelessWidget {
                   },
                 ),
               ]),
-            _ImagemFileUpload(
-              url: snapshot.data?.fotoUrl,
-              path: snapshot.data?.localPath,
-            ),
+            if (Recursos.instance.disponivel("file_picking"))
+              _ImagemFileUpload(
+                url: snapshot.data?.fotoUrl,
+                path: snapshot.data?.localPath,
+              ),
           ],
         );
       },
@@ -248,7 +251,9 @@ class _ImagemFileUpload extends StatelessWidget {
         foto = FutureBuilder(
             future: _getLocalFile(path),
             builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-              return snapshot.data != null ? new Image.file(snapshot.data) : new Container();
+              return snapshot.data != null
+                  ? new Image.file(snapshot.data)
+                  : new Container();
             });
       } on Exception {
         msg = ListTile(
