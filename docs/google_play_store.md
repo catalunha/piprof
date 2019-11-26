@@ -3,6 +3,7 @@
 ## Enviada em 26-11-2019
 versionCode 3
 versionName '1.0.2'
+branch: android-3-1.0.2
 Detalhes:
 - Aperfeiçoamento na captura de links do google docs e image e outras nuvens
 
