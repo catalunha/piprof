@@ -78,7 +78,7 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                               //       ),
                               title: Text('${aluno.nome}'),
                               subtitle: Text(
-                                  'matricula: ${aluno.matricula}\nCelular: ${aluno.celular ?? '?'}\nemail: ${aluno.email}'),
+                                  'matricula: ${aluno.matricula}\nCelular: ${aluno.celular ?? '?'}\nemail: ${aluno.email}\nid: ${aluno.id.substring(0,10)}'),
                               trailing: IconButton(
                                 tooltip: 'Gerar notas deste aluno',
                                 icon: Icon(Icons.grid_on),

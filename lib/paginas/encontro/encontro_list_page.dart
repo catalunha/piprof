@@ -79,7 +79,7 @@ class _EncontroListPageState extends State<EncontroListPage> {
                           ListTile(
                             title: Text('${encontro.nome}'),
                             subtitle:
-                                Text('Alunos: ${encontro?.aluno?.length ?? 0}'),
+                                Text('Alunos: ${encontro?.aluno?.length ?? 0}\nid: ${encontro.id}'),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(encontro?.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro?.fim)}'),
                           ),

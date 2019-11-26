@@ -49,7 +49,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
       length: myTabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title:  _title(),
+          title: _title(),
           bottom: TabBar(
             tabs: myTabs,
           ),
@@ -95,8 +95,10 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
                 } catch (e) {}
               },
             );
-            String urlProblema = problema.url;
-
+            String urlProblema;
+            if (problema.url != null) {
+              urlProblema = modificarUrl(problema.url);
+            }
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,14 +115,26 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
               ],
             );
           } else {
-            return Center(
-                child: Text('Tarefa fechou por limite de tentativas ou tempo.',
-                    style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.blue,
-                    )));
+            return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  String modificarUrl(String url) {
+    String urlModificada = url;
+    if (url.contains('usp=drivesdk')) {
+      urlModificada = url
+          .replaceFirst('https://docs.google.com/document/d/',
+              'https://drive.google.com/open?id=')
+          .replaceFirst('/edit?usp=drivesdk', '');
+    }
+    if (url.contains('usp=sharing')) {
+      urlModificada = url
+          .replaceFirst('https://docs.google.com/document/d/',
+              'https://drive.google.com/open?id=')
+          .replaceFirst('/edit?usp=sharing', '');
+    }
+    return urlModificada;
   }
 
   _variaveis() {
@@ -392,10 +406,12 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
       child: Center(child: Text('$descricaoTab')),
     );
   }
+
   _title() {
     return StreamBuilder<TarefaConferirBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<TarefaConferirBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -403,7 +419,6 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.data.isDataValid) {
-
             Widget contador = Container(
               width: 100.0,
               // padding: EdgeInsets.only(top: 3.0, right: 4.0),
@@ -413,12 +428,14 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
                   Navigator.pop(context);
                   print('terminou clock');
                 },
-                countDownTimerStyle: TextStyle(color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
+                countDownTimerStyle: TextStyle(
+                    color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
               ),
             );
             Widget tentativas = Text(
               '0 de 3',
-              style: TextStyle(color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
+              style: TextStyle(
+                  color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
             );
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

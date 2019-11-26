@@ -4,7 +4,8 @@ import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/paginas/tarefa/tarefa_corrigir_bloc.dart';
 import 'package:queries/collections.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TarefaCorrigirPage extends StatefulWidget {
   final String tarefaID;
@@ -46,7 +47,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
         ),
         body: StreamBuilder<TarefaCorrigirBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TarefaCorrigirBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TarefaCorrigirBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -60,19 +62,23 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
 
                 Map<String, Variavel> variavelMap;
                 var dic = Dictionary.fromMap(tarefa.variavel);
-                var dicOrderBy = dic.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                var dicOrderBy = dic
+                    .orderBy((kv) => kv.value.ordem)
+                    .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 variavelMap = dicOrderBy.toMap();
 
                 Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
 
                 gabaritoMap.clear();
                 var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
-                var gabaritoOrderBy =
-                    dicGabarito.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
+                var gabaritoOrderBy = dicGabarito
+                    .orderBy((kv) => kv.value.ordem)
+                    .toDictionary$1((kv) => kv.key, (kv) => kv.value);
                 gabaritoMap = gabaritoOrderBy.toMap();
                 notas = '';
                 for (var gabarito in gabaritoMap.entries) {
-                  notas += '${gabarito.value.nome}=${gabarito.value.nota ?? ""} ';
+                  notas +=
+                      '${gabarito.value.nome}=${gabarito.value.nota ?? ""} ';
                 }
                 listaWidget.add(
                   Card(
@@ -84,7 +90,8 @@ class _TarefaCorrigirPageState extends State<TarefaCorrigirPage> {
                               : CircleAvatar(
                                   minRadius: 25,
                                   maxRadius: 25,
-                                  backgroundImage: NetworkImage(tarefa.aluno.foto),
+                                  backgroundImage:
+                                      NetworkImage(tarefa.aluno.foto),
                                 ),
                           title: Text('${tarefa.aluno.nome}'),
                           subtitle: Text('Sit.: $notas'),
@@ -96,6 +103,7 @@ Simulacao: ${tarefa.simulacao.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}
 Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}
 Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} tentativas.'''),
+                          subtitle: Text('id: ${tarefa.id}'),
                         ),
                       ],
                     ),
@@ -128,13 +136,15 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                     icone = Icon(Icons.image);
                   }
 
+// https://drive.google.com/file/d/1mCmbdcgY_f7jbBC8O04Z2wffku5ZpahI/view?usp=drivesdk
+// https://drive.google.com/file/d/1mCmbdcgY_f7jbBC8O04Z2wffku5ZpahI/view?usp=sharing
+// https://drive.google.com/open?id=1mCmbdcgY_f7jbBC8O04Z2wffku5ZpahI
                   if (variavel.value.tipo == 'urlimagem') {
-                    String linkValorModificado;
-                    if (variavel?.value?.valor != null && variavel.value.valor.contains('drive.google.com/open')) {
-                      linkValorModificado = variavel.value.valor.replaceFirst('open', 'uc');
-                    } else {
-                      linkValorModificado = variavel.value.valor;
+                    String urlModificada;
+                    if (variavel?.value?.valor != null) {
+                      urlModificada = modificarUrl(variavel.value.valor);
                     }
+
                     listaWidget.add(
                       Card(
                         child: Column(
@@ -148,8 +158,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: _ImagemUnicaVariavel(
-                                    urlModificada: linkValorModificado,
+                                  child: VerUrlImagem(
+                                    urlModificada: urlModificada,
                                     urlOriginal: variavel.value.valor,
                                   ),
                                 ),
@@ -178,7 +188,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                   trailing: Icon(Icons.question_answer),
                 ));
 
-                for (var gabaritoInfoMap in snapshot.data.gabaritoInfoMap.entries) {
+                for (var gabaritoInfoMap
+                    in snapshot.data.gabaritoInfoMap.entries) {
                   if (gabaritoInfoMap.value.gabarito.tipo == 'numero') {
                     listaWidget.add(
                       Card(
@@ -196,7 +207,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                            bloc.eventSink(
+                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -219,7 +231,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                            bloc.eventSink(
+                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -242,7 +255,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                   color: Colors.red,
                                 ),
                           onTap: () {
-                            bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                            bloc.eventSink(
+                                UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
                           },
                         ),
                       ),
@@ -255,7 +269,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text(
+                                  '${gabaritoInfoMap.value.gabarito.nome}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.link,
@@ -266,42 +281,52 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(
+                                    gabaritoInfoMap.key));
                               },
                             ),
                             Row(
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: gabaritoInfoMap.value.gabarito.valor == null
+                                  child: gabaritoInfoMap.value.gabarito.valor ==
+                                          null
                                       ? ListTile(
-                                          subtitle: Text('Link do gabarito não anexado'),
+                                          subtitle: Text(
+                                              'Link do gabarito não anexado'),
                                           trailing: Icon(Icons.launch),
                                           onTap: null,
                                         )
                                       : ListTile(
-                                          subtitle: Text('Clique para ver o link do gabarito'),
+                                          subtitle: Text(
+                                              'Clique para ver o link do gabarito'),
                                           trailing: Icon(Icons.launch),
                                           onTap: () {
-                                            launch(gabaritoInfoMap.value.gabarito.valor);
+                                            launch(gabaritoInfoMap
+                                                .value.gabarito.valor);
                                           },
                                         ),
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child: gabaritoInfoMap.value.gabarito.resposta == null
-                                      ? ListTile(
-                                          subtitle: Text('Link da resposta não anexado'),
-                                          trailing: Icon(Icons.launch),
-                                          onTap: null,
-                                        )
-                                      : ListTile(
-                                          subtitle: Text('Clique para ver o link da resposta'),
-                                          trailing: Icon(Icons.launch),
-                                          onTap: () {
-                                            launch(gabaritoInfoMap.value.gabarito.resposta);
-                                          },
-                                        ),
+                                  child:
+                                      gabaritoInfoMap.value.gabarito.resposta ==
+                                              null
+                                          ? ListTile(
+                                              subtitle: Text(
+                                                  'Link da resposta não anexado'),
+                                              trailing: Icon(Icons.launch),
+                                              onTap: null,
+                                            )
+                                          : ListTile(
+                                              subtitle: Text(
+                                                  'Clique para ver o link da resposta'),
+                                              trailing: Icon(Icons.launch),
+                                              onTap: () {
+                                                launch(gabaritoInfoMap
+                                                    .value.gabarito.resposta);
+                                              },
+                                            ),
                                 ),
                               ],
                             ),
@@ -312,28 +337,25 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                   }
 
                   if (gabaritoInfoMap.value.gabarito.tipo == 'urlimagem') {
-                    String linkValorModificado;
-                    if (gabaritoInfoMap.value.gabarito?.valor != null &&
-                        gabaritoInfoMap.value.gabarito.valor.contains('drive.google.com/open')) {
-                      String linkOriginal = gabaritoInfoMap.value.gabarito.valor;
-                      linkValorModificado = linkOriginal.replaceFirst('open', 'uc');
-                    } else {
-                      linkValorModificado = gabaritoInfoMap.value.gabarito.valor;
+                    String urlValorModificado;
+                    if (gabaritoInfoMap.value.gabarito?.valor != null) {
+                      urlValorModificado =
+                          modificarUrl(gabaritoInfoMap.value.gabarito.valor);
                     }
-                    String linkRespostaModificado;
-                    if (gabaritoInfoMap.value.gabarito?.resposta != null &&
-                        gabaritoInfoMap.value.gabarito.resposta.contains('drive.google.com/open')) {
-                      String linkOriginal = gabaritoInfoMap.value.gabarito.resposta;
-                      linkRespostaModificado = linkOriginal.replaceFirst('open', 'uc');
-                    } else {
-                      linkRespostaModificado = gabaritoInfoMap.value.gabarito.resposta;
+
+                    String urlRespostaModificado;
+                    if (gabaritoInfoMap.value.gabarito?.resposta != null) {
+                      urlRespostaModificado =
+                          modificarUrl(gabaritoInfoMap.value.gabarito.resposta);
                     }
+
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text(
+                                  '${gabaritoInfoMap.value.gabarito.nome}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.image,
@@ -344,7 +366,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(
+                                    gabaritoInfoMap.key));
                               },
                             ),
                             Row(
@@ -352,15 +375,17 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
-                                    urlModificada: linkValorModificado,
-                                    urlOriginal: gabaritoInfoMap.value.gabarito.valor,
+                                    urlModificada: urlValorModificado,
+                                    urlOriginal:
+                                        gabaritoInfoMap.value.gabarito.valor,
                                   ),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
-                                    urlModificada: linkRespostaModificado,
-                                    urlOriginal: gabaritoInfoMap.value.gabarito.resposta,
+                                    urlModificada: urlRespostaModificado,
+                                    urlOriginal:
+                                        gabaritoInfoMap.value.gabarito.resposta,
                                   ),
                                 ),
                               ],
@@ -377,7 +402,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text(
+                                  '${gabaritoInfoMap.value.gabarito.nome}'),
                               trailing: gabaritoInfoMap.value.nota
                                   ? Icon(
                                       Icons.description,
@@ -388,42 +414,52 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(
+                                    gabaritoInfoMap.key));
                               },
                             ),
                             Row(
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: gabaritoInfoMap.value.gabarito.valor == null
+                                  child: gabaritoInfoMap.value.gabarito.valor ==
+                                          null
                                       ? ListTile(
-                                          subtitle: Text('Arquivo do gabarito não anexado'),
+                                          subtitle: Text(
+                                              'Arquivo do gabarito não anexado'),
                                           trailing: Icon(Icons.launch),
                                           onTap: null,
                                         )
                                       : ListTile(
-                                          subtitle: Text('Clique para ver o arquivo do gabarito'),
+                                          subtitle: Text(
+                                              'Clique para ver o arquivo do gabarito'),
                                           trailing: Icon(Icons.launch),
                                           onTap: () {
-                                            launch(gabaritoInfoMap.value.gabarito.valor);
+                                            launch(gabaritoInfoMap
+                                                .value.gabarito.valor);
                                           },
                                         ),
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child: gabaritoInfoMap.value.gabarito.resposta == null
-                                      ? ListTile(
-                                          subtitle: Text('Arquivo da resposta não anexado'),
-                                          trailing: Icon(Icons.launch),
-                                          onTap: null,
-                                        )
-                                      : ListTile(
-                                          subtitle: Text('Clique para ver o arquivo da resposta'),
-                                          trailing: Icon(Icons.launch),
-                                          onTap: () {
-                                            launch(gabaritoInfoMap.value.gabarito.resposta);
-                                          },
-                                        ),
+                                  child:
+                                      gabaritoInfoMap.value.gabarito.resposta ==
+                                              null
+                                          ? ListTile(
+                                              subtitle: Text(
+                                                  'Arquivo da resposta não anexado'),
+                                              trailing: Icon(Icons.launch),
+                                              onTap: null,
+                                            )
+                                          : ListTile(
+                                              subtitle: Text(
+                                                  'Clique para ver o arquivo da resposta'),
+                                              trailing: Icon(Icons.launch),
+                                              onTap: () {
+                                                launch(gabaritoInfoMap
+                                                    .value.gabarito.resposta);
+                                              },
+                                            ),
                                 ),
                               ],
                             ),
@@ -434,20 +470,18 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                   }
 
                   if (gabaritoInfoMap.value.gabarito.tipo == 'imagem') {
-                    String linkValorModificado;
-                    if (gabaritoInfoMap.value.gabarito?.valor != null &&
-                        gabaritoInfoMap.value.gabarito.valor.contains('drive.google.com/open')) {
-                      String linkOriginal = gabaritoInfoMap.value.gabarito.valor;
-                      linkValorModificado = linkOriginal.replaceFirst('open', 'uc');
-                    } else {
-                      linkValorModificado = gabaritoInfoMap.value.gabarito.valor;
+                    String urlValorModificado;
+                    if (gabaritoInfoMap.value.gabarito?.valor != null) {
+                      urlValorModificado =
+                          modificarUrl(gabaritoInfoMap.value.gabarito.valor);
                     }
                     listaWidget.add(
                       Card(
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text('${gabaritoInfoMap.value.gabarito.nome}'),
+                              title: Text(
+                                  '${gabaritoInfoMap.value.gabarito.nome}'),
                               // subtitle: Text(
                               //     'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
                               trailing: gabaritoInfoMap.value.nota
@@ -460,7 +494,8 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                       color: Colors.red,
                                     ),
                               onTap: () {
-                                bloc.eventSink(UpdateGabaritoNotaEvent(gabaritoInfoMap.key));
+                                bloc.eventSink(UpdateGabaritoNotaEvent(
+                                    gabaritoInfoMap.key));
                               },
                             ),
                             Row(
@@ -468,14 +503,17 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
-                                      urlModificada: linkValorModificado,
-                                      urlOriginal: gabaritoInfoMap.value.gabarito.valor),
+                                      urlModificada: urlValorModificado,
+                                      urlOriginal:
+                                          gabaritoInfoMap.value.gabarito.valor),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: _ImagemUnica(
-                                    urlModificada: gabaritoInfoMap.value.gabarito.resposta,
-                                    urlOriginal: gabaritoInfoMap.value.gabarito.resposta,
+                                    urlModificada:
+                                        gabaritoInfoMap.value.gabarito.resposta,
+                                    urlOriginal:
+                                        gabaritoInfoMap.value.gabarito.resposta,
                                   ),
                                 ),
                               ],
@@ -499,22 +537,47 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
               }
             }));
   }
+
+  String modificarUrl(String url) {
+    String urlModificada = url;
+    if (url.contains('drive.google.com/open')) {
+      urlModificada = url.replaceFirst('open', 'uc');
+    }
+    if (url.contains('drive.google.com/file/d/')) {
+      if (url.contains('usp=drivesdk')) {
+        urlModificada = url
+            .replaceAll('/view?usp=drivesdk', '')
+            .replaceAll('file/d/', 'open?id=')
+            .replaceFirst('open', 'uc');
+      }
+      if (url.contains('usp=sharing')) {
+        urlModificada = url
+            .replaceAll('/view?usp=sharing', '')
+            .replaceAll('file/d/', 'open?id=')
+            .replaceFirst('open', 'uc');
+      }
+    }
+    return urlModificada;
+  }
 }
 
-class _ImagemUnicaVariavel extends StatelessWidget {
+class VerUrlImagem extends StatelessWidget {
   final String urlModificada;
   final String urlOriginal;
 
-  const _ImagemUnicaVariavel({this.urlModificada, this.urlOriginal});
+  const VerUrlImagem({this.urlModificada, this.urlOriginal});
 
   @override
   Widget build(BuildContext context) {
     Widget url;
     Widget link;
-
     link = Center(child: ListTile(subtitle: Text('')));
+
     if (urlModificada == null) {
-      url = Center(child: ListTile(subtitle: Text('Sem imagem nesta resposta.')));
+      url = Center(
+          child: ListTile(
+              subtitle:
+                  Text('Não consigo visualizar este tipo de imagem aqui.')));
     } else {
       if (urlOriginal != null) {
         link = ListTile(
@@ -531,11 +594,13 @@ class _ImagemUnicaVariavel extends StatelessWidget {
         );
       } on Exception {
         url = ListTile(
-          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
+          subtitle:
+              Text('Não consegui abrir este link como imagem. Use o Chrome.'),
         );
       } catch (e) {
         url = ListTile(
-          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
+          subtitle:
+              Text('Não consegui abrir este link como imagem. Use o Chrome.'),
         );
       }
     }
@@ -574,10 +639,12 @@ class _ImagemUnica extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget url;
     Widget link;
-
+    // print('urlModificada: $urlModificada');
+    // print('urlOriginal: $urlOriginal');
     link = Center(child: ListTile(subtitle: Text('')));
     if (urlModificada == null) {
-      url = Center(child: ListTile(subtitle: Text('Sem imagem nesta resposta.')));
+      url =
+          Center(child: ListTile(subtitle: Text('Sem imagem nesta resposta.')));
     } else {
       if (urlOriginal != null) {
         link = ListTile(
@@ -595,11 +662,13 @@ class _ImagemUnica extends StatelessWidget {
         );
       } on Exception {
         url = ListTile(
-          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
+          subtitle:
+              Text('Não consegui abrir este link como imagem. Use o link.'),
         );
       } catch (e) {
         url = ListTile(
-          subtitle: Text('Não consegui abrir este link como imagem. Use o link.'),
+          subtitle:
+              Text('Não consegui abrir este link como imagem. Use o link.'),
         );
       }
     }

@@ -89,15 +89,15 @@ class _SimulacaoCRUDPageState extends State<SimulacaoCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Link para o arquivo detalhando a simulação:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  )),
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: _TextFieldMultiplo(bloc, 'url')),
+              // Padding(
+              //     padding: EdgeInsets.all(5.0),
+              //     child: Text(
+              //       'Link para o arquivo detalhando a simulação:',
+              //       style: TextStyle(fontSize: 15, color: Colors.blue),
+              //     )),
+              // Padding(
+              //     padding: EdgeInsets.all(5.0),
+              //     child: _TextFieldMultiplo(bloc, 'url')),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),

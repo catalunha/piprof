@@ -84,7 +84,7 @@ class _TurmaAtivaListPageState extends State<TurmaAtivaListPage> {
 Inst.: ${turma.instituicao}
 Comp.: ${turma.componente}
 Turma: ${turma.nome}'''),
-                            subtitle: Text('${turma?.id}'),
+                            subtitle: Text('id: ${turma?.id}'),
                           ),
                           Wrap(
                             children: <Widget>[

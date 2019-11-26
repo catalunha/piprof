@@ -180,7 +180,7 @@ class _SimulacaoListPageState extends State<SimulacaoListPage> {
                         trailing: alerta ? Icon(Icons.alarm) : Text(''),
                         title: Text('${simulacao.nome}'),
                         subtitle: Text(
-                          'Valores  : ${simulacao?.variavel?.length ?? 0}\nGabarito: ${simulacao?.gabarito?.length != null ? simulacao?.gabarito?.length : 0}$msg\nid:${simulacao.id}',
+                          'Valores  : ${simulacao?.variavel?.length ?? 0}\nGabarito: ${simulacao?.gabarito?.length != null ? simulacao?.gabarito?.length : 0}$msg\nid: ${simulacao.id}',
                         ),
                       ),
                       Center(

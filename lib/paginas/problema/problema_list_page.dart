@@ -95,7 +95,7 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                             title: Text(
                                 '${problema.nome}\nFonte: ${problema.descricao}'),
                             subtitle: Text(
-                                'Simulações: ${problema.simulacaoNumero ?? 0}\n${problema.id}'),
+                                'Simulações: ${problema.simulacaoNumero ?? 0}\nid: ${problema.id}'),
                           ),
                           Center(
                             child: Wrap(

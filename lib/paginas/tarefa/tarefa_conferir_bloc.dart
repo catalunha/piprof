@@ -69,6 +69,9 @@ class TarefaConferirBloc {
 
   _validateData() {
     _state.isDataValid = true;
+    if (_state?.problema == null) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(TarefaConferirBlocEvent event) async {

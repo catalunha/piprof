@@ -124,9 +124,10 @@ class SimulacaoCRUDBloc {
         _state.nome = event.texto;
       } else if (event.campo == 'descricao') {
         _state.descricao = event.texto;
-      } else if (event.campo == 'url') {
-        _state.url = event.texto;
       }
+      //  else if (event.campo == 'url') {
+      //   _state.url = event.texto;
+      // }
     }
 
     if (event is SaveEvent) {
@@ -137,7 +138,7 @@ class SimulacaoCRUDBloc {
       SimulacaoModel simulacaoModel = SimulacaoModel(
         nome: _state.nome,
         descricao: _state.descricao,
-        url: _state.url,
+        // url: _state.url,
       );
       if (_state.simulacaoID == null) {
         simulacaoModel.numero = (_state.problema.simulacaoNumero ?? 0) + 1;

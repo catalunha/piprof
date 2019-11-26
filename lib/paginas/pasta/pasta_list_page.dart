@@ -76,7 +76,7 @@ class _PastaListPageState extends State<PastaListPage> {
                     children: <Widget>[
                       ListTile(
                         title: Text('${pasta.nome}'),
-                        subtitle: Text('${pasta.id}'),
+                        subtitle: Text('id: ${pasta.id}'),
                       ),
                       Center(
                         child: Wrap(
