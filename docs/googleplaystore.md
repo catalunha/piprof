@@ -1,33 +1,16 @@
-# Versões enviadas PI-Prof
-
-## Enviada em 26-11-2019
-versionCode 3
-versionName '1.0.2'
-Detalhes:
-- Aperfeiçoamento na captura de links do google docs e image e outras nuvens
-
-## Enviada em 25-11-2019
-versionCode 2
-versionName '1.0.1'
-
-
-## Enviada em 18-11-2019
-versionCode 1
-versionName '1.0.0'
-
-
-# Versões enviadas PI-Prof
-
-## Enviada em 26-11-2019
-versionCode 4
-versionName '1.0.4'
-Detalhes:
-- Aperfeiçoamento na captura de links do google docs e image e outras nuvens
-
-
 # Gerar versão de release e salvar na loja google play
 
 ## Gerar a versão de release
+
+### Passo 0
+
+Fechar versão atual q esta no emulator
+Chaves
+~~~
+catalunha@nbuft:~$ keytool -list -v -keystore ~/key_pmsb_paulo.jks
+Informe a senha da área de armazenamento de chaves: c@taft
+~~~
+
 
 
 ### Passo 1 
