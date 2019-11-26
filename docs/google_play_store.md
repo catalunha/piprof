@@ -16,14 +16,6 @@ versionCode 1
 versionName '1.0.0'
 
 
-# Versões enviadas PI-Prof
-
-## Enviada em 26-11-2019
-versionCode 4
-versionName '1.0.4'
-Detalhes:
-- Aperfeiçoamento na captura de links do google docs e image e outras nuvens
-
 
 # Gerar versão de release e salvar na loja google play
 
