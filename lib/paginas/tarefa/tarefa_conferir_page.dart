@@ -97,7 +97,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
             );
             String urlProblema;
             if (problema.url != null) {
-              urlProblema = modificarUrl(problema.url);
+              urlProblema = modificarUrlDocsGoogleDrive(problema.url);
             }
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -120,7 +120,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
         });
   }
 
-  String modificarUrl(String url) {
+  String modificarUrlDocsGoogleDrive(String url) {
     String urlModificada = url;
     if (url.contains('usp=drivesdk')) {
       urlModificada = url
@@ -136,7 +136,27 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
     }
     return urlModificada;
   }
-
+  String modificarUrlImagemGoogleDrive(String url) {
+    String urlModificada = url;
+    if (url.contains('drive.google.com/open')) {
+      urlModificada = url.replaceFirst('open', 'uc');
+    }
+    if (url.contains('drive.google.com/file/d/')) {
+      if (url.contains('usp=drivesdk')) {
+        urlModificada = url
+            .replaceAll('/view?usp=drivesdk', '')
+            .replaceAll('file/d/', 'open?id=')
+            .replaceFirst('open', 'uc');
+      }
+      if (url.contains('usp=sharing')) {
+        urlModificada = url
+            .replaceAll('/view?usp=sharing', '')
+            .replaceAll('file/d/', 'open?id=')
+            .replaceFirst('open', 'uc');
+      }
+    }
+    return urlModificada;
+  }
   _variaveis() {
     return StreamBuilder<TarefaConferirBlocState>(
         stream: bloc.stateStream,
@@ -174,14 +194,10 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
               }
 
               if (variavel.value.tipo == 'urlimagem') {
-                String linkValorModificado;
-                if (variavel?.value?.valor != null &&
-                    variavel.value.valor.contains('drive.google.com/open')) {
-                  linkValorModificado =
-                      variavel.value.valor.replaceFirst('open', 'uc');
-                } else {
-                  linkValorModificado = variavel.value.valor;
-                }
+                String urlModificada;
+                    if (variavel?.value?.valor != null) {
+                      urlModificada = modificarUrlImagemGoogleDrive(variavel.value.valor);
+                    }
                 listaWidget.add(
                   Card(
                     child: Column(
@@ -195,7 +211,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
                             Expanded(
                               flex: 2,
                               child: _MostraImagemUnica(
-                                urlModificada: linkValorModificado,
+                                urlModificada: urlModificada,
                                 urlOriginal: variavel.value.valor,
                               ),
                             ),

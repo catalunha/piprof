@@ -142,7 +142,7 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                   if (variavel.value.tipo == 'urlimagem') {
                     String urlModificada;
                     if (variavel?.value?.valor != null) {
-                      urlModificada = modificarUrl(variavel.value.valor);
+                      urlModificada = modificarUrlImagemGoogleDrive(variavel.value.valor);
                     }
 
                     listaWidget.add(
@@ -340,13 +340,13 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                     String urlValorModificado;
                     if (gabaritoInfoMap.value.gabarito?.valor != null) {
                       urlValorModificado =
-                          modificarUrl(gabaritoInfoMap.value.gabarito.valor);
+                          modificarUrlImagemGoogleDrive(gabaritoInfoMap.value.gabarito.valor);
                     }
 
                     String urlRespostaModificado;
                     if (gabaritoInfoMap.value.gabarito?.resposta != null) {
                       urlRespostaModificado =
-                          modificarUrl(gabaritoInfoMap.value.gabarito.resposta);
+                          modificarUrlImagemGoogleDrive(gabaritoInfoMap.value.gabarito.resposta);
                     }
 
                     listaWidget.add(
@@ -473,7 +473,7 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                     String urlValorModificado;
                     if (gabaritoInfoMap.value.gabarito?.valor != null) {
                       urlValorModificado =
-                          modificarUrl(gabaritoInfoMap.value.gabarito.valor);
+                          modificarUrlImagemGoogleDrive(gabaritoInfoMap.value.gabarito.valor);
                     }
                     listaWidget.add(
                       Card(
@@ -538,7 +538,7 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
             }));
   }
 
-  String modificarUrl(String url) {
+  String modificarUrlImagemGoogleDrive(String url) {
     String urlModificada = url;
     if (url.contains('drive.google.com/open')) {
       urlModificada = url.replaceFirst('open', 'uc');
