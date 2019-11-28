@@ -557,11 +557,11 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                           //     'Tipo:${gabaritoInfoMap.value.gabarito.tipo}\nNota:${gabaritoInfoMap.value.gabarito.nota}'),
                           trailing: gabaritoInfoMap.value.nota
                               ? Icon(
-                                  Icons.add_photo_alternate,
+                                  Icons.photo_camera,
                                   color: Colors.green,
                                 )
                               : Icon(
-                                  Icons.add_photo_alternate,
+                                  Icons.photo_camera,
                                   color: Colors.red,
                                 ),
                           onTap: () {

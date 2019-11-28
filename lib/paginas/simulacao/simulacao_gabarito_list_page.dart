@@ -100,7 +100,7 @@ class _SimulacaoGabaritoListPageState extends State<SimulacaoGabaritoListPage> {
               } else if (gabarito.value.tipo == 'imagem') {
                 icone = IconButton(
                   tooltip: 'Uma imagem anexada',
-                  icon: Icon(Icons.add_photo_alternate),
+                  icon: Icon(Icons.photo_camera),
                   onPressed: () {
                     launch(gabarito.value.valor);
                   },

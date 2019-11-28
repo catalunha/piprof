@@ -293,7 +293,7 @@ class PainelTipoState extends State<PainelTipo> {
                     ),
                     IconButton(
                       tooltip: 'O upload de uma imagem',
-                      icon: Icon(Icons.add_photo_alternate),
+                      icon: Icon(Icons.photo_camera),
                       onPressed: () {},
                     ),
                   ]),
