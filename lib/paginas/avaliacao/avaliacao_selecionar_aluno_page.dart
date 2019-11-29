@@ -95,16 +95,20 @@ class _AvaliacaoSelecionarAlunoPageState extends State<AvaliacaoSelecionarAlunoP
                   listaWidget.add(
                     Card(
                       color: aplicada ? Colors.green[900] : null,
-                      child: Column(
+                      child: Row(
                         children: <Widget>[
-                          ListTile(
-                              leading: aluno?.foto?.url == null
-                                  ? Text('')
-                                  : CircleAvatar(
-                                      minRadius: 25,
-                                      maxRadius: 25,
-                                      backgroundImage: NetworkImage(aluno.foto.url),
-                                    ),
+                          Expanded(
+                            flex: 2,
+                            child: aluno?.foto?.url == null
+                                ? Text('')
+                                : CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(aluno.foto.url),
+                                  ),
+                          ),
+                          Expanded(
+                            flex: 8,
+                            child: ListTile(
                               title: Text('${aluno.nome}'),
                               subtitle: Text('${aluno.matricula}'),
                               trailing: aplicada
@@ -119,7 +123,9 @@ class _AvaliacaoSelecionarAlunoPageState extends State<AvaliacaoSelecionarAlunoP
                                   ? null
                                   : () {
                                       bloc.eventSink(MarcarAlunoEvent(aluno.id));
-                                    }),
+                                    },
+                            ),
+                          ),
                         ],
                       ),
                     ),
