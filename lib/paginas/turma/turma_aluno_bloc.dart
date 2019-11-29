@@ -1,7 +1,6 @@
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/turma_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:piprof/modelos/usuario_model.dart';
 import 'package:piprof/modelos/usuario_novo_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -27,7 +26,13 @@ class NotaListEvent extends TurmaAlunoBlocEvent {
   NotaListEvent(this.turmaID);
 }
 
-class SaveEvent extends TurmaAlunoBlocEvent {}
+class CreateRelatorioEvent extends TurmaAlunoBlocEvent {
+  final String turmaId;
+
+  CreateRelatorioEvent(this.turmaId);
+}
+
+class ResetCreateRelatorioEvent extends TurmaAlunoBlocEvent {}
 
 class CadastrarAlunoEvent extends TurmaAlunoBlocEvent {}
 
@@ -35,6 +40,7 @@ class TurmaAlunoBlocState {
   bool isDataValid = false;
   TurmaModel turma = TurmaModel();
   String cadastro;
+  String pedidoRelatorio;
   List<List<String>> listaDeAlunos = List<List<String>>();
 }
 
@@ -68,23 +74,19 @@ class TurmaAlunoBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    if (_state.listaDeAlunos == null ||
-        _state.listaDeAlunos.isEmpty ||
-        _state.listaDeAlunos.length == 0) {
+    if (_state.listaDeAlunos == null || _state.listaDeAlunos.isEmpty || _state.listaDeAlunos.length == 0) {
       _state.isDataValid = false;
     }
   }
 
   _mapEventToState(TurmaAlunoBlocEvent event) async {
     if (event is GetTurmaEvent) {
-      final docRef =
-          _firestore.collection(TurmaModel.collection).document(event.turmaID);
+      final docRef = _firestore.collection(TurmaModel.collection).document(event.turmaID);
       final snap = await docRef.get();
       if (snap.exists) {
         _state.turma = TurmaModel(id: snap.documentID).fromMap(snap.data);
       }
     }
-
     if (event is NotaListEvent) {
       print('Gerando csv com lista de alunos da turmaID: ${event.turmaID}');
     }
@@ -141,9 +143,7 @@ class TurmaAlunoBloc {
     }
 
     if (event is CadastrarAlunoEvent) {
-      if (_state.listaDeAlunos != null &&
-          _state.listaDeAlunos.isNotEmpty &&
-          _state.listaDeAlunos.length > 0) {
+      if (_state.listaDeAlunos != null && _state.listaDeAlunos.isNotEmpty && _state.listaDeAlunos.length > 0) {
         String matricula;
         String email;
         String nome;
@@ -170,8 +170,7 @@ class TurmaAlunoBloc {
             turma: _state.turma.id,
           );
 
-          final docRef =
-              _firestore.collection(UsuarioNovoModel.collection).document();
+          final docRef = _firestore.collection(UsuarioNovoModel.collection).document();
           await docRef.setData(usuarioNovo.toMap(), merge: true);
         }
       }
@@ -222,8 +221,16 @@ class TurmaAlunoBloc {
       // }
 
     }
-    if (event is SaveEvent) {}
-
+    if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef.setData({'turmaId': event.turmaId}, merge: true).then((_) {
+      _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em TurmaAlunoBloc  = ${event.runtimeType}');

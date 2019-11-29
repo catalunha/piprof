@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/turma/turma_aluno_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TurmaAlunoPage extends StatefulWidget {
   final String turmaID;
@@ -59,6 +60,11 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
+          if (snapshot.data.pedidoRelatorio != null) {
+            launch(
+                'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadealunodaturma?pedido=${snapshot.data.pedidoRelatorio}');
+            bloc.eventSink(ResetCreateRelatorioEvent());
+          }
           return ListView(
             children: <Widget>[
               ListTile(
@@ -76,7 +82,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
                 trailing: Icon(Icons.grid_on),
                 title: Text('Lista de alunos em planilha'),
                 onTap: () {
-                  GenerateCsvService.csvTurmaListaAluno(snapshot.data.turma);
+                  bloc.eventSink(CreateRelatorioEvent(widget.turmaID));
                 },
               ),
               Padding(
@@ -116,10 +122,9 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
                   );
                 },
               ),
-               Container(
-                  padding: EdgeInsets.only(top: 70),
-                ),
-
+              Container(
+                padding: EdgeInsets.only(top: 70),
+              ),
             ],
           );
         },
