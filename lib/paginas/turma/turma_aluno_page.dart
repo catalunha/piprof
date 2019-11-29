@@ -62,7 +62,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
           }
           if (snapshot.data.pedidoRelatorio != null) {
             launch(
-                'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadealunodaturma?pedido=${snapshot.data.pedidoRelatorio}');
+                'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadealunosdaturma?pedido=${snapshot.data.pedidoRelatorio}');
             bloc.eventSink(ResetCreateRelatorioEvent());
           }
           return ListView(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_bloc.dart';
 import 'package:piprof/servicos/gerar_csv_service.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TurmaAlunoListPage extends StatefulWidget {
   final String turmaID;
@@ -36,8 +37,7 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
         ),
         body: StreamBuilder<TurmaAlunoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -46,7 +46,11 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
               }
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
-
+                if (snapshot.data.pedidoRelatorio != null) {
+                  launch(
+                      'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadetarefasdoaluno?pedido=${snapshot.data.pedidoRelatorio}');
+                  bloc.eventSink(ResetCreateRelatorioEvent());
+                }
                 for (var aluno in snapshot.data.turmaAlunoList) {
                   listaWidget.add(
                     Card(
@@ -58,32 +62,20 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                                 ? Text('')
                                 : CircleAvatar(
                                     radius: 50,
-                                    // minRadius: 35,
-                                    // maxRadius: 35,
-                                    backgroundImage:
-                                        NetworkImage(aluno.foto.url),
+                                    backgroundImage: NetworkImage(aluno.foto.url),
                                   ),
                           ),
                           Expanded(
                             flex: 8,
                             child: ListTile(
-                              // leading: aluno.foto.url == null
-                              //     ? Text('')
-                              //     : CircleAvatar(
-                              //         radius: 40,
-                              //         // minRadius: 35,
-                              //         // maxRadius: 35,
-                              //         backgroundImage:
-                              //             NetworkImage(aluno.foto.url),
-                              //       ),
                               title: Text('${aluno.nome}'),
                               subtitle: Text(
-                                  'matricula: ${aluno.matricula}\nCelular: ${aluno.celular ?? '?'}\nemail: ${aluno.email}\nid: ${aluno.id.substring(0,10)}'),
+                                  'Crachá: ${aluno.cracha ?? '?'}\nmatricula: ${aluno.matricula}\nemail: ${aluno.email}\nCelular: ${aluno.celular ?? '?'}\nid: ${aluno.id.substring(0, 10)}'),
                               trailing: IconButton(
                                 tooltip: 'Gerar notas deste aluno',
                                 icon: Icon(Icons.grid_on),
                                 onPressed: () {
-                                  GenerateCsvService.csvAlunoListaNota(aluno);
+                                  bloc.eventSink(CreateRelatorioEvent(aluno.id));
                                 },
                               ),
                               onLongPress: () {

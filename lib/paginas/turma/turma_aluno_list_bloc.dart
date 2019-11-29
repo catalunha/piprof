@@ -30,12 +30,20 @@ class AlunoNotaListEvent extends TurmaAlunoListBlocEvent {
   AlunoNotaListEvent(this.alunoID);
 }
 
-class SaveEvent extends TurmaAlunoListBlocEvent {}
+class CreateRelatorioEvent extends TurmaAlunoListBlocEvent {
+  final String turmaId;
+
+  CreateRelatorioEvent(this.turmaId);
+}
+
+class ResetCreateRelatorioEvent extends TurmaAlunoListBlocEvent {}
 
 class TurmaAlunoListBlocState {
   bool isDataValid = false;
   TurmaModel turma = TurmaModel();
   List<UsuarioModel> turmaAlunoList = List<UsuarioModel>();
+    String pedidoRelatorio;
+
 }
 
 class TurmaAlunoListBloc {
@@ -127,8 +135,16 @@ class TurmaAlunoListBloc {
         }, merge: true);
 
     }
-    if (event is SaveEvent) {}
-
+   if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef.setData({'usuarioId': event.turmaId}, merge: true).then((_) {
+      _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em TurmaAlunoListBloc  = ${event.runtimeType}');
