@@ -10,9 +10,18 @@ class GetTurmaEncontroListEvent extends EncontroListBlocEvent {
   GetTurmaEncontroListEvent(this.turmaID);
 }
 
+class CreateRelatorioEvent extends EncontroListBlocEvent {
+  final String turmaId;
+
+  CreateRelatorioEvent(this.turmaId);
+}
+
+class ResetCreateRelatorioEvent extends EncontroListBlocEvent {}
+
 class EncontroListBlocState {
   bool isDataValid = false;
   List<EncontroModel> encontroList = List<EncontroModel>();
+  String pedidoRelatorio;
 }
 
 class EncontroListBloc {
@@ -65,6 +74,16 @@ class EncontroListBloc {
         _state.encontroList = encontroList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
+    }
+    if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef.setData({'turmaId': event.turmaId}, merge: true).then((_) {
+        _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
     }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);

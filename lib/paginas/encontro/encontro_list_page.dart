@@ -61,13 +61,18 @@ class _EncontroListPageState extends State<EncontroListPage> {
                 return Center(child: CircularProgressIndicator());
               }
               if (snapshot.data.isDataValid) {
+                if (snapshot.data.pedidoRelatorio != null) {
+                  launch(
+                      'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadeencontros?pedido=${snapshot.data.pedidoRelatorio}');
+                  bloc.eventSink(ResetCreateRelatorioEvent());
+                }
                 List<Widget> listaWidget = List<Widget>();
                 listaWidget.add(
                   ListTile(
                     title: Text('Lista de encontros em planilha'),
                     trailing: Icon(Icons.grid_on),
                     onTap: () {
-                      GenerateCsvService.csvEncontro(widget.turmaID);
+                      bloc.eventSink(CreateRelatorioEvent(widget.turmaID));
                     },
                   ),
                 );
@@ -78,8 +83,8 @@ class _EncontroListPageState extends State<EncontroListPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text('${encontro.nome}'),
-                            subtitle:
-                                Text('Alunos: ${encontro?.aluno?.length ?? 0}\nid: ${encontro.id}'),
+                            subtitle: Text(
+                                'Alunos: ${encontro?.aluno?.length ?? 0}\nid: ${encontro.id}'),
                             trailing: Text(
                                 '${DateFormat('dd-MM HH:mm').format(encontro?.inicio)}\n${DateFormat('dd-MM HH:mm').format(encontro?.fim)}'),
                           ),
