@@ -97,7 +97,7 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                               //             NetworkImage(aluno.foto.url),
                               //       ),
                               title: Text('${aluno.nome}'),
-                              subtitle: Text('${aluno.cracha}\n${aluno.celular}'),
+                              subtitle: Text('Crachá: ${aluno.cracha}\nMat.: ${aluno.matricula}\nCel.: ${aluno.celular}\nid: ${aluno.id.substring(0,10)}'),
                               trailing: item.value.presente
                                   ? Icon(Icons.check)
                                   : Icon(

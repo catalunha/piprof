@@ -20,10 +20,20 @@ class UpdateAvaliacaoListEvent extends AvaliacaoListBlocEvent {
   UpdateAvaliacaoListEvent(this.turmaID);
 }
 
+class CreateRelatorioEvent extends AvaliacaoListBlocEvent {
+  final String avaliacaoId;
+
+  CreateRelatorioEvent(this.avaliacaoId);
+}
+
+class ResetCreateRelatorioEvent extends AvaliacaoListBlocEvent {}
+
 class AvaliacaoListBlocState {
   bool isDataValid = false;
   // UsuarioModel usuarioAuth;
   String turmaID;
+  String pedidoRelatorio;
+
   List<AvaliacaoModel> avaliacaoList = List<AvaliacaoModel>();
 }
 
@@ -82,7 +92,17 @@ class AvaliacaoListBloc {
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
-
+    if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef
+          .setData({'avaliacaoId': event.avaliacaoId}, merge: true).then((_) {
+        _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em AvaliacaoListBloc  = ${event.runtimeType}');

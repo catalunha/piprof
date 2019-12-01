@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/paginas/avaliacao/avaliacao_list_bloc.dart';
-import 'package:piprof/servicos/gerar_csv_service.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class AvaliacaoListPage extends StatefulWidget {
   final String turmaID;
@@ -60,6 +60,11 @@ class _AvaliacaoListPageState extends State<AvaliacaoListPage> {
                 return Center(child: CircularProgressIndicator());
               }
               if (snapshot.data.isDataValid) {
+                 if (snapshot.data.pedidoRelatorio != null) {
+            launch(
+                'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadetarefasdaavaliacao?pedido=${snapshot.data.pedidoRelatorio}');
+            bloc.eventSink(ResetCreateRelatorioEvent());
+          }
                 List<Widget> listaWidget = List<Widget>();
 // Widget alertaNovoAlunoQuestao
                 for (var avaliacao in snapshot.data.avaliacaoList) {
@@ -121,8 +126,8 @@ id: ${avaliacao.id}'''),
                                   tooltip: 'Notas desta avaliação',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    GenerateCsvService.csvAvaliacaoListaNota(
-                                        avaliacao);
+                                                      bloc.eventSink(CreateRelatorioEvent(avaliacao.id));
+
                                   },
                                 ),
                               ],
