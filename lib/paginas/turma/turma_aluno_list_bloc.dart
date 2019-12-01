@@ -31,9 +31,9 @@ class AlunoNotaListEvent extends TurmaAlunoListBlocEvent {
 }
 
 class CreateRelatorioEvent extends TurmaAlunoListBlocEvent {
-  final String turmaId;
+  final String usuarioId;
 
-  CreateRelatorioEvent(this.turmaId);
+  CreateRelatorioEvent(this.usuarioId);
 }
 
 class ResetCreateRelatorioEvent extends TurmaAlunoListBlocEvent {}
@@ -137,7 +137,7 @@ class TurmaAlunoListBloc {
     }
    if (event is CreateRelatorioEvent) {
       final docRef = _firestore.collection('Relatorio').document();
-      await docRef.setData({'turmaId': event.turmaId}, merge: true).then((_) {
+      await docRef.setData({'usuarioId': event.usuarioId}, merge: true).then((_) {
       _state.pedidoRelatorio = docRef.documentID;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

@@ -40,17 +40,6 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
           onPressed: () async {
             await bloc.eventSink(SaveEvent());
             Navigator.pop(context);
-            // showDialog(
-            //   context: context,
-            //   builder: (context) => Dialog(
-            //     elevation: 5,
-            //     child: ListTile(
-            //       selected: true,
-            //       title: Text("Lista salva com sucesso."),
-            //       onTap: () {},
-            //     ),
-            //   ),
-            // );
           },
         ),
         body: StreamBuilder<EncontroAlunoListBlocState>(
@@ -68,7 +57,6 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
 
                 for (var item in snapshot.data.alunoInfoMap.entries) {
                   var aluno = item.value.usuario;
-                  var presente = item.value.presente;
                   listaWidget.add(
                     Card(
                       child: Row(
@@ -79,8 +67,6 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                                 ? Text('')
                                 : CircleAvatar(
                                     radius: 50,
-                                    // minRadius: 35,
-                                    // maxRadius: 35,
                                     backgroundImage:
                                         NetworkImage(aluno.foto.url),
                                   ),
@@ -88,16 +74,9 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                           Expanded(
                             flex: 8,
                             child: ListTile(
-                              // leading: aluno.foto.url == null
-                              //     ? Text('')
-                              //     : CircleAvatar(
-                              //         minRadius: 25,
-                              //         maxRadius: 25,
-                              //         backgroundImage:
-                              //             NetworkImage(aluno.foto.url),
-                              //       ),
                               title: Text('${aluno.nome}'),
-                              subtitle: Text('Crachá: ${aluno.cracha}\nMat.: ${aluno.matricula}\nCel.: ${aluno.celular}\nid: ${aluno.id.substring(0,10)}'),
+                              subtitle: Text(
+                                  'Crachá: ${aluno.cracha}\nMat.: ${aluno.matricula}\nCel.: ${aluno.celular}\nid: ${aluno.id.substring(0, 10)}'),
                               trailing: item.value.presente
                                   ? Icon(Icons.check)
                                   : Icon(
@@ -113,60 +92,6 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                       ),
                     ),
                   );
-                  // Container(
-                  //   // padding: EdgeInsets.symmetric(
-                  //   //   vertical: 2,
-                  //   //   horizontal: 2,
-                  //   // ),
-                  //   child: Row(
-                  //     // crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: <Widget>[
-                  //       Expanded(
-                  //         flex: 2,
-                  //         child: _ImagemUnica(url: aluno?.foto?.url),
-                  //       ),
-                  //       Expanded(
-                  //         flex: 4,
-                  //         // child: Container(
-                  //         // padding: EdgeInsets.only(left: 6),
-                  //         child: Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: <Widget>[
-                  //             ListTile(
-                  //               leading: aluno.foto.url==null ? Text('nada.') : Image.network(aluno.foto.url),
-                  //               title: Text('asda adada as dads'),
-                  //             ),
-                  //             Text("Nome: ${aluno.nome}"),
-                  //             Text("Crachá: ${aluno.cracha}"),
-                  //             Text("Celular: ${aluno.celular}"),
-                  //             Text("matricula: ${aluno.matricula}"),
-                  //             Text("email: ${aluno.email}"),
-                  //             Text("id: ${aluno.id}"),
-                  //             Wrap(
-                  //               children: <Widget>[
-                  //                 IconButton(
-                  //                     tooltip: 'Aluno presente',
-                  //                     icon: presente
-                  //                         ? Icon(Icons.check)
-                  //                         : Icon(
-                  //                             Icons.flight_takeoff,
-                  //                             color: Colors.red,
-                  //                           ),
-                  //                     onPressed: () {
-                  //                       bloc.eventSink(
-                  //                           MarcarAlunoEvent(aluno.id));
-                  //                     }),
-                  //               ],
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         // ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // ),
-                  // );
                 }
                 listaWidget.add(Container(
                   padding: EdgeInsets.only(top: 70),
@@ -179,40 +104,5 @@ class _EncontroAlunoListPageState extends State<EncontroAlunoListPage> {
                 return Text('Existem dados inválidos. Informe o suporte.');
               }
             }));
-  }
-}
-
-class _ImagemUnica extends StatelessWidget {
-  final String url;
-
-  const _ImagemUnica({this.url});
-
-  @override
-  Widget build(BuildContext context) {
-    Widget foto;
-    if (url == null) {
-      foto = Center(child: Text('Sem foto.'));
-    } else {
-      foto = Container(
-        // child: Padding(
-        // padding: const EdgeInsets.all(2.0),
-        child: Image.network(url),
-        // ),
-      );
-    }
-    return Row(
-      children: <Widget>[
-        Spacer(
-          flex: 1,
-        ),
-        Expanded(
-          flex: 8,
-          child: foto,
-        ),
-        Spacer(
-          flex: 1,
-        ),
-      ],
-    );
   }
 }

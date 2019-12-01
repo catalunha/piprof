@@ -68,7 +68,7 @@ class _TurmaAlunoPageState extends State<TurmaAlunoPage> {
             children: <Widget>[
               ListTile(
                 trailing: Icon(Icons.assignment_ind),
-                title: Text('Apagar, desativar e ver notas'),
+                title: Text('Lista de alunos'),
                 onTap: () {
                   Navigator.pushNamed(
                     context,
