@@ -3,7 +3,7 @@ import 'package:piprof/auth_bloc.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/componentes/default_scaffold.dart';
 import 'package:piprof/paginas/pasta/pasta_list_bloc.dart';
-import 'package:piprof/servicos/gerar_csv_service.dart';
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class PastaListPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -55,16 +55,21 @@ class _PastaListPageState extends State<PastaListPage> {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.data.isDataValid) {
+            if (snapshot.data.pedidoRelatorio != null) {
+            launch(
+                'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listaproblemasdapasta?pedido=${snapshot.data.pedidoRelatorio}');
+            bloc.eventSink(ResetCreateRelatorioEvent());
+          }
             List<Widget> listaWidget = List<Widget>();
-            listaWidget.add(
-              ListTile(
-                title: Text('Lista de pastas e conteúdo em planilha'),
-                trailing: Icon(Icons.grid_on),
-                onTap: () {
-                  GenerateCsvService.csvPastaListaProblema(snapshot.data.pastaList);
-                },
-              ),
-            );
+            // listaWidget.add(
+            //   ListTile(
+            //     title: Text('Lista de pasta e problemas em planilha'),
+            //     trailing: Icon(Icons.grid_on),
+            //     onTap: () {
+            //       bloc.eventSink(CreateRelatorioEvent(widget.turmaID));
+            //     },
+            //   ),
+            // );
             int lengthTurma = snapshot.data.pastaList.length;
 
             int ordemLocal = 1;
@@ -111,13 +116,13 @@ class _PastaListPageState extends State<PastaListPage> {
                                     }
                                   : null,
                             ),
-                            // IconButton(
-                            //         tooltip: 'Lista de situações em planilha',
-                            //         icon: Icon(Icons.grid_on),
-                            //         onPressed: () {
-                            //           // GenerateCsvService.generateCsvFromEncontro(
-                            //           //     widget.pastaID);
-                            //         }),
+                            IconButton(
+                                    tooltip: 'Lista de problemas desta pasta',
+                                    icon: Icon(Icons.grid_on),
+                                    onPressed: () {
+                                                        bloc.eventSink(CreateRelatorioEvent(pasta.id));
+
+                                    }),
                             IconButton(
                               tooltip: 'Gerenciar situações nesta pasta',
                               icon: Icon(Icons.folder),

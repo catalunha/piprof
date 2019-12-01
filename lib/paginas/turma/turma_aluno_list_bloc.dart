@@ -137,7 +137,7 @@ class TurmaAlunoListBloc {
     }
    if (event is CreateRelatorioEvent) {
       final docRef = _firestore.collection('Relatorio').document();
-      await docRef.setData({'usuarioId': event.turmaId}, merge: true).then((_) {
+      await docRef.setData({'turmaId': event.turmaId}, merge: true).then((_) {
       _state.pedidoRelatorio = docRef.documentID;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

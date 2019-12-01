@@ -20,10 +20,19 @@ class OrdenarEvent extends PastaListBlocEvent {
   OrdenarEvent(this.obj, this.up);
 }
 
+class CreateRelatorioEvent extends PastaListBlocEvent {
+  final String pastaId;
+
+  CreateRelatorioEvent(this.pastaId);
+}
+
+class ResetCreateRelatorioEvent extends PastaListBlocEvent {}
+
 class PastaListBlocState {
   bool isDataValid = false;
   List<PastaModel> pastaList = List<PastaModel>();
   UsuarioModel usuarioAuth;
+  String pedidoRelatorio;
 }
 
 class PastaListBloc {
@@ -102,6 +111,16 @@ class PastaListBloc {
 
       colRefOrigem.setData({"numero": docDestino.numero}, merge: true);
       colRefDestino.setData({"numero": docOrigem.numero}, merge: true);
+    }
+    if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef.setData({'pastaId': event.pastaId}, merge: true).then((_) {
+        _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
     }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);

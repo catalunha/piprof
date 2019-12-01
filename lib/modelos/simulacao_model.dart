@@ -104,10 +104,10 @@ class SimulacaoModel extends FirestoreModel {
     return data;
   }
 }
-
+/// Tipo: nome | palavra | texto | url | urlimagem
 class Variavel {
-  String nome;
   int ordem;
+  String nome;
   String tipo;
   String valor;
 
@@ -134,10 +134,11 @@ class Variavel {
     return data;
   }
 }
+/// Tipo: nome | palavra | texto | url | urlimagem | arquivo | imagem
 
 class Gabarito {
-  String nome;
   int ordem;
+  String nome;
   String tipo;
   String valor;
   String resposta;

@@ -4,7 +4,6 @@ import 'package:piprof/modelos/arguments_page.dart';
 import 'package:piprof/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/paginas/problema/problema_list_bloc.dart';
-import 'package:piprof/servicos/gerar_csv_service.dart';
 
 class ProblemaListPage extends StatefulWidget {
   final String pastaID;
@@ -60,6 +59,11 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                 return Center(child: CircularProgressIndicator());
               }
               if (snapshot.data.isDataValid) {
+                if (snapshot.data.pedidoRelatorio != null) {
+            launch(
+                'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/listadesimulacoesdoproblema?pedido=${snapshot.data.pedidoRelatorio}');
+            bloc.eventSink(ResetCreateRelatorioEvent());
+          }
                 List<Widget> listaWidget = List<Widget>();
 
                 int lengthTurma = snapshot.data.problemaList.length;
@@ -138,8 +142,8 @@ class _ProblemaListPageState extends State<ProblemaListPage> {
                                       'Listar de problema e simulações em planilha',
                                   icon: Icon(Icons.grid_on),
                                   onPressed: () {
-                                    GenerateCsvService
-                                        .csvProblemaListaSimulacao(problema);
+                                                      bloc.eventSink(CreateRelatorioEvent(problema.id));
+
                                   },
                                 ),
                                 IconButton(

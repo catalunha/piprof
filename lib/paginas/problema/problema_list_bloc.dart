@@ -16,9 +16,18 @@ class OrdenarEvent extends ProblemaListBlocEvent {
 
   OrdenarEvent(this.obj, this.up);
 }
+class CreateRelatorioEvent extends ProblemaListBlocEvent {
+  final String problemaId;
+
+  CreateRelatorioEvent(this.problemaId);
+}
+
+class ResetCreateRelatorioEvent extends ProblemaListBlocEvent {}
 
 class ProblemaListBlocState {
   bool isDataValid = false;
+    String pedidoRelatorio;
+
   List<ProblemaModel> problemaList = List<ProblemaModel>();
 }
 
@@ -86,6 +95,16 @@ class ProblemaListBloc {
 
       colRefOrigem.setData({"numero": docDestino.numero}, merge: true);
       colRefDestino.setData({"numero": docOrigem.numero}, merge: true);
+    }
+        if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef.setData({'problemaId': event.problemaId}, merge: true).then((_) {
+      _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
     }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
