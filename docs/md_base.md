@@ -1,6 +1,3 @@
-Considere a proposta apresentada neste link, [clique aqui](https://drive.google.com/open?id=1dmHS7j3QQYmPJ1iQU7D6VRKmLqWN_tnIgHmF8PpLZ3s), e reproduzida em anexo, no final desta texto.
-
-
 
 Lista:
 - a
@@ -35,5 +32,3 @@ Resposta:
 [aa](https://drive.google.com/open?id=1dmHS7j3QQYmPJ1iQU7D6VRKmLqWN_tnIgHmF8PpLZ3s)
 
 Gabarito:
-
-<iframe src="https://drive.google.com/open?id=1dmHS7j3QQYmPJ1iQU7D6VRKmLqWN_tnIgHmF8PpLZ3s" height="1280" width="100%"></iframe>
