@@ -105,8 +105,41 @@ class TarefaConferirBloc {
     }
     if (event is UpdatePedeseEvent) {
       var gabarito = _state.resposta[event.gabaritoKey];
-      if (gabarito.tipo == 'numero' ||
-          gabarito.tipo == 'palavra' ||
+      if (gabarito.tipo == 'numero') {
+        if (event.valor.isEmpty) {
+          _state.resposta[event.gabaritoKey].resposta = event.valor;
+        } else {
+          String valor = event.valor.replaceAll(',', '.');
+          if (valor.contains('/')) {
+            try {
+              var fracao = valor.split('/');
+              valor = '${double.parse(fracao[0]) / double.parse(fracao[1])}';
+            } catch (e) {
+              valor = '';
+            }
+          }
+          if (valor.contains('.')) {
+            try {
+              print('valor: $valor');
+              _state.resposta[event.gabaritoKey].resposta = valor;
+              double.parse(valor);
+            } catch (e) {
+              _state.resposta[event.gabaritoKey].resposta = '';
+            }
+          } else {
+            try {
+              _state.resposta[event.gabaritoKey].resposta = valor;
+              int.parse(valor);
+            } catch (e) {
+              _state.resposta[event.gabaritoKey].resposta = '';
+            }
+          }
+        }
+        if (!_stateController.isClosed) _stateController.add(_state);
+
+        print('_state.resposta[event.gabaritoKey].resposta: ${_state.resposta[event.gabaritoKey].resposta}');
+      }
+      if (          gabarito.tipo == 'palavra' ||
           gabarito.tipo == 'texto' ||
           gabarito.tipo == 'url' ||
           gabarito.tipo == 'urlimagem') {

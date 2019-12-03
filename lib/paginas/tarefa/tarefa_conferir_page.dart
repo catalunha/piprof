@@ -5,10 +5,8 @@ import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/paginas/tarefa/tarefa_conferir_bloc.dart';
 import 'package:piprof/plataforma/recursos.dart';
 import 'package:queries/collections.dart';
-import 'package:piprof/naosuportato/naosuportado.dart'
-    show FilePicker, FileType;
-import 'package:piprof/naosuportato/url_launcher.dart'
-    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:piprof/naosuportato/webview_flutter.dart'
     if (dart.library.io) 'package:webview_flutter/webview_flutter.dart';
 
@@ -72,8 +70,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
   _problema() {
     return StreamBuilder<TarefaConferirBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -86,8 +83,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
             // String nota = '';
             var problema = snapshot.data.problema;
             Widget pdf = ListTile(
-              title: Text(
-                  'Se não visualizar o problema logo abaixo, ou estive usando o Chrome, clique aqui.'),
+              title: Text('Se não visualizar o problema logo abaixo, ou estive usando o Chrome, clique aqui.'),
               trailing: Icon(Icons.local_library),
               onTap: () {
                 try {
@@ -124,18 +120,17 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
     String urlModificada = url;
     if (url.contains('usp=drivesdk')) {
       urlModificada = url
-          .replaceFirst('https://docs.google.com/document/d/',
-              'https://drive.google.com/open?id=')
+          .replaceFirst('https://docs.google.com/document/d/', 'https://drive.google.com/open?id=')
           .replaceFirst('/edit?usp=drivesdk', '');
     }
     if (url.contains('usp=sharing')) {
       urlModificada = url
-          .replaceFirst('https://docs.google.com/document/d/',
-              'https://drive.google.com/open?id=')
+          .replaceFirst('https://docs.google.com/document/d/', 'https://drive.google.com/open?id=')
           .replaceFirst('/edit?usp=sharing', '');
     }
     return urlModificada;
   }
+
   String modificarUrlImagemGoogleDrive(String url) {
     String urlModificada = url;
     if (url.contains('drive.google.com/open')) {
@@ -143,25 +138,21 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
     }
     if (url.contains('drive.google.com/file/d/')) {
       if (url.contains('usp=drivesdk')) {
-        urlModificada = url
-            .replaceAll('/view?usp=drivesdk', '')
-            .replaceAll('file/d/', 'open?id=')
-            .replaceFirst('open', 'uc');
+        urlModificada =
+            url.replaceAll('/view?usp=drivesdk', '').replaceAll('file/d/', 'open?id=').replaceFirst('open', 'uc');
       }
       if (url.contains('usp=sharing')) {
-        urlModificada = url
-            .replaceAll('/view?usp=sharing', '')
-            .replaceAll('file/d/', 'open?id=')
-            .replaceFirst('open', 'uc');
+        urlModificada =
+            url.replaceAll('/view?usp=sharing', '').replaceAll('file/d/', 'open?id=').replaceFirst('open', 'uc');
       }
     }
     return urlModificada;
   }
+
   _variaveis() {
     return StreamBuilder<TarefaConferirBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -174,9 +165,8 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
             var simulacao = snapshot.data.simulacao;
 
             var dicPedese = Dictionary.fromMap(simulacao.variavel);
-            var gabaritoOrderBy = dicPedese
-                .orderBy((kv) => kv.value.ordem)
-                .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+            var gabaritoOrderBy =
+                dicPedese.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
             variavelMap = gabaritoOrderBy.toMap();
             Widget icone;
 
@@ -195,9 +185,9 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
 
               if (variavel.value.tipo == 'urlimagem') {
                 String urlModificada;
-                    if (variavel?.value?.valor != null) {
-                      urlModificada = modificarUrlImagemGoogleDrive(variavel.value.valor);
-                    }
+                if (variavel?.value?.valor != null) {
+                  urlModificada = modificarUrlImagemGoogleDrive(variavel.value.valor);
+                }
                 listaWidget.add(
                   Card(
                     child: Column(
@@ -268,8 +258,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
   _resposta() {
     return StreamBuilder<TarefaConferirBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -282,9 +271,8 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
             List<Widget> listaWidget = List<Widget>();
             Map<String, Gabarito> gabaritoMap;
             var dicPedese = Dictionary.fromMap(gabarito);
-            var gabaritoOrderBy = dicPedese
-                .orderBy((kv) => kv.value.ordem)
-                .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+            var gabaritoOrderBy =
+                dicPedese.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
             gabaritoMap = gabaritoOrderBy.toMap();
             Widget icone;
 
@@ -350,14 +338,23 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
                 ),
               );
 
-              if (gabarito.value.tipo == 'numero' ||
-                  gabarito.value.tipo == 'palavra' ||
+              if (gabarito.value.tipo == 'numero') {
+                listaWidget.add(Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: RespostaNumero(
+                      bloc,
+                      gabarito.key,
+                      gabarito.value,
+                    )));
+              }
+
+              if (gabarito.value.tipo == 'palavra' ||
                   gabarito.value.tipo == 'texto' ||
                   gabarito.value.tipo == 'url' ||
                   gabarito.value.tipo == 'urlimagem') {
                 listaWidget.add(Padding(
                     padding: EdgeInsets.all(5.0),
-                    child: RespostaNumeroTexto(
+                    child: RespostaTexto(
                       bloc,
                       gabarito.key,
                       gabarito.value,
@@ -426,8 +423,7 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
   _title() {
     return StreamBuilder<TarefaConferirBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -444,14 +440,12 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
                   Navigator.pop(context);
                   print('terminou clock');
                 },
-                countDownTimerStyle: TextStyle(
-                    color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
+                countDownTimerStyle: TextStyle(color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
               ),
             );
             Widget tentativas = Text(
               '0 de 3',
-              style: TextStyle(
-                  color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
+              style: TextStyle(color: Color(0XFFf5a623), fontSize: 17.0, height: 2),
             );
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -467,18 +461,18 @@ class _TarefaConferirPageState extends State<TarefaConferirPage> {
   }
 }
 
-class RespostaNumeroTexto extends StatefulWidget {
+class RespostaNumero extends StatefulWidget {
   final TarefaConferirBloc bloc;
   final String gabaritoKey;
   final Gabarito gabaritoValue;
-  RespostaNumeroTexto(
+  RespostaNumero(
     this.bloc,
     this.gabaritoKey,
     this.gabaritoValue,
   );
   @override
-  RespostaNumeroTextoState createState() {
-    return RespostaNumeroTextoState(
+  RespostaNumeroState createState() {
+    return RespostaNumeroState(
       bloc,
       gabaritoKey,
       gabaritoValue,
@@ -486,18 +480,69 @@ class RespostaNumeroTexto extends StatefulWidget {
   }
 }
 
-class RespostaNumeroTextoState extends State<RespostaNumeroTexto> {
+class RespostaNumeroState extends State<RespostaNumero> {
   final _textFieldController = TextEditingController();
   final TarefaConferirBloc bloc;
   final String gabaritoKey;
   final Gabarito gabaritoValue;
-  RespostaNumeroTextoState(this.bloc, this.gabaritoKey, this.gabaritoValue);
+  RespostaNumeroState(this.bloc, this.gabaritoKey, this.gabaritoValue);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<TarefaConferirBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+        if (_textFieldController.text.isEmpty) {
+          _textFieldController.text = this.gabaritoValue.resposta;
+        }
+        return Row(
+          children: <Widget>[
+            Expanded(
+                flex: 6,
+                child: TextField(
+                  keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+                  controller: _textFieldController,
+                  onChanged: (text) {
+                    bloc.eventSink(UpdatePedeseEvent(gabaritoKey, text));
+                  },
+                )),
+            Expanded(flex: 4, child: Text(' ${this.gabaritoValue.resposta}')),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class RespostaTexto extends StatefulWidget {
+  final TarefaConferirBloc bloc;
+  final String gabaritoKey;
+  final Gabarito gabaritoValue;
+  RespostaTexto(
+    this.bloc,
+    this.gabaritoKey,
+    this.gabaritoValue,
+  );
+  @override
+  RespostaTextoState createState() {
+    return RespostaTextoState(
+      bloc,
+      gabaritoKey,
+      gabaritoValue,
+    );
+  }
+}
+
+class RespostaTextoState extends State<RespostaTexto> {
+  final _textFieldController = TextEditingController();
+  final TarefaConferirBloc bloc;
+  final String gabaritoKey;
+  final Gabarito gabaritoValue;
+  RespostaTextoState(this.bloc, this.gabaritoKey, this.gabaritoValue);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<TarefaConferirBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = gabaritoValue.resposta;
         }
@@ -534,8 +579,7 @@ class ImagemSelect extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<TarefaConferirBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
         if (snapshot.hasError) {
           return Container(
             child: Center(child: Text('Erro.')),
@@ -549,18 +593,15 @@ class ImagemSelect extends StatelessWidget {
                       tooltip: 'Apagar imagem anexada',
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        bloc.eventSink(UpdateApagarAnexoImagemArquivoEvent(
-                            gabaritoKey, null));
+                        bloc.eventSink(UpdateApagarAnexoImagemArquivoEvent(gabaritoKey, null));
                       },
                     ),
-                    title:
-                        Text('ou, selecione uma imagem conforme solicitado.'),
+                    title: Text('ou, selecione uma imagem conforme solicitado.'),
                     trailing: Icon(Icons.file_download),
                     onTap: () async {
                       await _selecionarNovoArquivo().then((localPath) {
                         // _localPath = arq;
-                        bloc.eventSink(
-                            UpdatePedeseEvent(gabaritoKey, localPath));
+                        bloc.eventSink(UpdatePedeseEvent(gabaritoKey, localPath));
                       });
                     },
                   )
@@ -791,8 +832,7 @@ class ArquivoSelect extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<TarefaConferirBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<TarefaConferirBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<TarefaConferirBlocState> snapshot) {
         if (snapshot.hasError) {
           return Container(
             child: Center(child: Text('Erro.')),
@@ -806,18 +846,15 @@ class ArquivoSelect extends StatelessWidget {
                       tooltip: 'Apagar arquivo anexado',
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        bloc.eventSink(UpdateApagarAnexoImagemArquivoEvent(
-                            gabaritoKey, null));
+                        bloc.eventSink(UpdateApagarAnexoImagemArquivoEvent(gabaritoKey, null));
                       },
                     ),
-                    title:
-                        Text('ou, selecione um arquivo conforme solicitado.'),
+                    title: Text('ou, selecione um arquivo conforme solicitado.'),
                     trailing: Icon(Icons.file_download),
                     onTap: () async {
                       await _selecionarNovoArquivo().then((localPath) {
                         // _localPath = arq;
-                        bloc.eventSink(
-                            UpdatePedeseEvent(gabaritoKey, localPath));
+                        bloc.eventSink(UpdatePedeseEvent(gabaritoKey, localPath));
                       });
                     },
                     // onLongPress: () {
