@@ -46,9 +46,6 @@ class _TurmaInativaListPageState extends State<TurmaInativaListPage> {
               }
               if (snapshot.data.isDataValid) {
                 List<Widget> listaWidget = List<Widget>();
-                int lengthTurma = snapshot.data.turmaList.length;
-                int ordemLocal = 1;
-
                 for (var turma in snapshot.data.turmaList) {
                   listaWidget.add(
                     Card(
@@ -68,7 +65,6 @@ Turma: ${turma.nome}'''),
                       ),
                     ),
                   );
-                  ordemLocal++;
                 }
                 listaWidget.add(Container(
                   padding: EdgeInsets.only(top: 70),

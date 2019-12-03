@@ -1,5 +1,4 @@
 import 'package:piprof/bootstrap.dart';
-import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/modelos/problema_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';

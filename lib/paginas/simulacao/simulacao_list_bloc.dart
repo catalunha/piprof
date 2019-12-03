@@ -1,5 +1,4 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:piprof/modelos/pasta_model.dart';
 import 'package:piprof/modelos/simulacao_model.dart';
 import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';

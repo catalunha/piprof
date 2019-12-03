@@ -166,7 +166,6 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
-            String notas = '';
             var tarefa = snapshot.data.tarefa;
 
             Map<String, Variavel> variavelMap;
@@ -277,25 +276,6 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
-            String notas = '';
-            var tarefa = snapshot.data.tarefa;
-
-            // Map<String, Variavel> variavelMap;
-            // var dic = Dictionary.fromMap(tarefa.variavel);
-            // var dicOrderBy = dic.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
-            // variavelMap = dicOrderBy.toMap();
-
-            // Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
-
-            // gabaritoMap.clear();
-            // var dicGabarito = Dictionary.fromMap(tarefa.gabarito);
-            // var gabaritoOrderBy =
-            //     dicGabarito.orderBy((kv) => kv.value.ordem).toDictionary$1((kv) => kv.key, (kv) => kv.value);
-            // gabaritoMap = gabaritoOrderBy.toMap();
-            // notas = '';
-            // for (var gabarito in gabaritoMap.entries) {
-            //   notas += '${gabarito.value.nome}=${gabarito.value.nota ?? ""} ';
-            // }
 
             for (var gabaritoInfoMap in snapshot.data.gabaritoInfoMap.entries) {
               if (gabaritoInfoMap.value.gabarito.tipo == 'numero') {
@@ -630,7 +610,7 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 0),
       child: Container(
-        height: 80.0,
+        height: 90.0,
         child: Stack(
           children: <Widget>[
             Positioned(
@@ -654,9 +634,9 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Nome: ${nome}",
+                        Text("Nome: $nome",
                             style: Theme.of(context).textTheme.subhead),
-                        Text("Sit.: ${nota}",
+                        Text("Sit.: $nota",
                             style: Theme.of(context).textTheme.subhead),
                         // Text("Celular: ${celular}",
                         //     style: Theme.of(context).textTheme.subhead),

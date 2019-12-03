@@ -173,7 +173,7 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 0),
       child: Container(
-        height: 80.0,
+        height: 90.0,
         child: Stack(
           children: <Widget>[
             Positioned(
@@ -197,9 +197,9 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Nome: ${nome}",
+                        Text("Nome: $nome",
                             style: Theme.of(context).textTheme.subhead),
-                        Text("Sit.: ${nota}",
+                        Text("Sit.: $nota",
                             style: Theme.of(context).textTheme.subhead),
                         // Text("Celular: ${celular}",
                         //     style: Theme.of(context).textTheme.subhead),

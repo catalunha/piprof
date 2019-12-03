@@ -1,4 +1,3 @@
-import 'package:piprof/bootstrap.dart';
 import 'package:piprof/modelos/avaliacao_model.dart';
 import 'package:piprof/modelos/questao_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
