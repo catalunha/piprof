@@ -74,18 +74,22 @@ class _TarefaListPageState extends State<TarefaListPage> {
                     Card(
                       child: Column(
                         children: <Widget>[
-                          ListTile(
-                            leading: tarefa.aluno?.foto == null
-                                ? Text('')
-                                : CircleAvatar(
-                                    minRadius: 25,
-                                    maxRadius: 25,
-                                    backgroundImage:
-                                        NetworkImage(tarefa.aluno.foto),
-                                  ),
-                            title: Text('${tarefa.aluno.nome}'),
-                            subtitle: Text('Sit.: $notas'),
-                          ),
+                          card(
+                        tarefa.aluno?.foto,
+                        tarefa.aluno.nome,
+                        notas,),
+//                           ListTile(
+//                             leading: tarefa.aluno?.foto == null
+//                                 ? Text('')
+//                                 : CircleAvatar(
+//                                     minRadius: 25,
+//                                     maxRadius: 25,
+//                                     backgroundImage:
+//                                         NetworkImage(tarefa.aluno.foto),
+//                                   ),
+//                             title: Text('${tarefa.aluno.nome}'),
+//                             subtitle: Text('Sit.: $notas'),
+//                           ),
                           ListTile(
                             title: Text('''Avaliação: ${tarefa.avaliacao.nome}
 Questão: ${tarefa.questao.numero}. Prob.: ${tarefa.problema.nome}
@@ -163,5 +167,72 @@ Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} t
                 return Text('Existem dados inválidos. Informe o suporte.');
               }
             }));
+  }
+
+  card(String url, String nome,String nota) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 0),
+      child: Container(
+        height: 80.0,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              left: 50.0,
+              right: 5,
+              child: Container(
+                width: 290.0,
+                height: 90.0,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  color: Colors.green[900],
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      left: 30.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Nome: ${nome}",
+                            style: Theme.of(context).textTheme.subhead),
+                        Text("Sit.: ${nota}",
+                            style: Theme.of(context).textTheme.subhead),
+                        // Text("Celular: ${celular}",
+                        //     style: Theme.of(context).textTheme.subhead),
+                        // Text("Crachá: ${cracha}",
+                        //     style: Theme.of(context).textTheme.subhead),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+                top: 7,
+                child: Container(
+                  width: 70.0,
+                  height: 70.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: url != null
+                          ? NetworkImage(url)
+                          : NetworkImage(
+                              "https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/PIBrintec_512x512px_Aluno.png?alt=media&token=3890ede1-b09f-48da-a07a-2eea315503fd"),
+                    ),
+                  ),
+                )
+
+                // Image.network("https://image.freepik.com/vetores-gratis/perfil-de-avatar-de-mulher-no-icone-redondo_24640-14042.jpg",height: 100,)
+                ),
+          ],
+        ),
+      ),
+    );
   }
 }

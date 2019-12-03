@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:piprof/bootstrap.dart';
 import 'package:piprof/paginas/turma/turma_aluno_list_bloc.dart';
-import 'package:piprof/servicos/gerar_csv_service.dart';
-import 'package:piprof/naosuportato/url_launcher.dart' if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:piprof/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class TurmaAlunoListPage extends StatefulWidget {
   final String turmaID;
@@ -37,7 +37,8 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
         ),
         body: StreamBuilder<TurmaAlunoListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<TurmaAlunoListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("Existe algo errado! Informe o suporte.");
               }
@@ -52,41 +53,59 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                   bloc.eventSink(ResetCreateRelatorioEvent());
                 }
                 for (var aluno in snapshot.data.turmaAlunoList) {
-                  listaWidget.add(
-                    Card(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: aluno?.foto?.url == null
-                                ? Text('')
-                                : CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: NetworkImage(aluno.foto.url),
-                                  ),
-                          ),
-                          Expanded(
-                            flex: 8,
-                            child: ListTile(
-                              title: Text('${aluno.nome}'),
-                              subtitle: Text(
-                                  'Crachá: ${aluno.cracha ?? '?'}\nmatricula: ${aluno.matricula}\nemail: ${aluno.email}\nCelular: ${aluno.celular ?? '?'}\nid: ${aluno.id.substring(0, 10)}'),
-                              trailing: IconButton(
-                                tooltip: 'Gerar notas deste aluno',
-                                icon: Icon(Icons.grid_on),
-                                onPressed: () {
-                                  bloc.eventSink(CreateRelatorioEvent(aluno.id));
-                                },
-                              ),
-                              onLongPress: () {
-                                bloc.eventSink(DeleteAlunoEvent(aluno.id));
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                  listaWidget.add(InkWell(
+                    child: card(
+                      aluno?.foto?.url,
+                      aluno.nome,
+                      aluno.matricula,
+                      aluno.email,
+                      aluno.celular,
+                      aluno.cracha,
+                      aluno.id.substring(0, 10),
                     ),
-                  );
+                    onTap: () {
+                      bloc.eventSink(CreateRelatorioEvent(aluno.id));
+                    },
+                    onLongPress: () {
+                      bloc.eventSink(DeleteAlunoEvent(aluno.id));
+                    },
+                  )
+
+                      // Card(
+                      //   child: Row(
+                      //     children: <Widget>[
+                      //       Expanded(
+                      //         flex: 2,
+                      //         child: aluno?.foto?.url == null
+                      //             ? Text('')
+                      //             : CircleAvatar(
+                      //                 radius: 50,
+                      //                 backgroundImage: NetworkImage(aluno.foto.url),
+                      //               ),
+                      //       ),
+                      //       Expanded(
+                      //         flex: 8,
+                      //         child: ListTile(
+                      //           title: Text('${aluno.nome}'),
+                      //           subtitle: Text(
+                      //               'Crachá: ${aluno.cracha ?? '?'}\nmatricula: ${aluno.matricula}\nemail: ${aluno.email}\nCelular: ${aluno.celular ?? '?'}\nid: ${aluno.id.substring(0, 10)}'),
+                      //           trailing: IconButton(
+                      //             tooltip: 'Gerar notas deste aluno',
+                      //             icon: Icon(Icons.grid_on),
+                      //             onPressed: () {
+                      //               bloc.eventSink(CreateRelatorioEvent(aluno.id));
+                      //             },
+                      //           ),
+                      //           onLongPress: () {
+                      //             bloc.eventSink(DeleteAlunoEvent(aluno.id));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      );
                 }
                 listaWidget.add(Container(
                   padding: EdgeInsets.only(top: 70),
@@ -99,5 +118,84 @@ class _TurmaAlunoListPageState extends State<TurmaAlunoListPage> {
                 return Text('Existem dados inválidos. Informe o suporte.');
               }
             }));
+  }
+
+  card(
+    String url,
+    String nome,
+    String matricula,
+    String email,
+    String celular,
+    String cracha,
+    String id,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 0),
+      child: Container(
+        height: 160.0,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              left: 50.0,
+              right: 5,
+              child: Container(
+                width: 290.0,
+                height: 160.0,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  color: Colors.green[900],
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      left: 44.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Nome: ${nome}",
+                            style: Theme.of(context).textTheme.subhead),
+                        Text("matricula: ${matricula}",
+                            style: Theme.of(context).textTheme.subhead),
+                        Text("E-mail: ${email}",
+                            style: Theme.of(context).textTheme.subhead),
+                        Text("Celular: ${celular}",
+                            style: Theme.of(context).textTheme.subhead),
+                        Text("Cracha: ${cracha}",
+                            style: Theme.of(context).textTheme.subhead),
+                        Text("Id: ${id}",
+                            style: Theme.of(context).textTheme.subhead),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+                top: 10,
+                child: Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: url != null
+                          ? NetworkImage(url)
+                          : NetworkImage(
+                              "https://firebasestorage.googleapis.com/v0/b/pi-brintec.appspot.com/o/PIBrintec_512x512px_Aluno.png?alt=media&token=3890ede1-b09f-48da-a07a-2eea315503fd"),
+                    ),
+                  ),
+                )
+
+                // Image.network("https://image.freepik.com/vetores-gratis/perfil-de-avatar-de-mulher-no-icone-redondo_24640-14042.jpg",height: 100,)
+                ),
+          ],
+        ),
+      ),
+    );
   }
 }
