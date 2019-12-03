@@ -51,7 +51,7 @@ class _TarefaListPageState extends State<TarefaListPage> {
               if (snapshot.data.isDataValid) {
                 if (snapshot.data.pedidoRelatorio != null) {
                   launch(
-                      'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/tarefamd?pedido=${snapshot.data.pedidoRelatorio}');
+                      'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/imprimirtarefa?pedido=${snapshot.data.pedidoRelatorio}');
                   bloc.eventSink(ResetCreateRelatorioEvent());
                 }
                 List<Widget> listaWidget = List<Widget>();
