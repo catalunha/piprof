@@ -94,8 +94,9 @@ class PerfilBloc {
         cracha: _state.cracha,
         celular: _state.celular,
       );
-      if (_state.localPath != _state.usuarioModel.foto.path) {
+      if (_state.localPath != _state.usuarioModel?.foto?.path) {
         // Deletar uploadID anterior se existir
+        //adddd
         if (_state.fotoUploadID != null) {
           final docRef = _firestore
               .collection(UploadModel.collection)

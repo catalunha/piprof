@@ -49,6 +49,11 @@ class _TarefaListPageState extends State<TarefaListPage> {
                 return Center(child: CircularProgressIndicator());
               }
               if (snapshot.data.isDataValid) {
+                if (snapshot.data.pedidoRelatorio != null) {
+                  launch(
+                      'https://us-central1-pi-brintec.cloudfunctions.net/relatorioOnRequest/tarefaimpressa?pedido=${snapshot.data.pedidoRelatorio}');
+                  bloc.eventSink(ResetCreateRelatorioEvent());
+                }
                 List<Widget> listaWidget = List<Widget>();
                 String notas = '';
                 Map<String, Gabarito> gabaritoMap = Map<String, Gabarito>();
@@ -88,27 +93,17 @@ Simulacao: ${tarefa.simulacao.nome}
 Aberta: ${DateFormat('dd-MM HH:mm').format(tarefa.inicio)} até ${DateFormat('dd-MM HH:mm').format(tarefa.fim)}
 Iniciou: ${tarefa.iniciou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.iniciou)} | Enviou ${tarefa.enviou == null ? '?' : DateFormat('dd-MM HH:mm').format(tarefa.enviou)}
 Tempo: ${tarefa.tempo} h | Usou: ${tarefa.tentou ?? 0} das ${tarefa.tentativa} tentativas.'''),
-subtitle: Text('id: ${tarefa.id}'),
+                            subtitle: Text('id: ${tarefa.id}'),
                           ),
                           Wrap(
                             children: <Widget>[
                               IconButton(
-                                tooltip: 'Ver problema da questão',
-                                icon: Icon(Icons.local_library),
-                                onPressed: tarefa.problema.url != null &&
-                                        tarefa.problema.url.isNotEmpty
-                                    ? () {
-                                        launch(tarefa.problema.url);
-                                      }
-                                    : null,
-                              ),
-                              IconButton(
-                                tooltip: 'Corrigir tarefa',
-                                icon: Icon(Icons.playlist_add_check),
+                                tooltip: 'Editar tarefa para este aluno',
+                                icon: Icon(Icons.edit),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                     context,
-                                    "/tarefa/corrigir",
+                                    "/tarefa/crud",
                                     arguments: tarefa.id,
                                   );
                                 },
@@ -122,12 +117,30 @@ subtitle: Text('id: ${tarefa.id}'),
                                 },
                               ),
                               IconButton(
-                                tooltip: 'Editar tarefa para este aluno',
-                                icon: Icon(Icons.edit),
+                                tooltip: 'Ver problema da questão',
+                                icon: Icon(Icons.local_library),
+                                onPressed: tarefa.problema.url != null &&
+                                        tarefa.problema.url.isNotEmpty
+                                    ? () {
+                                        launch(tarefa.problema.url);
+                                      }
+                                    : null,
+                              ),
+                              IconButton(
+                                tooltip: 'Versão impressa da tarefa',
+                                icon: Icon(Icons.picture_as_pdf),
+                                onPressed: () {
+                                  bloc.eventSink(
+                                      CreateRelatorioEvent(tarefa.id));
+                                },
+                              ),
+                              IconButton(
+                                tooltip: 'Corrigir tarefa',
+                                icon: Icon(Icons.playlist_add_check),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                     context,
-                                    "/tarefa/crud",
+                                    "/tarefa/corrigir",
                                     arguments: tarefa.id,
                                   );
                                 },

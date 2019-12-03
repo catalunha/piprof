@@ -50,7 +50,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 icon: Icon(Icons.menu),
                 onPressed: () async {
                   // await cadastrarProfCatalunha();
-                  await cadastrarProfRicelly();
+                  // await cadastrarProfRicelly();
+                  // await cadastrarFabin();
                 },
               ),
             ),
@@ -367,6 +368,35 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/turma/ativa/list',
         '/pasta/list',
         '/turma/inativa/list',
+      ],
+      turmaNumero: 0,
+      pastaNumero: 0,
+      problemaNumero: 0,
+    );
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+  }
+
+  Future cadastrarFabin() async {
+    String userId = 'PSI0UXpC3rPb91bDXyEWVUVYyV92';
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.delete();
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      professor: true,
+      ativo: true,
+      // celular: '123',
+      // cracha: 'Costa',
+      email: 'ambiental.costa@gmail.com',
+      matricula: '123',
+      nome: 'Fabio Costa',
+      rota: [
+        '/',
+        '/perfil',
+        '/upload',
+        '/versao',
+        '/turma/ativa/list',
+        '/turma/inativa/list',
+        '/pasta/list',
       ],
       turmaNumero: 0,
       pastaNumero: 0,

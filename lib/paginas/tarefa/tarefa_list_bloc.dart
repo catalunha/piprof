@@ -16,8 +16,18 @@ class ResetTempoTentativaTarefaEvent extends TarefaListBlocEvent {
   ResetTempoTentativaTarefaEvent(this.tarefaID);
 }
 
+class CreateRelatorioEvent extends TarefaListBlocEvent {
+  final String tarefaId;
+
+  CreateRelatorioEvent(this.tarefaId);
+}
+
+class ResetCreateRelatorioEvent extends TarefaListBlocEvent {}
+
 class TarefaListBlocState {
   bool isDataValid = false;
+  String pedidoRelatorio;
+
   List<TarefaModel> tarefaList = List<TarefaModel>();
 }
 
@@ -84,7 +94,16 @@ class TarefaListBloc {
         'enviou': null,
       }, merge: true);
     }
-
+    if (event is CreateRelatorioEvent) {
+      final docRef = _firestore.collection('Relatorio').document();
+      await docRef.setData({'tarefaId': event.tarefaId}, merge: true).then((_) {
+        _state.pedidoRelatorio = docRef.documentID;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is ResetCreateRelatorioEvent) {
+      _state.pedidoRelatorio = null;
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em TarefaAlunoList  = ${event.runtimeType}');
