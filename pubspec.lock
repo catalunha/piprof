@@ -127,7 +127,7 @@ packages:
     description:
       path: firebaseauth_wrapper
       ref: HEAD
-      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
+      resolved-ref: "41530ff66ee8f21356da5a543d09e55915eb7208"
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -136,7 +136,7 @@ packages:
     description:
       path: firebaseauth_wrapper_flutter
       ref: HEAD
-      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
+      resolved-ref: "41530ff66ee8f21356da5a543d09e55915eb7208"
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -145,7 +145,7 @@ packages:
     description:
       path: firebaseauth_wrapper_web
       ref: HEAD
-      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
+      resolved-ref: "41530ff66ee8f21356da5a543d09e55915eb7208"
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.0"
@@ -154,7 +154,7 @@ packages:
     description:
       path: "packages/firestore_wrapper"
       ref: HEAD
-      resolved-ref: "324a7f9113e5caf35dc8df3a44ade9c9bf4e7a53"
+      resolved-ref: b88acfa7c351e4068ad7d4ee8bdde08c762aaad7
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
     version: "0.0.3"
@@ -163,7 +163,7 @@ packages:
     description:
       path: "packages/firestore_wrapper_flutter"
       ref: HEAD
-      resolved-ref: "324a7f9113e5caf35dc8df3a44ade9c9bf4e7a53"
+      resolved-ref: b88acfa7c351e4068ad7d4ee8bdde08c762aaad7
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
     version: "0.0.3"
@@ -172,7 +172,7 @@ packages:
     description:
       path: "packages/firestore_wrapper_web"
       ref: HEAD
-      resolved-ref: "324a7f9113e5caf35dc8df3a44ade9c9bf4e7a53"
+      resolved-ref: b88acfa7c351e4068ad7d4ee8bdde08c762aaad7
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
     version: "0.0.0"

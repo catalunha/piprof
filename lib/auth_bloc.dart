@@ -3,6 +3,7 @@ import 'package:piprof/modelos/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:firebaseauth_wrapper/firebaseauth_wrapper.dart' as fba;
+import 'package:validators/validators.dart';
 
 enum AuthStatus {
   Uninitialized,
@@ -30,8 +31,6 @@ class LoginAuthBlocEvent extends AuthBlocEvent {}
 class LogoutAuthBlocEvent extends AuthBlocEvent {}
 
 class ResetPassword extends AuthBlocEvent {}
-
-class EhProfessor extends AuthBlocEvent {}
 
 class AuthBlocState {
   String usuarioID;
@@ -156,10 +155,8 @@ class AuthBloc {
     } else if (event is LogoutAuthBlocEvent) {
       _authApi.logout();
     } else if (event is ResetPassword) {
-      // _authApi.sendPasswordResetEmail(_state.email);
-    } else if (event is EhProfessor) {
-      // _authApi.sendPasswordResetEmail(_state.email);
-    }
+      if (isEmail(_state.email)) _authApi.sendPasswordResetEmail(_state.email);
+    } 
   }
 
   void _handleLoginAuthBlocEvent() {

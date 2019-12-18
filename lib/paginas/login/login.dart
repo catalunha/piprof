@@ -111,7 +111,8 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (password) {
-                            authBloc.dispatch(UpdatePasswordAuthBlocEvent(password));
+                            authBloc.dispatch(
+                                UpdatePasswordAuthBlocEvent(password));
                           },
                           obscureText: true,
                           decoration: InputDecoration(
@@ -129,7 +130,9 @@ class LoginPageState extends State<LoginPage> {
                           vertical: 4,
                         ),
                         child: RaisedButton(
-                          child: Text("Acessar", style: TextStyle(fontSize: 20, color: Colors.black)),
+                          child: Text("Acessar",
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.black)),
                           color: Colors.green,
                           onPressed: () {
                             _formKey.currentState.save();
@@ -153,12 +156,15 @@ class LoginPageState extends State<LoginPage> {
                           vertical: 5,
                         ),
                         child: ListTile(
-                          title: Text('Eita. Esqueci a senha!\nInforme seu email e click...',
+                          title: Text(
+                              'Eita. Esqueci a senha!\nInforme seu email e click...',
                               style: TextStyle(color: Colors.green[600])),
                           trailing: IconButton(
-                            tooltip: 'Um pedido de nova senha será enviado a seu email.',
+                            tooltip:
+                                'Um pedido de nova senha será enviado a seu email.',
                             icon: Icon(Icons.vpn_key, color: Colors.green[600]),
                             onPressed: () {
+                              _formKey.currentState.save();
                               authBloc.dispatch(ResetPassword());
                             },
                           ),
