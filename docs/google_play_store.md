@@ -1,5 +1,22 @@
 # Versões enviadas PI-Prof
 
+## Enviada em 18-12-2019
+versionCode 5
+versionName '1.0.4'
+Detalhes:
+- Revisao do reset senha via email
+- Listagem na web
+- Implementação de relatorios em csv
+
+## Enviada em 03-12-2019
+versionCode 4
+versionName '1.0.3'
+Detalhes:
+- Relatórios em planilha independente do App
+- Nova interface de seleção de usuários
+- Edição de numero com fração
+- Teste de aplicação antes do envio
+
 ## Enviada em 26-11-2019
 versionCode 3
 versionName '1.0.2'
@@ -77,6 +94,9 @@ android {
 }
 ~~~
 ### Passo 2
+Atualizar arquivo versao.dart
+
+### Passo 3
 
 Gerar app bundler com o seguinte comando, isso vai gerar um arquivo que vamos enviar ao google play ( Observação : O flutter tem que está na versao 1.7.8 ou superior). Usando o terminal faça
 
@@ -95,7 +115,7 @@ Built build/app/outputs/bundle/release/app.aab (23.5MB).
 
 ### Passo 1
 Acesse o google play console
-https://play.google.com/apps/publish/?hl=pt-BR&account=8452409294372920349#AppListPlace
+https://play.google.com/apps/publish/?hl=pt-BR&account=5726070822093172367#ManageReleasesPlace:p=education.brintec.piprof&appid=4973577770422646563
 
 ### Passo 2
 
